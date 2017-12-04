@@ -16,7 +16,7 @@ public class Part1 {
 
             String[] numbers = line.split("[\\t]");
 
-            for(String numberstring : numbers) {
+            for (String numberstring : numbers) {
                 int number = Integer.parseInt(numberstring);
 
                 if (number > largest) {
