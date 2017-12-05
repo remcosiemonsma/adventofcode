@@ -29,19 +29,7 @@ public class Part2 {
 
     private static String alphabetizeString(String input) {
         char[] chars = input.toCharArray();
-
-        List<Character> charList = new ArrayList<>();
-
-        for (char c : chars) {
-            charList.add(c);
-        }
-
-        Collections.sort(charList);
-
-        for (int i = 0; i < charList.size(); i++) {
-            chars[i] = charList.get(i);
-        }
-
+        Arrays.sort(chars);
         return new String(chars);
     }
 }
