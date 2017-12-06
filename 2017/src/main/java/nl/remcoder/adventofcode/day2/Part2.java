@@ -13,7 +13,7 @@ public class Part2 {
         for (String line : lines) {
             String[] numbers = line.split("[\\t]");
 
-            for (int i = 0; i < numbers.length; i++) {
+            outer: for (int i = 0; i < numbers.length; i++) {
                 int numberi = Integer.parseInt(numbers[i]);
                 for (int j = 0; j < numbers.length; j++) {
                     if (i == j) {
@@ -23,6 +23,7 @@ public class Part2 {
 
                     if (numberi % numberj == 0) {
                         result += numberi / numberj;
+                        continue outer;
                     }
                 }
             }

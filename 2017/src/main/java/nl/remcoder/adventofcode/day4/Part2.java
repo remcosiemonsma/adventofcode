@@ -15,9 +15,8 @@ public class Part2 {
 
             Set<String> wordSet = new HashSet<>();
 
-            for (String word : words) {
-                wordSet.add(alphabetizeString(word));
-            }
+            Arrays.stream(words).forEach(s -> wordSet.add(alphabetizeString(s)));
+
 
             if (wordSet.size() == words.length) {
                 validPassphrases++;
