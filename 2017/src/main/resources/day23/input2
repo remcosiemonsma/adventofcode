@@ -1,0 +1,32 @@
+b = 93;
+c = 93;
+jnz a 2
+jnz 1 5
+b = 9300;
+b = 109300;
+c = 109300;
+c = 126300;
+f = 1;
+d = 2;
+e = 2;
+g = d;
+g = g * e;
+g = g - b;
+jnz g 2
+f = 0;
+e++;
+g = e;
+g = g - b;
+jnz g -8
+d++;
+g = d;
+g = g - b;
+jnz g -13
+jnz f 2
+h++;
+g = b;
+g = g - c;
+jnz g 2
+end
+b = b + 17;
+goto 9
