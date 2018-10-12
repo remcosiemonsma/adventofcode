@@ -2,18 +2,18 @@ package nl.remcoder.adventofcode.day3;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Part1 {
     public static void main(String[] args) throws Exception {
         String line = Files.readAllLines(Paths.get(ClassLoader.getSystemResource("day3/input").toURI())).get(0);
 
-        Map<Position, Integer> positionCounter = new HashMap<>();
+        Set<Position> positions = new HashSet<>();
 
         Position position = new Position(0, 0);
 
-        positionCounter.put(position, 1);
+        positions.add(position);
 
         for (char c : line.toCharArray()) {
             switch (c) {
@@ -31,14 +31,10 @@ public class Part1 {
                     break;
             }
 
-            if (!positionCounter.containsKey(position)) {
-                positionCounter.put(position, 0);
-            }
-
-            positionCounter.put(position, positionCounter.get(position) + 1);
+            positions.add(position);
         }
 
-        System.out.println(positionCounter.size());
+        System.out.println(positions.size());
     }
 
     private static class Position {
