@@ -39,33 +39,16 @@ public class Part2 {
                 break;
             }
             String beforeString = data.get(sampleLength);
-            String beforeRegisterString = beforeString.substring(9, 19);
-
-            String[] beforeRegisterStrings = beforeRegisterString.split(", ");
-
-            int[] beforeRegister = new int[]{Integer.parseInt(beforeRegisterStrings[0]),
-                                             Integer.parseInt(beforeRegisterStrings[1]),
-                                             Integer.parseInt(beforeRegisterStrings[2]),
-                                             Integer.parseInt(beforeRegisterStrings[3])};
+            int[] beforeRegister = parseStringToRegister(beforeString);
 
             String afterString = data.get(sampleLength + 2);
-            String afterRegisterString = afterString.substring(9, 19);
-
-            String[] afterRegisterStrings = afterRegisterString.split(", ");
-
-            int[] afterRegister = new int[]{Integer.parseInt(afterRegisterStrings[0]),
-                                            Integer.parseInt(afterRegisterStrings[1]),
-                                            Integer.parseInt(afterRegisterStrings[2]),
-                                            Integer.parseInt(afterRegisterStrings[3])};
+            int[] afterRegister = parseStringToRegister(afterString);
 
             String opcodeString = data.get(sampleLength + 1);
 
             String[] opcodeStrings = opcodeString.split(" ");
 
-            int[] opcodeData = new int[]{Integer.parseInt(opcodeStrings[0]),
-                                         Integer.parseInt(opcodeStrings[1]),
-                                         Integer.parseInt(opcodeStrings[2]),
-                                         Integer.parseInt(opcodeStrings[3])};
+            int[] opcodeData = parseStringArrayToIntArray(opcodeStrings);
 
             int storeRegister = opcodeData[3];
 
@@ -113,6 +96,21 @@ public class Part2 {
             });
 
         System.out.println(Arrays.toString(register));
+    }
+
+    private static int[] parseStringArrayToIntArray(String[] opcodeStrings) {
+        return new int[]{Integer.parseInt(opcodeStrings[0]),
+                                             Integer.parseInt(opcodeStrings[1]),
+                                             Integer.parseInt(opcodeStrings[2]),
+                                             Integer.parseInt(opcodeStrings[3])};
+    }
+
+    private static int[] parseStringToRegister(String string) {
+        String registerPartOfString = string.substring(9, 19);
+
+        String[] stringRegister = registerPartOfString.split(", ");
+
+        return parseStringArrayToIntArray(stringRegister);
     }
 
     @FunctionalInterface
