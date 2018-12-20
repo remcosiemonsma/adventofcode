@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class Part1 {
+public class Part2 {
     public static void main(String[] args) throws Exception {
         int smallestx = Integer.MAX_VALUE;
         int largestx = Integer.MIN_VALUE;
@@ -76,8 +76,6 @@ public class Part1 {
             }
         }
 
-        System.out.println(smallesty);
-
         char[][] grid = new char[largesty + 1][700];
 
         for (char[] line : grid) {
@@ -145,11 +143,11 @@ public class Part1 {
                         for (int x = waterSource.x; x > 0; x--) {
                             if (grid[y][x] == '#') {
                                 break;
-                            } else if (grid[y + 1][x - 1] == '.') {
+                            } else if (grid[y + 1][x - 1] == '.' || grid[y + 1][x - 1] == '|') {
                                 overFlow = true;
                                 if (grid[y + 1][x] == '#') {
                                     newWaterSources.add(new WaterSource(x - 1, y));
-                                    grid[y][x] = '~';
+                                    grid[y][x] = '|';
                                     grid[y][x - 1] = '+';
                                 }
                                 break;
@@ -161,11 +159,11 @@ public class Part1 {
                         for (int x = waterSource.x; x < grid[y].length - 1; x++) {
                             if (grid[y][x] == '#') {
                                 break;
-                            } else if (grid[y + 1][x + 1] == '.') {
+                            } else if (grid[y + 1][x + 1] == '.' || grid[y + 1][x + 1] == '|') {
                                 overFlow = true;
                                 if (grid[y + 1][x] == '#') {
                                     newWaterSources.add(new WaterSource(x + 1, y));
-                                    grid[y][x] = '~';
+                                    grid[y][x] = '|';
                                     grid[y][x + 1] = '+';
                                 }
                                 break;
@@ -182,8 +180,37 @@ public class Part1 {
             waterSources.clear();
 
             waterSources.addAll(newWaterSources);
+        }
 
-            System.out.println(waterSources);
+        Boolean right = null;
+
+        for (int y = 0; y < grid.length; y++) {
+            int startx = 0;
+            char[] line = grid[y];
+            for (int x = 0; x < line.length; x++) {
+                char c = line[x];
+                if (c == '+') {
+                    right = grid[y][x + 1] == '|';
+                    startx = x;
+                    if (right) {
+                        for (int x1 = startx + 2; x1 < line.length; x1++) {
+                            if (line[x1] == '~') {
+                                line[x1] = '|';
+                            } else {
+                                break;
+                            }
+                        }
+                    } else {
+                        for (int x1 = startx - 2; x1 > 0; x1--) {
+                            if (line[x1] == '~') {
+                                line[x1] = '|';
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         for (int i = 0; i < grid.length; i++) {
@@ -200,16 +227,8 @@ public class Part1 {
         for (int i = smallesty; i < grid.length; i++) {
             char[] line = grid[i];
             for (char pixel : line) {
-                switch (pixel) {
-                    case '|':
-                        wateramount++;
-                        break;
-                    case '~':
-                        wateramount++;
-                        break;
-                    case '+':
-                        wateramount++;
-                        break;
+                if (pixel == '~') {
+                    wateramount++;
                 }
             }
         }
