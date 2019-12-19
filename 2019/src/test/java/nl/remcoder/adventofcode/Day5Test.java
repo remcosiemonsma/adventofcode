@@ -21,13 +21,13 @@ class Day5Test {
     public void testPart1Input() throws Exception {
         Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()));
 
-        System.out.println(testSubject.handlePart1(input));
+        assertEquals(9025675, testSubject.handlePart1(input));
     }
 
     @Test
     public void testPart2Input() throws Exception {
         Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()));
 
-        System.out.println(testSubject.handlePart2(input));
+        assertEquals(11981754, testSubject.handlePart2(input));
     }
 }

@@ -1,15 +1,16 @@
 package nl.remcoder.adventofcode;
 
 import java.util.Arrays;
+import java.util.concurrent.BlockingQueue;
 
 public class IntCodeComputer implements Runnable {
-    private final SharedState input;
-    private final SharedState output;
+    private final BlockingQueue<Integer> input;
+    private final BlockingQueue<Integer> output;
     private int[] opcodes;
     private int opcodeCounter;
 
-    public IntCodeComputer(int[] opcodes, SharedState input, SharedState output) {
-        this.opcodes = opcodes;
+    public IntCodeComputer(int[] opcodes, BlockingQueue<Integer> input, BlockingQueue<Integer> output) {
+        this.opcodes = Arrays.copyOf(opcodes, opcodes.length);
         this.input = input;
         this.output = output;
         opcodeCounter = 0;
@@ -117,14 +118,22 @@ public class IntCodeComputer implements Runnable {
 
         int value = readValue(value1Mode);
 
-        output.writeValue(value);
+        try {
+            output.put(value);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void readInput() {
-        int inputValue = input.readNextValue();
-        int target = opcodes[++opcodeCounter];
-        opcodes[target] = inputValue;
-        opcodeCounter++;
+        try {
+            int inputValue = input.take();
+            int target = opcodes[++opcodeCounter];
+            opcodes[target] = inputValue;
+            opcodeCounter++;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void performMultiplication() {

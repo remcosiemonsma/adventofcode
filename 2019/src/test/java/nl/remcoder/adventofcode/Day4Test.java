@@ -31,7 +31,7 @@ class Day4Test {
 
     @Test
     public void testPart1Input() {
-        System.out.println(testSubject.handlePart1(234208, 765869));
+        assertEquals(1246, testSubject.handlePart1(234208, 765869));
     }
 
     @Test
@@ -51,6 +51,6 @@ class Day4Test {
 
     @Test
     public void testPart2Input() {
-        System.out.println(testSubject.handlePart2(234208, 765869));
+        assertEquals(814, testSubject.handlePart2(234208, 765869));
     }
 }
