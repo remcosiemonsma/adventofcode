@@ -45,7 +45,7 @@ class Day3Test {
     public void testPart1Input() throws Exception {
         Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day3/input").toURI()));
 
-        System.out.println(testSubject.handlePart1(input));
+        assertEquals(865, testSubject.handlePart1(input));
     }
 
     @Test
@@ -75,6 +75,6 @@ class Day3Test {
     public void testPart2Input() throws Exception {
         Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day3/input").toURI()));
 
-        System.out.println(testSubject.handlePart2(input));
+        assertEquals(35038, testSubject.handlePart2(input));
     }
 }
