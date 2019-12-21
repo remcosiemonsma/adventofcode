@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Day2 {
-    public int handlePart1(Stream<String> input) {
+    public long handlePart1(Stream<String> input) {
         String line = input.findFirst().orElseThrow(AssertionError::new);
 
-        int[] opcodes = Arrays.stream(line.split(","))
-                              .mapToInt(Integer::parseInt)
-                              .toArray();
+        long[] opcodes = Arrays.stream(line.split(","))
+                               .mapToLong(Long::parseLong)
+                               .toArray();
 
         opcodes[1] = 12;
         opcodes[2] = 2;
@@ -25,13 +25,13 @@ public class Day2 {
         String line = input.findFirst()
                            .orElseThrow(AssertionError::new);
 
-        int[] opcodesInput = Arrays.stream(line.split(","))
-                              .mapToInt(Integer::parseInt)
-                              .toArray();
+        long[] opcodesInput = Arrays.stream(line.split(","))
+                                    .mapToLong(Long::parseLong)
+                                    .toArray();
 
         for (int noun = 0; noun < 100; noun++) {
             for (int verb = 0; verb < 100; verb++) {
-                int[] opcodes = Arrays.copyOf(opcodesInput, opcodesInput.length);
+                long[] opcodes = Arrays.copyOf(opcodesInput, opcodesInput.length);
 
                 opcodes[1] = noun;
                 opcodes[2] = verb;
