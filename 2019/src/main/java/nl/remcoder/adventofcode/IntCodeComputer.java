@@ -4,16 +4,18 @@ import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 
 public class IntCodeComputer implements Runnable {
-    private final BlockingQueue<Integer> input;
-    private final BlockingQueue<Integer> output;
-    private int[] opcodes;
+    private final BlockingQueue<Long> input;
+    private final BlockingQueue<Long> output;
+    private long[] opcodes;
     private int opcodeCounter;
+    private int relativeBase;
 
-    public IntCodeComputer(int[] opcodes, BlockingQueue<Integer> input, BlockingQueue<Integer> output) {
-        this.opcodes = Arrays.copyOf(opcodes, opcodes.length);
+    IntCodeComputer(long[] opcodes, BlockingQueue<Long> input, BlockingQueue<Long> output) {
+        this.opcodes = Arrays.copyOf(opcodes, 1024 * 64);
         this.input = input;
         this.output = output;
         opcodeCounter = 0;
+        relativeBase = 0;
     }
 
     @Override
@@ -21,47 +23,46 @@ public class IntCodeComputer implements Runnable {
         runProgram();
     }
 
-    public void runProgram() {
+    void runProgram() {
         while (opcodes[opcodeCounter] != 99) {
-            switch (opcodes[opcodeCounter] % 100) {
-                case 1:
-                    performSummation();
-                    break;
-                case 2:
-                    performMultiplication();
-                    break;
-                case 3:
-                    readInput();
-                    break;
-                case 4:
-                    writeOutput();
-                    break;
-                case 5:
-                    jumpIfTrue();
-                    break;
-                case 6:
-                    jumpIfFalse();
-                    break;
-                case 7:
-                    testLessThan();
-                    break;
-                case 8:
-                    testEquals();
-                    break;
-                default:
-                    throw new AssertionError(String.format("Invalid operation %d!", opcodes[opcodeCounter]));
+            switch ((int) (opcodes[opcodeCounter] % 100)) {
+                case 1 -> performSummation();
+                case 2 -> performMultiplication();
+                case 3 -> readInput();
+                case 4 -> writeOutput();
+                case 5 -> jumpIfTrue();
+                case 6 -> jumpIfFalse();
+                case 7 -> testLessThan();
+                case 8 -> testEquals();
+                case 9 -> adjustRelativeBase();
+                default -> throw new AssertionError(String.format("Invalid operation %d!", opcodes[opcodeCounter]));
             }
         }
     }
 
-    private void testEquals() {
-        int opcode = opcodes[opcodeCounter++];
-        Mode value1Mode = (opcode % 1000) / 100 == 1 ? Mode.PARAMETER : Mode.POSITION;
-        Mode value2Mode = (opcode % 10000) / 1000 == 1 ? Mode.PARAMETER : Mode.POSITION;
+    private void adjustRelativeBase() {
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
 
-        int value1 = readValue(value1Mode);
-        int value2 = readValue(value2Mode);
-        int target = readValue(Mode.PARAMETER);
+        long adjustValue = readValue(value1Mode);
+
+        relativeBase += adjustValue;
+    }
+
+    private void testEquals() {
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
+        Mode value2Mode = determineMode((opcode % 10000) / 1000);
+        Mode targetMode = determineMode((opcode % 100000) / 10000);
+
+        long value1 = readValue(value1Mode);
+        long value2 = readValue(value2Mode);
+
+        int target = switch (targetMode) {
+            case POSITION -> (int) opcodes[opcodeCounter++];
+            case RELATIVE -> relativeBase + (int) opcodes[opcodeCounter++];
+            case IMMEDIATE -> throw new AssertionError("Immediate Mode not allowed!");
+        };
 
         if (value1 == value2) {
             opcodes[target] = 1;
@@ -71,13 +72,19 @@ public class IntCodeComputer implements Runnable {
     }
 
     private void testLessThan() {
-        int opcode = opcodes[opcodeCounter++];
-        Mode value1Mode = (opcode % 1000) / 100 == 1 ? Mode.PARAMETER : Mode.POSITION;
-        Mode value2Mode = (opcode % 10000) / 1000 == 1 ? Mode.PARAMETER : Mode.POSITION;
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
+        Mode value2Mode = determineMode((opcode % 10000) / 1000);
+        Mode targetMode = determineMode((opcode % 100000) / 10000);
 
-        int value1 = readValue(value1Mode);
-        int value2 = readValue(value2Mode);
-        int target = readValue(Mode.PARAMETER);
+        long value1 = readValue(value1Mode);
+        long value2 = readValue(value2Mode);
+
+        int target = switch (targetMode) {
+            case POSITION -> (int) opcodes[opcodeCounter++];
+            case RELATIVE -> relativeBase + (int) opcodes[opcodeCounter++];
+            case IMMEDIATE -> throw new AssertionError("Immediate Mode not allowed!");
+        };
 
         if (value1 < value2) {
             opcodes[target] = 1;
@@ -87,12 +94,12 @@ public class IntCodeComputer implements Runnable {
     }
 
     private void jumpIfFalse() {
-        int opcode = opcodes[opcodeCounter++];
-        Mode value1Mode = (opcode % 1000) / 100 == 1 ? Mode.PARAMETER : Mode.POSITION;
-        Mode value2Mode = (opcode % 10000) / 1000 == 1 ? Mode.PARAMETER : Mode.POSITION;
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
+        Mode value2Mode = determineMode((opcode % 10000) / 1000);
 
-        int test = readValue(value1Mode);
-        int target = readValue(value2Mode);
+        long test = readValue(value1Mode);
+        int target = (int) readValue(value2Mode);
 
         if (test == 0) {
             opcodeCounter = target;
@@ -100,12 +107,12 @@ public class IntCodeComputer implements Runnable {
     }
 
     private void jumpIfTrue() {
-        int opcode = opcodes[opcodeCounter++];
-        Mode value1Mode = (opcode % 1000) / 100 == 1 ? Mode.PARAMETER : Mode.POSITION;
-        Mode value2Mode = (opcode % 10000) / 1000 == 1 ? Mode.PARAMETER : Mode.POSITION;
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
+        Mode value2Mode = determineMode((opcode % 10000) / 1000);
 
-        int test = readValue(value1Mode);
-        int target = readValue(value2Mode);
+        long test = readValue(value1Mode);
+        int target = (int) readValue(value2Mode);
 
         if (test != 0) {
             opcodeCounter = target;
@@ -113,10 +120,10 @@ public class IntCodeComputer implements Runnable {
     }
 
     private void writeOutput() {
-        int opcode = opcodes[opcodeCounter++];
-        Mode value1Mode = (opcode % 1000) / 100 == 1 ? Mode.PARAMETER : Mode.POSITION;
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
 
-        int value = readValue(value1Mode);
+        long value = readValue(value1Mode);
 
         try {
             output.put(value);
@@ -127,66 +134,93 @@ public class IntCodeComputer implements Runnable {
 
     private void readInput() {
         try {
-            int inputValue = input.take();
-            int target = opcodes[++opcodeCounter];
+            long inputValue = input.take();
+
+            int opcode = (int) opcodes[opcodeCounter++];
+            Mode targetMode = determineMode((opcode % 1000) / 100);
+
+            int target = switch (targetMode) {
+                case POSITION -> (int) opcodes[opcodeCounter++];
+                case RELATIVE -> relativeBase + (int) opcodes[opcodeCounter++];
+                case IMMEDIATE -> throw new AssertionError("Immediate Mode not allowed!");
+            };
+
             opcodes[target] = inputValue;
-            opcodeCounter++;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private void performMultiplication() {
-        int opcode = opcodes[opcodeCounter++];
-        Mode value1Mode = (opcode % 1000) / 100 == 1 ? Mode.PARAMETER : Mode.POSITION;
-        Mode value2Mode = (opcode % 10000) / 1000 == 1 ? Mode.PARAMETER : Mode.POSITION;
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
+        Mode value2Mode = determineMode((opcode % 10000) / 1000);
+        Mode targetMode = determineMode((opcode % 100000) / 10000);
 
-        int multiply1 = readValue(value1Mode);
-        int multiply2 = readValue(value2Mode);
+        long multiply1 = readValue(value1Mode);
+        long multiply2 = readValue(value2Mode);
 
-        performMultiplyOperation(multiply1, multiply2, opcodes[opcodeCounter++]);
+        int target = switch (targetMode) {
+            case POSITION -> (int) opcodes[opcodeCounter++];
+            case RELATIVE -> relativeBase + (int) opcodes[opcodeCounter++];
+            case IMMEDIATE -> throw new AssertionError("Immediate Mode not allowed!");
+        };
+
+        performMultiplyOperation(multiply1, multiply2, target);
     }
 
     private void performSummation() {
-        int opcode = opcodes[opcodeCounter++];
-        Mode value1Mode = (opcode % 1000) / 100 == 1 ? Mode.PARAMETER : Mode.POSITION;
-        Mode value2Mode = (opcode % 10000) / 1000 == 1 ? Mode.PARAMETER : Mode.POSITION;
+        int opcode = (int) opcodes[opcodeCounter++];
+        Mode value1Mode = determineMode((opcode % 1000) / 100);
+        Mode value2Mode = determineMode((opcode % 10000) / 1000);
+        Mode targetMode = determineMode((opcode % 100000) / 10000);
 
-        int sum1 = readValue(value1Mode);
-        int sum2 = readValue(value2Mode);
+        long sum1 = readValue(value1Mode);
+        long sum2 = readValue(value2Mode);
 
-        performAddOperation(sum1, sum2, opcodes[opcodeCounter++]);
+        int target = switch (targetMode) {
+            case POSITION -> (int) opcodes[opcodeCounter++];
+            case RELATIVE -> relativeBase + (int) opcodes[opcodeCounter++];
+            case IMMEDIATE -> throw new AssertionError("Immediate Mode not allowed!");
+        };
+
+        performAddOperation(sum1, sum2, target);
     }
 
-    private int readValue(Mode value1Mode) {
-        int location = 0;
-
-        switch (value1Mode) {
-            case POSITION:
-                location = opcodes[opcodeCounter++];
-                break;
-            case PARAMETER:
-                location = opcodeCounter++;
-                break;
-        }
+    private long readValue(Mode value1Mode) {
+        int location = switch (value1Mode) {
+            case POSITION -> (int) opcodes[opcodeCounter++];
+            case IMMEDIATE -> opcodeCounter++;
+            case RELATIVE -> (int) opcodes[opcodeCounter++] + relativeBase;
+        };
 
         return opcodes[location];
     }
 
-    private void performAddOperation(int value1, int value2, int targetLocation) {
+    private void performAddOperation(long value1, long value2, int targetLocation) {
         opcodes[targetLocation] = value1 + value2;
     }
 
-    private void performMultiplyOperation(int value1, int value2, int targetLocation) {
+    private void performMultiplyOperation(long value1, long value2, int targetLocation) {
         opcodes[targetLocation] = value1 * value2;
     }
 
-    public int retrieveValueFromPosition(int position) {
+    long retrieveValueFromPosition(int position) {
         return opcodes[position];
     }
 
+    private Mode determineMode(int parameterMode) {
+        return switch (parameterMode) {
+            case 0 -> Mode.POSITION;
+            case 1 -> Mode.IMMEDIATE;
+            case 2 -> Mode.RELATIVE;
+            default -> throw new AssertionError(String.format("Invalid parameter mode %d received!", parameterMode));
+        };
+    }
+
     private enum Mode {
-        PARAMETER,
-        POSITION
+        POSITION,
+        IMMEDIATE,
+        RELATIVE
     }
 }
