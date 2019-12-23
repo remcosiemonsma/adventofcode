@@ -1,4 +1,4 @@
-package nl.remcoder.adventofcode;
+package nl.remcoder.adventofcode.intcodecomputer;
 
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
@@ -10,7 +10,7 @@ public class IntCodeComputer implements Runnable {
     private int opcodeCounter;
     private int relativeBase;
 
-    IntCodeComputer(long[] opcodes, BlockingQueue<Long> input, BlockingQueue<Long> output) {
+    public IntCodeComputer(long[] opcodes, BlockingQueue<Long> input, BlockingQueue<Long> output) {
         this.opcodes = Arrays.copyOf(opcodes, 1024 * 64);
         this.input = input;
         this.output = output;
@@ -23,7 +23,7 @@ public class IntCodeComputer implements Runnable {
         runProgram();
     }
 
-    void runProgram() {
+    public void runProgram() {
         while (opcodes[opcodeCounter] != 99) {
             switch ((int) (opcodes[opcodeCounter] % 100)) {
                 case 1 -> performSummation();
@@ -205,7 +205,7 @@ public class IntCodeComputer implements Runnable {
         opcodes[targetLocation] = value1 * value2;
     }
 
-    long retrieveValueFromPosition(int position) {
+    public long retrieveValueFromPosition(int position) {
         return opcodes[position];
     }
 
