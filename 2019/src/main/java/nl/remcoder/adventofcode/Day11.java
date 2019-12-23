@@ -26,20 +26,8 @@ public class Day11 {
                                .mapToLong(Long::parseLong)
                                .toArray();
 
-        BlockingQueue<Long> output = new ConsumingQueue(outputValue -> {
-            switch (outputState) {
-                case PAINT -> {
-                    paint(outputValue);
-                    outputState = OutputState.DIRECTION;
-                }
-                case DIRECTION -> {
-                    rotate(outputValue);
-                    move();
-                    outputState = OutputState.PAINT;
-                }
-            }
-        });
-        BlockingQueue<Long> input = new ProducingQueue(() -> grid[ypos][xpos] ? 1L : 0L);
+        BlockingQueue<Long> output = new ConsumingQueue(this::handleOutput);
+        BlockingQueue<Long> input = new ProducingQueue(this::provideInput);
 
         grid = new boolean[96][96];
 
@@ -57,6 +45,24 @@ public class Day11 {
         printGrid();
 
         return paintedPoints.size();
+    }
+
+    private long provideInput() {
+        return grid[ypos][xpos] ? 1L : 0L;
+    }
+
+    private void handleOutput(Long outputValue) {
+        switch (outputState) {
+            case PAINT -> {
+                paint(outputValue);
+                outputState = OutputState.DIRECTION;
+            }
+            case DIRECTION -> {
+                rotate(outputValue);
+                move();
+                outputState = OutputState.PAINT;
+            }
+        }
     }
 
     private void printGrid() {
@@ -79,20 +85,8 @@ public class Day11 {
                                .mapToLong(Long::parseLong)
                                .toArray();
 
-        BlockingQueue<Long> output = new ConsumingQueue(aLong -> {
-            switch (outputState) {
-                case PAINT -> {
-                    paint(aLong);
-                    outputState = OutputState.DIRECTION;
-                }
-                case DIRECTION -> {
-                    rotate(aLong);
-                    move();
-                    outputState = OutputState.PAINT;
-                }
-            }
-        });
-        BlockingQueue<Long> input = new ProducingQueue(() -> grid[ypos][xpos] ? 1L : 0L);
+        BlockingQueue<Long> output = new ConsumingQueue(this::handleOutput);
+        BlockingQueue<Long> input = new ProducingQueue(this::provideInput);
 
         grid = new boolean[96][96];
 
