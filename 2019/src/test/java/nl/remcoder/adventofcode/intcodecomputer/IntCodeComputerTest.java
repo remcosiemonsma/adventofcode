@@ -1,4 +1,4 @@
-package nl.remcoder.adventofcode;
+package nl.remcoder.adventofcode.intcodecomputer;
 
 import org.junit.jupiter.api.Test;
 
