@@ -1,11 +1,8 @@
 package nl.remcoder.adventofcode;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,8 +15,72 @@ public class Day14 {
 
         Reaction fuelReaction = reactions.get("FUEL");
 
-        Map<String, Integer> waste = new HashMap<>();
+        Map<String, Long> waste = new HashMap<>();
 
+        return processReactionToOreNeeded(reactions, fuelReaction, waste);
+    }
+
+    public long handlePart2(Stream<String> input) {
+        Map<String, Reaction> reactions = input.map(this::createReactionFromString)
+                                               .collect(Collectors.toMap(reaction -> reaction.chemical,
+                                                                         reaction -> reaction));
+
+        long amountOfOre = 1000000000000L;
+
+        Reaction fuelReaction = reactions.get("FUEL");
+
+        Map<String, Long> waste = new HashMap<>();
+
+        Map<String, Integer> originalInput = fuelReaction.input;
+
+        int amountNeededForFuel = processReactionToOreNeeded(reactions, fuelReaction, waste);
+
+        fuelReaction.input = originalInput;
+
+        long amountFuelProduced = 0;
+
+        while (amountOfOre > amountNeededForFuel) {
+            long amountTimesReaction = amountOfOre / amountNeededForFuel;
+            System.out.println(amountTimesReaction);
+
+            amountFuelProduced += amountTimesReaction;
+            System.out.println(amountFuelProduced);
+
+            HashMap<String, Long> totalWaste = new HashMap<>(waste);
+
+            totalWaste.replaceAll((s, amount) -> amount * amountTimesReaction);
+
+            flattenWasteToOre(totalWaste, reactions);
+
+            amountOfOre = totalWaste.get("ORE");
+
+            System.out.println(amountOfOre);
+        }
+
+        return amountFuelProduced;
+    }
+
+    private void flattenWasteToOre(Map<String, Long> waste,
+                                   Map<String, Reaction> reactions) {
+        long amountOre = 0;
+
+        for (String chemical : waste.keySet()) {
+            Reaction reaction = reactions.get(chemical);
+
+            long reactionTimes = waste.get(chemical) / reaction.amount;
+
+            int amountOreNeeded = processReactionToOreNeeded(reactions, reaction, new HashMap<>());
+
+            amountOre += amountOreNeeded * reactionTimes;
+        }
+
+        waste.clear();
+
+        waste.put("ORE", amountOre);
+    }
+
+    private int processReactionToOreNeeded(Map<String, Reaction> reactions, Reaction fuelReaction,
+                                           Map<String, Long> waste) {
         boolean reactionFinished = false;
 
         while (!reactionFinished) {
@@ -32,7 +93,7 @@ public class Day14 {
 
                 int amountNeeded = fuelReaction.input.get(chemical);
 
-                if (waste.getOrDefault(chemical, 0) >= amountNeeded) {
+                if (waste.getOrDefault(chemical, 0L) >= amountNeeded) {
                     int subtract = amountNeeded;
                     waste.compute(chemical, (s, amount) -> {
                         if (amount == null) {
@@ -41,8 +102,8 @@ public class Day14 {
                         return amount - subtract;
                     });
                 } else {
-                    amountNeeded -= waste.getOrDefault(chemical, 0);
-                    waste.put(chemical, 0);
+                    amountNeeded -= waste.getOrDefault(chemical, 0L);
+                    waste.put(chemical, 0L);
 
                     Reaction reaction = reactions.get(chemical);
 
@@ -71,8 +132,6 @@ public class Day14 {
                 reactionFinished = true;
             }
         }
-
-        System.out.println(fuelReaction);
 
         return fuelReaction.input.get("ORE");
     }
