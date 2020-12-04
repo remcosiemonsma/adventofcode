@@ -105,12 +105,12 @@ public class Day4 {
     }
 
     private boolean isPassportValid(Passport passport) {
-        return passport.birthYear &
-               passport.issueYear &
-               passport.expirationYear &
-               passport.height &
-               passport.hairColor &
-               passport.eyeColor &
+        return passport.birthYear &&
+               passport.issueYear &&
+               passport.expirationYear &&
+               passport.height &&
+               passport.hairColor &&
+               passport.eyeColor &&
                passport.passportId;
     }
 
