@@ -32,7 +32,7 @@ public class Day6 {
     }
 
     public int handlePart2(Stream<String> input) {
-        Character[] answerKey = new Character[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};                           ;
+        Character[] answerKey = new Character[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
         Set<Character> answers = new HashSet<>(Arrays.asList(answerKey));
 
