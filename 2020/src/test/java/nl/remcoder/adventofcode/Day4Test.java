@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,9 +34,7 @@ class Day4Test {
                 iyr:2011 ecl:brn hgt:59in
                 """;
 
-        Stream<String> input = Stream.of(data.split("\n"));
-
-        assertEquals(2, testSubject.handlePart1(input));
+        assertEquals(2, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -63,9 +60,7 @@ class Day4Test {
                 pid:3556412378 byr:2007
                 """;
 
-        Stream<String> input = Stream.of(data.split("\n"));
-
-        assertEquals(0, testSubject.handlePart2(input));
+        assertEquals(0, testSubject.handlePart2(data.lines()));
     }
 
     @Test
@@ -85,9 +80,7 @@ class Day4Test {
                 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
                 """;
 
-        Stream<String> input = Stream.of(data.split("\n"));
-
-        assertEquals(4, testSubject.handlePart2(input));
+        assertEquals(4, testSubject.handlePart2(data.lines()));
     }
 
     @Test
