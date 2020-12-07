@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,9 +36,7 @@ class Day6Test {
                 b
                 """;
 
-        Stream<String> input = Stream.of(data.split("\n"));
-
-        assertEquals(11, testSubject.handlePart1(input));
+        assertEquals(11, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -67,9 +64,7 @@ class Day6Test {
                 b
                 """;
 
-        Stream<String> input = Stream.of(data.split("\n"));
-
-        assertEquals(6, testSubject.handlePart2(input));
+        assertEquals(6, testSubject.handlePart2(data.lines()));
     }
 
     @Test
