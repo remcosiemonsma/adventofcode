@@ -24,43 +24,35 @@ public class Day10 {
         jolts.add(0, 0);
         jolts.add(jolts.get(jolts.size() - 1) + 3);
 
-        Set<List<Integer>> cache = new HashSet<>();
+        Map<Integer, Long> cache = new HashMap<>();
 
         return countCombinations(jolts, cache);
     }
 
-    private long countCombinations(List<Integer> jolts, Set<List<Integer>> cache) {
-        long combinations = 1;
+    private long countCombinations(List<Integer> jolts, Map<Integer, Long> cache) {
+        if (jolts.size() <= 2) {
+            return 1;
+        }
 
-        for (int position = 1; position < jolts.size() - 1; position++) {
-            List<Integer> newJolts = new ArrayList<>(jolts);
-            newJolts.remove(position);
+        Integer lastJolt = jolts.get(jolts.size() - 1);
 
-            if (!cache.contains(newJolts)) {
-                cache.add(newJolts);
+        if (cache.containsKey(lastJolt)) {
+            return cache.get(lastJolt);
+        }
 
-                if (isCombinationValid(newJolts)) {
-                    long combinationsOfSubList = countCombinations(newJolts, cache);
+        long combinations = 0;
 
-                    combinations += combinationsOfSubList;
-                }
+        for (int position = jolts.size() - 2; position > jolts.size() - 5 && position >= 0; position--) {
+            Integer jolt = jolts.get(position);
+
+            if (lastJolt - jolt <= 3) {
+                combinations += countCombinations(jolts.subList(0, position + 1), cache);
             }
         }
+
+        cache.put(lastJolt, combinations);
 
         return combinations;
-    }
-
-    private boolean isCombinationValid(List<Integer> jolts) {
-        for (int position = 0; position < jolts.size() - 1; position++) {
-            Integer jolt1 = jolts.get(position);
-            Integer jolt2 = jolts.get(position + 1);
-
-            if (jolt2 - jolt1 > 3) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     private int countDifferences(List<Integer> jolts) {
@@ -80,38 +72,5 @@ public class Day10 {
         }
 
         return differences1 * differences3;
-    }
-
-    private long countPossibleChanges(List<Integer> differences) {
-        long changes = 0;
-
-        for (int position = 0; position < differences.size() - 1; position++) {
-            Integer difference1 = differences.get(position);
-            Integer difference2 = differences.get(position + 1);
-
-            if (difference1 == 1 && difference2 == 1) {
-                changes++;
-            }
-        }
-
-        return changes;
-    }
-
-    private List<Integer> createDifferences(List<Integer> jolts) {
-        List<Integer> differences = new ArrayList<>();
-
-        for (int position = 0; position < jolts.size() - 1; position++) {
-            Integer jolt1 = jolts.get(position);
-            Integer jolt2 = jolts.get(position + 1);
-
-            if (jolt2 - jolt1 == 1) {
-                differences.add(1);
-            }
-            if (jolt2 - jolt1 == 3) {
-                differences.add(3);
-            }
-        }
-
-        return differences;
     }
 }
