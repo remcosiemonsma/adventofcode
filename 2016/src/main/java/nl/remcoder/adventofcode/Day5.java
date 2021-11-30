@@ -1,10 +1,21 @@
 package nl.remcoder.adventofcode;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.stream.Stream;
 
 public class Day5 {
-    public String handlePart1(Stream<String> input) throws Exception {
+    private static final MessageDigest MD5;
+
+    static {
+        try {
+            MD5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String handlePart1(Stream<String> input) {
         String doorId = input.findFirst().get();
 
         StringBuilder passwordBuilder = new StringBuilder();
@@ -14,13 +25,7 @@ public class Day5 {
         while (passwordBuilder.length() < 8) {
             String indexedId = doorId + counter;
 
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            String hash = byteArrayToHex(md5.digest(indexedId.getBytes()));
-
-            if (counter % 1000 == 0) {
-                System.out.println(counter);
-                System.out.println(passwordBuilder);
-            }
+            String hash = byteArrayToHex(MD5.digest(indexedId.getBytes()));
 
             if (hash.startsWith("00000")) {
                 passwordBuilder.append(hash.charAt(5));
@@ -32,7 +37,7 @@ public class Day5 {
         return passwordBuilder.toString();
     }
 
-    public String handlePart2(Stream<String> input) throws Exception {
+    public String handlePart2(Stream<String> input) {
         String doorId = input.findFirst().get();
 
         char[] password = new char[8];
@@ -43,13 +48,7 @@ public class Day5 {
                password[4] == 0 || password[5] == 0 || password[6] == 0 || password[7] == 0) {
             String indexedId = doorId + counter;
 
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            String hash = byteArrayToHex(md5.digest(indexedId.getBytes()));
-
-            if (counter % 1000 == 0) {
-                System.out.println(counter);
-                System.out.println(new String(password));
-            }
+            String hash = byteArrayToHex(MD5.digest(indexedId.getBytes()));
 
             if (hash.startsWith("00000")) {
                 int position = Character.digit(hash.charAt(5), 10);
