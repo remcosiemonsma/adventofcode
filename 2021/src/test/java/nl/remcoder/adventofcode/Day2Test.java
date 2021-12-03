@@ -54,7 +54,7 @@ class Day2Test {
 
     @Test
     void testPart2Input() throws Exception {
-        assertEquals(0, testSubject.handlePart2(
+        assertEquals(1864715580, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day2/input").toURI()))));
     }
 }
