@@ -86,5 +86,6 @@ public class Day6 {
         }
 
         return amountOfFishDay0 + amountOfFishDay1 + amountOfFishDay2 + amountOfFishDay3 + amountOfFishDay4 +
-               amountOfFishDay5 + amountOfFishDay6 + amountOfFishDay7 + amountOfFishDay8;    }
+               amountOfFishDay5 + amountOfFishDay6 + amountOfFishDay7 + amountOfFishDay8;
+    }
 }
