@@ -41,14 +41,14 @@ public class Day8Test {
     @Test
     void testPart2Input() throws Exception {
         Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day8/input").toURI()));
-String expectedResult = """
-1110011110011000110010010
-1001010000100101001010100
-1001011100100001001011000
-1110010000100001111010100
-1000010000100101001010100
-1000010000011001001010010
-""";
+        String expectedResult = """
+                                1110011110011000110010010
+                                1001010000100101001010100
+                                1001011100100001001011000
+                                1110010000100001111010100
+                                1000010000100101001010100
+                                1000010000011001001010010
+                                """;
         assertEquals(expectedResult, testSubject.handlePart2(input, 25, 6, 0, 1, 2));
     }
 }
