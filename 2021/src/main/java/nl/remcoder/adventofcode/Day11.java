@@ -1,6 +1,5 @@
 package nl.remcoder.adventofcode;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Day11 {
@@ -92,10 +91,6 @@ public class Day11 {
 
         public Octopus(int energyLevel) {
             this.energyLevel = energyLevel;
-        }
-
-        public boolean hasFlashed() {
-            return hasFlashed;
         }
     }
 }
