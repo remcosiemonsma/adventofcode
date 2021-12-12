@@ -18,7 +18,7 @@ public class Day12 {
 
         Cave start = caves.get("start");
 
-        return findRoutes(start, List.of(start)).size();
+        return findNumberOfRoutes(start, List.of(start));
     }
 
     public int handlePart2(Stream<String> input) {
@@ -37,65 +37,65 @@ public class Day12 {
 
         start.connections.forEach(cave -> cave.connections.removeIf(cave1 -> "start".equals(cave1.label)));
 
-        return findRoutes(start, List.of(start), false).size();
+        return findNumberOfRoutes(start, List.of(start), false);
     }
 
-    private List<List<Cave>> findRoutes(Cave cave, List<Cave> currentRoute) {
+    private int findNumberOfRoutes(Cave cave, List<Cave> currentRoute) {
         List<Cave> route = List.copyOf(currentRoute);
 
-        List<List<Cave>> routes = new ArrayList<>();
+        int numberOfRoutes = 0;
 
         if ("end".equals(cave.label)) {
-            return List.of(route);
+            return 1;
         } else {
             for (Cave otherCave : cave.connections) {
                 if (otherCave.isLarge) {
                     List<Cave> newRoute = new ArrayList<>(route);
                     newRoute.add(otherCave);
-                    routes.addAll(findRoutes(otherCave, newRoute));
+                    numberOfRoutes += findNumberOfRoutes(otherCave, newRoute);
                 } else {
                     if (!currentRoute.contains(otherCave)) {
                         List<Cave> newRoute = new ArrayList<>(route);
                         newRoute.add(otherCave);
-                        routes.addAll(findRoutes(otherCave, newRoute));
+                        numberOfRoutes += findNumberOfRoutes(otherCave, newRoute);
                     }
                 }
             }
         }
 
-        return routes;
+        return numberOfRoutes;
     }
 
-    private List<List<Cave>> findRoutes(Cave cave, List<Cave> currentRoute, boolean smallVisitedTwice) {
+    private int findNumberOfRoutes(Cave cave, List<Cave> currentRoute, boolean smallVisitedTwice) {
         List<Cave> route = List.copyOf(currentRoute);
 
-        List<List<Cave>> routes = new ArrayList<>();
+        int numberOfRoutes = 0;
 
         if ("end".equals(cave.label)) {
-            return List.of(route);
+            return 1;
         } else {
             for (Cave otherCave : cave.connections) {
                 if (otherCave.isLarge) {
                     List<Cave> newRoute = new ArrayList<>(route);
                     newRoute.add(otherCave);
-                    routes.addAll(findRoutes(otherCave, newRoute, smallVisitedTwice));
+                    numberOfRoutes += findNumberOfRoutes(otherCave, newRoute, smallVisitedTwice);
                 } else {
                     if (!currentRoute.contains(otherCave)) {
                         List<Cave> newRoute = new ArrayList<>(route);
                         newRoute.add(otherCave);
-                        routes.addAll(findRoutes(otherCave, newRoute, smallVisitedTwice));
+                        numberOfRoutes += findNumberOfRoutes(otherCave, newRoute, smallVisitedTwice);
                     } else {
                         if (!smallVisitedTwice) {
                             List<Cave> newRoute = new ArrayList<>(route);
                             newRoute.add(otherCave);
-                            routes.addAll(findRoutes(otherCave, newRoute, true));
+                            numberOfRoutes += findNumberOfRoutes(otherCave, newRoute, true);
                         }
                     }
                 }
             }
         }
 
-        return routes;
+        return numberOfRoutes;
     }
 
     private static class Cave {
