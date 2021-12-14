@@ -9,41 +9,16 @@ public class Day14 {
     public long handlePart1(Stream<String> input) {
         Map<Pair<Character, Character>, List<Pair<Character, Character>>> reactions = new HashMap<>();
 
-        List<Pair<Character, Character>> finalPolymer = new ArrayList<>();
+        Map<Pair<Character, Character>, Long> pairCounts = new HashMap<>();
 
-        input.filter(Predicate.not(String::isEmpty))
-             .forEach(s -> {
-                 String[] split = s.split(" -> ");
-                 if (split.length == 1) {
-                     char[] chars = split[0].toCharArray();
-                     for (int i = 0; i < chars.length - 1; i++) {
-                         finalPolymer.add(new Pair<>(chars[i], chars[i + 1]));
-                     }
-                 } else {
-                     reactions.put(new Pair<>(split[0].charAt(0), split[0].charAt(1)),
-                                   List.of(new Pair<>(split[0].charAt(0), split[1].charAt(0)),
-                                           new Pair<>(split[1].charAt(0), split[0].charAt(1))));
-                 }
-             });
+        AtomicReference<Character> tail = new AtomicReference<>();
 
-        List<Pair<Character, Character>> polymer = finalPolymer;
+        parseInput(input, reactions, pairCounts, tail);
 
-        for (int step = 0; step < 10; step++) {
-            polymer = polymer.stream()
-                             .map(reactions::get)
-                             .flatMap(Collection::stream)
-                             .toList();
-        }
+        performPolymerReactions(reactions, pairCounts, 10);
 
-        String s = polymer.stream()
-                          .map(Pair::getLeft)
-                          .map(c -> "" + c)
-                          .reduce(String::concat)
-                          .orElse("");
-
-        s += polymer.get(polymer.size() - 1).right;
-
-        return countMostCommonElement(s) - countLeastCommonElement(s);
+        return countMostCommonElement(pairCounts, tail.get()) -
+               countLeastCommonElement(pairCounts, tail.get());
     }
 
     public long handlePart2(Stream<String> input) {
@@ -53,6 +28,39 @@ public class Day14 {
 
         AtomicReference<Character> tail = new AtomicReference<>();
 
+        parseInput(input, reactions, pairCounts, tail);
+
+        performPolymerReactions(reactions, pairCounts, 40);
+
+        return countMostCommonElement(pairCounts, tail.get()) -
+               countLeastCommonElement(pairCounts, tail.get());
+    }
+
+    private void performPolymerReactions(Map<Pair<Character, Character>, List<Pair<Character, Character>>> reactions,
+                                         Map<Pair<Character, Character>, Long> pairCounts,
+                                         int amountOfSteps) {
+        for (int step = 0; step < amountOfSteps; step++) {
+            Map<Pair<Character, Character>, Long> copy = Map.copyOf(pairCounts);
+
+            copy.forEach((copyPair, copyValue) -> {
+                List<Pair<Character, Character>> pairs = reactions.get(copyPair);
+
+                pairCounts.compute(copyPair, (key, value) -> value - copyValue);
+
+                pairs.forEach(pair -> pairCounts.compute(pair, (key, value) -> {
+                    if (value == null) {
+                        return copyValue;
+                    } else {
+                        return value + copyValue;
+                    }
+                }));
+            });
+        }
+    }
+
+    private void parseInput(Stream<String> input,
+                            Map<Pair<Character, Character>, List<Pair<Character, Character>>> reactions,
+                            Map<Pair<Character, Character>, Long> pairCounts, AtomicReference<Character> tail) {
         input.filter(Predicate.not(String::isEmpty))
              .forEach(s -> {
                  String[] split = s.split(" -> ");
@@ -74,59 +82,6 @@ public class Day14 {
                                            new Pair<>(split[1].charAt(0), split[0].charAt(1))));
                  }
              });
-
-        for (int step = 0; step < 40; step++) {
-            Map<Pair<Character, Character>, Long> copy = Map.copyOf(pairCounts);
-
-            copy.forEach((copyPair, copyValue) -> {
-                List<Pair<Character, Character>> pairs = reactions.get(copyPair);
-
-                pairCounts.compute(copyPair, (key, value) -> value - copyValue);
-
-                pairs.forEach(pair -> pairCounts.compute(pair, (key, value) -> {
-                    if (value == null) {
-                        return copyValue;
-                    } else {
-                        return value + copyValue;
-                    }
-                }));
-            });
-        }
-
-        return countMostCommonElement(pairCounts, tail.get()) -
-               countLeastCommonElement(pairCounts, tail.get());
-    }
-
-    private long countMostCommonElement(String s) {
-        Map<Character, Long> occurrences = new HashMap<>();
-
-        for (char c : s.toCharArray()) {
-            occurrences.compute(c, (key, amount) -> {
-                if (amount == null) {
-                    return 1L;
-                } else {
-                    return amount + 1;
-                }
-            });
-        }
-
-        return occurrences.values().stream().mapToLong(value -> value).max().getAsLong();
-    }
-
-    private long countLeastCommonElement(String s) {
-        Map<Character, Long> occurrences = new HashMap<>();
-
-        for (char c : s.toCharArray()) {
-            occurrences.compute(c, (key, amount) -> {
-                if (amount == null) {
-                    return 1L;
-                } else {
-                    return amount + 1;
-                }
-            });
-        }
-
-        return occurrences.values().stream().mapToLong(value -> value).min().getAsLong();
     }
 
     private long countMostCommonElement(Map<Pair<Character, Character>, Long> polymer, Character tail) {
@@ -146,54 +101,21 @@ public class Day14 {
 
         occurrences.put(tail, 1L);
 
-        for (Pair<Character, Character> pair : polymer.keySet()) {
-            occurrences.compute(pair.left, (key, value) -> {
+        for (Map.Entry<Pair<Character, Character>, Long> entry : polymer.entrySet()) {
+            occurrences.compute(entry.getKey().left, (key, value) -> {
                 if (value == null) {
-                    return polymer.get(pair);
+                    return entry.getValue();
                 } else {
-                    return value + polymer.get(pair);
+                    return value + entry.getValue();
                 }
             });
         }
         return occurrences;
     }
 
-    private static class Pair<L, R> {
-        private final L left;
-        private final R right;
-
-        public Pair(L left, R right) {
-            this.left = left;
-            this.right = right;
-        }
-
-        public L getLeft() {
-            return left;
-        }
-
-        public R getRight() {
-            return right;
-        }
-
+    private record Pair<L, R>(L left, R right) {
         public Stream<Object> stream() {
             return Stream.of(left, right);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Pair<?, ?> pair = (Pair<?, ?>) o;
-            return Objects.equals(left, pair.left) && Objects.equals(right, pair.right);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(left, right);
         }
     }
 }
