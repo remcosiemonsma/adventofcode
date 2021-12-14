@@ -1,8 +1,7 @@
 package nl.remcoder.adventofcode;
 
-import jdk.dynalink.NamedOperation;
-
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -44,13 +43,15 @@ public class Day14 {
 
         s += polymer.get(polymer.size() - 1).right;
 
-        return countMostCommonChar(s) - countLeastCommonChar(s);
+        return countMostCommonElement(s) - countLeastCommonElement(s);
     }
 
     public long handlePart2(Stream<String> input) {
         Map<Pair<Character, Character>, List<Pair<Character, Character>>> reactions = new HashMap<>();
 
         Map<Pair<Character, Character>, Long> pairCounts = new HashMap<>();
+
+        AtomicReference<Character> tail = new AtomicReference<>();
 
         input.filter(Predicate.not(String::isEmpty))
              .forEach(s -> {
@@ -66,6 +67,7 @@ public class Day14 {
                              }
                          });
                      }
+                     tail.set(chars[chars.length - 1]);
                  } else {
                      reactions.put(new Pair<>(split[0].charAt(0), split[0].charAt(1)),
                                    List.of(new Pair<>(split[0].charAt(0), split[1].charAt(0)),
@@ -76,26 +78,26 @@ public class Day14 {
         for (int step = 0; step < 40; step++) {
             Map<Pair<Character, Character>, Long> copy = Map.copyOf(pairCounts);
 
-            copy.forEach((key1, value1) -> {
-                List<Pair<Character, Character>> pairs = reactions.get(key1);
+            copy.forEach((copyPair, copyValue) -> {
+                List<Pair<Character, Character>> pairs = reactions.get(copyPair);
 
-                pairCounts.compute(key1, (key, value) -> value - copy.get(key));
+                pairCounts.compute(copyPair, (key, value) -> value - copyValue);
 
                 pairs.forEach(pair -> pairCounts.compute(pair, (key, value) -> {
                     if (value == null) {
-                        return pairCounts.get(key1);
+                        return copyValue;
                     } else {
-                        return value + pairCounts.get(key1);
+                        return value + copyValue;
                     }
                 }));
             });
         }
 
-        return pairCounts.values().stream().mapToLong(value -> value).max().getAsLong() -
-               pairCounts.values().stream().mapToLong(value -> value).min().getAsLong();
+        return countMostCommonElement(pairCounts, tail.get()) -
+               countLeastCommonElement(pairCounts, tail.get());
     }
 
-    private long countMostCommonChar(String s) {
+    private long countMostCommonElement(String s) {
         Map<Character, Long> occurrences = new HashMap<>();
 
         for (char c : s.toCharArray()) {
@@ -111,7 +113,7 @@ public class Day14 {
         return occurrences.values().stream().mapToLong(value -> value).max().getAsLong();
     }
 
-    private long countLeastCommonChar(String s) {
+    private long countLeastCommonElement(String s) {
         Map<Character, Long> occurrences = new HashMap<>();
 
         for (char c : s.toCharArray()) {
@@ -125,6 +127,35 @@ public class Day14 {
         }
 
         return occurrences.values().stream().mapToLong(value -> value).min().getAsLong();
+    }
+
+    private long countMostCommonElement(Map<Pair<Character, Character>, Long> polymer, Character tail) {
+        Map<Character, Long> occurrences = countElements(polymer, tail);
+
+        return occurrences.values().stream().mapToLong(value -> value).max().getAsLong();
+    }
+
+    private long countLeastCommonElement(Map<Pair<Character, Character>, Long> polymer, Character tail) {
+        Map<Character, Long> occurrences = countElements(polymer, tail);
+
+        return occurrences.values().stream().mapToLong(value -> value).min().getAsLong();
+    }
+
+    private Map<Character, Long> countElements(Map<Pair<Character, Character>, Long> polymer, Character tail) {
+        Map<Character, Long> occurrences = new HashMap<>();
+
+        occurrences.put(tail, 1L);
+
+        for (Pair<Character, Character> pair : polymer.keySet()) {
+            occurrences.compute(pair.left, (key, value) -> {
+                if (value == null) {
+                    return polymer.get(pair);
+                } else {
+                    return value + polymer.get(pair);
+                }
+            });
+        }
+        return occurrences;
     }
 
     private static class Pair<L, R> {
