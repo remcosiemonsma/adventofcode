@@ -87,13 +87,21 @@ public class Day14 {
     private long countMostCommonElement(Map<Pair<Character, Character>, Long> polymer, Character tail) {
         Map<Character, Long> occurrences = countElements(polymer, tail);
 
-        return occurrences.values().stream().mapToLong(value -> value).max().getAsLong();
+        return occurrences.values()
+                          .stream()
+                          .mapToLong(value -> value)
+                          .max()
+                          .getAsLong();
     }
 
     private long countLeastCommonElement(Map<Pair<Character, Character>, Long> polymer, Character tail) {
         Map<Character, Long> occurrences = countElements(polymer, tail);
 
-        return occurrences.values().stream().mapToLong(value -> value).min().getAsLong();
+        return occurrences.values()
+                          .stream()
+                          .mapToLong(value -> value)
+                          .min()
+                          .getAsLong();
     }
 
     private Map<Character, Long> countElements(Map<Pair<Character, Character>, Long> polymer, Character tail) {
@@ -113,9 +121,5 @@ public class Day14 {
         return occurrences;
     }
 
-    private record Pair<L, R>(L left, R right) {
-        public Stream<Object> stream() {
-            return Stream.of(left, right);
-        }
-    }
+    private record Pair<L, R>(L left, R right) {}
 }

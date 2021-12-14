@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 public class Day11 {
     public int handlePart1(Stream<String> input) {
-        Octopus[][] octopusMap = input.map(String::chars)
+        Octopus[][] octopi = input.map(String::chars)
                                       .map(chars -> chars.map(c -> Character.digit((char) c, 10))
                                                          .mapToObj(Octopus::new)
                                                          .toArray(Octopus[]::new))
@@ -13,27 +13,27 @@ public class Day11 {
         int amountOfFlashes = 0;
 
         for (int step = 0; step < 100; step++) {
-            amountOfFlashes += incrementEnergy(octopusMap);
+            amountOfFlashes += incrementEnergy(octopi);
         }
 
         return amountOfFlashes;
     }
 
     public int handlePart2(Stream<String> input) {
-        Octopus[][] octopusMap = input.map(String::chars)
+        Octopus[][] octopi = input.map(String::chars)
                                       .map(chars -> chars.map(c -> Character.digit((char) c, 10))
                                                          .mapToObj(Octopus::new)
                                                          .toArray(Octopus[]::new))
                                       .toArray(Octopus[][]::new);
 
-        int amountOfOctopuses = octopusMap.length * octopusMap[0].length;
+        int amountOfOctopuses = octopi.length * octopi[0].length;
 
         int amountOfFlashes = 0;
 
         int step = 0;
 
         while(amountOfFlashes != amountOfOctopuses) {
-            amountOfFlashes = incrementEnergy(octopusMap);
+            amountOfFlashes = incrementEnergy(octopi);
             step++;
         }
 
@@ -62,28 +62,29 @@ public class Day11 {
         return amountOfFlashes;
     }
 
-    private void incrementEnergy(Octopus[][] octopusMap, int x, int y) {
-        if (x >= 0 && y >= 0 && x < octopusMap.length && y < octopusMap[x].length) {
-            Octopus octopus = octopusMap[x][y];
-            octopus.energyLevel++;
-            if (octopus.energyLevel > 9 && !octopus.hasFlashed) {
-                flashOctopus(octopusMap, x, y);
+    private void incrementEnergy(Octopus[][] octopi, int x, int y) {
+        if (x >= 0 && y >= 0 && x < octopi.length && y < octopi[x].length) {
+            Octopus octopus = octopi[x][y];
+            if (!octopus.hasFlashed) {
+                octopus.energyLevel++;
+                if (octopus.energyLevel > 9) {
+                    flashOctopus(octopi, x, y);
+                }
             }
         }
     }
 
-    private void flashOctopus(Octopus[][] octopusMap, int x, int y) {
-        octopusMap[x][y].hasFlashed = true;
-        incrementEnergy(octopusMap, x + 1, y + 1);
-        incrementEnergy(octopusMap, x + 1, y);
-        incrementEnergy(octopusMap, x + 1, y - 1);
-        incrementEnergy(octopusMap, x, y + 1);
-        incrementEnergy(octopusMap, x, y - 1);
-        incrementEnergy(octopusMap, x - 1, y + 1);
-        incrementEnergy(octopusMap, x - 1, y);
-        incrementEnergy(octopusMap, x - 1, y - 1);
+    private void flashOctopus(Octopus[][] octopi, int x, int y) {
+        octopi[x][y].hasFlashed = true;
+        incrementEnergy(octopi, x + 1, y + 1);
+        incrementEnergy(octopi, x + 1, y);
+        incrementEnergy(octopi, x + 1, y - 1);
+        incrementEnergy(octopi, x, y + 1);
+        incrementEnergy(octopi, x, y - 1);
+        incrementEnergy(octopi, x - 1, y + 1);
+        incrementEnergy(octopi, x - 1, y);
+        incrementEnergy(octopi, x - 1, y - 1);
     }
-
 
     private static class Octopus {
         int energyLevel;

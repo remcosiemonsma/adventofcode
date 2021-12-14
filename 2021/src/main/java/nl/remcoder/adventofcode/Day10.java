@@ -1,8 +1,8 @@
 package nl.remcoder.adventofcode;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day10 {
@@ -15,13 +15,13 @@ public class Day10 {
         List<Long> scores = input.map(this::calculateCompletionScore)
                                  .filter(i -> i != -1)
                                  .sorted()
-                                 .collect(Collectors.toList());
+                                 .toList();
 
         return scores.get(scores.size() / 2);
     }
 
     private int calculateSyntaxErrorScore(String line) {
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> stack = new ArrayDeque<>();
 
         for (char c : line.toCharArray()) {
             switch (c) {
@@ -57,7 +57,7 @@ public class Day10 {
     }
 
     private long calculateCompletionScore(String line) {
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> stack = new ArrayDeque<>();
 
         for (char c : line.toCharArray()) {
             switch (c) {
@@ -94,12 +94,13 @@ public class Day10 {
         while (!stack.isEmpty()) {
             char c = stack.pop();
 
-            switch (c) {
-                case '(' -> score = (score * 5) + 1;
-                case '[' -> score = (score * 5) + 2;
-                case '{' -> score = (score * 5) + 3;
-                case '<' -> score = (score * 5) + 4;
-            }
+            score = switch (c) {
+                case '(' -> (score * 5) + 1;
+                case '[' -> (score * 5) + 2;
+                case '{' -> (score * 5) + 3;
+                case '<' -> (score * 5) + 4;
+                default -> throw new AssertionError("Eek!");
+            };
         }
 
         return score;
