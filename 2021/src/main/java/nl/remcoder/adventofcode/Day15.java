@@ -34,12 +34,10 @@ public class Day15 {
         }
 
         Node start = map.get(new Point(0, 0));
-
-        calculateShortestPathFromSource(start);
-
+        start.setDistance(0);
         Node end = map.get(new Point(grid[0].length - 1, grid.length - 1));
 
-        return end.distance;
+        return findShortestDistance(start, end);
     }
 
     public int handlePart2(Stream<String> input) {
@@ -108,12 +106,10 @@ public class Day15 {
         }
 
         Node start = map.get(new Point(0, 0));
-
-        calculateShortestPathFromSource(start);
-
+        start.setDistance(0);
         Node end = map.get(new Point(newgrid[0].length - 1, newgrid.length - 1));
 
-        return end.distance;
+        return findShortestDistance(start, end);
     }
 
     private int getValue(int value, int increment) {
@@ -125,27 +121,30 @@ public class Day15 {
         return newValue;
     }
 
-    public void calculateShortestPathFromSource(Node source) {
-        source.setDistance(0);
+    public int findShortestDistance(Node from, Node to) {
+        Queue<Node> toVisit = new PriorityQueue<>();
+        toVisit.add(from);
 
-        Set<Node> settledNodes = new HashSet<>();
-        Set<Node> unsettledNodes = new HashSet<>();
-
-        unsettledNodes.add(source);
-
-        while (!unsettledNodes.isEmpty()) {
-            Node currentNode = getLowestDistanceNode(unsettledNodes);
-            unsettledNodes.remove(currentNode);
-            for (Map.Entry<Node, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
-                Node adjacentNode = adjacencyPair.getKey();
-                Integer edgeWeight = adjacencyPair.getValue();
-                if (!settledNodes.contains(adjacentNode)) {
-                    calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
-                    unsettledNodes.add(adjacentNode);
+        while (!toVisit.isEmpty()) {
+            Node min = toVisit.remove();
+            if (min == to) {
+                return min.getDistance();
+            }
+            if (min.isVisited()) {
+                continue;
+            }
+            min.setVisited(true);
+            for (Map.Entry<Node, Integer> neighborEntry : min.getAdjacentNodes().entrySet()) {
+                int adjacentDistance = min.getDistance() + neighborEntry.getValue();
+                Node neighbor = neighborEntry.getKey();
+                if (neighbor.getDistance() > adjacentDistance && !neighbor.isVisited()) {
+                    neighbor.setDistance(adjacentDistance);
+                    toVisit.add(neighbor);
                 }
             }
-            settledNodes.add(currentNode);
         }
+
+        throw new RuntimeException("'to' node unreachable");
     }
 
     private Node getLowestDistanceNode(Set<Node> unsettledNodes) {
@@ -206,11 +205,12 @@ public class Day15 {
         }
     }
 
-    private static class Node {
+    private static class Node implements Comparable<Node> {
         private final Point position;
         private List<Node> shortestPath = new LinkedList<>();
-        private Integer distance = Integer.MAX_VALUE;
+        private int distance = Integer.MAX_VALUE;
         private Map<Node, Integer> adjacentNodes = new HashMap<>();
+        private boolean visited;
 
         public Node(Point position) {
             this.position = position;
@@ -232,11 +232,11 @@ public class Day15 {
             this.shortestPath = shortestPath;
         }
 
-        public Integer getDistance() {
+        public int getDistance() {
             return distance;
         }
 
-        public void setDistance(Integer distance) {
+        public void setDistance(int distance) {
             this.distance = distance;
         }
 
@@ -263,6 +263,19 @@ public class Day15 {
         @Override
         public int hashCode() {
             return Objects.hash(position);
+        }
+
+        public boolean isVisited() {
+            return visited;
+        }
+
+        public void setVisited(boolean visited) {
+            this.visited = visited;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return Integer.compare(this.distance, o.distance);
         }
     }
 }
