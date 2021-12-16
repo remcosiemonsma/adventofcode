@@ -37,9 +37,11 @@ public class Day16 {
         int currentPosition = position;
 
         int version = Integer.parseInt(new String(
-                new char[]{packetData[currentPosition++], packetData[currentPosition++], packetData[currentPosition++]}), 2);
+                new char[]{packetData[currentPosition++], packetData[currentPosition++],
+                           packetData[currentPosition++]}), 2);
         int typeId = Integer.parseInt(new String(
-                new char[]{packetData[currentPosition++], packetData[currentPosition++], packetData[currentPosition++]}), 2);
+                new char[]{packetData[currentPosition++], packetData[currentPosition++],
+                           packetData[currentPosition++]}), 2);
 
         ArrayList<Packet> subPackets = new ArrayList<>();
         Packet packet = new Packet(version, typeId, subPackets);
@@ -182,6 +184,43 @@ public class Day16 {
                    ", number=" + number +
                    ", subPackets=" + subPackets +
                    '}';
+        }
+
+        public void prettyPrint(int depth) {
+            for (int i = 0; i < depth; i++) {
+                System.out.print(" ");
+            }
+            switch (type) {
+                case 0 -> {
+                    System.out.println("+ = " + calculateResult());
+                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
+                }
+                case 1 -> {
+                    System.out.println("* = " + calculateResult());
+                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
+                }
+                case 2 -> {
+                    System.out.println("min = " + calculateResult());
+                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
+                }
+                case 3 -> {
+                    System.out.println("max = " + calculateResult());
+                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
+                }
+                case 4 -> System.out.println("value = " + number);
+                case 5 -> {
+                    System.out.println("> = " + calculateResult());
+                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
+                }
+                case 6 -> {
+                    System.out.println("< = " + calculateResult());
+                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
+                }
+                case 7 -> {
+                    System.out.println("== = " + calculateResult());
+                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
+                }
+            }
         }
     }
 }
