@@ -5,26 +5,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day18 {
-    public static void main(String[] args) {
-        Day18 day18 = new Day18();
-
-        SnailNumber snailNumber =
-                day18.createSnailNumber("[[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]],[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]]",
-                                        null, 0);
-
-        System.out.println(snailNumber);
-        day18.reduceSnailNumber(snailNumber);
-        System.out.println(snailNumber);
-    }
-
     public long handlePart1(Stream<String> input) {
-        long magnitude = input.map((String number) -> createSnailNumber(number, null, 0))
-                              .peek(this::reduceSnailNumber)
-                              .reduce(this::addSnailNumbers)
-                              .map(SnailNumber::calculateMagnitude)
-                              .get();
-
-        return magnitude;
+        return input.map((String number) -> createSnailNumber(number, null, 0))
+                    .peek(this::reduceSnailNumber)
+                    .reduce(this::addSnailNumbers)
+                    .map(SnailNumber::calculateMagnitude)
+                    .get();
     }
 
     public long handlePart2(Stream<String> input) {
