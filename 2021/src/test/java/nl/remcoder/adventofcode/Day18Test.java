@@ -101,16 +101,16 @@ class Day18Test {
     @Test
     void testPart1Case10() {
         String data = """
-                      [[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]
-                      [7,[[[3,7],[4,3]],[[6,3],[8,8]]]]
-                      [[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]
-                      [[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]
-                      [7,[5,[[3,8],[1,4]]]]
-                      [[2,[2,2]],[8,[8,1]]]
-                      [2,9]
-                      [1,[[[9,3],9],[[9,0],[0,7]]]]
-                      [[[5,[7,4]],7],1]
-                      [[[[4,2],2],6],[8,7]]
+                      [[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]
+                      [[[5,[2,8]],4],[5,[[9,9],0]]]
+                      [6,[[[6,2],[5,6]],[[7,6],[4,7]]]]
+                      [[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]
+                      [[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]
+                      [[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]
+                      [[[[5,4],[7,7]],8],[[8,3],8]]
+                      [[9,3],[[9,9],[6,[4,9]]]]
+                      [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
+                      [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
                       """;
 
         assertEquals(4140, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
@@ -118,22 +118,31 @@ class Day18Test {
 
     @Test
     void testPart1Input() throws Exception {
-        assertEquals(8646, testSubject.handlePart1(
+        assertEquals(3691, testSubject.handlePart1(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day18/input").toURI()))));
     }
 
     @Test
     void testPart2Case1() {
         String data = """
-                      target area: x=20..30, y=-10..-5
+                      [[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]
+                      [[[5,[2,8]],4],[5,[[9,9],0]]]
+                      [6,[[[6,2],[5,6]],[[7,6],[4,7]]]]
+                      [[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]
+                      [[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]
+                      [[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]
+                      [[[[5,4],[7,7]],8],[[8,3],8]]
+                      [[9,3],[[9,9],[6,[4,9]]]]
+                      [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
+                      [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
                       """;
 
-        assertEquals(112, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(3993, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
     }
 
     @Test
     void testPart2Input() throws Exception {
-        assertEquals(5945, testSubject.handlePart2(
+        assertEquals(3993, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day18/input").toURI()))));
     }
 }

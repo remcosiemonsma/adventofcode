@@ -1,12 +1,25 @@
 package nl.remcoder.adventofcode;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day18 {
+    public static void main(String[] args) {
+        Day18 day18 = new Day18();
+
+        SnailNumber snailNumber =
+                day18.createSnailNumber("[[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]],[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]]",
+                                        null, 0);
+
+        System.out.println(snailNumber);
+        day18.reduceSnailNumber(snailNumber);
+        System.out.println(snailNumber);
+    }
+
     public long handlePart1(Stream<String> input) {
         long magnitude = input.map((String number) -> createSnailNumber(number, null, 0))
                               .peek(this::reduceSnailNumber)
-                              .peek(sn -> System.out.println("Reduced snailnumber:\n" + sn))
                               .reduce(this::addSnailNumbers)
                               .map(SnailNumber::calculateMagnitude)
                               .get();
@@ -14,8 +27,31 @@ public class Day18 {
         return magnitude;
     }
 
-    public int handlePart2(Stream<String> input) {
-        return 0;
+    public long handlePart2(Stream<String> input) {
+        List<String> snailNumbers = input.map((String number) -> createSnailNumber(number, null, 0))
+                                         .peek(this::reduceSnailNumber)
+                                         .map(SnailNumber::toString)
+                                         .collect(Collectors.toList());
+
+        long greatestMagnitude = 0;
+
+        for (String snailNumberString : snailNumbers) {
+            for (String otherSnailNumberString : snailNumbers) {
+                if (snailNumberString == otherSnailNumberString) {
+                    continue;
+                }
+                SnailNumber snailNumber = createSnailNumber(snailNumberString, null, 0);
+                SnailNumber otherSnailNumber = createSnailNumber(otherSnailNumberString, null, 0);
+                SnailNumber combined = addSnailNumbers(snailNumber, otherSnailNumber);
+                reduceSnailNumber(combined);
+                long magnitude = combined.calculateMagnitude();
+                if (magnitude > greatestMagnitude) {
+                    greatestMagnitude = magnitude;
+                }
+            }
+        }
+
+        return greatestMagnitude;
     }
 
     private SnailNumber addSnailNumbers(SnailNumber left, SnailNumber right) {
@@ -27,9 +63,7 @@ public class Day18 {
         snailNumber.right = right;
         right.parent = snailNumber;
         right.incrementNesting();
-        System.out.println("Added snailnumbers:\n" + snailNumber);
         reduceSnailNumber(snailNumber);
-        System.out.println("Reduced snailnumbers\n" + snailNumber);
         return snailNumber;
     }
 
@@ -37,26 +71,41 @@ public class Day18 {
         boolean canSnailNumberBeReduced = true;
 
         while (canSnailNumberBeReduced) {
-            canSnailNumberBeReduced = canNumberBeReduced(snailNumber);
-            System.out.println("Reduced to:" + snailNumber);
+            canSnailNumberBeReduced = canNumberBeExploded(snailNumber) || canNumberBeSplit(snailNumber);
         }
     }
 
-    private boolean canNumberBeReduced(SnailNumber snailNumber) {
+    private boolean canNumberBeExploded(SnailNumber snailNumber) {
         if (snailNumber.mustBeExploded()) {
             snailNumber.explode();
             return true;
-        } else if (snailNumber.mustBeSplit()) {
+        } else {
+            if (snailNumber.isRegularNumber()) {
+                return false;
+            }
+            if (canNumberBeExploded(snailNumber.left)) {
+                return true;
+            } else {
+                if (canNumberBeExploded(snailNumber.right)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean canNumberBeSplit(SnailNumber snailNumber) {
+        if (snailNumber.mustBeSplit()) {
             snailNumber.split();
             return true;
         } else {
             if (snailNumber.isRegularNumber()) {
                 return false;
             }
-            if (canNumberBeReduced(snailNumber.left)) {
+            if (canNumberBeSplit(snailNumber.left)) {
                 return true;
             } else {
-                if (canNumberBeReduced(snailNumber.right)) {
+                if (canNumberBeSplit(snailNumber.right)) {
                     return true;
                 }
             }
@@ -143,7 +192,7 @@ public class Day18 {
         }
 
         public boolean mustBeExploded() {
-            return !isRegularNumber() && nesting >= 4;
+            return !isRegularNumber() && left.isRegularNumber() && right.isRegularNumber() && nesting >= 4;
         }
 
         public boolean mustBeSplit() {
