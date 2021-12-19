@@ -14,20 +14,19 @@ public class Day18 {
     }
 
     public long handlePart2(Stream<String> input) {
-        List<String> snailNumbers = input.map((String number) -> createSnailNumber(number, null, 0))
+        List<SnailNumber> snailNumbers = input.map((String number) -> createSnailNumber(number, null, 0))
                                          .peek(this::reduceSnailNumber)
-                                         .map(SnailNumber::toString)
                                          .collect(Collectors.toList());
 
         long greatestMagnitude = 0;
 
-        for (String snailNumberString : snailNumbers) {
-            for (String otherSnailNumberString : snailNumbers) {
-                if (snailNumberString == otherSnailNumberString) {
+        for (SnailNumber firstSnailNumber : snailNumbers) {
+            for (SnailNumber secondSnailNumber : snailNumbers) {
+                if (firstSnailNumber == secondSnailNumber) {
                     continue;
                 }
-                SnailNumber snailNumber = createSnailNumber(snailNumberString, null, 0);
-                SnailNumber otherSnailNumber = createSnailNumber(otherSnailNumberString, null, 0);
+                SnailNumber snailNumber = firstSnailNumber.copy(null);
+                SnailNumber otherSnailNumber = secondSnailNumber.copy(null);
                 SnailNumber combined = addSnailNumbers(snailNumber, otherSnailNumber);
                 reduceSnailNumber(combined);
                 long magnitude = combined.calculateMagnitude();
@@ -350,6 +349,20 @@ public class Day18 {
             } else {
                 return (left.calculateMagnitude() * 3) + (right.calculateMagnitude() * 2);
             }
+        }
+
+        public SnailNumber copy(SnailNumber parent) {
+            SnailNumber copy = new SnailNumber();
+            copy.parent = parent;
+            copy.value = this.value;
+            copy.nesting = this.nesting;
+            if (left != null) {
+                copy.left = left.copy(copy);
+            }
+            if (right != null) {
+                copy.right = right.copy(copy);
+            }
+            return copy;
         }
 
         @Override
