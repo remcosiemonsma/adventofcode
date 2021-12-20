@@ -54,7 +54,7 @@ public class Day19 {
 
         return (int) goodScanners.stream()
                                  .map(ScannerWithDistance::beacons)
-                                 .flatMap(Set::stream)
+                                 .flatMap(List::stream)
                                  .distinct()
                                  .count();
     }
@@ -141,7 +141,7 @@ public class Day19 {
                                 overlap++;
 
                                 if (overlap >= 12) {
-                                    Set<Beacon> goodBeacons = new HashSet<>();
+                                    List<Beacon> goodBeacons = new ArrayList<>();
 
                                     for (Beacon candidate : rotation.beacons) {
                                         goodBeacons.add(new Beacon(candidate.x + distanceX, candidate.y + distanceY,
@@ -211,7 +211,7 @@ public class Day19 {
     }
 
     private static class Scanner {
-        private final Set<Beacon> beacons = new HashSet<>();
+        private final List<Beacon> beacons = new ArrayList<>();
     }
 
     private record Beacon(int x, int y, int z) {
@@ -220,7 +220,7 @@ public class Day19 {
     private record Distance(int x, int y, int z) {
     }
 
-    private record ScannerWithDistance(Set<Beacon> beacons, Distance distance) {
+    private record ScannerWithDistance(List<Beacon> beacons, Distance distance) {
         public int getManhattanDistance(ScannerWithDistance other) {
             return Math.abs(distance.x - other.distance.x) + Math.abs(distance.y - other.distance.y) +
                    Math.abs(distance.z - other.distance.z);
