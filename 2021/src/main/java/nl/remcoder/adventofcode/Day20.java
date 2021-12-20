@@ -16,8 +16,7 @@ public class Day20 {
                                 .map(this::createImageLine)
                                 .toArray(boolean[][]::new);
 
-        grid = growGrid(grid);
-        grid = growGrid(grid);
+        grid = growGrid(grid, 2);
 
         for (int iteration = 0; iteration < 2; iteration++) {
             grid = enhance(grid, enhancement, iteration % 2 == 0);
@@ -38,9 +37,7 @@ public class Day20 {
                                 .map(this::createImageLine)
                                 .toArray(boolean[][]::new);
 
-        for (int i = 0; i < 50; i ++) {
-            grid = growGrid(grid);
-        }
+        grid = growGrid(grid, 50);
 
         for (int iteration = 0; iteration < 50; iteration++) {
             grid = enhance(grid, enhancement, iteration % 2 == 0);
@@ -108,11 +105,11 @@ public class Day20 {
         return ypos < 0 || ypos > grid.length - 1 || xpos < 0 || xpos > grid[ypos].length - 1;
     }
 
-    private boolean[][] growGrid(boolean[][] grid) {
-        boolean[][] newGrid = new boolean[grid.length + 2][grid[0].length + 2];
+    private boolean[][] growGrid(boolean[][] grid, int times) {
+        boolean[][] newGrid = new boolean[grid.length + (times * 2)][grid[0].length + (times * 2)];
 
         for (int y = 0; y < grid.length; y++) {
-            System.arraycopy(grid[y], 0, newGrid[y + 1], 1, grid[y].length);
+            System.arraycopy(grid[y], 0, newGrid[y + times], times, grid[y].length);
         }
 
         return newGrid;
