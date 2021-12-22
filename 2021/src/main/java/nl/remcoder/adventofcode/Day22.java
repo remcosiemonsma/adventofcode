@@ -7,37 +7,37 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class Day22 {
-    private static final Pattern REGION_PATTERN =
+    private static final Pattern CUBE_PATTERN =
             Pattern.compile("(on|off) x=(-?\\d+)..(-?\\d+),y=(-?\\d+)..(-?\\d+),z=(-?\\d+)..(-?\\d+)");
 
     public long handlePart1(Stream<String> input) {
-        List<Cube> cubes = input.map(REGION_PATTERN::matcher)
+        List<Cube> cubes = input.map(CUBE_PATTERN::matcher)
                                 .filter(Matcher::matches)
-                                .map(this::createRegion)
+                                .map(this::createCube)
                                 .filter(Cube::isWithin50Range)
                                 .toList();
 
         List<Cube> processedCubes = new ArrayList<>();
 
-        cubes.forEach(region -> processCube(region, processedCubes));
+        cubes.forEach(cube -> processCube(cube, processedCubes));
 
         return processedCubes.stream()
-                             .mapToLong(Cube::getRegionSize)
+                             .mapToLong(Cube::getCubeSize)
                              .sum();
     }
 
     public long handlePart2(Stream<String> input) {
-        List<Cube> cubes = input.map(REGION_PATTERN::matcher)
+        List<Cube> cubes = input.map(CUBE_PATTERN::matcher)
                                 .filter(Matcher::matches)
-                                .map(this::createRegion)
+                                .map(this::createCube)
                                 .toList();
 
-        List<Cube> mergedRegions = new ArrayList<>();
+        List<Cube> processedCubes = new ArrayList<>();
 
-        cubes.forEach(region -> processCube(region, mergedRegions));
+        cubes.forEach(cube -> processCube(cube, processedCubes));
 
-        return mergedRegions.stream()
-                            .mapToLong(Cube::getRegionSize)
+        return processedCubes.stream()
+                            .mapToLong(Cube::getCubeSize)
                             .sum();
     }
 
@@ -51,13 +51,13 @@ public class Day22 {
             newCubes.add(newCube);
         }
         if (!overlappingCubes.isEmpty()) {
-            overlappingCubes.forEach(existingCube -> newCubes.addAll(intersectRegions(existingCube, newCube)));
+            overlappingCubes.forEach(existingCube -> newCubes.addAll(intersectCubes(existingCube, newCube)));
             existingCubes.removeAll(overlappingCubes);
         }
         existingCubes.addAll(newCubes);
     }
 
-    private List<Cube> intersectRegions(Cube existingCube, Cube newCube) {
+    private List<Cube> intersectCubes(Cube existingCube, Cube newCube) {
         List<Cube> cubes = new ArrayList<>();
 
         if (existingCube.startx < newCube.startx) {
@@ -98,7 +98,7 @@ public class Day22 {
         return List.copyOf(cubes);
     }
 
-    private Cube createRegion(Matcher matcher) {
+    private Cube createCube(Matcher matcher) {
         boolean on = "on".equals(matcher.group(1));
         int startx = Integer.parseInt(matcher.group(2));
         int endx = Integer.parseInt(matcher.group(3));
@@ -139,7 +139,7 @@ public class Day22 {
                    (startz < other.startz && endz > other.endz);
         }
 
-        public long getRegionSize() {
+        public long getCubeSize() {
             long xsize = (endx - startx) + 1;
             long ysize = (endy - starty) + 1;
             long zsize = (endz - startz) + 1;
