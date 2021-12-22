@@ -66,26 +66,6 @@ class Day22Test {
     }
 
     @Test
-    void testCustomTestCase() {
-        String data = """
-                      on x=0..15,y=0..15,z=0..15
-                      on x=5..10,y=5..10,z=5..10
-                      """;
-
-        assertEquals(0, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
-    }
-
-    @Test
-    void testCasessdsad() {
-        String data = """
-                      on x=-5..47,y=-31..22,z=-19..33
-                      on x=-44..5,y=-27..21,z=-14..35
-                      """;
-
-        assertEquals(0, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
-    }
-
-    @Test
     void testPart2Case1() {
         String data = """
                       on x=-5..47,y=-31..22,z=-19..33
@@ -155,7 +135,7 @@ class Day22Test {
 
     @Test
     void testPart2Input() throws Exception {
-        assertEquals(911090395997650L, testSubject.handlePart2(
+        assertEquals(1311612259117092L, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
     }
 }
