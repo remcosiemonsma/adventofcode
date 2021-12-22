@@ -7,98 +7,98 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class Day22 {
-    private static final Pattern CUBE_PATTERN =
+    private static final Pattern CUBOID_PATTERN =
             Pattern.compile("(on|off) x=(-?\\d+)..(-?\\d+),y=(-?\\d+)..(-?\\d+),z=(-?\\d+)..(-?\\d+)");
 
     public long handlePart1(Stream<String> input) {
-        List<Cube> cubes = input.map(CUBE_PATTERN::matcher)
-                                .filter(Matcher::matches)
-                                .map(this::createCube)
-                                .filter(Cube::isWithin50Range)
-                                .toList();
+        List<Cuboid> cuboids = input.map(CUBOID_PATTERN::matcher)
+                                    .filter(Matcher::matches)
+                                    .map(this::createCuboid)
+                                    .filter(Cuboid::isWithin50Range)
+                                    .toList();
 
-        List<Cube> processedCubes = new ArrayList<>();
+        List<Cuboid> processedCuboids = new ArrayList<>();
 
-        cubes.forEach(cube -> processCube(cube, processedCubes));
+        cuboids.forEach(cuboid -> processCuboid(cuboid, processedCuboids));
 
-        return processedCubes.stream()
-                             .mapToLong(Cube::getCubeSize)
-                             .sum();
+        return processedCuboids.stream()
+                               .mapToLong(Cuboid::getCuboidSize)
+                               .sum();
     }
 
     public long handlePart2(Stream<String> input) {
-        List<Cube> cubes = input.map(CUBE_PATTERN::matcher)
-                                .filter(Matcher::matches)
-                                .map(this::createCube)
-                                .toList();
+        List<Cuboid> cuboids = input.map(CUBOID_PATTERN::matcher)
+                                    .filter(Matcher::matches)
+                                    .map(this::createCuboid)
+                                    .toList();
 
-        List<Cube> processedCubes = new ArrayList<>();
+        List<Cuboid> processedCuboids = new ArrayList<>();
 
-        cubes.forEach(cube -> processCube(cube, processedCubes));
+        cuboids.forEach(cuboid -> processCuboid(cuboid, processedCuboids));
 
-        return processedCubes.stream()
-                            .mapToLong(Cube::getCubeSize)
-                            .sum();
+        return processedCuboids.stream()
+                               .mapToLong(Cuboid::getCuboidSize)
+                               .sum();
     }
 
-    private void processCube(Cube newCube, List<Cube> existingCubes) {
-        List<Cube> overlappingCubes = existingCubes.stream()
-                                                   .filter(newCube::doCubesOverlap)
-                                                   .toList();
+    private void processCuboid(Cuboid newCuboid, List<Cuboid> existingCuboids) {
+        List<Cuboid> overlappingCuboids = existingCuboids.stream()
+                                                         .filter(newCuboid::doCuboidsOverlap)
+                                                         .toList();
 
-        List<Cube> newCubes = new ArrayList<>();
-        if (newCube.on) {
-            newCubes.add(newCube);
+        List<Cuboid> newCuboids = new ArrayList<>();
+        if (newCuboid.on) {
+            newCuboids.add(newCuboid);
         }
-        if (!overlappingCubes.isEmpty()) {
-            overlappingCubes.forEach(existingCube -> newCubes.addAll(intersectCubes(existingCube, newCube)));
-            existingCubes.removeAll(overlappingCubes);
+        if (!overlappingCuboids.isEmpty()) {
+            overlappingCuboids.forEach(existingCuboid -> newCuboids.addAll(intersectCuboids(existingCuboid, newCuboid)));
+            existingCuboids.removeAll(overlappingCuboids);
         }
-        existingCubes.addAll(newCubes);
+        existingCuboids.addAll(newCuboids);
     }
 
-    private List<Cube> intersectCubes(Cube existingCube, Cube newCube) {
-        List<Cube> cubes = new ArrayList<>();
+    private List<Cuboid> intersectCuboids(Cuboid existingCuboid, Cuboid newCuboid) {
+        List<Cuboid> cuboids = new ArrayList<>();
 
-        if (existingCube.startx < newCube.startx) {
-            cubes.add(new Cube(existingCube.startx, newCube.startx - 1, existingCube.starty, existingCube.endy,
-                               existingCube.startz, existingCube.endz, true));
+        if (existingCuboid.startx < newCuboid.startx) {
+            cuboids.add(new Cuboid(existingCuboid.startx, newCuboid.startx - 1, existingCuboid.starty, existingCuboid.endy,
+                                   existingCuboid.startz, existingCuboid.endz, true));
         }
-        if (existingCube.endx > newCube.endx) {
-            cubes.add(new Cube(newCube.endx + 1, existingCube.endx, existingCube.starty, existingCube.endy,
-                               existingCube.startz, existingCube.endz, true));
+        if (existingCuboid.endx > newCuboid.endx) {
+            cuboids.add(new Cuboid(newCuboid.endx + 1, existingCuboid.endx, existingCuboid.starty, existingCuboid.endy,
+                                   existingCuboid.startz, existingCuboid.endz, true));
         }
-        if (existingCube.starty < newCube.starty) {
-            int startx = Math.max(existingCube.startx, newCube.startx);
-            int endx = Math.min(existingCube.endx, newCube.endx);
-            cubes.add(new Cube(startx, endx, existingCube.starty, newCube.starty - 1, existingCube.startz,
-                               existingCube.endz, true));
+        if (existingCuboid.starty < newCuboid.starty) {
+            int startx = Math.max(existingCuboid.startx, newCuboid.startx);
+            int endx = Math.min(existingCuboid.endx, newCuboid.endx);
+            cuboids.add(new Cuboid(startx, endx, existingCuboid.starty, newCuboid.starty - 1, existingCuboid.startz,
+                                   existingCuboid.endz, true));
         }
-        if (existingCube.endy > newCube.endy) {
-            int startx = Math.max(existingCube.startx, newCube.startx);
-            int endx = Math.min(existingCube.endx, newCube.endx);
-            cubes.add(
-                    new Cube(startx, endx, newCube.endy + 1, existingCube.endy, existingCube.startz, existingCube.endz,
-                             true));
+        if (existingCuboid.endy > newCuboid.endy) {
+            int startx = Math.max(existingCuboid.startx, newCuboid.startx);
+            int endx = Math.min(existingCuboid.endx, newCuboid.endx);
+            cuboids.add(
+                    new Cuboid(startx, endx, newCuboid.endy + 1, existingCuboid.endy, existingCuboid.startz, existingCuboid.endz,
+                               true));
         }
-        if (existingCube.startz < newCube.startz) {
-            int startx = Math.max(existingCube.startx, newCube.startx);
-            int endx = Math.min(existingCube.endx, newCube.endx);
-            int starty = Math.max(existingCube.starty, newCube.starty);
-            int endy = Math.min(existingCube.endy, newCube.endy);
-            cubes.add(new Cube(startx, endx, starty, endy, existingCube.startz, newCube.startz - 1, true));
+        if (existingCuboid.startz < newCuboid.startz) {
+            int startx = Math.max(existingCuboid.startx, newCuboid.startx);
+            int endx = Math.min(existingCuboid.endx, newCuboid.endx);
+            int starty = Math.max(existingCuboid.starty, newCuboid.starty);
+            int endy = Math.min(existingCuboid.endy, newCuboid.endy);
+            cuboids.add(new Cuboid(startx, endx, starty, endy, existingCuboid.startz, newCuboid.startz - 1, true));
         }
-        if (existingCube.endz > newCube.endz) {
-            int startx = Math.max(existingCube.startx, newCube.startx);
-            int endx = Math.min(existingCube.endx, newCube.endx);
-            int starty = Math.max(existingCube.starty, newCube.starty);
-            int endy = Math.min(existingCube.endy, newCube.endy);
-            cubes.add(new Cube(startx, endx, starty, endy, newCube.endz + 1, existingCube.endz, true));
+        if (existingCuboid.endz > newCuboid.endz) {
+            int startx = Math.max(existingCuboid.startx, newCuboid.startx);
+            int endx = Math.min(existingCuboid.endx, newCuboid.endx);
+            int starty = Math.max(existingCuboid.starty, newCuboid.starty);
+            int endy = Math.min(existingCuboid.endy, newCuboid.endy);
+            cuboids.add(new Cuboid(startx, endx, starty, endy, newCuboid.endz + 1, existingCuboid.endz, true));
         }
-        return List.copyOf(cubes);
+        return List.copyOf(cuboids);
     }
 
-    private Cube createCube(Matcher matcher) {
+    private Cuboid createCuboid(Matcher matcher) {
         boolean on = "on".equals(matcher.group(1));
         int startx = Integer.parseInt(matcher.group(2));
         int endx = Integer.parseInt(matcher.group(3));
@@ -107,39 +107,39 @@ public class Day22 {
         int startz = Integer.parseInt(matcher.group(6));
         int endz = Integer.parseInt(matcher.group(7));
 
-        return new Cube(startx, endx, starty, endy, startz, endz, on);
+        return new Cuboid(startx, endx, starty, endy, startz, endz, on);
     }
 
-    private record Cube(int startx, int endx, int starty, int endy, int startz, int endz, boolean on) {
+    private record Cuboid(int startx, int endx, int starty, int endy, int startz, int endz, boolean on) {
         public boolean isWithin50Range() {
             return startx >= -50 && endx <= 50 && starty >= -50 && endy <= 50 && startz >= -50 && endz <= 50;
         }
 
-        public boolean doCubesOverlap(Cube other) {
+        public boolean doCuboidsOverlap(Cuboid other) {
             return doesXOverlap(other) &&
                    doesYOverlap(other) &&
                    doesZOverlap(other);
         }
 
-        private boolean doesXOverlap(Cube other) {
+        private boolean doesXOverlap(Cuboid other) {
             return (startx >= other.startx && startx <= other.endx) ||
                    (endx >= other.startx && endx <= other.endx) ||
                    (startx < other.startx && endx > other.endx);
         }
 
-        private boolean doesYOverlap(Cube other) {
+        private boolean doesYOverlap(Cuboid other) {
             return (starty >= other.starty && starty <= other.endy) ||
                    (endy >= other.starty && endy <= other.endy) ||
                    (starty < other.starty && endy > other.endy);
         }
 
-        private boolean doesZOverlap(Cube other) {
+        private boolean doesZOverlap(Cuboid other) {
             return (startz >= other.startz && startz <= other.endz) ||
                    (endz >= other.startz && endz <= other.endz) ||
                    (startz < other.startz && endz > other.endz);
         }
 
-        public long getCubeSize() {
+        public long getCuboidSize() {
             long xsize = (endx - startx) + 1;
             long ysize = (endy - starty) + 1;
             long zsize = (endz - startz) + 1;
