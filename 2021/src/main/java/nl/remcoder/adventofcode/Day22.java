@@ -12,33 +12,29 @@ public class Day22 {
 
     public long handlePart1(Stream<String> input) {
         List<Cube> cubes = input.map(REGION_PATTERN::matcher)
-                                  .filter(Matcher::matches)
-                                  .map(this::createRegion)
-                                  .filter(Cube::isWithin50Range)
-                                  .toList();
+                                .filter(Matcher::matches)
+                                .map(this::createRegion)
+                                .filter(Cube::isWithin50Range)
+                                .toList();
 
         List<Cube> processedCubes = new ArrayList<>();
 
         cubes.forEach(region -> processCube(region, processedCubes));
 
-        processedCubes.forEach(System.out::println);
-
         return processedCubes.stream()
-                            .mapToLong(Cube::getRegionSize)
-                            .sum();
+                             .mapToLong(Cube::getRegionSize)
+                             .sum();
     }
 
     public long handlePart2(Stream<String> input) {
         List<Cube> cubes = input.map(REGION_PATTERN::matcher)
-                                  .filter(Matcher::matches)
-                                  .map(this::createRegion)
-                                  .toList();
+                                .filter(Matcher::matches)
+                                .map(this::createRegion)
+                                .toList();
 
         List<Cube> mergedRegions = new ArrayList<>();
 
         cubes.forEach(region -> processCube(region, mergedRegions));
-
-        mergedRegions.forEach(System.out::println);
 
         return mergedRegions.stream()
                             .mapToLong(Cube::getRegionSize)
@@ -66,24 +62,24 @@ public class Day22 {
 
         if (existingCube.startx < newCube.startx) {
             cubes.add(new Cube(existingCube.startx, newCube.startx - 1, existingCube.starty, existingCube.endy,
-                                   existingCube.startz, existingCube.endz, true));
+                               existingCube.startz, existingCube.endz, true));
         }
         if (existingCube.endx > newCube.endx) {
             cubes.add(new Cube(newCube.endx + 1, existingCube.endx, existingCube.starty, existingCube.endy,
-                                   existingCube.startz, existingCube.endz, true));
+                               existingCube.startz, existingCube.endz, true));
         }
         if (existingCube.starty < newCube.starty) {
             int startx = Math.max(existingCube.startx, newCube.startx);
             int endx = Math.min(existingCube.endx, newCube.endx);
             cubes.add(new Cube(startx, endx, existingCube.starty, newCube.starty - 1, existingCube.startz,
-                                   existingCube.endz, true));
+                               existingCube.endz, true));
         }
         if (existingCube.endy > newCube.endy) {
             int startx = Math.max(existingCube.startx, newCube.startx);
             int endx = Math.min(existingCube.endx, newCube.endx);
             cubes.add(
                     new Cube(startx, endx, newCube.endy + 1, existingCube.endy, existingCube.startz, existingCube.endz,
-                               true));
+                             true));
         }
         if (existingCube.startz < newCube.startz) {
             int startx = Math.max(existingCube.startx, newCube.startx);
@@ -119,36 +115,34 @@ public class Day22 {
             return startx >= -50 && endx <= 50 && starty >= -50 && endy <= 50 && startz >= -50 && endz <= 50;
         }
 
-        public List<Point> getPointsInRegion() {
-            List<Point> points = new ArrayList<>();
-
-            for (int x = startx; x <= endx; x++) {
-                for (int y = starty; y <= endy; y++) {
-                    for (int z = startz; z <= endz; z++) {
-                        points.add(new Point(x, y, z));
-                    }
-                }
-            }
-
-            return List.copyOf(points);
-        }
-
         public boolean doCubesOverlap(Cube other) {
-            return ((startx >= other.startx && startx <= other.endx) || (endx >= other.startx && endx <= other.endx)) &&
-                   ((starty >= other.starty && starty <= other.endy) || (endy >= other.starty && endy <= other.endy)) &&
-                   ((startz >= other.startz && startz <= other.endz) || (endz >= other.startz && endz <= other.endz));
+            return doesXOverlap(other) &&
+                   doesYOverlap(other) &&
+                   doesZOverlap(other);
         }
 
-        public boolean cubeCompletelyContains(Cube other) {
-            return (other.startx >= startx && other.startx <= endx) && (other.endx >= startx && other.endx <= endx) &&
-                   (other.starty >= starty && other.starty <= endy) && (other.endy >= starty && other.endy <= endy) &&
-                   (other.startz >= startz && other.startz <= endz) && (other.endz >= startz && other.endz <= endz);
+        private boolean doesXOverlap(Cube other) {
+            return (startx >= other.startx && startx <= other.endx) ||
+                   (endx >= other.startx && endx <= other.endx) ||
+                   (startx < other.startx && endx > other.endx);
+        }
+
+        private boolean doesYOverlap(Cube other) {
+            return (starty >= other.starty && starty <= other.endy) ||
+                   (endy >= other.starty && endy <= other.endy) ||
+                   (starty < other.starty && endy > other.endy);
+        }
+
+        private boolean doesZOverlap(Cube other) {
+            return (startz >= other.startz && startz <= other.endz) ||
+                   (endz >= other.startz && endz <= other.endz) ||
+                   (startz < other.startz && endz > other.endz);
         }
 
         public long getRegionSize() {
-            long xsize = endx - startx;
-            long ysize = endy - starty;
-            long zsize = endz - startz;
+            long xsize = (endx - startx) + 1;
+            long ysize = (endy - starty) + 1;
+            long zsize = (endz - startz) + 1;
 
             return xsize * ysize * zsize;
         }
@@ -159,8 +153,5 @@ public class Day22 {
                    ",y=" + starty + ".." + endy +
                    ",z=" + startz + ".." + endz;
         }
-    }
-
-    private record Point(int x, int y, int z) {
     }
 }
