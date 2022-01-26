@@ -1,18 +1,69 @@
 package nl.remcoder.adventofcode.library.model;
 
-public abstract class Grid {
-    private final int height;
-    private final int width;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
-    protected Grid(int height, int width) {
-        this.height = height;
-        this.width = width;
+public class Grid {
+    private final int startx;
+    private final int starty;
+    private final int endx;
+    private final int endy;
+    private final Map<Coordinate, Object> values = new HashMap<>();
+
+    public Grid(Stream<String> data) {
+        startx = 0;
+        starty = 0;
+
+        AtomicInteger x = new AtomicInteger(0);
+        AtomicInteger y = new AtomicInteger(0);
+
+        data.forEach(s -> s.chars());
+    }
+
+    public Grid(int startx, int starty, int endx, int endy) {
+        this.startx = startx;
+        this.starty = starty;
+        this.endx = endx;
+        this.endy = endy;
+    }
+
+    public Grid(int startx, int starty, int endx, int endy, Stream<String> data) {
+        this.startx = startx;
+        this.starty = starty;
+        this.endx = endx;
+        this.endy = endy;
     }
 
     public boolean isCoordinateInGrid(Coordinate coordinate) {
-        return coordinate.x() >= 0 && coordinate.x() < width &&
-               coordinate.y() >= 0 && coordinate.y() < height;
+        return coordinate.x() >= startx && coordinate.x() <= endx &&
+               coordinate.y() >= starty && coordinate.y() <= endy;
     }
 
-    public abstract void printGrid();
+    public void printGrid() {
+        for (int y = starty; y <= endy; y++) {
+            for (int x = startx; x <= endx; x++) {
+                Coordinate coordinate = new Coordinate(x, y);
+
+                Object value = values.get(coordinate);
+
+                if (value == null) {
+                    System.out.print(' ');
+                } else {
+                    if (value instanceof Boolean b) {
+                        if (b) {
+                            System.out.print('#');
+                        } else {
+                            System.out.print('.');
+                        }
+                    } else {
+                        System.out.print(value);
+                    }
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 }
