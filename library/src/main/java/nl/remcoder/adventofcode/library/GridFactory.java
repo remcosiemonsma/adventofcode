@@ -1,8 +1,14 @@
 package nl.remcoder.adventofcode.library;
 
+import nl.remcoder.adventofcode.library.model.Grid;
+
 import java.util.stream.Stream;
 
 public class GridFactory {
+    public static Grid createGridFromInput(Stream<String> input) {
+        return new Grid(createBooleanGridFromInput(input));
+    }
+
     public static boolean[][] createBooleanGridFromInput(Stream<String> input) {
         return input.map(GridFactory::createLine)
                     .toArray(boolean[][]::new);
