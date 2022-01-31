@@ -17,8 +17,22 @@ public class Day18Test {
     }
 
     @Test
+    public void testPart1Case1() {
+        String input = """
+                       .#.#.#
+                       ...##.
+                       #....#
+                       ..#...
+                       #.#..#
+                       ####..
+                       """;
+
+        assertEquals(4, testSubject.handlePart1(input.lines()));
+    }
+
+    @Test
     public void testPart1Input() throws Exception {
-        assertEquals(4372, testSubject.handlePart1(
+        assertEquals(768, testSubject.handlePart1(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day18/input").toURI()))));
     }
 

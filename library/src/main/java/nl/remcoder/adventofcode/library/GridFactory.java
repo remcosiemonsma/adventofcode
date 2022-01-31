@@ -5,13 +5,13 @@ import nl.remcoder.adventofcode.library.model.Grid;
 import java.util.stream.Stream;
 
 public class GridFactory {
-    public static Grid createGridFromInput(Stream<String> input) {
-        return new Grid(createBooleanGridFromInput(input));
+    public static Grid<Boolean> createBooleanGridFromInput(Stream<String> input) {
+        return new Grid<>(readBooleanInput(input));
     }
 
-    public static boolean[][] createBooleanGridFromInput(Stream<String> input) {
+    private static Boolean[][] readBooleanInput(Stream<String> input) {
         return input.map(GridFactory::createLine)
-                    .toArray(boolean[][]::new);
+                    .toArray(Boolean[][]::new);
     }
 
     public static int[][] createNumberedGridFromInput(Stream<String> input) {
@@ -21,8 +21,8 @@ public class GridFactory {
                     .toArray(int[][]::new);
     }
 
-    private static boolean[] createLine(String s) {
-        boolean[] line = new boolean[s.length()];
+    private static Boolean[] createLine(String s) {
+        Boolean[] line = new Boolean[s.length()];
         char[] charArray = s.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             char c = charArray[i];
