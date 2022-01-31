@@ -18,18 +18,6 @@ class Day25Test {
     }
 
     @Test
-    void testBullshit() {
-        String data = """
-                      ..........
-                      .>v....v..
-                      .......>..
-                      ..........
-                      """;
-
-        assertEquals(58, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
-    }
-
-    @Test
     void testPart1Case1() {
         String data = """
                       v...>>.vv>
