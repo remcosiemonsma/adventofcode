@@ -12,14 +12,17 @@ public class Grid {
     private final int endy;
     private final Map<Coordinate, Object> values = new HashMap<>();
 
-    public Grid(Stream<String> data) {
+    public Grid(boolean[][] data) {
         startx = 0;
         starty = 0;
+        endx = data[0].length;
+        endy = data.length;
 
-        AtomicInteger x = new AtomicInteger(0);
-        AtomicInteger y = new AtomicInteger(0);
-
-        data.forEach(s -> s.chars());
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[y].length; x++) {
+                values.put(new Coordinate(x, y), data[x][y]);
+            }
+        }
     }
 
     public Grid(int startx, int starty, int endx, int endy) {
