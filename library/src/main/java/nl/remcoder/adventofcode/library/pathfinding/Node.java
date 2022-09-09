@@ -8,6 +8,7 @@ public interface Node extends Comparable<Node> {
     boolean isVisited();
     void setVisited(boolean visited);
     void setDistance(int distance);
+    void printStateInformation();
 
     @Override
     default int compareTo(Node o) {
