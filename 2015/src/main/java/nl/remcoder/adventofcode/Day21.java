@@ -221,6 +221,9 @@ public class Day21 {
             this.distance = distance;
         }
 
+        @Override
+        public void printStateInformation() {}
+
         public boolean isPlayerWinner() {
             return winner == player;
         }

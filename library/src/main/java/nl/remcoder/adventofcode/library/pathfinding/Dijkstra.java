@@ -13,6 +13,7 @@ public class Dijkstra {
         while (!toVisit.isEmpty()) {
             Node min = toVisit.remove();
             if (isNodeEndstate.test(min)) {
+                min.printStateInformation();
                 return min.getDistance();
             }
             if (min.isVisited()) {
@@ -29,6 +30,6 @@ public class Dijkstra {
             }
         }
 
-        throw new RuntimeException("'to' node unreachable");
+        throw new RuntimeException("Target state unreachable");
     }
 }
