@@ -16,7 +16,7 @@ public class Day22 {
         Turn turn = new Turn(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
         turn.setDistance(0);
 
-        return Dijkstra.findShortestDistance(turn,
+        return (int) Dijkstra.findShortestDistance(turn,
                                              node -> ((Turn) node).isGameFinished() && ((Turn) node).isPlayerAlive());
     }
 
@@ -50,7 +50,7 @@ public class Day22 {
         private final Set<Spell> spells;
         private final List<Spell> castedSpells;
         private final boolean isPlayerTurn;
-        private int distance = Integer.MAX_VALUE;
+        private long distance = Long.MAX_VALUE;
         private boolean visited;
 
         private Turn(Player player, Boss boss, List<ActiveSpell> activeSpells,
@@ -65,8 +65,8 @@ public class Day22 {
         }
 
         @Override
-        public Map<? extends Node, Integer> getNeighbors() {
-            Map<Turn, Integer> neighbors = new HashMap<>();
+        public Map<? extends Node, Long> getNeighbors() {
+            Map<Turn, Long> neighbors = new HashMap<>();
 
             if (isGameFinished()) {
                 return Map.of();
@@ -85,10 +85,13 @@ public class Day22 {
                     Player newPlayer = new Player(player.hitPoints + totalHealing, player.mana + totalManaIncrease);
                     Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
                     Turn nextTurn = new Turn(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
-                    neighbors.put(nextTurn, 0);
+                    neighbors.put(nextTurn, 0L);
                 }
 
                 for (Spell spell : spells) {
+                    if (spell.cost > player.mana + totalManaIncrease) {
+                        continue;
+                    }
                     if (activeSpells.stream().anyMatch(activeSpell -> activeSpell.spell == spell)) {
                         continue;
                     }
@@ -112,12 +115,14 @@ public class Day22 {
                     newCastedSpells.add(spell);
 
                     Turn nextTurn = new Turn(newPlayer, newBoss, newActiveSpells, spells, List.copyOf(newCastedSpells), false);
-                    neighbors.put(nextTurn, spell.cost);
+                    neighbors.put(nextTurn, (long) spell.cost);
                 }
             } else {
                 int bossAttack = Math.max(1, boss.attack - totalDefense);
 
                 Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
+
+                System.out.printf("Previous hitpoints: %s, new hitpoints: %s%n", boss.hitPoints, newBoss.hitPoints);
 
                 Player newPlayer;
                 if (newBoss.hitPoints <= 0) {
@@ -131,14 +136,14 @@ public class Day22 {
                 activeSpells.forEach(activeSpell -> newActiveSpells.add(new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
 
                 Turn nextTurn = new Turn(newPlayer, newBoss, newActiveSpells, spells, castedSpells, true);
-                neighbors.put(nextTurn, 0);
+                neighbors.put(nextTurn, 0L);
             }
 
             return neighbors;
         }
 
         @Override
-        public int getDistance() {
+        public long getDistance() {
             return distance;
         }
 
@@ -153,7 +158,7 @@ public class Day22 {
         }
 
         @Override
-        public void setDistance(int distance) {
+        public void setDistance(long distance) {
             this.distance = distance;
         }
 
