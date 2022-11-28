@@ -18,7 +18,7 @@ public class Day21 {
         Game start = new Game(shop, player, boss);
         start.setDistance(0);
 
-        return Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner());
+        return (int) Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner());
     }
 
     public int handlePart2(Stream<String> input) {
@@ -39,17 +39,17 @@ public class Day21 {
 
         while (!nextGames.isEmpty()) {
             Game next = nextGames.remove(0);
-            Map<Game, Integer> neighbors = next.getNeighbors();
+            Map<Game, Long> neighbors = next.getNeighbors();
             neighbors.forEach((game, cost) -> game.setDistance(next.distance + cost));
             games.add(next);
             nextGames.addAll(neighbors.keySet());
         }
 
-        return games.stream()
-                    .filter(game -> !game.isPlayerWinner())
-                    .mapToInt(Game::getDistance)
-                    .max()
-                    .getAsInt();
+        return (int) games.stream()
+                          .filter(game -> !game.isPlayerWinner())
+                          .mapToLong(Game::getDistance)
+                          .max()
+                          .getAsLong();
     }
 
     private Shop createShop() {
@@ -96,7 +96,7 @@ public class Day21 {
         private final Warrior player;
         private final Warrior boss;
         private final Warrior winner;
-        private int distance = Integer.MAX_VALUE;
+        private long distance = Integer.MAX_VALUE;
         private boolean visited;
 
         public Game(Shop shop, Warrior player, Warrior boss) {
@@ -129,8 +129,8 @@ public class Day21 {
         }
 
         @Override
-        public Map<Game, Integer> getNeighbors() {
-            Map<Game, Integer> neighbors = new HashMap<>();
+        public Map<Game, Long> getNeighbors() {
+            Map<Game, Long> neighbors = new HashMap<>();
 
             if (player.weapon == null) {
                 for (Weapon weapon : shop.weapons) {
@@ -144,7 +144,7 @@ public class Day21 {
                                         boss.rightRing);
 
                     Game game = new Game(newShop, newPlayer, newBoss);
-                    neighbors.put(game, weapon.cost);
+                    neighbors.put(game, (long) weapon.cost);
                 }
             } else {
                 for (Armor armor : shop.armors) {
@@ -158,7 +158,7 @@ public class Day21 {
                                         boss.rightRing);
 
                     Game game = new Game(newShop, newPlayer, newBoss);
-                    neighbors.put(game, armor.cost);
+                    neighbors.put(game, (long) armor.cost);
                 }
                 if (player.leftRing == null) {
                     for (Ring leftRing : shop.rings) {
@@ -175,7 +175,7 @@ public class Day21 {
                                             boss.rightRing);
 
                         Game game = new Game(newShop, newPlayer, newBoss);
-                        neighbors.put(game, leftRing.cost);
+                        neighbors.put(game, (long) leftRing.cost);
                     }
                 }
                 if (player.rightRing == null) {
@@ -193,7 +193,7 @@ public class Day21 {
                                             boss.rightRing);
 
                         Game game = new Game(newShop, newPlayer, newBoss);
-                        neighbors.put(game, rightRing.cost);
+                        neighbors.put(game, (long) rightRing.cost);
                     }
                 }
             }
@@ -202,7 +202,7 @@ public class Day21 {
         }
 
         @Override
-        public int getDistance() {
+        public long getDistance() {
             return distance;
         }
 
@@ -217,7 +217,7 @@ public class Day21 {
         }
 
         @Override
-        public void setDistance(int distance) {
+        public void setDistance(long distance) {
             this.distance = distance;
         }
 

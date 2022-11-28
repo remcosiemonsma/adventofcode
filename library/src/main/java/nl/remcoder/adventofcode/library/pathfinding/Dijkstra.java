@@ -6,7 +6,7 @@ import java.util.Queue;
 import java.util.function.Predicate;
 
 public class Dijkstra {
-    public static int findShortestDistance(Node from, Predicate<Node> isNodeEndstate) {
+    public static long findShortestDistance(Node from, Predicate<Node> isNodeEndstate) {
         Queue<Node> toVisit = new PriorityQueue<>();
         toVisit.add(from);
 
@@ -20,8 +20,8 @@ public class Dijkstra {
                 continue;
             }
             min.setVisited(true);
-            for (Map.Entry<? extends Node, Integer> neighborEntry : min.getNeighbors().entrySet()) {
-                int adjacentDistance = min.getDistance() + neighborEntry.getValue();
+            for (Map.Entry<? extends Node, Long> neighborEntry : min.getNeighbors().entrySet()) {
+                long adjacentDistance = min.getDistance() + neighborEntry.getValue();
                 Node neighbor = neighborEntry.getKey();
                 if (neighbor.getDistance() > adjacentDistance && !neighbor.isVisited()) {
                     neighbor.setDistance(adjacentDistance);
