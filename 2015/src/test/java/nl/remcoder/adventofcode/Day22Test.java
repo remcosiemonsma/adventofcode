@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 class Day22Test {
@@ -18,7 +17,9 @@ class Day22Test {
     }
 
     @Test
-    void testPart1Case1() throws Exception {
+    void testPart1Case1() {
+        testSubject.playerHitPoints = 10;
+        testSubject.playerMana = 250;
         String input = """
                        Hit Points: 13
                        Damage: 8
@@ -28,7 +29,10 @@ class Day22Test {
     }
 
     @Test
-    void testPart1Case2() throws Exception {
+    void testPart1Case2() {
+        testSubject.playerHitPoints = 10;
+        testSubject.playerMana = 250;
+
         String input = """
                        Hit Points: 14
                        Damage: 8
