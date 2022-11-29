@@ -89,36 +89,41 @@ public class Day22 {
                     Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
                     Turn nextTurn = new Turn(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
                     neighbors.put(nextTurn, 0L);
-                }
+                } else {
+                    for (Spell spell : spells) {
+                        if (spell.cost > player.mana + totalManaIncrease) {
+                            continue;
+                        }
+                        if (activeSpells.stream().anyMatch(activeSpell -> activeSpell.spell == spell)) {
+                            continue;
+                        }
 
-                for (Spell spell : spells) {
-                    if (spell.cost > player.mana + totalManaIncrease) {
-                        continue;
+                        List<ActiveSpell> newActiveSpells = new ArrayList<>();
+
+                        activeSpells.forEach(activeSpell -> newActiveSpells.add(
+                                new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
+
+                        Player newPlayer;
+                        Boss newBoss;
+                        if (spell.effectDuration == 0) {
+                            newPlayer = new Player(player.hitPoints + totalHealing + spell.healing,
+                                                   player.mana + totalManaIncrease - spell.cost);
+                            newBoss = new Boss(boss.hitPoints - (totalDamage + spell.damage), boss.attack);
+                        } else {
+                            newPlayer = new Player(player.hitPoints + totalHealing,
+                                                   player.mana + totalManaIncrease - spell.cost);
+                            newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
+                            newActiveSpells.add(new ActiveSpell(spell, spell.effectDuration));
+                        }
+
+                        List<Spell> newCastedSpells = new ArrayList<>(castedSpells);
+                        newCastedSpells.add(spell);
+
+                        Turn nextTurn =
+                                new Turn(newPlayer, newBoss, newActiveSpells, spells, List.copyOf(newCastedSpells),
+                                         false);
+                        neighbors.put(nextTurn, (long) spell.cost);
                     }
-                    if (activeSpells.stream().anyMatch(activeSpell -> activeSpell.spell == spell)) {
-                        continue;
-                    }
-
-                    List<ActiveSpell> newActiveSpells = new ArrayList<>();
-
-                    activeSpells.forEach(activeSpell -> newActiveSpells.add(new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
-
-                    Player newPlayer;
-                    Boss newBoss;
-                    if (spell.effectDuration == 0) {
-                        newPlayer = new Player(player.hitPoints + totalHealing + spell.healing, player.mana + totalManaIncrease - spell.cost);
-                        newBoss = new Boss(boss.hitPoints - (totalDamage + spell.damage), boss.attack);
-                    } else {
-                        newPlayer = new Player(player.hitPoints + totalHealing, player.mana + totalManaIncrease - spell.cost);
-                        newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
-                        newActiveSpells.add(new ActiveSpell(spell, spell.effectDuration));
-                    }
-
-                    List<Spell> newCastedSpells = new ArrayList<>(castedSpells);
-                    newCastedSpells.add(spell);
-
-                    Turn nextTurn = new Turn(newPlayer, newBoss, newActiveSpells, spells, List.copyOf(newCastedSpells), false);
-                    neighbors.put(nextTurn, (long) spell.cost);
                 }
             } else {
                 int bossAttack = Math.max(1, boss.attack - totalDefense);
