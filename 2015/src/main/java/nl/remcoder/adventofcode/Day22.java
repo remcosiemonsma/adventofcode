@@ -7,6 +7,9 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Day22 {
+    public int playerHitPoints = 50;
+    public int playerMana = 500;
+
     public int handlePart1(Stream<String> input) {
         List<String> bossData = input.toList();
 
@@ -35,7 +38,7 @@ public class Day22 {
     }
 
     private Player createPlayer() {
-        return new Player(50, 500);
+        return new Player(playerHitPoints, playerMana);
     }
 
     private Boss createBoss(List<String> bossData) {
@@ -121,8 +124,6 @@ public class Day22 {
                 int bossAttack = Math.max(1, boss.attack - totalDefense);
 
                 Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
-
-                System.out.printf("Previous hitpoints: %s, new hitpoints: %s%n", boss.hitPoints, newBoss.hitPoints);
 
                 Player newPlayer;
                 if (newBoss.hitPoints <= 0) {
