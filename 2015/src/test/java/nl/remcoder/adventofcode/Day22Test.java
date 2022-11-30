@@ -43,13 +43,13 @@ class Day22Test {
 
     @Test
     void testPart1Input() throws Exception {
-        assertEquals(91, testSubject.handlePart1(
+        assertEquals(900, testSubject.handlePart1(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
     }
 
     @Test
     void testPart2Input() throws Exception {
-        assertEquals(158, testSubject.handlePart2(
+        assertEquals(1216, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
     }
 }
