@@ -9,31 +9,33 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 public class CombiningCollector<T, R>
-        implements Collector<T, List<List<R>>, Stream<List<R>>> {
+        implements Collector<T, List<CombiningCollector.Bag<R>>, Stream<CombiningCollector.Bag<R>>> {
     private final Function<T, R> mapper;
     private final Predicate<T> newElementPredicate;
+    private final Supplier<Bag<R>> bagSupplier;
 
-    public CombiningCollector(Function<T, R> mapper, Predicate<T> newElementPredicate) {
+    public CombiningCollector(Function<T, R> mapper, Predicate<T> newElementPredicate, Supplier<Bag<R>> bagSupplier) {
         this.mapper = mapper;
         this.newElementPredicate = newElementPredicate;
+        this.bagSupplier = bagSupplier;
     }
 
     @Override
-    public Supplier<List<List<R>>> supplier() {
+    public Supplier<List<Bag<R>>> supplier() {
         return () -> {
-            List<List<R>> bags = new ArrayList<>();
-            bags.add(new ArrayList<>());
+            List<Bag<R>> bags = new ArrayList<>();
+            bags.add(bagSupplier.get());
             return bags;
         };
     }
 
     @Override
-    public BiConsumer<List<List<R>>, T> accumulator() {
+    public BiConsumer<List<Bag<R>>, T> accumulator() {
         return (bags, line) -> {
             if (isBlank(line)) {
-                bags.add(new ArrayList<>());
+                bags.add(bagSupplier.get());
             } else {
-                List<R> currentBag = bags.get(bags.size() - 1);
+                Bag<R> currentBag = bags.get(bags.size() - 1);
                 currentBag.add(map(line));
             }
         };
@@ -48,7 +50,7 @@ public class CombiningCollector<T, R>
     }
 
     @Override
-    public BinaryOperator<List<List<R>>> combiner() {
+    public BinaryOperator<List<Bag<R>>> combiner() {
         return (objects, objects2) -> {
             objects.addAll(objects2);
             return objects;
@@ -56,12 +58,16 @@ public class CombiningCollector<T, R>
     }
 
     @Override
-    public Function<List<List<R>>, Stream<List<R>>> finisher() {
+    public Function<List<Bag<R>>, Stream<Bag<R>>> finisher() {
         return Collection::stream;
     }
 
     @Override
     public Set<Characteristics> characteristics() {
         return Set.of();
+    }
+
+    public interface Bag<R> {
+        void add(R r);
     }
 }
