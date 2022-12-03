@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 public class Day1 {
     public int handlePart1(Stream<String> input) {
         return input.collect(new CombiningCollector<>(Integer::parseInt, String::isBlank, BagImpl::new))
+                    .parallel()
                     .mapToInt(bag -> ((BagImpl) bag).stream()
                                                     .mapToInt(Integer::intValue)
                                                     .sum())
@@ -17,6 +18,7 @@ public class Day1 {
 
     public int handlePart2(Stream<String> input) {
         return input.collect(new CombiningCollector<>(Integer::parseInt, String::isBlank, BagImpl::new))
+                    .parallel()
                     .map(bag -> ((BagImpl) bag).stream()
                                                .mapToInt(Integer::intValue)
                                                .sum())
