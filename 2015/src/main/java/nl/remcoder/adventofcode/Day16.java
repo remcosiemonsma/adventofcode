@@ -18,61 +18,49 @@ public class Day16 {
     private static final Pattern TREES_PATTERN = Pattern.compile("trees: (\\d+)");
     private static final Pattern CARS_PATTERN = Pattern.compile("cars: (\\d+)");
     private static final Pattern PERFUMES_PATTERN = Pattern.compile("perfumes: (\\d+)");
-
+    private final int expectedChildren = 3;
+    private final int expectedCats = 7;
+    private final int expectedSamoyeds = 2;
+    private final int expectedPomeranians = 3;
+    private final int expectedAkitas = 0;
+    private final int expectedVizslas = 0;
+    private final int expectedGoldfish = 5;
+    private final int expectedTrees = 3;
+    private final int expectedCars = 2;
+    private final int expectedPerfumes = 1;
+    
     public int handlePart1(Stream<String> input) {
-        List<Aunt> aunts = input.map(Aunt::new).collect(Collectors.toList());
-
-        int expectedChildren = 3;
-        int expectedCats = 7;
-        int expectedSamoyeds = 2;
-        int expectedPomeranians = 3;
-        int expectedAkitas = 0;
-        int expectedVizslas = 0;
-        int expectedGoldfish = 5;
-        int expectedTrees = 3;
-        int expectedCars = 2;
-        int expectedPerfumes = 1;
-
-        aunts.removeIf(aunt -> aunt.children != null && aunt.children != expectedChildren);
-        aunts.removeIf(aunt -> aunt.cats != null && aunt.cats != expectedCats);
-        aunts.removeIf(aunt -> aunt.samoyeds != null && aunt.samoyeds != expectedSamoyeds);
-        aunts.removeIf(aunt -> aunt.pomeranians != null && aunt.pomeranians != expectedPomeranians);
-        aunts.removeIf(aunt -> aunt.akitas != null && aunt.akitas != expectedAkitas);
-        aunts.removeIf(aunt -> aunt.vizslas != null && aunt.vizslas != expectedVizslas);
-        aunts.removeIf(aunt -> aunt.goldfish != null && aunt.goldfish != expectedGoldfish);
-        aunts.removeIf(aunt -> aunt.trees != null && aunt.trees != expectedTrees);
-        aunts.removeIf(aunt -> aunt.cars != null && aunt.cars != expectedCars);
-        aunts.removeIf(aunt -> aunt.perfumes != null && aunt.perfumes != expectedPerfumes);
-
-        return aunts.get(0).id;
+        return input.map(Aunt::new)
+                    .filter(aunt -> aunt.children == null || aunt.children == expectedChildren)
+                    .filter(aunt -> aunt.cats == null || aunt.cats == expectedCats)
+                    .filter(aunt -> aunt.samoyeds == null || aunt.samoyeds == expectedSamoyeds)
+                    .filter(aunt -> aunt.pomeranians == null || aunt.pomeranians == expectedPomeranians)
+                    .filter(aunt -> aunt.akitas == null || aunt.akitas == expectedAkitas)
+                    .filter(aunt -> aunt.vizslas == null || aunt.vizslas == expectedVizslas)
+                    .filter(aunt -> aunt.goldfish == null || aunt.goldfish == expectedGoldfish)
+                    .filter(aunt -> aunt.trees == null || aunt.trees == expectedTrees)
+                    .filter(aunt -> aunt.cars == null || aunt.cars == expectedCars)
+                    .filter(aunt -> aunt.perfumes == null || aunt.perfumes == expectedPerfumes)
+                    .findFirst()
+                    .map(Aunt::getId)
+                    .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public int handlePart2(Stream<String> input) {
-        List<Aunt> aunts = input.map(Aunt::new).collect(Collectors.toList());
-
-        int expectedChildren = 3;
-        int expectedCats = 7;
-        int expectedSamoyeds = 2;
-        int expectedPomeranians = 3;
-        int expectedAkitas = 0;
-        int expectedVizslas = 0;
-        int expectedGoldfish = 5;
-        int expectedTrees = 3;
-        int expectedCars = 2;
-        int expectedPerfumes = 1;
-
-        aunts.removeIf(aunt -> aunt.children != null && aunt.children != expectedChildren);
-        aunts.removeIf(aunt -> aunt.cats != null && aunt.cats <= expectedCats);
-        aunts.removeIf(aunt -> aunt.samoyeds != null && aunt.samoyeds != expectedSamoyeds);
-        aunts.removeIf(aunt -> aunt.pomeranians != null && aunt.pomeranians >= expectedPomeranians);
-        aunts.removeIf(aunt -> aunt.akitas != null && aunt.akitas != expectedAkitas);
-        aunts.removeIf(aunt -> aunt.vizslas != null && aunt.vizslas != expectedVizslas);
-        aunts.removeIf(aunt -> aunt.goldfish != null && aunt.goldfish >= expectedGoldfish);
-        aunts.removeIf(aunt -> aunt.trees != null && aunt.trees <= expectedTrees);
-        aunts.removeIf(aunt -> aunt.cars != null && aunt.cars != expectedCars);
-        aunts.removeIf(aunt -> aunt.perfumes != null && aunt.perfumes != expectedPerfumes);
-
-        return aunts.get(0).id;
+        return input.map(Aunt::new)
+                    .filter(aunt -> aunt.children == null || aunt.children == expectedChildren)
+                    .filter(aunt -> aunt.cats == null || aunt.cats > expectedCats)
+                    .filter(aunt -> aunt.samoyeds == null || aunt.samoyeds == expectedSamoyeds)
+                    .filter(aunt -> aunt.pomeranians == null || aunt.pomeranians < expectedPomeranians)
+                    .filter(aunt -> aunt.akitas == null || aunt.akitas == expectedAkitas)
+                    .filter(aunt -> aunt.vizslas == null || aunt.vizslas == expectedVizslas)
+                    .filter(aunt -> aunt.goldfish == null || aunt.goldfish < expectedGoldfish)
+                    .filter(aunt -> aunt.trees == null || aunt.trees > expectedTrees)
+                    .filter(aunt -> aunt.cars == null || aunt.cars == expectedCars)
+                    .filter(aunt -> aunt.perfumes == null || aunt.perfumes == expectedPerfumes)
+                    .findFirst()
+                    .map(Aunt::getId)
+                    .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private static class Aunt {
@@ -155,6 +143,10 @@ public class Day16 {
             } else {
                 perfumes = null;
             }
+        }
+
+        public int getId() {
+            return id;
         }
     }
 }

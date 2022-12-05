@@ -11,12 +11,12 @@ public class Day22 {
     public int playerMana = 500;
 
     public int handlePart1(Stream<String> input) {
-        List<String> bossData = input.toList();
+        var bossData = input.toList();
 
-        Boss boss = createBoss(bossData);
-        Player player = createPlayer();
+        var boss = createBoss(bossData);
+        var player = createPlayer();
 
-        Turn turn = new Turn(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
+        var turn = new Turn(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
         turn.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(turn,
@@ -24,12 +24,12 @@ public class Day22 {
     }
 
     public int handlePart2(Stream<String> input) {
-        List<String> bossData = input.toList();
+        var bossData = input.toList();
 
-        Boss boss = createBoss(bossData);
-        Player player = createPlayer();
+        var boss = createBoss(bossData);
+        var player = createPlayer();
 
-        Turn2 turn = new Turn2(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
+        var turn = new Turn2(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
         turn.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(turn,
@@ -37,11 +37,11 @@ public class Day22 {
     }
 
     private Set<Spell> createSpells() {
-        Spell magicMissile = new Spell("Magic Missile", 4, 0, 0, 0, 0, 53);
-        Spell drain = new Spell("Drain", 2, 2, 0, 0, 0, 73);
-        Spell shield = new Spell("Shield", 0, 0, 7, 0, 6, 113);
-        Spell poison = new Spell("Poison", 3, 0, 0, 0, 6, 173);
-        Spell recharge = new Spell("Recharge", 0, 0, 0, 101, 5, 229);
+        var magicMissile = new Spell("Magic Missile", 4, 0, 0, 0, 0, 53);
+        var drain = new Spell("Drain", 2, 2, 0, 0, 0, 73);
+        var shield = new Spell("Shield", 0, 0, 7, 0, 6, 113);
+        var poison = new Spell("Poison", 3, 0, 0, 0, 6, 173);
+        var recharge = new Spell("Recharge", 0, 0, 0, 101, 5, 229);
 
         return Set.of(magicMissile, drain, shield, poison, recharge);
     }
@@ -78,28 +78,28 @@ public class Day22 {
 
         @Override
         public Map<? extends Node, Long> getNeighbors() {
-            Map<Turn, Long> neighbors = new HashMap<>();
+            var neighbors = new HashMap<Turn, Long>();
 
             if (isGameFinished()) {
                 return Map.of();
             }
 
-            int totalDamage = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::damage).sum();
-            int totalHealing = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::healing).sum();
-            int totalManaIncrease = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
-            int totalDefense = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::defense).sum();
+            var totalDamage = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::damage).sum();
+            var totalHealing = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::healing).sum();
+            var totalManaIncrease = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
+            var totalDefense = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::defense).sum();
 
             activeSpells.forEach(ActiveSpell::decrementDuration);
             activeSpells.removeIf(activeSpell -> activeSpell.remainingDuration <= 0);
 
             if (isPlayerTurn) {
                 if (boss.hitPoints - totalDamage <= 0) {
-                    Player newPlayer = new Player(player.hitPoints + totalHealing, player.mana + totalManaIncrease);
-                    Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
-                    Turn nextTurn = new Turn(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
+                    var newPlayer = new Player(player.hitPoints + totalHealing, player.mana + totalManaIncrease);
+                    var newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
+                    var nextTurn = new Turn(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
                     neighbors.put(nextTurn, 0L);
                 } else {
-                    for (Spell spell : spells) {
+                    for (var spell : spells) {
                         if (spell.cost > player.mana + totalManaIncrease) {
                             continue;
                         }
@@ -107,7 +107,7 @@ public class Day22 {
                             continue;
                         }
 
-                        List<ActiveSpell> newActiveSpells = new ArrayList<>();
+                        var newActiveSpells = new ArrayList<ActiveSpell>();
 
                         activeSpells.forEach(activeSpell -> newActiveSpells.add(
                                 new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
@@ -125,19 +125,19 @@ public class Day22 {
                             newActiveSpells.add(new ActiveSpell(spell, spell.effectDuration));
                         }
 
-                        List<Spell> newCastedSpells = new ArrayList<>(castedSpells);
+                        var newCastedSpells = new ArrayList<>(castedSpells);
                         newCastedSpells.add(spell);
 
-                        Turn nextTurn =
+                        var nextTurn =
                                 new Turn(newPlayer, newBoss, newActiveSpells, spells, List.copyOf(newCastedSpells),
                                          false);
                         neighbors.put(nextTurn, (long) spell.cost);
                     }
                 }
             } else {
-                int bossAttack = Math.max(1, boss.attack - totalDefense);
+                var bossAttack = Math.max(1, boss.attack - totalDefense);
 
-                Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
+                var newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
 
                 Player newPlayer;
                 if (newBoss.hitPoints <= 0) {
@@ -146,11 +146,11 @@ public class Day22 {
                     newPlayer = new Player(player.hitPoints + totalHealing - bossAttack, player.mana + totalManaIncrease);
                 }
 
-                List<ActiveSpell> newActiveSpells = new ArrayList<>();
+                var newActiveSpells = new ArrayList<ActiveSpell>();
 
                 activeSpells.forEach(activeSpell -> newActiveSpells.add(new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
 
-                Turn nextTurn = new Turn(newPlayer, newBoss, newActiveSpells, spells, castedSpells, true);
+                var nextTurn = new Turn(newPlayer, newBoss, newActiveSpells, spells, castedSpells, true);
                 neighbors.put(nextTurn, 0L);
             }
 
@@ -214,16 +214,16 @@ public class Day22 {
 
         @Override
         public Map<? extends Node, Long> getNeighbors() {
-            Map<Turn2, Long> neighbors = new HashMap<>();
+            var neighbors = new HashMap<Turn2, Long>();
 
             if (isGameFinished()) {
                 return Map.of();
             }
 
-            int totalDamage = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::damage).sum();
-            int totalHealing = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::healing).sum();
-            int totalManaIncrease = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
-            int totalDefense = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::defense).sum();
+            var totalDamage = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::damage).sum();
+            var totalHealing = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::healing).sum();
+            var totalManaIncrease = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
+            var totalDefense = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::defense).sum();
 
             activeSpells.forEach(ActiveSpell::decrementDuration);
             activeSpells.removeIf(activeSpell -> activeSpell.remainingDuration <= 0);
@@ -235,12 +235,12 @@ public class Day22 {
                     return Map.of();
                 }
                 if (boss.hitPoints - totalDamage <= 0) {
-                    Player newPlayer = new Player(player.hitPoints + totalHealing, player.mana + totalManaIncrease);
-                    Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
-                    Turn2 nextTurn = new Turn2(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
+                    var newPlayer = new Player(player.hitPoints + totalHealing, player.mana + totalManaIncrease);
+                    var newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
+                    var nextTurn = new Turn2(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
                     neighbors.put(nextTurn, 0L);
                 } else {
-                    for (Spell spell : spells) {
+                    for (var spell : spells) {
                         if (spell.cost > player.mana + totalManaIncrease) {
                             continue;
                         }
@@ -248,7 +248,7 @@ public class Day22 {
                             continue;
                         }
 
-                        List<ActiveSpell> newActiveSpells = new ArrayList<>();
+                        var newActiveSpells = new ArrayList<ActiveSpell>();
 
                         activeSpells.forEach(activeSpell -> newActiveSpells.add(
                                 new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
@@ -266,19 +266,19 @@ public class Day22 {
                             newActiveSpells.add(new ActiveSpell(spell, spell.effectDuration));
                         }
 
-                        List<Spell> newCastedSpells = new ArrayList<>(castedSpells);
+                        var newCastedSpells = new ArrayList<>(castedSpells);
                         newCastedSpells.add(spell);
 
-                        Turn2 nextTurn =
+                        var nextTurn =
                                 new Turn2(newPlayer, newBoss, newActiveSpells, spells, List.copyOf(newCastedSpells),
                                          false);
                         neighbors.put(nextTurn, (long) spell.cost);
                     }
                 }
             } else {
-                int bossAttack = Math.max(1, boss.attack - totalDefense);
+                var bossAttack = Math.max(1, boss.attack - totalDefense);
 
-                Boss newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
+                var newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
 
                 Player newPlayer;
                 if (newBoss.hitPoints <= 0) {
@@ -287,11 +287,11 @@ public class Day22 {
                     newPlayer = new Player(player.hitPoints + totalHealing - bossAttack, player.mana + totalManaIncrease);
                 }
 
-                List<ActiveSpell> newActiveSpells = new ArrayList<>();
+                var newActiveSpells = new ArrayList<ActiveSpell>();
 
                 activeSpells.forEach(activeSpell -> newActiveSpells.add(new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
 
-                Turn2 nextTurn = new Turn2(newPlayer, newBoss, newActiveSpells, spells, castedSpells, true);
+                var nextTurn = new Turn2(newPlayer, newBoss, newActiveSpells, spells, castedSpells, true);
                 neighbors.put(nextTurn, 0L);
             }
 

@@ -24,7 +24,7 @@ public class Day8Test {
                       "rotate row y=0 by 4\n" +
                       "rotate column x=1 by 1";
 
-        assertEquals(6, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(6, testSubject.handlePart1(data.lines()));
     }
 
     @Test

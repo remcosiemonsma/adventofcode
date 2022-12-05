@@ -36,7 +36,7 @@ public class Day6Test {
                       "dvrsen\n" +
                       "enarar";
 
-        assertEquals("easter", testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals("easter", testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class Day6Test {
                       "dvrsen\n" +
                       "enarar";
 
-        assertEquals("advent", testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals("advent", testSubject.handlePart2(data.lines()));
     }
 
     @Test

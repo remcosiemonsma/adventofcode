@@ -32,7 +32,7 @@ class Day10Test {
                       <{([{{}}[<[[[<>{}]]]>[]]
                       """;
 
-        assertEquals(26397, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(26397, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -56,7 +56,7 @@ class Day10Test {
                       <{([{{}}[<[[[<>{}]]]>[]]
                       """;
 
-        assertEquals(288957, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(288957, testSubject.handlePart2(data.lines()));
     }
 
     @Test

@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day13Test {
     private Day13 testSubject;
@@ -19,20 +18,21 @@ public class Day13Test {
 
     @Test
     public void part1Case1() {
-        String data = "Alice would gain 54 happiness units by sitting next to Bob.\n" +
-                      "Alice would lose 79 happiness units by sitting next to Carol.\n" +
-                      "Alice would lose 2 happiness units by sitting next to David.\n" +
-                      "Bob would gain 83 happiness units by sitting next to Alice.\n" +
-                      "Bob would lose 7 happiness units by sitting next to Carol.\n" +
-                      "Bob would lose 63 happiness units by sitting next to David.\n" +
-                      "Carol would lose 62 happiness units by sitting next to Alice.\n" +
-                      "Carol would gain 60 happiness units by sitting next to Bob.\n" +
-                      "Carol would gain 55 happiness units by sitting next to David.\n" +
-                      "David would gain 46 happiness units by sitting next to Alice.\n" +
-                      "David would lose 7 happiness units by sitting next to Bob.\n" +
-                      "David would gain 41 happiness units by sitting next to Carol.";
+        String data = """
+                      Alice would gain 54 happiness units by sitting next to Bob.
+                      Alice would lose 79 happiness units by sitting next to Carol.
+                      Alice would lose 2 happiness units by sitting next to David.
+                      Bob would gain 83 happiness units by sitting next to Alice.
+                      Bob would lose 7 happiness units by sitting next to Carol.
+                      Bob would lose 63 happiness units by sitting next to David.
+                      Carol would lose 62 happiness units by sitting next to Alice.
+                      Carol would gain 60 happiness units by sitting next to Bob.
+                      Carol would gain 55 happiness units by sitting next to David.
+                      David would gain 46 happiness units by sitting next to Alice.
+                      David would lose 7 happiness units by sitting next to Bob.
+                      David would gain 41 happiness units by sitting next to Carol.""";
 
-        assertEquals(330, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(330, testSubject.handlePart1(data.lines()));
     }
 
     @Test

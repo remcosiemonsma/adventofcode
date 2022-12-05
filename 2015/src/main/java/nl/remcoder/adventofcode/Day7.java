@@ -13,108 +13,13 @@ public class Day7 {
     public int handlePart1(Stream<String> input) {
 
         input.forEach(line -> {
-            String[] split = line.split(" -> ");
-            String[] left = split[0].split(" ");
+            var split = line.split(" -> ");
+            var left = split[0].split(" ");
 
-            if (left.length == 1) {
-                //Direct
-                Matcher numericMatcher = NUMERIC.matcher(split[0]);
-
-                if (numericMatcher.matches()) {
-                    Value value = new Value(split[0], Integer.parseInt(split[0]));
-                    wires.put(split[0], value);
-                }
-
-                Direct direct = new Direct(split[1], split[0]);
-                wires.put(split[1], direct);
-            } else if (left.length == 2){
-                //Not
-                Matcher numericMatcher = NUMERIC.matcher(left[1]);
-
-                if (numericMatcher.matches()) {
-                    Value value = new Value(left[1], Integer.parseInt(left[1]));
-                    wires.put(left[1], value);
-                }
-
-                Not not = new Not(split[1], left[1]);
-                wires.put(split[1], not);
-            } else {
-                //AND, OR, LSHIFT, RSHIFT
-                Matcher numericMatcher;
-                switch (left[1]) {
-                    case "AND":
-                        numericMatcher = NUMERIC.matcher(left[0]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[0], Integer.parseInt(left[0]));
-                            wires.put(left[0], value);
-                        }
-
-                        numericMatcher = NUMERIC.matcher(left[2]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[2], Integer.parseInt(left[2]));
-                            wires.put(left[2], value);
-                        }
-
-                        And and = new And(split[0], left[0], left[2]);
-                        wires.put(split[1], and);
-                        break;
-                    case "OR":
-                        numericMatcher = NUMERIC.matcher(left[0]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[0], Integer.parseInt(left[0]));
-                            wires.put(left[0], value);
-                        }
-
-                        numericMatcher = NUMERIC.matcher(left[2]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[2], Integer.parseInt(left[2]));
-                            wires.put(left[2], value);
-                        }
-
-                        Or or = new Or(split[0], left[0], left[2]);
-                        wires.put(split[1], or);
-                        break;
-                    case "LSHIFT":
-                        numericMatcher = NUMERIC.matcher(left[0]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[0], Integer.parseInt(left[0]));
-                            wires.put(left[0], value);
-                        }
-
-                        numericMatcher = NUMERIC.matcher(left[2]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[2], Integer.parseInt(left[2]));
-                            wires.put(left[2], value);
-                        }
-
-                        LeftShift leftShift = new LeftShift(split[0], left[0], left[2]);
-                        wires.put(split[1], leftShift);
-                        break;
-                    case "RSHIFT":
-                        numericMatcher = NUMERIC.matcher(left[0]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[0], Integer.parseInt(left[0]));
-                            wires.put(left[0], value);
-                        }
-
-                        numericMatcher = NUMERIC.matcher(left[2]);
-
-                        if (numericMatcher.matches()) {
-                            Value value = new Value(left[2], Integer.parseInt(left[2]));
-                            wires.put(left[2], value);
-                        }
-
-                        RightShift rightShift = new RightShift(split[0], left[0], left[2]);
-                        wires.put(split[1], rightShift);
-                        break;
-                }
+            switch (left.length) {
+                case 1 -> parseDirect(split);
+                case 2 -> parseNot(split, left);
+                default -> parseRest(split, left);
             }
         });
 
@@ -130,6 +35,77 @@ public class Day7 {
         wires.put("b", new Direct("b", Integer.toString(valueA)));
 
         return wires.get("a").getValue();
+    }
+
+    private void parseDirect(String[] split) {
+        var numericMatcher = NUMERIC.matcher(split[0]);
+
+        if (numericMatcher.matches()) {
+            var value = new Value(split[0], Integer.parseInt(split[0]));
+            wires.put(split[0], value);
+        }
+
+        var direct = new Direct(split[1], split[0]);
+        wires.put(split[1], direct);
+    }
+
+    private void parseNot(String[] split, String[] left) {
+        var numericMatcher = NUMERIC.matcher(left[1]);
+
+        if (numericMatcher.matches()) {
+            var value = new Value(left[1], Integer.parseInt(left[1]));
+            wires.put(left[1], value);
+        }
+
+        var not = new Not(split[1], left[1]);
+        wires.put(split[1], not);
+    }
+
+    private void parseRest(String[] split, String[] left) {
+        switch (left[1]) {
+            case "AND" -> parseAnd(split, left);
+            case "OR" -> parseOr(split, left);
+            case "LSHIFT" -> parseLShift(split, left);
+            case "RSHIFT" -> parseRShift(split, left);
+        }
+    }
+
+    private void parseAnd(String[] split, String[] left) {
+        parseValues(left);
+        var and = new And(split[0], left[0], left[2]);
+        wires.put(split[1], and);
+    }
+
+    private void parseOr(String[] split, String[] left) {
+        parseValues(left);
+        var or = new Or(split[0], left[0], left[2]);
+        wires.put(split[1], or);
+    }
+
+    private void parseLShift(String[] split, String[] left) {
+        parseValues(left);
+        var leftShift = new LeftShift(split[0], left[0], left[2]);
+        wires.put(split[1], leftShift);
+    }
+
+    private void parseRShift(String[] split, String[] left) {
+        parseValues(left);
+        var rightShift = new RightShift(split[0], left[0], left[2]);
+        wires.put(split[1], rightShift);
+    }
+
+    private void parseValues(String[] left) {
+        Matcher numericMatcher;
+        numericMatcher = NUMERIC.matcher(left[0]);
+        if (numericMatcher.matches()) {
+            var value = new Value(left[0], Integer.parseInt(left[0]));
+            wires.put(left[0], value);
+        }
+        numericMatcher = NUMERIC.matcher(left[2]);
+        if (numericMatcher.matches()) {
+            var value = new Value(left[2], Integer.parseInt(left[2]));
+            wires.put(left[2], value);
+        }
     }
 
     private interface Wire {

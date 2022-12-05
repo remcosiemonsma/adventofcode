@@ -31,7 +31,7 @@ class Day25Test {
                       ....v..v.>
                       """;
 
-        assertEquals(58, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(58, testSubject.handlePart1(data.lines()));
     }
 
     @Test

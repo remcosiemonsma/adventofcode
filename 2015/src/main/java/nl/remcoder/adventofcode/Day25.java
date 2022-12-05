@@ -8,18 +8,18 @@ public class Day25 {
     private static final Pattern PATTERN = Pattern.compile("To continue, please consult the code grid in the manual.  Enter the code at row (\\d*), column (\\d*).");
 
     public long handlePart1(Stream<String> input) {
-        String line = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
+        var line = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
-        Matcher matcher = PATTERN.matcher(line);
+        var matcher = PATTERN.matcher(line);
 
         if (matcher.matches()) {
-            int row = Integer.parseInt(matcher.group(1));
-            int column = Integer.parseInt(matcher.group(2));
+            var row = Integer.parseInt(matcher.group(1));
+            var column = Integer.parseInt(matcher.group(2));
 
-            int currentrow = 1;
-            int currentcolumn = 1;
+            var currentrow = 1;
+            var currentcolumn = 1;
 
-            long number = 20151125;
+            var number = 20151125L;
 
             while (true) {
                 currentrow--;

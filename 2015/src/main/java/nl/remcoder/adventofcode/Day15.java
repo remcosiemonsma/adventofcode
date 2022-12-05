@@ -11,27 +11,27 @@ public class Day15 {
             "(.*): capacity (-?\\d*), durability (-?\\d*), flavor (-?\\d*), texture (-?\\d*), calories (-?\\d*)");
 
     public int handlePart1(Stream<String> input) {
-        List<Ingredient> ingredients = input.map(INGREDIENT_PATTERN::matcher)
-                                            .filter(Matcher::matches)
-                                            .map(this::mapToIngredient)
-                                            .collect(Collectors.toList());
+        var ingredients = input.map(INGREDIENT_PATTERN::matcher)
+                               .filter(Matcher::matches)
+                               .map(this::mapToIngredient)
+                               .collect(Collectors.toList());
 
-        int[] amounts = new int[ingredients.size()];
+        var amounts = new int[ingredients.size()];
 
-        Map<Amounts, Integer> memo = new HashMap<>();
+        var memo = new HashMap<Amounts, Integer>();
 
         return calculateHighestScore(new Amounts(amounts), ingredients, memo);
     }
 
     public int handlePart2(Stream<String> input) {
-        List<Ingredient> ingredients = input.map(INGREDIENT_PATTERN::matcher)
-                                            .filter(Matcher::matches)
-                                            .map(this::mapToIngredient)
-                                            .collect(Collectors.toList());
+        var ingredients = input.map(INGREDIENT_PATTERN::matcher)
+                               .filter(Matcher::matches)
+                               .map(this::mapToIngredient)
+                               .collect(Collectors.toList());
 
-        int[] amounts = new int[ingredients.size()];
+        var amounts = new int[ingredients.size()];
 
-        Map<Amounts, Integer> memo = new HashMap<>();
+        var memo = new HashMap<Amounts, Integer>();
 
         return calculateHighestScoreWithCalories(new Amounts(amounts), ingredients, memo);
     }
@@ -77,15 +77,15 @@ public class Day15 {
         }
 
         if (Arrays.stream(amounts.amounts).sum() == 100) {
-            int score = calculateScore(amounts.amounts, ingredients);
+            var score = calculateScore(amounts.amounts, ingredients);
             memo.put(amounts, score);
             return score;
         } else {
-            int highestScore = Integer.MIN_VALUE;
+            var highestScore = Integer.MIN_VALUE;
             for (int i = 0; i < amounts.amounts.length; i++) {
-                int[] newAmounts = Arrays.copyOf(amounts.amounts, amounts.amounts.length);
+                var newAmounts = Arrays.copyOf(amounts.amounts, amounts.amounts.length);
                 newAmounts[i]++;
-                int score = calculateHighestScore(new Amounts(newAmounts), ingredients, memo);
+                var score = calculateHighestScore(new Amounts(newAmounts), ingredients, memo);
                 if (score > highestScore) {
                     highestScore = score;
                 }
@@ -96,9 +96,9 @@ public class Day15 {
     }
 
     private int countCalories(int[] amounts, List<Ingredient> ingredients) {
-        int totalCalories = 0;
+        var totalCalories = 0;
 
-        for (int i = 0; i < amounts.length; i++) {
+        for (var i = 0; i < amounts.length; i++) {
             totalCalories += ingredients.get(i).calories * amounts[i];
         }
 
@@ -106,11 +106,11 @@ public class Day15 {
     }
 
     private int calculateScore(int[] amounts, List<Ingredient> ingredients) {
-        int totalCapacity = 0;
-        int totalDurability = 0;
-        int totalFlavor = 0;
-        int totalTexture = 0;
-        for (int i = 0; i < amounts.length; i++) {
+        var totalCapacity = 0;
+        var totalDurability = 0;
+        var totalFlavor = 0;
+        var totalTexture = 0;
+        for (var i = 0; i < amounts.length; i++) {
             totalCapacity += ingredients.get(i).capacity * amounts[i];
             totalDurability += ingredients.get(i).durability * amounts[i];
             totalFlavor += ingredients.get(i).flavor * amounts[i];
@@ -141,13 +141,7 @@ public class Day15 {
                               Integer.parseInt(matcher.group(6)));
     }
 
-    private static class Amounts {
-        private final int[] amounts;
-
-        public Amounts(int[] amounts) {
-            this.amounts = amounts;
-        }
-
+    private record Amounts(int[] amounts) {
         @Override
         public boolean equals(Object o) {
             if (this == o) {
@@ -164,28 +158,8 @@ public class Day15 {
         public int hashCode() {
             return Arrays.hashCode(amounts);
         }
-
-        @Override
-        public String toString() {
-            return "Amounts{" +
-                   "amounts=" + Arrays.toString(amounts) +
-                   '}';
-        }
     }
 
-    private static class Ingredient {
-        private final int capacity;
-        private final int durability;
-        private final int flavor;
-        private final int texture;
-        private final int calories;
-
-        private Ingredient(int capacity, int durability, int flavor, int texture, int calories) {
-            this.capacity = capacity;
-            this.durability = durability;
-            this.flavor = flavor;
-            this.texture = texture;
-            this.calories = calories;
-        }
+    private record Ingredient(int capacity, int durability, int flavor, int texture, int calories) {
     }
 }

@@ -5,17 +5,17 @@ import java.util.stream.Stream;
 
 public class Day20 {
     public int handlePart1(Stream<String> input) {
-        int expectedScore = input.mapToInt(Integer::parseInt)
+        var expectedScore = input.mapToInt(Integer::parseInt)
                                  .findFirst()
-                                 .getAsInt();
+                                 .orElseThrow(() -> new AssertionError("Eek!"));
 
-        House[] houses = new House[expectedScore / 10];
-        for (int i = 0; i < houses.length; i++) {
+        var houses = new House[expectedScore / 10];
+        for (var i = 0; i < houses.length; i++) {
             houses[i] = new House(i);
         }
 
-        for (int elf = 1; elf < expectedScore / 10; elf++) {
-            for (int i = elf; i < houses.length; i += elf) {
+        for (var elf = 1; elf < expectedScore / 10; elf++) {
+            for (var i = elf; i < houses.length; i += elf) {
                 houses[i].presents += elf * 10;
             }
         }
@@ -24,22 +24,22 @@ public class Day20 {
                      .filter(house -> house.presents > expectedScore)
                      .mapToInt(house -> house.number)
                      .min()
-                     .getAsInt();
+                     .orElseThrow(() -> new AssertionError("Ook!"));
     }
 
     public int handlePart2(Stream<String> input) {
-        int expectedScore = input.mapToInt(Integer::parseInt)
+        var expectedScore = input.mapToInt(Integer::parseInt)
                                  .findFirst()
-                                 .getAsInt();
+                                 .orElseThrow(() -> new AssertionError("Eek!"));
 
-        House[] houses = new House[expectedScore / 10];
-        for (int i = 0; i < houses.length; i++) {
+        var houses = new House[expectedScore / 10];
+        for (var i = 0; i < houses.length; i++) {
             houses[i] = new House(i);
         }
 
-        for (int elf = 1; elf < expectedScore / 10; elf++) {
-            int number = elf;
-            for (int i = 0; i < 50 && number < expectedScore / 10; i++) {
+        for (var elf = 1; elf < expectedScore / 10; elf++) {
+            var number = elf;
+            for (var i = 0; i < 50 && number < expectedScore / 10; i++) {
                 houses[number].presents += elf * 11;
                 number += elf;
             }
@@ -49,7 +49,7 @@ public class Day20 {
                      .filter(house -> house.presents >= expectedScore)
                      .mapToInt(house -> house.number)
                      .min()
-                     .getAsInt();
+                     .orElseThrow(() -> new AssertionError("Ook!"));
     }
 
     private static class House {

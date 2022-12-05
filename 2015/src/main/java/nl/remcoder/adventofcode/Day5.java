@@ -12,10 +12,10 @@ public class Day5 {
                                         .count() >= 3)
                     .map(String::toCharArray)
                     .filter(chars -> {
-                        char previouschar = chars[0];
-                        boolean niceString = false;
+                        var previouschar = chars[0];
+                        var niceString = false;
 
-                        for (int i = 1; i < chars.length; i++) {
+                        for (var i = 1; i < chars.length; i++) {
                             if (chars[i] == previouschar) {
                                 niceString = true;
                                 break;
@@ -35,13 +35,13 @@ public class Day5 {
     }
 
     private boolean doesStringFulfillFirstRule(String string) {
-        char[] chars = string.toCharArray();
+        var chars = string.toCharArray();
 
-        for (int i = 0; i < chars.length - 2; i++) {
-            String currentchars = new String(new char[]{chars[i], chars[i + 1]});
+        for (var i = 0; i < chars.length - 2; i++) {
+            var currentchars = new String(new char[]{chars[i], chars[i + 1]});
 
-            for (int j = i + 2; j < chars.length - 1; j++) {
-                String otherchars = new String(new char[]{chars[j], chars[j + 1]});
+            for (var j = i + 2; j < chars.length - 1; j++) {
+                var otherchars = new String(new char[]{chars[j], chars[j + 1]});
 
                 if (currentchars.equals(otherchars)) {
                     return true;
@@ -53,9 +53,9 @@ public class Day5 {
     }
 
     private boolean doesStringFulfillSecondRule(String string) {
-        char[] chars = string.toCharArray();
+        var chars = string.toCharArray();
 
-        for (int i = 0; i < chars.length - 2; i++) {
+        for (var i = 0; i < chars.length - 2; i++) {
             if (chars[i] == chars[i + 2]) {
                 return true;
             }

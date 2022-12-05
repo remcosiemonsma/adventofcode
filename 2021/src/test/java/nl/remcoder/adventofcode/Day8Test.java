@@ -32,7 +32,7 @@ class Day8Test {
                       gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
                       """;
 
-        assertEquals(26, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(26, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -47,7 +47,7 @@ class Day8Test {
                       acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf
                       """;
 
-        assertEquals(5353, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(5353, testSubject.handlePart2(data.lines()));
     }
 
     @Test
@@ -65,7 +65,7 @@ class Day8Test {
                       gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
                       """;
 
-        assertEquals(61229, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(61229, testSubject.handlePart2(data.lines()));
     }
 
     @Test

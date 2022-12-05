@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day16Test {
     private Day16 testSubject;

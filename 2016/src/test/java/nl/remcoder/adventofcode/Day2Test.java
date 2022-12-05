@@ -24,7 +24,7 @@ public class Day2Test {
                       "LURDL\n" +
                       "UUUUD";
 
-        assertEquals("1985", testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals("1985", testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class Day2Test {
                       "LURDL\n" +
                       "UUUUD";
 
-        assertEquals("5DB3", testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals("5DB3", testSubject.handlePart2(data.lines()));
     }
 
     @Test

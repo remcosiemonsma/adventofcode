@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day7Test {
     private Day7 testSubject;
@@ -19,122 +18,130 @@ public class Day7Test {
 
     @Test
     public void part1Case1() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "d -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      d -> a""";
 
-        assertEquals(72, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(72, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case2() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "e -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      e -> a""";
 
-        assertEquals(507, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(507, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case3() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "f -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      f -> a""";
 
-        assertEquals(492, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(492, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case4() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "g -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      g -> a""";
 
-        assertEquals(114, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(114, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case5() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "h -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      h -> a""";
 
-        assertEquals(65412, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(65412, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case6() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "i -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      i -> a""";
 
-        assertEquals(65079, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(65079, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case7() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "x -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      x -> a""";
 
-        assertEquals(123, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(123, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case8() {
-        String data = "123 -> x\n" +
-                      "456 -> y\n" +
-                      "x AND y -> d\n" +
-                      "x OR y -> e\n" +
-                      "x LSHIFT 2 -> f\n" +
-                      "y RSHIFT 2 -> g\n" +
-                      "NOT x -> h\n" +
-                      "NOT y -> i\n" +
-                      "y -> a";
+        String data = """
+                      123 -> x
+                      456 -> y
+                      x AND y -> d
+                      x OR y -> e
+                      x LSHIFT 2 -> f
+                      y RSHIFT 2 -> g
+                      NOT x -> h
+                      NOT y -> i
+                      y -> a""";
 
-        assertEquals(456, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(456, testSubject.handlePart1(data.lines()));
     }
 
     @Test

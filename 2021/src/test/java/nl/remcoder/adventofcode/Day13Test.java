@@ -43,7 +43,7 @@ class Day13Test {
                       fold along x=5
                       """;
 
-        assertEquals(17, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(17, testSubject.handlePart1(data.lines()));
     }
 
     @Test

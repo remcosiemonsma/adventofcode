@@ -40,7 +40,7 @@ class Day14Test {
                       CN -> C
                       """;
 
-        assertEquals(1588, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1588, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -72,7 +72,7 @@ class Day14Test {
                       CN -> C
                       """;
 
-        assertEquals(2188189693529L, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(2188189693529L, testSubject.handlePart2(data.lines()));
     }
 
     @Test

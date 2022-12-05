@@ -12,25 +12,9 @@ public class Day9 {
     private static final Pattern DISTANCE_PATTERN = Pattern.compile("(\\w+) to (\\w+) = (\\d+)");
 
     public int handlePart1(Stream<String> input) {
-        Map<String, Node> nodes = new HashMap<>();
+        var nodes = new HashMap<String, Node>();
 
-        input.forEach(line -> {
-            Matcher matcher = DISTANCE_PATTERN.matcher(line);
-
-            if (matcher.matches()) {
-                String start = matcher.group(1);
-                String end = matcher.group(2);
-                int distance = Integer.parseInt(matcher.group(3));
-
-                Node first = nodes.computeIfAbsent(start, Node::new);
-                Node second = nodes.computeIfAbsent(end, Node::new);
-
-                first.distances.put(second, distance);
-                second.distances.put(first, distance);
-            } else {
-                throw new AssertionError("Line did not match regex! " + line);
-            }
-        });
+        input.forEach(line -> processDistance(nodes, line));
 
         Node start = new Node("start");
 
@@ -44,28 +28,14 @@ public class Day9 {
         return calculateRoutes(start, visitedNodes).stream()
                                                    .mapToInt(Integer::intValue)
                                                    .min()
-                                                   .getAsInt();
+                                                   .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public int handlePart2(Stream<String> input) {
-        Map<String, Node> nodes = new HashMap<>();
+        var nodes = new HashMap<String, Node>();
 
         input.forEach(line -> {
-            Matcher matcher = DISTANCE_PATTERN.matcher(line);
-
-            if (matcher.matches()) {
-                String start = matcher.group(1);
-                String end = matcher.group(2);
-                int distance = Integer.parseInt(matcher.group(3));
-
-                Node first = nodes.computeIfAbsent(start, Node::new);
-                Node second = nodes.computeIfAbsent(end, Node::new);
-
-                first.distances.put(second, distance);
-                second.distances.put(first, distance);
-            } else {
-                throw new AssertionError("Line did not match regex! " + line);
-            }
+            processDistance(nodes, line);
         });
 
         Node start = new Node("start");
@@ -80,7 +50,23 @@ public class Day9 {
         return calculateRoutes(start, visitedNodes).stream()
                                                    .mapToInt(Integer::intValue)
                                                    .max()
-                                                   .getAsInt();
+                                                   .orElseThrow(() -> new AssertionError("Eek!"));
+    }
+
+    private static void processDistance(HashMap<String, Node> nodes, String line) {
+        Matcher matcher = DISTANCE_PATTERN.matcher(line);
+
+        if (matcher.matches()) {
+            String start = matcher.group(1);
+            String end = matcher.group(2);
+            int distance = Integer.parseInt(matcher.group(3));
+
+            Node first = nodes.computeIfAbsent(start, Node::new);
+            Node second = nodes.computeIfAbsent(end, Node::new);
+
+            first.distances.put(second, distance);
+            second.distances.put(first, distance);
+        }
     }
 
     private List<Integer> calculateRoutes(Node node, List<Node> visitedNodes) {

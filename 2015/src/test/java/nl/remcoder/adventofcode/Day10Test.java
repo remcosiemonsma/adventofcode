@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day10Test {
     private Day10 testSubject;
@@ -21,7 +20,7 @@ public class Day10Test {
     public void part1Case1() {
         String data = "1";
 
-        assertEquals(82350, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(82350, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -34,7 +33,7 @@ public class Day10Test {
     public void part2Case1() {
         String data = "1";
 
-        assertEquals(1166642, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(1166642, testSubject.handlePart2(data.lines()));
     }
 
     @Test

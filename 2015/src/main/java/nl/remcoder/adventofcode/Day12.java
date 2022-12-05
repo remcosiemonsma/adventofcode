@@ -10,11 +10,12 @@ import java.util.stream.Stream;
 
 public class Day12 {
     public int handlePart1(Stream<String> input) {
-        String data = input.findFirst().get();
+        var data = input.findFirst()
+                        .orElseThrow(() -> new AssertionError("Eek!"));
 
-        String replaced = data.replaceAll("[^\\d-,]", "");
+        var replaced = data.replaceAll("[^\\d-,]", "");
 
-        String[] numbers = replaced.split(",");
+        var numbers = replaced.split(",");
 
         return Arrays.stream(numbers)
                      .filter(number -> !number.isEmpty())
@@ -23,13 +24,14 @@ public class Day12 {
     }
 
     public int handlePart2(Stream<String> input) {
-        String data = input.findFirst().get();
+        var data = input.findFirst()
+                        .orElseThrow(() -> new AssertionError("Eek!"));
 
         if (data.charAt(0) == '{') {
-            JSONObject jsonObject = new JSONObject(data);
+            var jsonObject = new JSONObject(data);
             return getValue(jsonObject);
         } else if (data.charAt(0) == '[') {
-            JSONArray jsonArray = new JSONArray(data);
+            var jsonArray = new JSONArray(data);
             return getValue(jsonArray);
         }
 
@@ -41,14 +43,12 @@ public class Day12 {
 
         if (object instanceof Integer) {
             total = (int) object;
-        } else if (object instanceof JSONArray) {
-            JSONArray jsonArray = (JSONArray) object;
+        } else if (object instanceof JSONArray jsonArray) {
             total = IntStream.range(0, jsonArray.length())
                              .map(position -> getValue(jsonArray.get(position)))
                              .sum();
-        } else if (object instanceof JSONObject) {
-            JSONObject jsonObject = (JSONObject) object;
-            JSONArray names = jsonObject.names();
+        } else if (object instanceof JSONObject jsonObject) {
+            var names = jsonObject.names();
 
             for (int position = 0; position < names.length(); position++) {
                 String name = (String) names.get(position);

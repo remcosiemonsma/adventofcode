@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day14Test {
     private Day14 testSubject;
@@ -19,10 +18,12 @@ public class Day14Test {
 
     @Test
     public void part1Case1() {
-        String data = "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.\n" +
-                      "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.";
+        String data = """
+                      Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
+                      Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
+                      """;
 
-        assertEquals(2660, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(2660, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -33,10 +34,12 @@ public class Day14Test {
 
     @Test
     public void part2Case1() {
-        String data = "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.\n" +
-                      "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.";
+        String data = """
+                      Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
+                      Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
+                      """;
 
-        assertEquals(1564, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(1564, testSubject.handlePart2(data.lines()));
     }
 
     @Test

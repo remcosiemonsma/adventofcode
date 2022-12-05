@@ -26,7 +26,7 @@ public class Day12Test {
                       "jnz a 2\n" +
                       "dec a";
 
-        assertEquals(42, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(42, testSubject.handlePart1(data.lines()));
     }
 
     @Test
