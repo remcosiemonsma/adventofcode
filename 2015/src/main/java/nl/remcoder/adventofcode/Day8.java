@@ -14,15 +14,15 @@ public class Day8 {
     }
 
     private int calculateExpandedSizeDifference(String line) {
-        String expanded = expandString(line);
+        var expanded = expandString(line);
 
         return expanded.length() - line.length();
     }
 
     private String expandString(String line) {
-        StringBuilder stringBuilder = new StringBuilder("\"");
+        var stringBuilder = new StringBuilder("\"");
 
-        for (char c : line.toCharArray()) {
+        for (var c : line.toCharArray()) {
             if (c != '"' && c != '\\') {
                 stringBuilder.append(c);
             } else {
@@ -37,25 +37,25 @@ public class Day8 {
     }
 
     private int calculateReducedSizeDifference(String line) {
-        String reduced = reduceString(line);
+        var reduced = reduceString(line);
 
         return line.length() - reduced.length();
     }
 
     private String reduceString(String line) {
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
         for (int position = 0; position < line.length(); position++) {
-            char c = line.charAt(position);
+            var c = line.charAt(position);
             if (c != '"' && c != '\\') {
                 stringBuilder.append(c);
             } else if (c == '\\') {
-                char next = line.charAt(++position);
+                var next = line.charAt(++position);
                 if (next == 'x') {
-                    char first = line.charAt(++position);
-                    char second = line.charAt(++position);
+                    var first = line.charAt(++position);
+                    var second = line.charAt(++position);
 
-                    char value = (char) Integer.parseInt(String.valueOf(new char[]{first, second}), 16);
+                    var value = (char) Integer.parseInt(String.valueOf(new char[]{first, second}), 16);
                     stringBuilder.append(value);
                 } else {
                     stringBuilder.append(next);

@@ -26,7 +26,7 @@ class Day22Test {
                       on x=10..10,y=10..10,z=10..10
                       """;
 
-        assertEquals(39, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(39, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -56,7 +56,7 @@ class Day22Test {
                       on x=967..23432,y=45373..81175,z=27513..53682
                       """;
 
-        assertEquals(590784, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(590784, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -130,7 +130,7 @@ class Day22Test {
                       off x=-93533..-4276,y=-16170..68771,z=-104985..-24507
                       """;
 
-        assertEquals(2758514936282235L, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(2758514936282235L, testSubject.handlePart2(data.lines()));
     }
 
     @Test

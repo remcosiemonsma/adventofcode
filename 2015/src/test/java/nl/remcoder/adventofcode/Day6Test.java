@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day6Test {
     private Day6 testSubject;
@@ -21,21 +20,21 @@ public class Day6Test {
     public void part1Case1() {
         String data = "turn on 0,0 through 999,999";
 
-        assertEquals(1_000_000, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1_000_000, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case2() {
         String data = "toggle 0,0 through 999,0";
 
-        assertEquals(1_000, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1_000, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case3() {
         String data = "turn on 0,0 through 999,999\ntoggle 0,0 through 999,0\nturn off 499,499 through 500,500";
 
-        assertEquals(998_996, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(998_996, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -48,14 +47,14 @@ public class Day6Test {
     public void part2Case1() {
         String data = "turn on 0,0 through 0,0";
 
-        assertEquals(1, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(1, testSubject.handlePart2(data.lines()));
     }
 
     @Test
     public void part2Case2() {
         String data = "toggle 0,0 through 999,999";
 
-        assertEquals(2_000_000, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(2_000_000, testSubject.handlePart2(data.lines()));
     }
 
     @Test

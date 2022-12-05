@@ -7,62 +7,49 @@ import java.util.stream.Stream;
 
 public class Day4 {
     public int handlePart1(Stream<String> input) {
-        String line = input.findFirst().get();
+        var line = input.findFirst()
+                           .orElseThrow(() -> new AssertionError("Eek!"));;
 
         return IntStream.iterate(0, value -> value + 1)
                         .parallel()
-                        .filter(value -> {
-                            MessageDigest md5;
-                            try {
-                                md5 = MessageDigest.getInstance("MD5");
-                            } catch (NoSuchAlgorithmException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            String newline = line + value;
-
-                            byte[] data = newline.getBytes();
-
-                            byte[] md5data = md5.digest(data);
-
-                            String md5line = byteArrayToHex(md5data);
-
-                            return md5line.startsWith("00000");
-                        })
+                        .filter(value -> isValid(line, value, "00000"))
                         .findFirst()
-                        .getAsInt();
+                        .orElseThrow(() -> new AssertionError("Ook!"));
     }
 
     public int handlePart2(Stream<String> input) {
-        String line = input.findFirst().get();
+        var line = input.findFirst()
+                           .orElseThrow(() -> new AssertionError("Eek!"));
 
         return IntStream.iterate(0, value -> value + 1)
                         .parallel()
-                        .filter(value -> {
-                            MessageDigest md5;
-                            try {
-                                md5 = MessageDigest.getInstance("MD5");
-                            } catch (NoSuchAlgorithmException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            String newline = line + value;
-
-                            byte[] data = newline.getBytes();
-
-                            byte[] md5data = md5.digest(data);
-
-                            String md5line = byteArrayToHex(md5data);
-
-                            return md5line.startsWith("000000");
-                        })
+                        .filter(value -> isValid(line, value, "000000"))
                         .findFirst()
-                        .getAsInt();
+                        .orElseThrow(() -> new AssertionError("Ook!"));
+    }
+
+    private boolean isValid(String line, int value, String prefix) {
+        MessageDigest md5;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        var newline = line + value;
+
+        var data = newline.getBytes();
+
+        var md5data = md5.digest(data);
+
+        var md5line = byteArrayToHex(md5data);
+
+        return md5line.startsWith(prefix);
     }
 
     private String byteArrayToHex(byte[] a) {
-        StringBuilder sb = new StringBuilder(a.length * 2);
-        for (byte b : a) {
+        var sb = new StringBuilder(a.length * 2);
+        for (var b : a) {
             sb.append(String.format("%02x", b));
         }
         return sb.toString();

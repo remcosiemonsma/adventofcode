@@ -21,21 +21,21 @@ public class Day1Test {
     public void part1Case1() {
         String data = "R2, L3";
 
-        assertEquals(5, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(5, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case2() {
         String data = "R2, R2, R2";
 
-        assertEquals(2, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(2, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case3() {
         String data = "R5, L5, R5, R3";
 
-        assertEquals(12, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(12, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class Day1Test {
     public void part2Case1() {
         String data = "R8, R4, R4, R8";
 
-        assertEquals(4, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(4, testSubject.handlePart2(data.lines()));
     }
 
     @Test

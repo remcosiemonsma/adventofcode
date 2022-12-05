@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day9Test {
     private Day9 testSubject;
@@ -19,11 +18,13 @@ public class Day9Test {
 
     @Test
     public void part1Case1() {
-        String data = "London to Dublin = 464\n" +
-                      "London to Belfast = 518\n" +
-                      "Dublin to Belfast = 141";
+        String data = """
+                      London to Dublin = 464
+                      London to Belfast = 518
+                      Dublin to Belfast = 141
+                      """;
 
-        assertEquals(605, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(605, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -34,11 +35,13 @@ public class Day9Test {
 
     @Test
     public void part2Case1() {
-        String data = "London to Dublin = 464\n" +
-                      "London to Belfast = 518\n" +
-                      "Dublin to Belfast = 141";
+        String data = """
+                      London to Dublin = 464
+                      London to Belfast = 518
+                      Dublin to Belfast = 141
+                      """;
 
-        assertEquals(982, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(982, testSubject.handlePart2(data.lines()));
     }
 
     @Test

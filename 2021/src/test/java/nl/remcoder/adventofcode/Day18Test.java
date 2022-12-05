@@ -23,7 +23,7 @@ class Day18Test {
                       [9,1]
                       """;
 
-        assertEquals(29, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(29, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -32,7 +32,7 @@ class Day18Test {
                       [1,9]
                       """;
 
-        assertEquals(21, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(21, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -41,7 +41,7 @@ class Day18Test {
                       [[9,1],[1,9]]
                       """;
 
-        assertEquals(129, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(129, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -50,7 +50,7 @@ class Day18Test {
                       [[1,2],[[3,4],5]]
                       """;
 
-        assertEquals(143, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(143, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -59,7 +59,7 @@ class Day18Test {
                       [[[[0,7],4],[[7,8],[6,0]]],[8,1]]
                       """;
 
-        assertEquals(1384, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1384, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -68,7 +68,7 @@ class Day18Test {
                       [[[[1,1],[2,2]],[3,3]],[4,4]]
                       """;
 
-        assertEquals(445, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(445, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -77,7 +77,7 @@ class Day18Test {
                       [[[[3,0],[5,3]],[4,4]],[5,5]]
                       """;
 
-        assertEquals(791, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(791, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -86,7 +86,7 @@ class Day18Test {
                       [[[[5,0],[7,4]],[5,5]],[6,6]]
                       """;
 
-        assertEquals(1137, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1137, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -95,7 +95,7 @@ class Day18Test {
                       [[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]
                       """;
 
-        assertEquals(3488, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(3488, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -113,7 +113,7 @@ class Day18Test {
                       [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
                       """;
 
-        assertEquals(4140, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(4140, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -137,7 +137,7 @@ class Day18Test {
                       [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
                       """;
 
-        assertEquals(3993, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(3993, testSubject.handlePart2(data.lines()));
     }
 
     @Test

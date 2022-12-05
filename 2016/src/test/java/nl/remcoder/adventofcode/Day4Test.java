@@ -24,7 +24,7 @@ public class Day4Test {
                       "not-a-real-room-404[oarel]\n" +
                       "totally-real-room-200[decoy]";
 
-        assertEquals(1514, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1514, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class Day4Test {
     public void part2Case1() {
         String data = "qzmt-zixmtkozy-ivhz-343[zimth]";
 
-        assertEquals(0, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart2(data.lines()));
     }
 
     @Test

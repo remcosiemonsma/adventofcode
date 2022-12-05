@@ -23,7 +23,7 @@ class Day17Test {
                       target area: x=20..30, y=-10..-5
                       """;
 
-        assertEquals(45, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(45, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -38,7 +38,7 @@ class Day17Test {
                       target area: x=20..30, y=-10..-5
                       """;
 
-        assertEquals(112, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(112, testSubject.handlePart2(data.lines()));
     }
 
     @Test

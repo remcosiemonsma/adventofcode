@@ -29,7 +29,7 @@ class Day20Test {
                       ..###
                       """;
 
-        assertEquals(35, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(35, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -50,7 +50,7 @@ class Day20Test {
                       ..###
                       """;
 
-        assertEquals(3351, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(3351, testSubject.handlePart2(data.lines()));
     }
 
     @Test

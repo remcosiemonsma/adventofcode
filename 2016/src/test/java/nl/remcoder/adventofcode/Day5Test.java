@@ -21,7 +21,7 @@ public class Day5Test {
     public void part1Case1() throws Exception {
         String data = "abc";
 
-        assertEquals("18f47a30", testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals("18f47a30", testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class Day5Test {
     public void part2Case1() throws Exception {
         String data = "abc";
 
-        assertEquals("05ace8e3", testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals("05ace8e3", testSubject.handlePart2(data.lines()));
     }
 
     @Test

@@ -8,33 +8,33 @@ import java.util.stream.Stream;
 
 public class Day21 {
     public int handlePart1(Stream<String> input) {
-        List<String> bossData = input.toList();
+        var bossData = input.toList();
 
-        Warrior boss = createWarrior(bossData);
-        Warrior player = createPlayer();
+        var boss = createWarrior(bossData);
+        var player = createPlayer();
 
-        Shop shop = createShop();
+        var shop = createShop();
 
-        Game start = new Game(shop, player, boss);
+        var start = new Game(shop, player, boss);
         start.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner());
     }
 
     public int handlePart2(Stream<String> input) {
-        List<String> bossData = input.toList();
+        var bossData = input.toList();
 
-        Warrior boss = createWarrior(bossData);
-        Warrior player = createPlayer();
+        var boss = createWarrior(bossData);
+        var player = createPlayer();
 
-        Shop shop = createShop();
+        var shop = createShop();
 
-        Game start = new Game(shop, player, boss);
+        var start = new Game(shop, player, boss);
         start.setDistance(0);
 
-        List<Game> games = new ArrayList<>();
+        var games = new ArrayList<Game>();
 
-        List<Game> nextGames = new ArrayList<>();
+        var nextGames = new ArrayList<Game>();
         nextGames.add(start);
 
         while (!nextGames.isEmpty()) {
@@ -49,46 +49,43 @@ public class Day21 {
                           .filter(game -> !game.isPlayerWinner())
                           .mapToLong(Game::getDistance)
                           .max()
-                          .getAsLong();
+                          .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private Shop createShop() {
-        Weapon dagger = new Weapon("Dagger", 8, 4);
-        Weapon shortsword = new Weapon("Shortsword", 10, 5);
-        Weapon warhammer = new Weapon("Warhammer", 25, 6);
-        Weapon longsword = new Weapon("Longsword", 40, 7);
-        Weapon greataxe = new Weapon("Greataxe", 74, 8);
+        var dagger = new Weapon("Dagger", 8, 4);
+        var shortsword = new Weapon("Shortsword", 10, 5);
+        var warhammer = new Weapon("Warhammer", 25, 6);
+        var longsword = new Weapon("Longsword", 40, 7);
+        var greataxe = new Weapon("Greataxe", 74, 8);
 
-        Armor leather = new Armor("Leather", 13, 1);
-        Armor chainmail = new Armor("Chainmail", 31, 2);
-        Armor splintmail = new Armor("Splintmail", 53, 3);
-        Armor bandedmail = new Armor("Bandedmail", 75, 4);
-        Armor platemail = new Armor("Platemail", 102, 5);
+        var leather = new Armor("Leather", 13, 1);
+        var chainmail = new Armor("Chainmail", 31, 2);
+        var splintmail = new Armor("Splintmail", 53, 3);
+        var bandedmail = new Armor("Bandedmail", 75, 4);
+        var platemail = new Armor("Platemail", 102, 5);
 
-        Ring damage1 = new Ring("Damage +1 ", 25, 1, 0);
-        Ring damage2 = new Ring("Damage +2 ", 50, 2, 0);
-        Ring damage3 = new Ring("Damage +3 ", 100, 3, 0);
-        Ring defense1 = new Ring("Defense +1", 20, 0, 1);
-        Ring defense2 = new Ring("Defense +2", 40, 0, 2);
-        Ring defense3 = new Ring("Defense +3", 80, 0, 3);
+        var damage1 = new Ring("Damage +1 ", 25, 1, 0);
+        var damage2 = new Ring("Damage +2 ", 50, 2, 0);
+        var damage3 = new Ring("Damage +3 ", 100, 3, 0);
+        var defense1 = new Ring("Defense +1", 20, 0, 1);
+        var defense2 = new Ring("Defense +2", 40, 0, 2);
+        var defense3 = new Ring("Defense +3", 80, 0, 3);
 
-        Shop shop = new Shop(Set.of(leather, chainmail, splintmail, bandedmail, platemail),
-                             Set.of(dagger, shortsword, warhammer, longsword, greataxe),
-                             Set.of(damage1, damage2, damage3, defense1, defense2, defense3));
-        return shop;
+        return new Shop(Set.of(leather, chainmail, splintmail, bandedmail, platemail),
+                        Set.of(dagger, shortsword, warhammer, longsword, greataxe),
+                        Set.of(damage1, damage2, damage3, defense1, defense2, defense3));
     }
 
     private Warrior createPlayer() {
-        Warrior player = new Warrior("Player", 0, 0, null, null, null, null);
-        return player;
+        return new Warrior("Player", 0, 0, null, null, null, null);
     }
 
     private Warrior createWarrior(List<String> bossData) {
-        Warrior boss = new Warrior("Boss",
-                                   Integer.parseInt(bossData.get(1).replace("Damage: ", "")),
-                                   Integer.parseInt(bossData.get(2).replace("Armor: ", "")),
-                                   null, null, null, null);
-        return boss;
+        return new Warrior("Boss",
+                           Integer.parseInt(bossData.get(1).replace("Damage: ", "")),
+                           Integer.parseInt(bossData.get(2).replace("Armor: ", "")),
+                           null, null, null, null);
     }
 
     private static class Game implements Node {
@@ -108,13 +105,13 @@ public class Day21 {
         }
 
         private Warrior determineWinner(Warrior player, Warrior boss) {
-            int playerDamage = player.getTotalDamage();
-            int playerDefense = player.getTotalDefense();
-            int bossDamage = boss.getTotalDamage();
-            int bossDefense = boss.getTotalDefense();
+            var playerDamage = player.getTotalDamage();
+            var playerDefense = player.getTotalDefense();
+            var bossDamage = boss.getTotalDamage();
+            var bossDefense = boss.getTotalDefense();
 
-            int playerAttack = Math.max(playerDamage - bossDefense, 1);
-            int bossAttack = Math.max(bossDamage - playerDefense, 1);
+            var playerAttack = Math.max(playerDamage - bossDefense, 1);
+            var bossAttack = Math.max(bossDamage - playerDefense, 1);
             while (player.health > 0 && boss.health > 0) {
                 boss.doDamage(playerAttack);
                 if (boss.health > 0) {
@@ -130,69 +127,69 @@ public class Day21 {
 
         @Override
         public Map<Game, Long> getNeighbors() {
-            Map<Game, Long> neighbors = new HashMap<>();
+            var neighbors = new HashMap<Game, Long>();
 
             if (player.weapon == null) {
-                for (Weapon weapon : shop.weapons) {
-                    Shop newShop = new Shop(shop.armors, Set.of(), shop.rings);
-                    Warrior newPlayer =
+                for (var weapon : shop.weapons) {
+                    var newShop = new Shop(shop.armors, Set.of(), shop.rings);
+                    var newPlayer =
                             new Warrior(player.name, player.damage, player.defense, player.armor, weapon,
                                         player.leftRing,
                                         player.rightRing);
-                    Warrior newBoss =
+                    var newBoss =
                             new Warrior(boss.name, boss.damage, boss.defense, boss.armor, boss.weapon, boss.leftRing,
                                         boss.rightRing);
 
-                    Game game = new Game(newShop, newPlayer, newBoss);
+                    var game = new Game(newShop, newPlayer, newBoss);
                     neighbors.put(game, (long) weapon.cost);
                 }
             } else {
-                for (Armor armor : shop.armors) {
-                    Shop newShop = new Shop(Set.of(), shop.weapons, shop.rings);
-                    Warrior newPlayer =
+                for (var armor : shop.armors) {
+                    var newShop = new Shop(Set.of(), shop.weapons, shop.rings);
+                    var newPlayer =
                             new Warrior(player.name, player.damage, player.defense, armor, player.weapon,
                                         player.leftRing,
                                         player.rightRing);
-                    Warrior newBoss =
+                    var newBoss =
                             new Warrior(boss.name, boss.damage, boss.defense, boss.armor, boss.weapon, boss.leftRing,
                                         boss.rightRing);
 
-                    Game game = new Game(newShop, newPlayer, newBoss);
+                    var game = new Game(newShop, newPlayer, newBoss);
                     neighbors.put(game, (long) armor.cost);
                 }
                 if (player.leftRing == null) {
-                    for (Ring leftRing : shop.rings) {
-                        Set<Ring> newRings = new HashSet<>(shop.rings);
+                    for (var leftRing : shop.rings) {
+                        var newRings = new HashSet<>(shop.rings);
                         newRings.remove(leftRing);
-                        Shop newShop = new Shop(shop.armors, shop.weapons, newRings);
-                        Warrior newPlayer =
+                        var newShop = new Shop(shop.armors, shop.weapons, newRings);
+                        var newPlayer =
                                 new Warrior(player.name, player.damage, player.defense, player.armor, player.weapon,
                                             leftRing,
                                             player.rightRing);
-                        Warrior newBoss =
+                        var newBoss =
                                 new Warrior(boss.name, boss.damage, boss.defense, boss.armor, boss.weapon,
                                             boss.leftRing,
                                             boss.rightRing);
 
-                        Game game = new Game(newShop, newPlayer, newBoss);
+                        var game = new Game(newShop, newPlayer, newBoss);
                         neighbors.put(game, (long) leftRing.cost);
                     }
                 }
                 if (player.rightRing == null) {
-                    for (Ring rightRing : shop.rings) {
-                        Set<Ring> newRings = new HashSet<>(shop.rings);
+                    for (var rightRing : shop.rings) {
+                        var newRings = new HashSet<>(shop.rings);
                         newRings.remove(rightRing);
-                        Shop newShop = new Shop(shop.armors, shop.weapons, newRings);
-                        Warrior newPlayer =
+                        var newShop = new Shop(shop.armors, shop.weapons, newRings);
+                        var newPlayer =
                                 new Warrior(player.name, player.damage, player.defense, player.armor, player.weapon,
                                             player.leftRing,
                                             rightRing);
-                        Warrior newBoss =
+                        var newBoss =
                                 new Warrior(boss.name, boss.damage, boss.defense, boss.armor, boss.weapon,
                                             boss.leftRing,
                                             boss.rightRing);
 
-                        Game game = new Game(newShop, newPlayer, newBoss);
+                        var game = new Game(newShop, newPlayer, newBoss);
                         neighbors.put(game, (long) rightRing.cost);
                     }
                 }
@@ -257,7 +254,7 @@ public class Day21 {
         }
 
         public int getTotalDamage() {
-            int totalDamage = this.damage;
+            var totalDamage = this.damage;
             if (this.weapon != null) {
                 totalDamage += weapon.damage;
             }
@@ -296,7 +293,7 @@ public class Day21 {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            Warrior warrior = (Warrior) o;
+            var warrior = (Warrior) o;
             return Objects.equals(name, warrior.name);
         }
 

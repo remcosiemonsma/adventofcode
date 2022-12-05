@@ -4,9 +4,10 @@ import java.util.stream.Stream;
 
 public class Day10 {
     public int handlePart1(Stream<String> input) {
-        String sequence = input.findFirst().get();
+        var sequence = input.findFirst()
+                            .orElseThrow(() -> new AssertionError("Eek!"));
 
-        for (int round = 0; round < 40; round++) {
+        for (var round = 0; round < 40; round++) {
             sequence = playRound(sequence);
         }
 
@@ -14,9 +15,10 @@ public class Day10 {
     }
 
     public int handlePart2(Stream<String> input) {
-        String sequence = input.findFirst().get();
+        var sequence = input.findFirst()
+                            .orElseThrow(() -> new AssertionError("Eek!"));
 
-        for (int round = 0; round < 50; round++) {
+        for (var round = 0; round < 50; round++) {
             sequence = playRound(sequence);
         }
 
@@ -24,13 +26,13 @@ public class Day10 {
     }
 
     private String playRound(String sequence) {
-        StringBuilder sequenceBuilder = new StringBuilder();
+        var sequenceBuilder = new StringBuilder();
 
         char previouschar = sequence.charAt(0);
         int amountOfChars = 1;
 
-        for (int position = 1; position < sequence.length(); position++) {
-            char nextchar = sequence.charAt(position);
+        for (var position = 1; position < sequence.length(); position++) {
+            var nextchar = sequence.charAt(position);
 
             if (nextchar == previouschar) {
                 amountOfChars++;

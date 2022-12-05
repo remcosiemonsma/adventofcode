@@ -12,16 +12,19 @@ public class Day14 {
             Pattern.compile("(.*) can fly (\\d*) km/s for (\\d*) seconds, but then must rest for (\\d*) seconds.");
 
     public int handlePart1(Stream<String> input) {
-        List<Reindeer> reindeer = input.map(REINDEER_PATTERN::matcher)
+        var reindeer = input.map(REINDEER_PATTERN::matcher)
                                        .filter(Matcher::matches)
                                        .map(this::mapToReindeer)
-                                       .collect(Collectors.toList());
+                                       .toList();
 
-        for (int i = 0; i < 2503; i++) {
+        for (var i = 0; i < 2503; i++) {
             reindeer.forEach(Reindeer::tick);
         }
 
-        return reindeer.stream().mapToInt(Reindeer::getDistance).max().getAsInt();
+        return reindeer.stream()
+                       .mapToInt(Reindeer::getDistance)
+                       .max()
+                       .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private Reindeer mapToReindeer(Matcher matcher) {
@@ -35,17 +38,24 @@ public class Day14 {
         List<Reindeer> reindeer = input.map(REINDEER_PATTERN::matcher)
                                        .filter(Matcher::matches)
                                        .map(this::mapToReindeer)
-                                       .collect(Collectors.toList());
+                                       .toList();
 
         for (int i = 0; i < 2503; i++) {
             reindeer.forEach(Reindeer::tick);
-            int maxDistance = reindeer.stream().mapToInt(Reindeer::getDistance).max().getAsInt();
+            int maxDistance = reindeer.stream()
+                                      .mapToInt(Reindeer::getDistance)
+                                      .max()
+                                      .orElseThrow(() -> new AssertionError("Eek!"));
             reindeer.stream()
                     .filter(leadingReindeer -> leadingReindeer.getDistance() == maxDistance)
                     .forEach(Reindeer::incrementScore);
         }
 
-        return reindeer.stream().mapToInt(Reindeer::getScore).max().getAsInt();
+        return reindeer
+                .stream()
+                .mapToInt(Reindeer::getScore)
+                .max()
+                .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private static class Reindeer {
@@ -69,21 +79,25 @@ public class Day14 {
 
         public void tick() {
             switch (state) {
-                case FLYING:
-                    runperiod++;
-                    distance += speed;
-                    if (runperiod == runtime) {
-                        state = State.RESTING;
-                        restperiod = resttime;
-                    }
-                    break;
-                case RESTING:
-                    restperiod--;
-                    if (restperiod == 0) {
-                        state = State.FLYING;
-                        runperiod = 0;
-                    }
-                    break;
+                case FLYING -> fly();
+                case RESTING -> rest();
+            }
+        }
+
+        private void rest() {
+            restperiod--;
+            if (restperiod == 0) {
+                state = State.FLYING;
+                runperiod = 0;
+            }
+        }
+
+        private void fly() {
+            runperiod++;
+            distance += speed;
+            if (runperiod == runtime) {
+                state = State.RESTING;
+                restperiod = resttime;
             }
         }
 

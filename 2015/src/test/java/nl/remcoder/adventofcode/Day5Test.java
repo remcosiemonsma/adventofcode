@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Day5Test {
     private Day5 testSubject;
@@ -21,35 +20,35 @@ public class Day5Test {
     public void part1Case1() {
         String data = "ugknbfddgicrmopn";
 
-        assertEquals(1, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case2() {
         String data = "aaa";
 
-        assertEquals(1, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(1, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case3() {
         String data = "jchzalrnumimnmhp";
 
-        assertEquals(0, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case4() {
         String data = "haegwjzuvuyypxyu";
 
-        assertEquals(0, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart1(data.lines()));
     }
 
     @Test
     public void part1Case5() {
         String data = "dvszwmarrgswjxmb";
 
-        assertEquals(0, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -62,28 +61,28 @@ public class Day5Test {
     public void part2Case1() {
         String data = "qjhvhtzxzqqjkmpb";
 
-        assertEquals(1, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(1, testSubject.handlePart2(data.lines()));
     }
 
     @Test
     public void part2Case2() {
         String data = "xxyxx";
 
-        assertEquals(1, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(1, testSubject.handlePart2(data.lines()));
     }
 
     @Test
     public void part2Case3() {
         String data = "uurcxstgmygtbstg";
 
-        assertEquals(0, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart2(data.lines()));
     }
 
     @Test
     public void part2Case4() {
         String data = "ieodomkazucvgmuy";
 
-        assertEquals(0, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart2(data.lines()));
     }
 
     @Test

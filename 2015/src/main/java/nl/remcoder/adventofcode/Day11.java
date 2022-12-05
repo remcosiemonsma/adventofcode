@@ -6,16 +6,17 @@ import java.util.stream.Stream;
 
 public class Day11 {
     public String handlePart1(Stream<String> input) {
-        String password = input.findFirst().get();
+        var password = input.findFirst()
+                            .orElseThrow(() -> new AssertionError("Eek!"));
 
         if (password.contains("i")) {
-            char forbiddenChar = 'i';
+            var forbiddenChar = 'i';
             password = generatePasswordWithoutForbiddenChar(password, forbiddenChar);
         } else if (password.contains("o")) {
-            char forbiddenChar = 'o';
+            var forbiddenChar = 'o';
             password = generatePasswordWithoutForbiddenChar(password, forbiddenChar);
         } else if (password.contains("l")) {
-            char forbiddenChar = 'l';
+            var forbiddenChar = 'l';
             password = generatePasswordWithoutForbiddenChar(password, forbiddenChar);
         }
 
@@ -26,14 +27,26 @@ public class Day11 {
         return password;
     }
 
+    public String handlePart2(Stream<String> input) {
+        var previousPassword = handlePart1(input);
+
+        var password = generateNextPassword(previousPassword);
+
+        while (!isPasswordValid(password)) {
+            password = generateNextPassword(password);
+        }
+
+        return password;
+    }
+
     private String generateNextPassword(String password) {
-        StringBuilder passwordBuilder = new StringBuilder();
-        char lastChar = password.charAt(password.length() - 1);
+        var passwordBuilder = new StringBuilder();
+        var lastChar = password.charAt(password.length() - 1);
         if (lastChar < 'z') {
-            for (int position = 0; position < password.length() - 1; position++) {
+            for (var position = 0; position < password.length() - 1; position++) {
                 passwordBuilder.append(password.charAt(position));
             }
-            char nextChar = (char) (lastChar + 1);
+            var nextChar = (char) (lastChar + 1);
 
             while (nextChar == 'i' || nextChar == 'o' || nextChar == 'l' ||
                    (passwordBuilder.charAt(passwordBuilder.length() - 1) == nextChar &&
@@ -51,17 +64,17 @@ public class Day11 {
     }
 
     private String generatePasswordWithoutForbiddenChar(String password, char badchar) {
-        StringBuilder passwordBuilder = new StringBuilder();
+        var passwordBuilder = new StringBuilder();
 
-        int index = password.indexOf(badchar);
+        var index = password.indexOf(badchar);
 
-        for (int position = 0; position < index; position++) {
+        for (var position = 0; position < index; position++) {
             passwordBuilder.append(password.charAt(position));
         }
         passwordBuilder.append((char) (badchar + 1));
 
-        char nextchar = 'a';
-        int amountTimesCharUsed = 0;
+        var nextchar = 'a';
+        var amountTimesCharUsed = 0;
 
         while (passwordBuilder.length() < password.length()) {
             passwordBuilder.append(nextchar);
@@ -76,10 +89,10 @@ public class Day11 {
     }
 
     private boolean isPasswordValid(String password) {
-        boolean sequenceFound = false;
+        var sequenceFound = false;
 
-        for (char c = 'a'; c <= 'x'; c++) {
-            StringBuilder searchBuilder = new StringBuilder();
+        for (var c = 'a'; c <= 'x'; c++) {
+            var searchBuilder = new StringBuilder();
             searchBuilder.append(c);
             searchBuilder.append((char) (c + 1));
             searchBuilder.append((char) (c + 2));
@@ -95,10 +108,10 @@ public class Day11 {
 
         char previouschar = 0;
 
-        Set<Character> duplicates = new HashSet<>();
+        var duplicates = new HashSet<Character>();
 
         for (int position = 0; position < password.length(); position++) {
-            char c = password.charAt(position);
+            var c = password.charAt(position);
             if (previouschar == c) {
                 if (duplicates.contains(c)) {
                     return false;
@@ -112,17 +125,5 @@ public class Day11 {
         }
 
         return false;
-    }
-
-    public String handlePart2(Stream<String> input) {
-        String previousPassword = handlePart1(input);
-
-        String password = generateNextPassword(previousPassword);
-
-        while (!isPasswordValid(password)) {
-            password = generateNextPassword(password);
-        }
-
-        return password;
     }
 }

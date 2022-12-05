@@ -11,47 +11,49 @@ public class Day24 {
     private Set<Set<Integer>> evaluatedLoadouts = new HashSet<>();
 
     public long handlePart1(Stream<String> input) {
-        Set<Integer> packages = input.map(Integer::parseInt).collect(Collectors.toSet());
+        var packages = input.map(Integer::parseInt)
+                            .collect(Collectors.toSet());
 
-        int wantedWeight = packages.stream()
+        var wantedWeight = packages.stream()
                                    .mapToInt(Integer::intValue)
                                    .reduce(Integer::sum)
                                    .orElseThrow(() -> new AssertionError("Iik!")) / 3;
 
-        int largest = packages.stream()
+        var largest = packages.stream()
                               .max(Integer::compareTo)
                               .orElseThrow(() -> new AssertionError("Aak!"));
 
         packages.remove(largest);
 
-        LoadOut start = new LoadOut(packages, Set.of(largest), largest, 1, wantedWeight, largest);
+        var start = new LoadOut(packages, Set.of(largest), largest, 1, wantedWeight, largest);
         start.setDistance(largest);
 
         return Dijkstra.findShortestDistance(start, node -> {
-            LoadOut loadOut = (LoadOut) node;
+            var loadOut = (LoadOut) node;
             return loadOut.getWeight() == wantedWeight;
         });
     }
 
     public long handlePart2(Stream<String> input) {
-        Set<Integer> packages = input.map(Integer::parseInt).collect(Collectors.toSet());
+        var packages = input.map(Integer::parseInt)
+                            .collect(Collectors.toSet());
 
-        int wantedWeight = packages.stream()
+        var wantedWeight = packages.stream()
                                    .mapToInt(Integer::intValue)
                                    .reduce(Integer::sum)
                                    .orElseThrow(() -> new AssertionError("Iik!")) / 4;
 
-        int largest = packages.stream()
+        var largest = packages.stream()
                               .max(Integer::compareTo)
                               .orElseThrow(() -> new AssertionError("Aak!"));
 
         packages.remove(largest);
 
-        LoadOut start = new LoadOut(packages, Set.of(largest), largest, 1, wantedWeight, largest);
+        var start = new LoadOut(packages, Set.of(largest), largest, 1, wantedWeight, largest);
         start.setDistance(largest);
 
         return Dijkstra.findShortestDistance(start, node -> {
-            LoadOut loadOut = (LoadOut) node;
+            var loadOut = (LoadOut) node;
             return loadOut.getWeight() == wantedWeight;
         });
     }
@@ -78,15 +80,15 @@ public class Day24 {
 
         @Override
         public Map<? extends Node, Long> getNeighbors() {
-            Map<LoadOut, Long> neighbors = new HashMap<>();
+            var neighbors = new HashMap<LoadOut, Long>();
 
-            for (Integer present : remainingPackages) {
+            for (var present : remainingPackages) {
                 Set<Integer> newLoadout = new HashSet<>(loadOut);
                 newLoadout.add(present);
                 newLoadout = Set.copyOf(newLoadout);
                 if (evaluatedLoadouts.add(newLoadout)) {
-                    long newQE = determineQE(newLoadout);
-                    int newWeight = determineWeight(newLoadout);
+                    var newQE = determineQE(newLoadout);
+                    var newWeight = determineWeight(newLoadout);
                     if (newWeight <= wantedWeight) {
                         Set<Integer> newRemainingpackages = new HashSet<>(remainingPackages);
                         newRemainingpackages.remove(present);
@@ -94,7 +96,7 @@ public class Day24 {
 
                         long newDistance = newQE - QE;
 
-                        LoadOut loadOut =
+                        var loadOut =
                                 new LoadOut(newRemainingpackages, newLoadout, newQE, newLoadout.size(), wantedWeight,
                                             newWeight);
 

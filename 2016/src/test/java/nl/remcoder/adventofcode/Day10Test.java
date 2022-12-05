@@ -26,7 +26,7 @@ public class Day10Test {
                       "bot 0 gives low to output 2 and high to output 0\n" +
                       "value 2 goes to bot 2";
 
-        assertEquals(0, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class Day10Test {
                       "bot 0 gives low to output 2 and high to output 0\n" +
                       "value 2 goes to bot 2";
 
-        assertEquals(30, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(30, testSubject.handlePart2(data.lines()));
     }
 
     @Test

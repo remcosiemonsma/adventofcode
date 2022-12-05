@@ -21,7 +21,7 @@ public class Day3Test {
     public void part1Case1() {
         String data = "5 10 25";
 
-        assertEquals(0, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(0, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class Day3Test {
                       "202 402 602\n" +
                       "203 403 603";
 
-        assertEquals(6, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(6, testSubject.handlePart2(data.lines()));
     }
 
     @Test

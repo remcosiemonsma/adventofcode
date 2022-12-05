@@ -32,7 +32,7 @@ class Day5Test {
                       5,5 -> 8,2
                       """;
 
-        assertEquals(5, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(5, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -56,7 +56,7 @@ class Day5Test {
                       5,5 -> 8,2
                       """;
 
-        assertEquals(12, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(12, testSubject.handlePart2(data.lines()));
     }
 
     @Test

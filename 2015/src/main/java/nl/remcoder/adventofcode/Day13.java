@@ -9,27 +9,28 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class Day13 {
-    private static final Pattern HAPPINESS_PATTERN = Pattern.compile("(.*) would (lose|gain) (\\d*) happiness units by sitting next to (.*)\\.");
+    private static final Pattern HAPPINESS_PATTERN =
+            Pattern.compile("(.*) would (lose|gain) (\\d*) happiness units by sitting next to (.*)\\.");
 
     public int handlePart1(Stream<String> input) {
-        Map<String, Person> personsMap = new HashMap<>();
+        var personsMap = new HashMap<String, Person>();
 
         input.map(HAPPINESS_PATTERN::matcher)
-                .filter(Matcher::matches)
-                .forEach(matcher -> processMatch(matcher, personsMap));
+             .filter(Matcher::matches)
+             .forEach(matcher -> processMatch(matcher, personsMap));
 
         int highestRating = Integer.MIN_VALUE;
 
-        List<Person> persons = new ArrayList<>(personsMap.values());
+        var persons = new ArrayList<>(personsMap.values());
 
-        Person first = persons.remove(0);
-        List<Person> seated = new ArrayList<>();
+        var first = persons.remove(0);
+        var seated = new ArrayList<Person>();
         seated.add(first);
 
-        List<List<Person>> arrangements = arrangeSeats(seated, persons);
+        var arrangements = arrangeSeats(seated, persons);
 
-        for (List<Person> arrangement : arrangements) {
-            int score = calculateSeatingScore(arrangement);
+        for (var arrangement : arrangements) {
+            var score = calculateSeatingScore(arrangement);
 
             if (score > highestRating) {
                 highestRating = score;
@@ -40,25 +41,25 @@ public class Day13 {
     }
 
     public int handlePart2(Stream<String> input) {
-        Map<String, Person> personsMap = new HashMap<>();
+        var personsMap = new HashMap<String, Person>();
 
         input.map(HAPPINESS_PATTERN::matcher)
              .filter(Matcher::matches)
              .forEach(matcher -> processMatch(matcher, personsMap));
 
-        int highestRating = Integer.MIN_VALUE;
+        var highestRating = Integer.MIN_VALUE;
 
-        List<Person> persons = new ArrayList<>(personsMap.values());
+        var persons = new ArrayList<>(personsMap.values());
 
-        Person you = new Person();
+        var you = new Person();
 
-        List<Person> seated = new ArrayList<>();
+        var seated = new ArrayList<Person>();
         seated.add(you);
 
-        List<List<Person>> arrangements = arrangeSeats(seated, persons);
+        var arrangements = arrangeSeats(seated, persons);
 
-        for (List<Person> arrangement : arrangements) {
-            int score = calculateSeatingScore(arrangement);
+        for (var arrangement : arrangements) {
+            var score = calculateSeatingScore(arrangement);
 
             if (score > highestRating) {
                 highestRating = score;
@@ -69,12 +70,12 @@ public class Day13 {
     }
 
     private List<List<Person>> arrangeSeats(List<Person> seated, List<Person> toBeSeated) {
-        List<List<Person>> arrangements = new ArrayList<>();
+        var arrangements = new ArrayList<List<Person>>();
 
-        for (Person next : toBeSeated) {
-            List<Person> newSeated = new ArrayList<>(seated);
+        for (var next : toBeSeated) {
+            var newSeated = new ArrayList<>(seated);
             newSeated.add(next);
-            List<Person> newToBeSeated = new ArrayList<>(toBeSeated);
+            var newToBeSeated = new ArrayList<>(toBeSeated);
             newToBeSeated.remove(next);
             if (newToBeSeated.isEmpty()) {
                 arrangements.add(newSeated);
@@ -87,10 +88,10 @@ public class Day13 {
     }
 
     private int calculateSeatingScore(List<Person> seating) {
-        int score = 0;
+        var score = 0;
 
-        for (int i = 0; i < seating.size(); i++) {
-            Person current = seating.get(i);
+        for (var i = 0; i < seating.size(); i++) {
+            var current = seating.get(i);
             Person left;
             if (i == 0) {
                 left = seating.get(seating.size() - 1);
@@ -111,11 +112,11 @@ public class Day13 {
     }
 
     private void processMatch(Matcher matcher, Map<String, Person> persons) {
-        Person person = persons.computeIfAbsent(matcher.group(1), s -> new Person());
+        var person = persons.computeIfAbsent(matcher.group(1), s -> new Person());
 
-        Person other = persons.computeIfAbsent(matcher.group(4), s -> new Person());
+        var other = persons.computeIfAbsent(matcher.group(4), s -> new Person());
 
-        int happiness = Integer.parseInt(matcher.group(3)) * (matcher.group(2).equals("lose") ? -1 : 1);
+        var happiness = Integer.parseInt(matcher.group(3)) * (matcher.group(2).equals("lose") ? -1 : 1);
 
         person.happinessImpact.put(other, happiness);
     }

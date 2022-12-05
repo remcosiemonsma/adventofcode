@@ -29,7 +29,7 @@ class Day12Test {
                       b-end
                       """;
 
-        assertEquals(10, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(10, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -47,7 +47,7 @@ class Day12Test {
                       kj-dc
                       """;
 
-        assertEquals(19, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(19, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -73,7 +73,7 @@ class Day12Test {
                       start-RW
                       """;
 
-        assertEquals(226, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(226, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -94,7 +94,7 @@ class Day12Test {
                       b-end
                       """;
 
-        assertEquals(36, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(36, testSubject.handlePart2(data.lines()));
     }
 
     @Test
@@ -112,7 +112,7 @@ class Day12Test {
                       kj-dc
                       """;
 
-        assertEquals(103, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(103, testSubject.handlePart2(data.lines()));
     }
 
     @Test
@@ -138,7 +138,7 @@ class Day12Test {
                       start-RW
                       """;
 
-        assertEquals(3509, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(3509, testSubject.handlePart2(data.lines()));
     }
 
     @Test

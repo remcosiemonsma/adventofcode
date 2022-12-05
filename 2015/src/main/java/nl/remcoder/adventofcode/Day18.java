@@ -8,13 +8,13 @@ import java.util.stream.Stream;
 
 public class Day18 {
     public long handlePart1(Stream<String> input) {
-        Grid<Boolean> grid = GridFactory.createBooleanGridFromInput(input);
+        var grid = GridFactory.createBooleanGridFromInput(input);
 
         for (int i = 0; i < 100; i++) {
-            Grid<Boolean> newGrid = new Grid<>(grid.getStartx(), grid.getStarty(), grid.getEndx(), grid.getEndy());
+            var newGrid = new Grid<Boolean>(grid.getStartx(), grid.getStarty(), grid.getEndx(), grid.getEndy());
 
-            for (int x = grid.getStartx(); x <= grid.getEndx(); x++) {
-                for (int y = grid.getStarty(); y <= grid.getEndy(); y++) {
+            for (var x = grid.getStartx(); x <= grid.getEndx(); x++) {
+                for (var y = grid.getStarty(); y <= grid.getEndy(); y++) {
                     switchState(grid, newGrid, x, y);
                 }
             }
@@ -26,13 +26,13 @@ public class Day18 {
     }
 
     public long handlePart2(Stream<String> input) {
-        Grid<Boolean> grid = GridFactory.createBooleanGridFromInput(input);
+        var grid = GridFactory.createBooleanGridFromInput(input);
 
         for (int i = 0; i < 100; i++) {
-            Grid<Boolean> newGrid = new Grid<>(grid.getStartx(), grid.getStarty(), grid.getEndx(), grid.getEndy());
+            var newGrid = new Grid<Boolean>(grid.getStartx(), grid.getStarty(), grid.getEndx(), grid.getEndy());
 
-            for (int x = grid.getStartx(); x <= grid.getEndx(); x++) {
-                for (int y = grid.getStarty(); y <= grid.getEndy(); y++) {
+            for (var x = grid.getStartx(); x <= grid.getEndx(); x++) {
+                for (var y = grid.getStarty(); y <= grid.getEndy(); y++) {
                     if (x == 0 && y == 0 ||
                         x == 0 && y == grid.getEndy() ||
                         x == grid.getEndx() && y == 0 ||
@@ -51,16 +51,16 @@ public class Day18 {
     }
 
     private void switchState(Grid<Boolean> grid, Grid<Boolean> newGrid, int x, int y) {
-        Coordinate coordinate = new Coordinate(x, y);
+        var coordinate = new Coordinate(x, y);
 
-        Coordinate above = coordinate.above();
-        Coordinate topRight = coordinate.topRight();
-        Coordinate right = coordinate.right();
-        Coordinate bottomRight = coordinate.bottomRight();
-        Coordinate below = coordinate.below();
-        Coordinate bottomLeft = coordinate.bottomLeft();
-        Coordinate left = coordinate.left();
-        Coordinate topLeft = coordinate.topLeft();
+        var above = coordinate.above();
+        var topRight = coordinate.topRight();
+        var right = coordinate.right();
+        var bottomRight = coordinate.bottomRight();
+        var below = coordinate.below();
+        var bottomLeft = coordinate.bottomLeft();
+        var left = coordinate.left();
+        var topLeft = coordinate.topLeft();
 
         int amountOfLivingNeighbours = 0;
 

@@ -4,12 +4,13 @@ import java.util.stream.Stream;
 
 public class Day1 {
     public int handlePart1(Stream<String> input) {
-        String line = input.findFirst().get();
+        var line = input.findFirst()
+                           .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int floorcounter = 0;
+        var floorcounter = 0;
 
-        char[] chars = line.toCharArray();
-        for (char c : chars) {
+        var chars = line.toCharArray();
+        for (var c : chars) {
             if (c == '(') {
                 floorcounter++;
             } else if (c == ')') {
@@ -21,15 +22,16 @@ public class Day1 {
     }
 
     public int handlePart2(Stream<String> input) {
-        String line = input.findFirst().get();
+        var line = input.findFirst()
+                           .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int floorcounter = 0;
-        int position = 0;
+        var floorcounter = 0;
+        var position = 0;
 
-        char[] chars = line.toCharArray();
+        var chars = line.toCharArray();
 
         do {
-            char c = chars[position++];
+            var c = chars[position++];
             if (c == '(') {
                 floorcounter++;
             } else if (c == ')') {

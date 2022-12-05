@@ -41,7 +41,7 @@ class Day4Test {
                        2  0 12  3  7
                       """;
 
-        assertEquals(4512, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(4512, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -74,7 +74,7 @@ class Day4Test {
                        2  0 12  3  7
                       """;
 
-        assertEquals(1924, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(1924, testSubject.handlePart2(data.lines()));
     }
 
     @Test

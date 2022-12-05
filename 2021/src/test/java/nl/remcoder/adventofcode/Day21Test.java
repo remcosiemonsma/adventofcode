@@ -24,7 +24,7 @@ class Day21Test {
                       Player 2 starting position: 8
                       """;
 
-        assertEquals(739785, testSubject.handlePart1(Arrays.stream(data.split("\n"))));
+        assertEquals(739785, testSubject.handlePart1(data.lines()));
     }
 
     @Test
@@ -40,7 +40,7 @@ class Day21Test {
                       Player 2 starting position: 8
                       """;
 
-        assertEquals(444356092776315L, testSubject.handlePart2(Arrays.stream(data.split("\n"))));
+        assertEquals(444356092776315L, testSubject.handlePart2(data.lines()));
     }
 
     @Test

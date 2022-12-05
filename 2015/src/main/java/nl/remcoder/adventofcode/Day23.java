@@ -8,7 +8,8 @@ public class Day23 {
     private Instruction[] instructions;
 
     public long handlePart1(Stream<String> input) {
-        instructions = input.map(this::parseInstruction).toArray(Instruction[]::new);
+        instructions = input.map(this::parseInstruction)
+                            .toArray(Instruction[]::new);
 
         while (counter < instructions.length) {
             performOperation();
@@ -28,7 +29,7 @@ public class Day23 {
     }
 
     private Instruction parseInstruction(String line) {
-        String[] parts = line.split(" ");
+        var parts = line.split(" ");
         if (parts.length == 2) {
             if (parts[0].startsWith("j")) {
                 return new Instruction(fromString(parts[0]), '\0', Integer.parseInt(parts[1]));
@@ -41,11 +42,11 @@ public class Day23 {
     }
 
     private void performOperation() {
-        Instruction instruction = instructions[counter];
+        var instruction = instructions[counter];
         switch (instruction.type) {
-            case HALF -> registers[instruction.target - 'a'] =  registers[instruction.target - 'a'] / 2;
-            case TRIPLE -> registers[instruction.target - 'a'] =  registers[instruction.target - 'a'] * 3;
-            case INCREMENT -> registers[instruction.target - 'a'] =  registers[instruction.target - 'a'] + 1;
+            case HALF -> registers[instruction.target - 'a'] = registers[instruction.target - 'a'] / 2;
+            case TRIPLE -> registers[instruction.target - 'a'] = registers[instruction.target - 'a'] * 3;
+            case INCREMENT -> registers[instruction.target - 'a'] = registers[instruction.target - 'a'] + 1;
             case JUMP -> counter += instruction.value - 1;
             case JUMP_IF_EVEN -> {
                 if (registers[instruction.target - 'a'] % 2 == 0) {
@@ -60,7 +61,8 @@ public class Day23 {
         }
     }
 
-    private record Instruction(Type type, char target, int value) {}
+    private record Instruction(Type type, char target, int value) {
+    }
 
     public Type fromString(String value) {
         return switch (value) {
