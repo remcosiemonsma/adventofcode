@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Day10Test {
     private Day10 testSubject;
@@ -19,12 +18,14 @@ public class Day10Test {
 
     @Test
     public void part1Case1() {
-        String data = "value 5 goes to bot 2\n" +
-                      "bot 2 gives low to bot 1 and high to bot 0\n" +
-                      "value 3 goes to bot 1\n" +
-                      "bot 1 gives low to output 1 and high to bot 0\n" +
-                      "bot 0 gives low to output 2 and high to output 0\n" +
-                      "value 2 goes to bot 2";
+        String data = """
+                      value 5 goes to bot 2
+                      bot 2 gives low to bot 1 and high to bot 0
+                      value 3 goes to bot 1
+                      bot 1 gives low to output 1 and high to bot 0
+                      bot 0 gives low to output 2 and high to output 0
+                      value 2 goes to bot 2
+                      """;
 
         assertEquals(0, testSubject.handlePart1(data.lines()));
     }
@@ -37,12 +38,14 @@ public class Day10Test {
 
     @Test
     public void part2Case1() {
-        String data = "value 5 goes to bot 2\n" +
-                      "bot 2 gives low to bot 1 and high to bot 0\n" +
-                      "value 3 goes to bot 1\n" +
-                      "bot 1 gives low to output 1 and high to bot 0\n" +
-                      "bot 0 gives low to output 2 and high to output 0\n" +
-                      "value 2 goes to bot 2";
+        String data = """
+                      value 5 goes to bot 2
+                      bot 2 gives low to bot 1 and high to bot 0
+                      value 3 goes to bot 1
+                      bot 1 gives low to output 1 and high to bot 0
+                      bot 0 gives low to output 2 and high to output 0
+                      value 2 goes to bot 2
+                      """;
 
         assertEquals(30, testSubject.handlePart2(data.lines()));
     }

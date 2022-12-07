@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Day4Test {
     private Day4 testSubject;
@@ -19,10 +18,12 @@ public class Day4Test {
 
     @Test
     public void part1Case1() {
-        String data = "aaaaa-bbb-z-y-x-123[abxyz]\n" +
-                      "a-b-c-d-e-f-g-h-987[abcde]\n" +
-                      "not-a-real-room-404[oarel]\n" +
-                      "totally-real-room-200[decoy]";
+        String data = """
+                      aaaaa-bbb-z-y-x-123[abxyz]
+                      a-b-c-d-e-f-g-h-987[abcde]
+                      not-a-real-room-404[oarel]
+                      totally-real-room-200[decoy]
+                      """;
 
         assertEquals(1514, testSubject.handlePart1(data.lines()));
     }

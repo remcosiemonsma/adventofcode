@@ -19,12 +19,13 @@ public class Day14 {
     }
 
     public int handlePart1(Stream<String> input) {
-        String salt = input.findFirst().get();
+        var salt = input.findFirst()
+                .orElseThrow(() -> new AssertionError("Eek!"));
 
-        Deque<String> hashes = new ArrayDeque<>(1001);
+        var hashes = new ArrayDeque<String>(1001);
 
-        for (int i = 0; i < 1001; i++) {
-            String hash = createHash(salt, i);
+        for (var i = 0; i < 1001; i++) {
+            var hash = createHash(salt, i);
             hashes.add(hash);
         }
 
@@ -33,13 +34,13 @@ public class Day14 {
         int foundPasswords = 0;
 
         while (foundPasswords < 64) {
-            String hash = hashes.remove();
+            var hash = hashes.remove();
 
-            StringBuilder sequenceBuilder = new StringBuilder();
+            var sequenceBuilder = new StringBuilder();
 
-            for (int i = 0; i < hash.length() - 2; i++) {
+            for (var i = 0; i < hash.length() - 2; i++) {
                 if (hash.charAt(i) == hash.charAt(i + 1) && hash.charAt(i) == hash.charAt(i + 2)) {
-                    char tripletchar = hash.charAt(i);
+                    var tripletchar = hash.charAt(i);
 
                     sequenceBuilder.append(tripletchar).append(tripletchar)
                                    .append(tripletchar).append(tripletchar).append(tripletchar);
@@ -48,7 +49,7 @@ public class Day14 {
                 }
             }
 
-            String sequence = sequenceBuilder.toString();
+            var sequence = sequenceBuilder.toString();
 
             if (sequence.length() != 0 && hashes.stream()
                                                 .anyMatch(s -> s.contains(sequence))) {
@@ -62,27 +63,28 @@ public class Day14 {
     }
 
     public int handlePart2(Stream<String> input) {
-        String salt = input.findFirst().get();
+        var salt = input.findFirst()
+                        .orElseThrow(() -> new AssertionError("Eek!"));
 
         Deque<String> hashes = new ArrayDeque<>(1001);
 
-        for (int i = 0; i < 1001; i++) {
-            String hash = createStretchedHash(salt, i);
+        for (var i = 0; i < 1001; i++) {
+            var hash = createStretchedHash(salt, i);
             hashes.add(hash);
         }
 
-        int counter = 1001;
+        var counter = 1001;
 
-        int foundPasswords = 0;
+        var foundPasswords = 0;
 
         while (foundPasswords < 64) {
-            String hash = hashes.remove();
+            var hash = hashes.remove();
 
-            StringBuilder sequenceBuilder = new StringBuilder();
+            var sequenceBuilder = new StringBuilder();
 
-            for (int i = 0; i < hash.length() - 2; i++) {
+            for (var i = 0; i < hash.length() - 2; i++) {
                 if (hash.charAt(i) == hash.charAt(i + 1) && hash.charAt(i) == hash.charAt(i + 2)) {
-                    char tripletchar = hash.charAt(i);
+                    var tripletchar = hash.charAt(i);
 
                     sequenceBuilder.append(tripletchar).append(tripletchar)
                                    .append(tripletchar).append(tripletchar).append(tripletchar);
@@ -91,7 +93,7 @@ public class Day14 {
                 }
             }
 
-            String sequence = sequenceBuilder.toString();
+            var sequence = sequenceBuilder.toString();
 
             if (sequence.length() != 0 && hashes.stream()
                                                 .anyMatch(s -> s.contains(sequence))) {
@@ -105,18 +107,18 @@ public class Day14 {
     }
 
     private String createHash(String salt, int counter) {
-        String newstring = salt + counter;
-        byte[] digest = MD5.digest(newstring.getBytes());
+        var newstring = salt + counter;
+        var digest = MD5.digest(newstring.getBytes());
 
         return bytesToHex(digest);
     }
 
     private String createStretchedHash(String salt, int counter) {
-        String newstring = salt + counter;
-        byte[] digest = MD5.digest(newstring.getBytes());
+        var newstring = salt + counter;
+        var digest = MD5.digest(newstring.getBytes());
 
-        for (int i = 0; i < 2016; i++) {
-            String s = bytesToHex(digest);
+        for (var i = 0; i < 2016; i++) {
+            var s = bytesToHex(digest);
             digest = MD5.digest(s.getBytes());
         }
 
@@ -124,9 +126,9 @@ public class Day14 {
     }
 
     private String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
+        var hexChars = new char[bytes.length * 2];
+        for (var j = 0; j < bytes.length; j++) {
+            var v = bytes[j] & 0xFF;
             hexChars[j * 2] = HEX_ARRAY[v >>> 4];
             hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
         }

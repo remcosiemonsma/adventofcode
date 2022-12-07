@@ -2,7 +2,6 @@ package nl.remcoder.adventofcode;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -12,8 +11,8 @@ public class Day10 {
                                                                        "and high to (bot|output) (\\d+)");
 
     public int handlePart1(Stream<String> input) {
-        Map<Integer, Bot> bots = new HashMap<>();
-        Map<Integer, Output> outputs = new HashMap<>();
+        var bots = new HashMap<Integer, Bot>();
+        var outputs = new HashMap<Integer, Output>();
 
         processInstructions(input, bots, outputs);
 
@@ -26,8 +25,8 @@ public class Day10 {
     }
 
     public int handlePart2(Stream<String> input) {
-        Map<Integer, Bot> bots = new HashMap<>();
-        Map<Integer, Output> outputs = new HashMap<>();
+        var bots = new HashMap<Integer, Bot>();
+        var outputs = new HashMap<Integer, Output>();
 
         processInstructions(input, bots, outputs);
 
@@ -50,14 +49,14 @@ public class Day10 {
     }
 
     private void handleInstructionPattern(Map<Integer, Bot> bots, Map<Integer, Output> outputs, String s) {
-        Matcher matcher = INSTRUCTION_PATTERN.matcher(s);
+        var matcher = INSTRUCTION_PATTERN.matcher(s);
 
         if (matcher.matches()) {
-            int botid = Integer.parseInt(matcher.group(1));
-            boolean isLowOutput = "output".equals(matcher.group(2));
-            int lowId = Integer.parseInt(matcher.group(3));
-            boolean isHighOutput = "output".equals(matcher.group(4));
-            int highId = Integer.parseInt(matcher.group(5));
+            var botid = Integer.parseInt(matcher.group(1));
+            var isLowOutput = "output".equals(matcher.group(2));
+            var lowId = Integer.parseInt(matcher.group(3));
+            var isHighOutput = "output".equals(matcher.group(4));
+            var highId = Integer.parseInt(matcher.group(5));
 
             Bot bot;
             if (bots.containsKey(botid)) {
@@ -67,9 +66,9 @@ public class Day10 {
                 bots.put(botid, bot);
             }
 
-            ValueHandler lowValueHandler = getValueHandler(bots, outputs, isLowOutput, lowId);
+            var lowValueHandler = getValueHandler(bots, outputs, isLowOutput, lowId);
 
-            ValueHandler highValueHandler = getValueHandler(bots, outputs, isHighOutput, highId);
+            var highValueHandler = getValueHandler(bots, outputs, isHighOutput, highId);
 
             bot.setLowValueHandler(lowValueHandler);
             bot.setHighValueHandler(highValueHandler);
@@ -79,11 +78,11 @@ public class Day10 {
     }
 
     private void handleValuePattern(Map<Integer, Bot> bots, String s) {
-        Matcher matcher = VALUE_PATTERN.matcher(s);
+        var matcher = VALUE_PATTERN.matcher(s);
 
         if (matcher.matches()) {
-            int value = Integer.parseInt(matcher.group(1));
-            int botid = Integer.parseInt(matcher.group(2));
+            var value = Integer.parseInt(matcher.group(1));
+            var botid = Integer.parseInt(matcher.group(2));
 
             Bot bot;
             if (bots.containsKey(botid)) {

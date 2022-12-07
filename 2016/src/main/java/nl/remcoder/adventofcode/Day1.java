@@ -2,18 +2,17 @@ package nl.remcoder.adventofcode;
 
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public class Day1 {
     public int handlePart1(Stream<String> input) {
-        String[] steps = input.findFirst()
+        var steps = input.findFirst()
                               .map(s -> s.split(", "))
                               .orElse(new String[0]);
 
-        Position position = new Position();
+        var position = new Position();
 
-        for (String step : steps) {
+        for (var step : steps) {
             walk(position, step);
         }
 
@@ -21,59 +20,55 @@ public class Day1 {
     }
 
     public int handlePart2(Stream<String> input) {
-        String[] steps = input.findFirst()
+        var steps = input.findFirst()
                               .map(s -> s.split(", "))
                               .orElse(new String[0]);
 
-        Set<Position> visitedPositions = new HashSet<>();
+        var visitedPositions = new HashSet<>();
 
-        Position position = new Position();
+        var position = new Position();
         visitedPositions.add(position.clone());
 
         outer:
         for (String step : steps) {
             switch (step.charAt(0)) {
-                case 'R':
-                    position.direction = rotateClockWise(position.direction);
-                    break;
-                case 'L':
-                    position.direction = rotateCounterCLockWise(position.direction);
-                    break;
+                case 'R' -> position.direction = rotateClockWise(position.direction);
+                case 'L' -> position.direction = rotateCounterCLockWise(position.direction);
             }
             int distance = Integer.parseInt(step.substring(1));
             switch (position.direction) {
-                case NORTH:
-                    for (int stepcounter = 0; stepcounter < distance; stepcounter++) {
+                case NORTH -> {
+                    for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
                         position.posy++;
                         if (!visitedPositions.add(position.clone())) {
                             break outer;
                         }
                     }
-                    break;
-                case EAST:
-                    for (int stepcounter = 0; stepcounter < distance; stepcounter++) {
+                }
+                case EAST -> {
+                    for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
                         position.posx++;
                         if (!visitedPositions.add(position.clone())) {
                             break outer;
                         }
                     }
-                    break;
-                case SOUTH:
-                    for (int stepcounter = 0; stepcounter < distance; stepcounter++) {
+                }
+                case SOUTH -> {
+                    for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
                         position.posy--;
                         if (!visitedPositions.add(position.clone())) {
                             break outer;
                         }
                     }
-                    break;
-                case WEST:
-                    for (int stepcounter = 0; stepcounter < distance; stepcounter++) {
+                }
+                case WEST -> {
+                    for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
                         position.posx--;
                         if (!visitedPositions.add(position.clone())) {
                             break outer;
                         }
                     }
-                    break;
+                }
             }
         }
 
@@ -82,62 +77,34 @@ public class Day1 {
 
     private void walk(Position position, String step) {
         switch (step.charAt(0)) {
-            case 'R':
-                position.direction = rotateClockWise(position.direction);
-                break;
-            case 'L':
-                position.direction = rotateCounterCLockWise(position.direction);
-                break;
+            case 'R' -> position.direction = rotateClockWise(position.direction);
+            case 'L' -> position.direction = rotateCounterCLockWise(position.direction);
         }
-        int distance = Integer.parseInt(step.substring(1));
+        var distance = Integer.parseInt(step.substring(1));
         switch (position.direction) {
-            case NORTH:
-                position.posy += distance;
-                break;
-            case EAST:
-                position.posx += distance;
-                break;
-            case SOUTH:
-                position.posy -= distance;
-                break;
-            case WEST:
-                position.posx -= distance;
-                break;
+            case NORTH -> position.posy += distance;
+            case EAST -> position.posx += distance;
+            case SOUTH -> position.posy -= distance;
+            case WEST -> position.posx -= distance;
         }
     }
 
     private Direction rotateCounterCLockWise(Direction direction) {
         switch (direction) {
-            case NORTH:
-                direction = Direction.WEST;
-                break;
-            case EAST:
-                direction = Direction.NORTH;
-                break;
-            case SOUTH:
-                direction = Direction.EAST;
-                break;
-            case WEST:
-                direction = Direction.SOUTH;
-                break;
+            case NORTH -> direction = Direction.WEST;
+            case EAST -> direction = Direction.NORTH;
+            case SOUTH -> direction = Direction.EAST;
+            case WEST -> direction = Direction.SOUTH;
         }
         return direction;
     }
 
     private Direction rotateClockWise(Direction direction) {
         switch (direction) {
-            case NORTH:
-                direction = Direction.EAST;
-                break;
-            case EAST:
-                direction = Direction.SOUTH;
-                break;
-            case SOUTH:
-                direction = Direction.WEST;
-                break;
-            case WEST:
-                direction = Direction.NORTH;
-                break;
+            case NORTH -> direction = Direction.EAST;
+            case EAST -> direction = Direction.SOUTH;
+            case SOUTH -> direction = Direction.WEST;
+            case WEST -> direction = Direction.NORTH;
         }
         return direction;
     }

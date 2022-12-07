@@ -16,16 +16,17 @@ public class Day5 {
     }
 
     public String handlePart1(Stream<String> input) {
-        String doorId = input.findFirst().get();
+        var doorId = input.findFirst()
+                .orElseThrow(() -> new AssertionError("Eek!"));
 
-        StringBuilder passwordBuilder = new StringBuilder();
+        var passwordBuilder = new StringBuilder();
 
-        int counter = 0;
+        var counter = 0;
 
         while (passwordBuilder.length() < 8) {
-            String indexedId = doorId + counter;
+            var indexedId = doorId + counter;
 
-            String hash = byteArrayToHex(MD5.digest(indexedId.getBytes()));
+            var hash = byteArrayToHex(MD5.digest(indexedId.getBytes()));
 
             if (hash.startsWith("00000")) {
                 passwordBuilder.append(hash.charAt(5));
@@ -38,20 +39,21 @@ public class Day5 {
     }
 
     public String handlePart2(Stream<String> input) {
-        String doorId = input.findFirst().get();
+        var doorId = input.findFirst()
+                          .orElseThrow(() -> new AssertionError("Eek!"));
 
-        char[] password = new char[8];
+        var password = new char[8];
 
-        int counter = 0;
+        var counter = 0;
 
         while (password[0] == 0 || password[1] == 0 || password[2] == 0 || password[3] == 0 ||
                password[4] == 0 || password[5] == 0 || password[6] == 0 || password[7] == 0) {
-            String indexedId = doorId + counter;
+            var indexedId = doorId + counter;
 
-            String hash = byteArrayToHex(MD5.digest(indexedId.getBytes()));
+            var hash = byteArrayToHex(MD5.digest(indexedId.getBytes()));
 
             if (hash.startsWith("00000")) {
-                int position = Character.digit(hash.charAt(5), 10);
+                var position = Character.digit(hash.charAt(5), 10);
 
                 if (position >= 0 && position < 8 && password[position] == 0) {
                     password[position] = hash.charAt(6);
@@ -65,7 +67,7 @@ public class Day5 {
     }
 
     private String byteArrayToHex(byte[] hash) {
-        StringBuilder sb = new StringBuilder(hash.length * 2);
+        var sb = new StringBuilder(hash.length * 2);
         for (byte b : hash) {
             sb.append(String.format("%02x", b));
         }

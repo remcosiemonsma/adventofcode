@@ -3,7 +3,6 @@ package nl.remcoder.adventofcode;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -22,31 +21,31 @@ public class Day4 {
     }
 
     private boolean isValidRoom(Matcher matcher) {
-        String roomName = matcher.group(1);
-        String checksum = matcher.group(3);
+        var roomName = matcher.group(1);
+        var checksum = matcher.group(3);
 
-        String roomchecksum = createChecksum(roomName.replace("-", ""));
+        var roomchecksum = createChecksum(roomName.replace("-", ""));
 
         return roomchecksum.equals(checksum);
     }
 
     private String createChecksum(String roomName) {
-        Map<Character, Integer> characterAmounts = new HashMap<>();
+        var characterAmounts = new HashMap<Character, Integer>();
 
         roomName.chars()
                 .forEach(c -> characterAmounts.compute((char) c, (k, v) -> v == null ? 1 : v + 1));
 
-        Character[] characters = characterAmounts.entrySet()
-                                                 .stream()
-                                                 .map(entry -> new Pair(entry.getKey(), entry.getValue()))
-                                                 .sorted(Comparator.comparing(Pair::getAmount)
-                                                                   .reversed()
-                                                                   .thenComparing(Pair::getKey))
-                                                 .limit(5)
-                                                 .map(Pair::getKey)
-                                                 .toArray(Character[]::new);
+        var characters = characterAmounts.entrySet()
+                                         .stream()
+                                         .map(entry -> new Pair(entry.getKey(), entry.getValue()))
+                                         .sorted(Comparator.comparing(Pair::getAmount)
+                                                           .reversed()
+                                                           .thenComparing(Pair::getKey))
+                                         .limit(5)
+                                         .map(Pair::getKey)
+                                         .toArray(Character[]::new);
 
-        char[] chars = new char[5];
+        var chars = new char[5];
 
         chars[0] = characters[0];
         chars[1] = characters[1];

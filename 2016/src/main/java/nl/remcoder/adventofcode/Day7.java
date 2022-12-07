@@ -4,19 +4,19 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Day7 {
-    public int handlePart1(Stream<String> input) {
-        return (int) input.filter(this::doesIpSupportTLS)
-                          .count();
+    public long handlePart1(Stream<String> input) {
+        return input.filter(this::doesIpSupportTLS)
+                    .count();
     }
 
-    public int handlePart2(Stream<String> input) {
-        return (int) input.filter(this::doesIpSupportSSL)
-                          .count();
+    public long handlePart2(Stream<String> input) {
+        return input.filter(this::doesIpSupportSSL)
+                    .count();
     }
 
     private boolean doesIpSupportTLS(String ip) {
-        List<String> hypernetSequences = extractHyperNetSequences(ip);
-        List<String> nonHypernetSequences = extractNonHyperNetSequences(ip);
+        var hypernetSequences = extractHyperNetSequences(ip);
+        var nonHypernetSequences = extractNonHyperNetSequences(ip);
 
         if (hypernetSequences.stream()
                              .anyMatch(this::partContainsABBA)) {
@@ -27,17 +27,17 @@ public class Day7 {
     }
 
     private boolean doesIpSupportSSL(String ip) {
-        List<String> hypernetSequences = extractHyperNetSequences(ip);
-        List<String> nonHypernetSequences = extractNonHyperNetSequences(ip);
+        var hypernetSequences = extractHyperNetSequences(ip);
+        var nonHypernetSequences = extractNonHyperNetSequences(ip);
 
-        Set<String> babPatterns = findBABPatterns(nonHypernetSequences);
+        var babPatterns = findBABPatterns(nonHypernetSequences);
 
         return hypernetSequences.stream()
                                 .anyMatch(sequence -> this.doesSequenceContainAnyBABPattern(sequence, babPatterns));
     }
 
     private boolean doesSequenceContainAnyBABPattern(String sequence, Set<String> babPatterns) {
-        for (String bab : babPatterns) {
+        for (var bab : babPatterns) {
             if (sequence.contains(bab)) {
                 return true;
             }
@@ -46,10 +46,10 @@ public class Day7 {
     }
 
     private Set<String> findBABPatterns(List<String> sequences) {
-        Set<String> patterns = new HashSet<>();
+        var patterns = new HashSet<String>();
 
-        for (String sequence : sequences) {
-            char[] chars = sequence.toCharArray();
+        for (var sequence : sequences) {
+            var chars = sequence.toCharArray();
 
             for (int position = 0; position <= chars.length - 3; position++) {
                 char c1 = chars[position];
@@ -74,9 +74,9 @@ public class Day7 {
     }
 
     private boolean partContainsABBA(String part) {
-        char[] chars = part.toCharArray();
+        var chars = part.toCharArray();
 
-        for (int position = 0; position <= chars.length - 4; position++) {
+        for (var position = 0; position <= chars.length - 4; position++) {
             char c1 = chars[position];
             char c2 = chars[position + 1];
             char c3 = chars[position + 2];

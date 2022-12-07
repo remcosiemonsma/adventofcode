@@ -1,204 +1,18 @@
 package nl.remcoder.adventofcode;
 
 import java.util.Arrays;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+import nl.remcoder.adventofcode.library.model.Character;
 
 public class Day8 {
     private static final Pattern RECT_PATTERN = Pattern.compile("rect (\\d+)x(\\d+)");
     private static final Pattern ROW_PATTERN = Pattern.compile("rotate row y=(\\d+) by (\\d+)");
     private static final Pattern COLUMN_PATTERN = Pattern.compile("rotate column x=(\\d+) by (\\d+)");
 
-    private static final boolean[][] A = new boolean[][]{{false, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, true, true, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false}};
-
-    private static final boolean[][] B = new boolean[][]{{true, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, true, true, false, false}};
-
-    private static final boolean[][] C = new boolean[][]{{false, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, true, false},
-                                                         {false, true, true, false, false}};
-
-    private static final boolean[][] D = new boolean[][]{{true, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, true, true, false, false}};
-
-    private static final boolean[][] E = new boolean[][]{{true, true, true, true, false},
-                                                         {true, false, false, false, false},
-                                                         {true, true, true, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, true, true, true, false}};
-
-    private static final boolean[][] F = new boolean[][]{{true, true, true, true, false},
-                                                         {true, false, false, false, false},
-                                                         {true, true, true, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false}};
-
-    private static final boolean[][] G = new boolean[][]{{false, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, true, true, false},
-                                                         {true, false, false, true, false},
-                                                         {false, true, true, true, false}};
-
-    private static final boolean[][] H = new boolean[][]{{true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, true, true, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false}};
-
-    private static final boolean[][] I = new boolean[][]{{false, true, true, true, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, true, true, true, false}};
-
-    private static final boolean[][] J = new boolean[][]{{false, false, true, true, false},
-                                                         {false, false, false, true, false},
-                                                         {false, false, false, true, false},
-                                                         {false, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {false, true, true, false, false}};
-
-    private static final boolean[][] K = new boolean[][]{{true, false, false, true, false},
-                                                         {true, false, true, false, false},
-                                                         {true, true, false, false, false},
-                                                         {true, false, true, false, false},
-                                                         {true, false, true, false, false},
-                                                         {true, false, false, true, false}};
-
-    private static final boolean[][] L = new boolean[][]{{true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, true, true, true, false}};
-
-    private static final boolean[][] M = new boolean[][]{{true, false, false, false, true},
-                                                         {true, true, false, true, true},
-                                                         {true, false, true, false, true},
-                                                         {true, false, false, false, true},
-                                                         {true, false, false, false, true},
-                                                         {true, false, false, false, true}};
-
-    private static final boolean[][] N = new boolean[][]{{true, false, false, true, false},
-                                                         {true, true, false, true, false},
-                                                         {true, true, false, true, false},
-                                                         {true, false, true, true, false},
-                                                         {true, false, true, true, false},
-                                                         {true, false, false, true, false}};
-
-    private static final boolean[][] O = new boolean[][]{{false, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {false, true, true, false, false}};
-
-    private static final boolean[][] P = new boolean[][]{{true, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, true, true, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false}};
-
-    private static final boolean[][] Q = new boolean[][]{{false, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {false, true, true, true, true}};
-
-    private static final boolean[][] R = new boolean[][]{{true, true, true, false, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, true, true, false, false},
-                                                         {true, false, true, false, false},
-                                                         {true, false, false, true, false}};
-
-    private static final boolean[][] S = new boolean[][]{{false, true, true, true, false},
-                                                         {true, false, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {false, true, true, false, false},
-                                                         {false, false, false, true, false},
-                                                         {true, true, true, false, false}};
-
-    private static final boolean[][] T = new boolean[][]{{true, true, true, true, true},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false}};
-
-    private static final boolean[][] U = new boolean[][]{{true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {true, false, false, true, false},
-                                                         {false, true, true, false, false}};
-
-
-    private static final boolean[][] V = new boolean[][]{{true, false, false, false, true},
-                                                         {true, false, false, false, true},
-                                                         {false, true, false, true, false},
-                                                         {false, true, false, true, false},
-                                                         {false, true, false, true, false},
-                                                         {false, false, true, false, false}};
-
-
-    private static final boolean[][] W = new boolean[][]{{true, false, false, false, true},
-                                                         {true, false, false, false, true},
-                                                         {true, false, false, false, true},
-                                                         {true, false, true, false, true},
-                                                         {true, true, false, true, true},
-                                                         {true, false, true, false, true}};
-
-
-    private static final boolean[][] X = new boolean[][]{{true, false, false, false, true},
-                                                         {false, true, false, true, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, true, false, true, false},
-                                                         {true, false, false, false, true}};
-
-
-    private static final boolean[][] Y = new boolean[][]{{true, false, false, false, true},
-                                                         {true, false, false, false, true},
-                                                         {false, true, false, true, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, false},
-                                                         {false, false, true, false, true}};
-
-
-    private static final boolean[][] Z = new boolean[][]{{true, true, true, true, false},
-                                                         {false, false, false, true, false},
-                                                         {false, false, true, false, false},
-                                                         {false, true, false, false, false},
-                                                         {true, false, false, false, false},
-                                                         {true, true, true, true, false}};
 
     public int handlePart1(Stream<String> input) {
-        boolean[][] screen = new boolean[6][50];
+        var screen = new boolean[6][50];
 
         input.map(this::transformLineToOperation)
              .forEach(operation -> operation.performOperation(screen));
@@ -207,8 +21,8 @@ public class Day8 {
 
         int counter = 0;
 
-        for (boolean[] line : screen) {
-            for (boolean pixel : line) {
+        for (var line : screen) {
+            for (var pixel : line) {
                 if (pixel) {
                     counter++;
                 }
@@ -219,15 +33,15 @@ public class Day8 {
     }
 
     public String handlePart2(Stream<String> input) {
-        boolean[][] screen = new boolean[6][50];
+        var screen = new boolean[6][50];
 
         input.map(this::transformLineToOperation)
              .forEach(operation -> operation.performOperation(screen));
 
-        char[] chars = new char[10];
+        var chars = new char[10];
 
-        for (int position = 0; position < 10; position++) {
-            boolean[][] character = getCharacter(screen, position);
+        for (var position = 0; position < 10; position++) {
+            var character = getCharacter(screen, position);
 
             chars[position] = matchCaracter(character);
         }
@@ -236,64 +50,64 @@ public class Day8 {
     }
 
     private char matchCaracter(boolean[][] character) {
-        if (Arrays.deepEquals(A, character)) {
+        if (Arrays.deepEquals(Character.A, character)) {
             return 'A';
-        } else if (Arrays.deepEquals(B, character)) {
+        } else if (Arrays.deepEquals(Character.B, character)) {
             return'B';
-        } else if (Arrays.deepEquals(C, character)) {
+        } else if (Arrays.deepEquals(Character.C, character)) {
             return'C';
-        } else if (Arrays.deepEquals(D, character)) {
+        } else if (Arrays.deepEquals(Character.D, character)) {
             return'D';
-        } else if (Arrays.deepEquals(E, character)) {
+        } else if (Arrays.deepEquals(Character.E, character)) {
             return'E';
-        } else if (Arrays.deepEquals(F, character)) {
+        } else if (Arrays.deepEquals(Character.F, character)) {
             return'F';
-        } else if (Arrays.deepEquals(G, character)) {
+        } else if (Arrays.deepEquals(Character.G, character)) {
             return'G';
-        } else if (Arrays.deepEquals(H, character)) {
+        } else if (Arrays.deepEquals(Character.H, character)) {
             return'H';
-        } else if (Arrays.deepEquals(I, character)) {
+        } else if (Arrays.deepEquals(Character.I, character)) {
             return'I';
-        } else if (Arrays.deepEquals(J, character)) {
+        } else if (Arrays.deepEquals(Character.J, character)) {
             return'J';
-        } else if (Arrays.deepEquals(K, character)) {
+        } else if (Arrays.deepEquals(Character.K, character)) {
             return'K';
-        } else if (Arrays.deepEquals(L, character)) {
+        } else if (Arrays.deepEquals(Character.L, character)) {
             return'L';
-        } else if (Arrays.deepEquals(M, character)) {
+        } else if (Arrays.deepEquals(Character.M, character)) {
             return'M';
-        } else if (Arrays.deepEquals(N, character)) {
+        } else if (Arrays.deepEquals(Character.N, character)) {
             return'N';
-        } else if (Arrays.deepEquals(O, character)) {
+        } else if (Arrays.deepEquals(Character.O, character)) {
             return'O';
-        } else if (Arrays.deepEquals(P, character)) {
+        } else if (Arrays.deepEquals(Character.P, character)) {
             return'P';
-        } else if (Arrays.deepEquals(Q, character)) {
+        } else if (Arrays.deepEquals(Character.Q, character)) {
             return'Q';
-        } else if (Arrays.deepEquals(R, character)) {
+        } else if (Arrays.deepEquals(Character.R, character)) {
             return'R';
-        } else if (Arrays.deepEquals(S, character)) {
+        } else if (Arrays.deepEquals(Character.S, character)) {
             return'S';
-        } else if (Arrays.deepEquals(T, character)) {
+        } else if (Arrays.deepEquals(Character.T, character)) {
             return'T';
-        } else if (Arrays.deepEquals(U, character)) {
+        } else if (Arrays.deepEquals(Character.U, character)) {
             return'U';
-        } else if (Arrays.deepEquals(V, character)) {
+        } else if (Arrays.deepEquals(Character.V, character)) {
             return'V';
-        } else if (Arrays.deepEquals(W, character)) {
+        } else if (Arrays.deepEquals(Character.W, character)) {
             return'W';
-        } else if (Arrays.deepEquals(X, character)) {
+        } else if (Arrays.deepEquals(Character.X, character)) {
             return'X';
-        } else if (Arrays.deepEquals(Y, character)) {
+        } else if (Arrays.deepEquals(Character.Y, character)) {
             return'Y';
-        } else if (Arrays.deepEquals(Z, character)) {
+        } else if (Arrays.deepEquals(Character.Z, character)) {
             return'Z';
         }
         return 0;
     }
 
     private boolean[][] getCharacter(boolean[][] screen, int position) {
-        boolean[][] character = new boolean[6][5];
+        var character = new boolean[6][5];
 
         for (int y = 0; y < 6; y++) {
             System.arraycopy(screen[y], position * 5, character[y], 0, 5);
@@ -303,9 +117,9 @@ public class Day8 {
 
     private Operation transformLineToOperation(String line) {
         Operation operation;
-        Matcher rectMatcher = RECT_PATTERN.matcher(line);
-        Matcher rowMatcher = ROW_PATTERN.matcher(line);
-        Matcher columnMatcher = COLUMN_PATTERN.matcher(line);
+        var rectMatcher = RECT_PATTERN.matcher(line);
+        var rowMatcher = ROW_PATTERN.matcher(line);
+        var columnMatcher = COLUMN_PATTERN.matcher(line);
         if (rectMatcher.matches()) {
             operation = new RectOperation(Integer.parseInt(rectMatcher.group(1)), 
                                           Integer.parseInt(rectMatcher.group(2)));
@@ -337,8 +151,8 @@ public class Day8 {
 
         @Override
         public void performOperation(boolean[][] screen) {
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
                     screen[y][x] = true;
                 }
             }
@@ -376,22 +190,22 @@ public class Day8 {
 
         @Override
         public void performOperation(boolean[][] screen) {
-            boolean[] column = new boolean[screen.length];
+            var column = new boolean[screen.length];
 
-            for (int linenumber = 0; linenumber < screen.length; linenumber++) {
+            for (var linenumber = 0; linenumber < screen.length; linenumber++) {
                 column[linenumber] = screen[linenumber][columnNumber];
             }
 
             column = rotateArray(column, distance);
 
-            for (int linenumber = 0; linenumber < screen.length; linenumber++) {
+            for (var linenumber = 0; linenumber < screen.length; linenumber++) {
                 screen[linenumber][columnNumber] = column[linenumber];
             }
         }
     }
 
     private static boolean[] rotateArray(boolean[] row, int distance) {
-        boolean[] newRow = new boolean[row.length];
+        var newRow = new boolean[row.length];
 
         System.arraycopy(row, 0, newRow, distance, row.length - distance);
         System.arraycopy(row, row.length - distance, newRow, 0, distance);
@@ -400,8 +214,8 @@ public class Day8 {
     }
 
     private void drawScreen(boolean[][] screen) {
-        for (boolean[] line : screen) {
-            for (boolean pixel : line) {
+        for (var line : screen) {
+            for (var pixel : line) {
                 if (pixel) {
                     System.out.print('#');
                 } else {

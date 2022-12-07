@@ -31,15 +31,15 @@ public class Day7 {
 
         input.forEach(this::processCommand);
 
-        int totalSize = root.getSize();
+        var totalSize = root.getSize();
 
-        int totalSpace = 70000000;
+        var totalSpace = 70000000;
 
-        int spaceAvailable = totalSpace - totalSize;
+        var spaceAvailable = totalSpace - totalSize;
         
-        int spaceNeeded = 30000000;
+        var spaceNeeded = 30000000;
         
-        int spaceToFree = spaceNeeded - spaceAvailable;
+        var spaceToFree = spaceNeeded - spaceAvailable;
 
         return directories.stream()
                           .mapToInt(Directory::getSize)
@@ -60,7 +60,7 @@ public class Day7 {
             }
         } else {
             if (parts[0].equals("dir")) {
-                Directory directory = new Directory(parts[1], currentDirectory);
+                var directory = new Directory(parts[1], currentDirectory);
                 currentDirectory.children.put(parts[1], directory);
                 directories.add(directory);
             } else {
