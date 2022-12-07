@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Day8Test {
     private Day8 testSubject;
@@ -19,10 +18,12 @@ public class Day8Test {
 
     @Test
     public void part1Case1() {
-        String data = "rect 3x2\n" +
-                      "rotate column x=1 by 1\n" +
-                      "rotate row y=0 by 4\n" +
-                      "rotate column x=1 by 1";
+        String data = """
+                      rect 3x2
+                      rotate column x=1 by 1
+                      rotate row y=0 by 4
+                      rotate column x=1 by 1
+                      """;
 
         assertEquals(6, testSubject.handlePart1(data.lines()));
     }

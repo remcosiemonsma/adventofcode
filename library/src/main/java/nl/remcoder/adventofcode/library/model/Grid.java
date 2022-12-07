@@ -1,10 +1,7 @@
 package nl.remcoder.adventofcode.library.model;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 
 public class Grid<T> {
     private final int startx;
@@ -14,16 +11,32 @@ public class Grid<T> {
     private final Map<Coordinate, T> values = new HashMap<>();
 
     public Grid(T[][] data) {
-        for (int y = 0; y < data.length; y++) {
-            for (int x = 0; x < data[y].length; x++) {
+        for (var y = 0; y < data.length; y++) {
+            for (var x = 0; x < data[y].length; x++) {
                 values.put(new Coordinate(x, y), data[y][x]);
             }
         }
 
-        startx = values.keySet().stream().mapToInt(Coordinate::x).min().getAsInt();
-        endx = values.keySet().stream().mapToInt(Coordinate::x).max().getAsInt();
-        starty = values.keySet().stream().mapToInt(Coordinate::y).min().getAsInt();
-        endy = values.keySet().stream().mapToInt(Coordinate::y).max().getAsInt();
+        startx = values.keySet()
+                       .stream()
+                       .mapToInt(Coordinate::x)
+                       .min()
+                       .orElseThrow(() -> new AssertionError("Eek!"));
+        endx = values.keySet()
+                     .stream()
+                     .mapToInt(Coordinate::x)
+                     .max()
+                     .orElseThrow(() -> new AssertionError("Eek!"));
+        starty = values.keySet()
+                       .stream()
+                       .mapToInt(Coordinate::y)
+                       .min()
+                       .orElseThrow(() -> new AssertionError("Eek!"));
+        endy = values.keySet()
+                     .stream()
+                     .mapToInt(Coordinate::y)
+                     .max()
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public Grid(int startx, int starty, int endx, int endy) {

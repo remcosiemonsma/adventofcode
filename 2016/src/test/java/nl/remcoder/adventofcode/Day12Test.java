@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Day12Test {
     private Day12 testSubject;
@@ -19,12 +18,14 @@ public class Day12Test {
 
     @Test
     public void part1Case1() {
-        String data = "cpy 41 a\n" +
-                      "inc a\n" +
-                      "inc a\n" +
-                      "dec a\n" +
-                      "jnz a 2\n" +
-                      "dec a";
+        String data = """
+                      cpy 41 a
+                      inc a
+                      inc a
+                      dec a
+                      jnz a 2
+                      dec a
+                      """;
 
         assertEquals(42, testSubject.handlePart1(data.lines()));
     }

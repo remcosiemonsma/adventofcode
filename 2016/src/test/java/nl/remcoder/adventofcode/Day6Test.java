@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Day6Test {
     private Day6 testSubject;
@@ -19,22 +18,24 @@ public class Day6Test {
 
     @Test
     public void part1Case1() {
-        String data = "eedadn\n" +
-                      "drvtee\n" +
-                      "eandsr\n" +
-                      "raavrd\n" +
-                      "atevrs\n" +
-                      "tsrnev\n" +
-                      "sdttsa\n" +
-                      "rasrtv\n" +
-                      "nssdts\n" +
-                      "ntnada\n" +
-                      "svetve\n" +
-                      "tesnvt\n" +
-                      "vntsnd\n" +
-                      "vrdear\n" +
-                      "dvrsen\n" +
-                      "enarar";
+        String data = """
+                      eedadn
+                      drvtee
+                      eandsr
+                      raavrd
+                      atevrs
+                      tsrnev
+                      sdttsa
+                      rasrtv
+                      nssdts
+                      ntnada
+                      svetve
+                      tesnvt
+                      vntsnd
+                      vrdear
+                      dvrsen
+                      enarar
+                      """;
 
         assertEquals("easter", testSubject.handlePart1(data.lines()));
     }
@@ -47,22 +48,24 @@ public class Day6Test {
 
     @Test
     public void part2Case1() {
-        String data = "eedadn\n" +
-                      "drvtee\n" +
-                      "eandsr\n" +
-                      "raavrd\n" +
-                      "atevrs\n" +
-                      "tsrnev\n" +
-                      "sdttsa\n" +
-                      "rasrtv\n" +
-                      "nssdts\n" +
-                      "ntnada\n" +
-                      "svetve\n" +
-                      "tesnvt\n" +
-                      "vntsnd\n" +
-                      "vrdear\n" +
-                      "dvrsen\n" +
-                      "enarar";
+        String data = """
+                      eedadn
+                      drvtee
+                      eandsr
+                      raavrd
+                      atevrs
+                      tsrnev
+                      sdttsa
+                      rasrtv
+                      nssdts
+                      ntnada
+                      svetve
+                      tesnvt
+                      vntsnd
+                      vrdear
+                      dvrsen
+                      enarar
+                      """;
 
         assertEquals("advent", testSubject.handlePart2(data.lines()));
     }

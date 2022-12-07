@@ -1,8 +1,5 @@
 package nl.remcoder.adventofcode;
 
-import nl.remcoder.adventofcode.library.stream.CountingCollector;
-
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class Day6 {
@@ -13,11 +10,7 @@ public class Day6 {
         for (var i = 0; i < line.length() - 4; i++) {
             var window = line.substring(i, i + 4);
 
-            Map<Character, Integer> count = window.chars()
-                                                  .mapToObj(value -> (char) value)
-                                                  .collect(new CountingCollector<>());
-
-            if (count.values().stream().allMatch(amount -> amount == 1)) {
+            if (window.chars().distinct().count() == 4) {
                 return i + 4;
             }
         }
@@ -32,11 +25,7 @@ public class Day6 {
         for (var i = 0; i < line.length() - 14; i++) {
             var window = line.substring(i, i + 14);
 
-            Map<Character, Integer> count = window.chars()
-                                                  .mapToObj(value -> (char) value)
-                                                  .collect(new CountingCollector<>());
-
-            if (count.values().stream().allMatch(amount -> amount == 1)) {
+            if (window.chars().distinct().count() == 14) {
                 return i + 14;
             }
         }
