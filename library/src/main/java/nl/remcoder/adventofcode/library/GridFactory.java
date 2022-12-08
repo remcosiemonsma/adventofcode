@@ -10,7 +10,8 @@ public class GridFactory {
     }
 
     private static Boolean[][] readBooleanInput(Stream<String> input) {
-        return input.map(GridFactory::createLine)
+        return input.parallel()
+                    .map(GridFactory::createBooleanLine)
                     .toArray(Boolean[][]::new);
     }
 
@@ -19,20 +20,23 @@ public class GridFactory {
     }
 
     private static Integer[][] readNumberedInput(Stream<String> input) {
-        return input.map(s -> s.chars()
-                               .map(i -> Character.digit(i, 10))
-                               .boxed()
-                               .toArray(Integer[]::new))
+        return input.parallel()
+                    .map(GridFactory::createNumberedLine)
                     .toArray(Integer[][]::new);
     }
 
-    private static Boolean[] createLine(String s) {
-        Boolean[] line = new Boolean[s.length()];
-        char[] charArray = s.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            char c = charArray[i];
-            line[i] = c == '#';
-        }
-        return line;
+    private static Integer[] createNumberedLine(String s) {
+        return s.chars()
+                .parallel()
+                .map(i -> Character.digit(i, 10))
+                .boxed()
+                .toArray(Integer[]::new);
+    }
+
+    private static Boolean[] createBooleanLine(String s) {
+        return s.chars()
+                .parallel()
+                .mapToObj(c -> c == '#')
+                .toArray(Boolean[]::new);
     }
 }
