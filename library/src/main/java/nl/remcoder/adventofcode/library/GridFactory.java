@@ -14,11 +14,16 @@ public class GridFactory {
                     .toArray(Boolean[][]::new);
     }
 
-    public static int[][] createNumberedGridFromInput(Stream<String> input) {
+    public static Grid<Integer> createNumberedGridFromInput(Stream<String> input) {
+        return new Grid<>(readNumberedInput(input));
+    }
+
+    private static Integer[][] readNumberedInput(Stream<String> input) {
         return input.map(s -> s.chars()
                                .map(i -> Character.digit(i, 10))
-                               .toArray())
-                    .toArray(int[][]::new);
+                               .boxed()
+                               .toArray(Integer[]::new))
+                    .toArray(Integer[][]::new);
     }
 
     private static Boolean[] createLine(String s) {
@@ -29,29 +34,5 @@ public class GridFactory {
             line[i] = c == '#';
         }
         return line;
-    }
-
-    public static void printGrid(boolean[][] grid) {
-        for (boolean[] line : grid) {
-            for (boolean pixel : line) {
-                if (pixel) {
-                    System.out.print('#');
-                } else {
-                    System.out.print('.');
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public static void printGrid(int[][] grid) {
-        for (int[] line : grid) {
-            for (int pixel : line) {
-                System.out.print(pixel);
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 }

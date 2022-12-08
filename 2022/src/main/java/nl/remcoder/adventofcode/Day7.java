@@ -1,17 +1,20 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class Day7 {
+public class Day7 implements AdventOfCodeSolution<Integer> {
     private Directory root;
     private Directory currentDirectory;
     private final List<Directory> directories = new ArrayList<>();
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         root = new Directory("/", null);
         
         directories.add(root);
@@ -24,7 +27,8 @@ public class Day7 {
                           .sum();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         root = new Directory("/", null);
         
         directories.add(root);
