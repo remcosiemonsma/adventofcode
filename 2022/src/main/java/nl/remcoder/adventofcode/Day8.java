@@ -5,38 +5,107 @@ import nl.remcoder.adventofcode.library.GridFactory;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Grid;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class Day8 implements AdventOfCodeSolution<Long> {
     @Override
     public Long handlePart1(Stream<String> input) {
-        Grid<Integer> trees = GridFactory.createNumberedGridFromInput(input);
-        
-        Grid<Boolean> visibilityGrid = new Grid<>(trees.getStartx(),
-                                                  trees.getStarty(),
-                                                  trees.getEndx(),
-                                                  trees.getEndy());
+        long start = System.currentTimeMillis();
 
-        for (int x = trees.getStartx() + 1; x < trees.getEndx(); x++) {
-            for (int y = trees.getStarty() + 1; y < trees.getEndy(); y++) {
-                Coordinate coordinate = new Coordinate(x, y);
-                if (isTreeVisible(coordinate, trees)) {
-                    visibilityGrid.set(coordinate, true);
-                }
+        Grid<Integer> trees = GridFactory.createNumberedGridFromInput(input);
+
+        long end = System.currentTimeMillis();
+
+        System.out.printf("Took %d millis to parse grid%n", end - start);
+
+        Set<Coordinate> visibleTrees = determineVisibleTrees(trees);
+
+        return (long) visibleTrees.size();
+    }
+
+    private Set<Coordinate> determineVisibleTrees(Grid<Integer> trees) {
+        Set<Coordinate> visibleTrees = new HashSet<>();
+
+        getVisibleTreesVertical(trees, visibleTrees);
+        determineVisibleTreesHorizontal(trees, visibleTrees);
+        
+        return visibleTrees;
+    }
+
+    private void determineVisibleTreesHorizontal(Grid<Integer> trees, Set<Coordinate> visibleTrees) {
+        for (int y = trees.getStarty(); y <= trees.getEndy(); y++) {
+            determineVisibleTreesTopBottom(trees, visibleTrees, y);
+            determineVisibleTreesBottomTop(trees, visibleTrees, y);
+        }
+    }
+
+    private void getVisibleTreesVertical(Grid<Integer> trees, Set<Coordinate> visibleTrees) {
+        for (int x = trees.getStartx(); x <= trees.getEndx(); x++) {
+            determineVisibleTreesLeftRight(trees, visibleTrees, x);
+            determineVisibleTreesRightLeft(trees, visibleTrees, x);
+        }
+    }
+
+    private void determineVisibleTreesBottomTop(Grid<Integer> trees, Set<Coordinate> visibleTrees, int y) {
+        int highestTree = -1;
+        for (int x = trees.getEndy(); x >= trees.getStarty(); x--) {
+            Coordinate coordinate = new Coordinate(x, y);
+            int treeHeight = trees.get(coordinate);
+            if (treeHeight > highestTree) {
+                visibleTrees.add(coordinate);
+                highestTree = treeHeight;
+            }
+            if (treeHeight == 9) {
+                break;
             }
         }
+    }
 
-        for (int x = visibilityGrid.getStartx(); x <= visibilityGrid.getEndx(); x++) {
-            visibilityGrid.set(new Coordinate(x, visibilityGrid.getStarty()), true);
-            visibilityGrid.set(new Coordinate(x, visibilityGrid.getEndy()), true);
+    private void determineVisibleTreesTopBottom(Grid<Integer> trees, Set<Coordinate> visibleTrees, int y) {
+        int highestTree = -1;
+        for (int x = trees.getStartx(); x <= trees.getEndx(); x++) {
+            Coordinate coordinate = new Coordinate(x, y);
+            int treeHeight = trees.get(coordinate);
+            if (treeHeight > highestTree) {
+                visibleTrees.add(coordinate);
+                highestTree = treeHeight;
+            }
+            if (treeHeight == 9) {
+                break;
+            }
         }
+    }
 
-        for (int y = visibilityGrid.getStarty(); y <= visibilityGrid.getEndy(); y++) {
-            visibilityGrid.set(new Coordinate(visibilityGrid.getStartx(), y), true);
-            visibilityGrid.set(new Coordinate(visibilityGrid.getEndx(), y), true);
+    private void determineVisibleTreesRightLeft(Grid<Integer> trees, Set<Coordinate> visibleTrees, int x) {
+        int highestTree = -1;
+        for (int y = trees.getEndy(); y >= trees.getStarty(); y--) {
+            Coordinate coordinate = new Coordinate(x, y);
+            int treeHeight = trees.get(coordinate);
+            if (treeHeight > highestTree) {
+                visibleTrees.add(coordinate);
+                highestTree = treeHeight;
+            }
+            if (treeHeight == 9) {
+                break;
+            }
         }
+    }
 
-        return visibilityGrid.countState(true);
+    private void determineVisibleTreesLeftRight(Grid<Integer> trees, Set<Coordinate> visibleTrees, int x) {
+        int highestTree = -1;
+        for (int y = trees.getStarty(); y <= trees.getEndy(); y++) {
+            Coordinate coordinate = new Coordinate(x, y);
+            int treeHeight = trees.get(coordinate);
+            if (treeHeight > highestTree) {
+                visibleTrees.add(coordinate);
+                highestTree = treeHeight;
+            }
+            if (treeHeight == 9) {
+                break;
+            }
+        }
     }
 
     @Override
@@ -57,85 +126,6 @@ public class Day8 implements AdventOfCodeSolution<Long> {
         }
         
         return bestScenicScore;
-    }
-
-    private boolean isTreeVisible(Coordinate position, Grid<Integer> trees) {
-        return isVisibleNorth(position, trees) ||
-               isVisibleWest(position, trees) ||
-               isVisibleSouth(position, trees) ||
-               isVisibleEast(position, trees);
-    }
-
-    private boolean isVisibleNorth(Coordinate position, Grid<Integer> trees) {
-        int height = trees.get(position);
-
-        boolean visible = true;
-        Coordinate north = position.above();
-        Integer treeNorth = trees.get(north);
-
-        while (treeNorth != null) {
-            if (treeNorth >= height) {
-                visible = false;
-                break;
-            }
-            north = north.above();
-            treeNorth = trees.get(north);
-        }
-        return visible;
-    }
-
-    private boolean isVisibleWest(Coordinate position, Grid<Integer> trees) {
-        int height = trees.get(position);
-
-        boolean visible = true;
-        Coordinate west = position.left();
-        Integer treeWest = trees.get(west);
-
-        while (treeWest != null) {
-            if (treeWest >= height) {
-                visible = false;
-                break;
-            }
-            west = west.left();
-            treeWest = trees.get(west);
-        }
-        return visible;
-    }
-
-    private boolean isVisibleSouth(Coordinate position, Grid<Integer> trees) {
-        int height = trees.get(position);
-
-        boolean visible = true;
-        Coordinate south = position.below();
-        Integer treeSouth = trees.get(south);
-
-        while (treeSouth != null) {
-            if (treeSouth >= height) {
-                visible = false;
-                break;
-            }
-            south = south.below();
-            treeSouth = trees.get(south);
-        }
-        return visible;
-    }
-
-    private boolean isVisibleEast(Coordinate position, Grid<Integer> trees) {
-        int height = trees.get(position);
-
-        boolean visible = true;
-        Coordinate east = position.right();
-        Integer treeEast = trees.get(east);
-
-        while (treeEast != null) {
-            if (treeEast >= height) {
-                visible = false;
-                break;
-            }
-            east = east.right();
-            treeEast = trees.get(east);
-        }
-        return visible;
     }
 
     private long getScenicScore(Coordinate position, Grid<Integer> trees) {
