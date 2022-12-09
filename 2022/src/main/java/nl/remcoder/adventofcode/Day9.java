@@ -3,21 +3,19 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Day9 implements AdventOfCodeSolution<Integer> {
-    private final Map<Integer, Coordinate> knots = new HashMap<>();
+    private Coordinate[] knots;
     private final Set<Coordinate> tailPositions = new HashSet<>();
     @Override
     public Integer handlePart1(Stream<String> input) {
-        knots.put(0, new Coordinate(0, 0));
-        knots.put(1, new Coordinate(0, 0));
+        knots = new Coordinate[2];
+
+        Arrays.fill(knots, new Coordinate(0, 0));
         
-        tailPositions.add(knots.get(1));
+        tailPositions.add(knots[1]);
         
         input.forEach(this::move);
         
@@ -26,12 +24,12 @@ public class Day9 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
-        for (int i = 0; i < 10; i++) {
-            knots.put(i, new Coordinate(0, 0));
-        }
-        
-        tailPositions.add(knots.get(9));
+        knots = new Coordinate[10];
 
+        Arrays.fill(knots, new Coordinate(0, 0));
+
+        tailPositions.add(knots[9]);
+        
         input.forEach(this::move);
         
         return tailPositions.size();
@@ -51,63 +49,60 @@ public class Day9 implements AdventOfCodeSolution<Integer> {
 
     private void moveUp(int steps) {
         for (int step = 0; step < steps; step++) {
-            knots.put(0, knots.get(0).above());
+            knots[0] = knots[0].above();
             moveTail();
         }
     }
 
     private void moveLeft(int steps) {
         for (int step = 0; step < steps; step++) {
-            knots.put(0, knots.get(0).left());
+            knots[0] = knots[0].left();
             moveTail();
         }
     }
 
     private void moveDown(int steps) {
         for (int step = 0; step < steps; step++) {
-            knots.put(0, knots.get(0).below());
+            knots[0] = knots[0].below();
             moveTail();
         }
     }
 
     private void moveRight(int steps) {
         for (int step = 0; step < steps; step++) {
-            knots.put(0, knots.get(0).right());
+            knots[0] = knots[0].right();
             moveTail();
         }
     }
 
     private void moveTail() {
-        int tailKnotIndex = knots.keySet()
-                           .stream()
-                           .max(Integer::compareTo)
-                           .orElseThrow(() -> new AssertionError("Eek!"));
+        int tailKnotIndex = knots.length - 1;
         
         for (int knotIndex = 1; knotIndex <= tailKnotIndex; knotIndex++) {
-            Coordinate knot = knots.get(knotIndex);
-            Coordinate previosKnot = knots.get(knotIndex - 1);
+            Coordinate knot = knots[knotIndex];
+            Coordinate previosKnot = knots[knotIndex - 1];
 
             if (!(knot.equals(previosKnot) || knot.getAllNeighbours().contains(previosKnot))) {
                 if (knot.above().above().equals(previosKnot)) {
-                    knots.put(knotIndex, knot.above());
+                    knots[knotIndex] = knot.above();
                 } else if (knot.left().left().equals(previosKnot)) {
-                    knots.put(knotIndex, knot.left());
+                    knots[knotIndex] = knot.left();
                 } else if (knot.below().below().equals(previosKnot)) {
-                    knots.put(knotIndex, knot.below());
+                    knots[knotIndex] = knot.below();
                 } else if (knot.right().right().equals(previosKnot)) {
-                    knots.put(knotIndex, knot.right());
+                    knots[knotIndex] = knot.right();
                 } else if (knot.topRight().getTopRightNeighbours().contains(previosKnot)) {
-                    knots.put(knotIndex, knot.topRight());
+                    knots[knotIndex] = knot.topRight();
                 } else if (knot.topLeft().getTopLeftNeighbours().contains(previosKnot)) {
-                    knots.put(knotIndex, knot.topLeft());
+                    knots[knotIndex] = knot.topLeft();
                 } else if (knot.bottomLeft().getBottomLeftNeighbours().contains(previosKnot)) {
-                    knots.put(knotIndex, knot.bottomLeft());
+                    knots[knotIndex] = knot.bottomLeft();
                 } else if (knot.bottomRight().getBottomRightNeighbours().contains(previosKnot)) {
-                    knots.put(knotIndex, knot.bottomRight());
+                    knots[knotIndex] = knot.bottomRight();
                 }
             }
         }
         
-        tailPositions.add(knots.get(tailKnotIndex));
+        tailPositions.add(knots[tailKnotIndex]);
     }
 }
