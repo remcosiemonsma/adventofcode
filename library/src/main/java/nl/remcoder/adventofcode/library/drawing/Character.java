@@ -1,4 +1,4 @@
-package nl.remcoder.adventofcode.library.model;
+package nl.remcoder.adventofcode.library.drawing;
 
 public class Character {
     public static final boolean[][] A = new boolean[][]{

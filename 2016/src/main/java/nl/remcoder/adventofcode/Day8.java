@@ -3,7 +3,7 @@ package nl.remcoder.adventofcode;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import nl.remcoder.adventofcode.library.model.Character;
+import nl.remcoder.adventofcode.library.drawing.Character;
 
 public class Day8 {
     private static final Pattern RECT_PATTERN = Pattern.compile("rect (\\d+)x(\\d+)");
