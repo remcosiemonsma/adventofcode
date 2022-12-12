@@ -40,7 +40,7 @@ public class Day21 {
         while (!nextGames.isEmpty()) {
             Game next = nextGames.remove(0);
             Map<Game, Long> neighbors = next.getNeighbors();
-            neighbors.forEach((game, cost) -> game.setDistance(next.distance + cost));
+            neighbors.forEach((game, cost) -> game.setDistance(next.getDistance() + cost));
             games.add(next);
             nextGames.addAll(neighbors.keySet());
         }
@@ -88,13 +88,11 @@ public class Day21 {
                            null, null, null, null);
     }
 
-    private static class Game implements Node {
+    private static class Game extends Node {
         private final Shop shop;
         private final Warrior player;
         private final Warrior boss;
         private final Warrior winner;
-        private long distance = Integer.MAX_VALUE;
-        private boolean visited;
 
         public Game(Shop shop, Warrior player, Warrior boss) {
             this.shop = shop;
@@ -196,26 +194,6 @@ public class Day21 {
             }
 
             return neighbors;
-        }
-
-        @Override
-        public long getDistance() {
-            return distance;
-        }
-
-        @Override
-        public boolean isVisited() {
-            return visited;
-        }
-
-        @Override
-        public void setVisited(boolean visited) {
-            this.visited = visited;
-        }
-
-        @Override
-        public void setDistance(long distance) {
-            this.distance = distance;
         }
 
         @Override
