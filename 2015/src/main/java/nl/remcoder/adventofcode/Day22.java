@@ -55,15 +55,13 @@ public class Day22 {
                         Integer.parseInt(bossData.get(1).replace("Damage: ", "")));
     }
 
-    private static class Turn implements Node {
+    private static class Turn extends Node {
         private final Player player;
         private final Boss boss;
         private final List<ActiveSpell> activeSpells;
         private final Set<Spell> spells;
         private final List<Spell> castedSpells;
         private final boolean isPlayerTurn;
-        private long distance = Long.MAX_VALUE;
-        private boolean visited;
 
         private Turn(Player player, Boss boss, List<ActiveSpell> activeSpells,
                      Set<Spell> spells, List<Spell> castedSpells,
@@ -158,26 +156,6 @@ public class Day22 {
         }
 
         @Override
-        public long getDistance() {
-            return distance;
-        }
-
-        @Override
-        public boolean isVisited() {
-            return visited;
-        }
-
-        @Override
-        public void setVisited(boolean visited) {
-            this.visited = visited;
-        }
-
-        @Override
-        public void setDistance(long distance) {
-            this.distance = distance;
-        }
-
-        @Override
         public void printStateInformation() {
             System.out.println(castedSpells);
         }
@@ -191,15 +169,13 @@ public class Day22 {
         }
     }
 
-    private static class Turn2 implements Node {
+    private static class Turn2 extends Node {
         private Player player;
         private final Boss boss;
         private final List<ActiveSpell> activeSpells;
         private final Set<Spell> spells;
         private final List<Spell> castedSpells;
         private final boolean isPlayerTurn;
-        private long distance = Long.MAX_VALUE;
-        private boolean visited;
 
         private Turn2(Player player, Boss boss, List<ActiveSpell> activeSpells,
                      Set<Spell> spells, List<Spell> castedSpells,
@@ -296,26 +272,6 @@ public class Day22 {
             }
 
             return neighbors;
-        }
-
-        @Override
-        public long getDistance() {
-            return distance;
-        }
-
-        @Override
-        public boolean isVisited() {
-            return visited;
-        }
-
-        @Override
-        public void setVisited(boolean visited) {
-            this.visited = visited;
-        }
-
-        @Override
-        public void setDistance(long distance) {
-            this.distance = distance;
         }
 
         @Override

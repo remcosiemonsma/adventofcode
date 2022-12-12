@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day24 {
-    private Set<Set<Integer>> evaluatedLoadouts = new HashSet<>();
+    private final Set<Set<Integer>> evaluatedLoadouts = new HashSet<>();
 
     public long handlePart1(Stream<String> input) {
         var packages = input.map(Integer::parseInt)
@@ -58,15 +58,13 @@ public class Day24 {
         });
     }
 
-    private class LoadOut implements Node {
+    private class LoadOut extends Node {
         private final Set<Integer> remainingPackages;
         private final Set<Integer> loadOut;
         private final long QE;
         private final int legroom;
         private final int wantedWeight;
         private final int weight;
-        private long distance = Long.MAX_VALUE;
-        private boolean visited;
 
         public LoadOut(Set<Integer> remainingPackages, Set<Integer> loadOut, long QE, int legroom, int wantedWeight,
                        int weight) {
@@ -110,26 +108,6 @@ public class Day24 {
         }
 
         @Override
-        public long getDistance() {
-            return distance;
-        }
-
-        @Override
-        public boolean isVisited() {
-            return visited;
-        }
-
-        @Override
-        public void setVisited(boolean visited) {
-            this.visited = visited;
-        }
-
-        @Override
-        public void setDistance(long distance) {
-            this.distance = distance;
-        }
-
-        @Override
         public void printStateInformation() {
             System.out.println(this);
         }
@@ -154,13 +132,9 @@ public class Day24 {
                    ", legroom=" + legroom +
                    ", wantedWeight=" + wantedWeight +
                    ", weight=" + weight +
-                   ", distance=" + distance +
-                   ", visited=" + visited +
+                   ", distance=" + getDistance() +
+                   ", visited=" + isVisited() +
                    '}';
-        }
-
-        public long getQE() {
-            return QE;
         }
 
         public int getWeight() {

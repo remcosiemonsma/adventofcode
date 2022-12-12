@@ -88,13 +88,11 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         return shortestDistance;
     }
 
-    private static class HillSide implements Node {
+    private static class HillSide extends Node {
         private final char height;
         private final Coordinate coordinate;
         private final Grid<HillSide> hill;
         private List<HillSide> path;
-        private long distance = Integer.MAX_VALUE;
-        private boolean visited;
 
         private HillSide(char height, Coordinate coordinate, Grid<HillSide> hill) {
             this.height = height;
@@ -136,26 +134,6 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         }
 
         @Override
-        public long getDistance() {
-            return distance;
-        }
-
-        @Override
-        public boolean isVisited() {
-            return visited;
-        }
-
-        @Override
-        public void setVisited(boolean visited) {
-            this.visited = visited;
-        }
-
-        @Override
-        public void setDistance(long distance) {
-            this.distance = distance;
-        }
-
-        @Override
         public void printStateInformation() {
             System.out.println(path);
         }
@@ -178,9 +156,9 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         }
 
         public void reset() {
-            distance = Integer.MAX_VALUE;
+            setDistance(Integer.MAX_VALUE);
+            setVisited(false);
             path = null;
-            visited = false;
         }
     }
 }
