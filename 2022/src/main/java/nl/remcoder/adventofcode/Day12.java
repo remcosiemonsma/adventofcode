@@ -69,24 +69,23 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         }
 
         return possibleStarts.stream()
-                             .mapToLong(start -> {
-                                 start.setDistance(0);
-                                 start.setPath(List.of(start));
-
-                                 long shortestDistance = Long.MAX_VALUE;
-                                 try {
-                                     shortestDistance = Dijkstra.findShortestDistance(start,
-                                                                                           node -> ((HillSide) node).getHeight() ==
-                                                                                                   'E');
-                                 } catch (RuntimeException ignored) {}
-                                 
-                                 allHillSides.forEach(HillSide::reset);
-                                 
-                                 
-                                 return shortestDistance;
-                             })
+                             .mapToLong(start -> mapDistanceFromPossibleStart(allHillSides, start))
                              .min()
                              .orElseThrow(() -> new AssertionError("Eek!"));
+    }
+
+    private static long mapDistanceFromPossibleStart(List<HillSide> allHillSides, HillSide start) {
+        start.setDistance(0);
+        start.setPath(List.of(start));
+
+        long shortestDistance = Long.MAX_VALUE;
+        try {
+            shortestDistance = Dijkstra.findShortestDistance(start, node -> ((HillSide) node).getHeight() == 'E');
+        } catch (RuntimeException ignored) {}
+
+        allHillSides.forEach(HillSide::reset);
+
+        return shortestDistance;
     }
 
     private static class HillSide implements Node {
@@ -177,7 +176,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         public void setPath(List<HillSide> path) {
             this.path = path;
         }
-        
+
         public void reset() {
             distance = Integer.MAX_VALUE;
             path = null;
