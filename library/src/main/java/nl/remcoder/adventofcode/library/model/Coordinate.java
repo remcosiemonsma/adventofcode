@@ -1,5 +1,7 @@
 package nl.remcoder.adventofcode.library.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public record Coordinate(int x, int y) {
@@ -25,6 +27,36 @@ public record Coordinate(int x, int y) {
     
     public Set<Coordinate> getBottomRightNeighbours() {
         return Set.of(below(), right(), bottomRight());
+    }
+    
+    public List<Coordinate> getAllBetween(Coordinate other) {
+        var coordinates = new ArrayList<Coordinate>();
+        
+        if (this.x == other.x) {
+            if (y <= other.y) {
+                for (int y = this.y; y <= other.y; y++) {
+                    coordinates.add(new Coordinate(x, y));
+                }
+            } else {
+                for (int y = other.y; y <= this.y; y++) {
+                    coordinates.add(new Coordinate(x, y));
+                }
+            }
+        } else if (this.y == other.y) {
+            if (x <= other.x) {
+                for (int x = this.x; x <= other.x; x++) {
+                    coordinates.add(new Coordinate(x, y));
+                }
+            } else {
+                for (int x = other.x; x <= this.x; x++) {
+                    coordinates.add(new Coordinate(x, y));
+                }
+            }
+        } else {
+            throw new UnsupportedOperationException("Diagonal lines are not supported!");
+        }
+        
+        return coordinates;
     }
     
     public Coordinate above() {

@@ -112,4 +112,16 @@ public class Grid<T> {
         }
         System.out.println();
     }
+
+    public void fill(T value) {
+        for (int y = starty; y <= endy; y++) {
+            for (int x = startx; x <= endx; x++) {
+                values.put(new Coordinate(x, y), value);
+            }
+        }
+    }
+    
+    public long countElements(T value) {
+        return values.values().stream().filter(t -> t.equals(value)).count();
+    }
 }
