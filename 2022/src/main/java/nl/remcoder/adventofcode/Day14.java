@@ -21,13 +21,13 @@ public class Day14 implements AdventOfCodeSolution<Long> {
     @Override
     public Long handlePart2(Stream<String> input) {
         var grid = parseGrid(input, 2);
-        
+
         for (int x = grid.getStartx(); x <= grid.getEndx(); x++) {
             grid.set(new Coordinate(x, grid.getEndy()), '#');
         }
 
         simulateSand(grid);
-        
+
         return grid.countElements('o');
     }
 
@@ -56,13 +56,7 @@ public class Day14 implements AdventOfCodeSolution<Long> {
                     continue;
                 }
 
-                if (below == null) {
-                    finished = true;
-                    break;
-                } else if (belowLeft == null) {
-                    finished = true;
-                    break;
-                } else if (belowRight == null) {
+                if (below == null || belowLeft == null || belowRight == null) {
                     finished = true;
                     break;
                 }
@@ -76,24 +70,27 @@ public class Day14 implements AdventOfCodeSolution<Long> {
     private Grid<Character> parseGrid(Stream<String> input, int offset) {
         var walls = input.map(this::parseToCoordinates).toList();
 
-        var maxX = walls.stream().mapToInt(wall -> wall.stream()
-                                                       .mapToInt(Coordinate::x)
-                                                       .max()
-                                                       .orElseThrow(() -> new AssertionError("Eek!")))
+        var maxX = walls.stream()
+                        .mapToInt(wall -> wall.stream()
+                                              .mapToInt(Coordinate::x)
+                                              .max()
+                                              .orElseThrow(() -> new AssertionError("Eek!")))
                         .max()
                         .orElseThrow(() -> new AssertionError("Ook!")) + 512;
 
-        var minX = walls.stream().mapToInt(wall -> wall.stream()
-                                                       .mapToInt(Coordinate::x)
-                                                       .min()
-                                                       .orElseThrow(() -> new AssertionError("Eek!")))
+        var minX = walls.stream()
+                        .mapToInt(wall -> wall.stream()
+                                              .mapToInt(Coordinate::x)
+                                              .min()
+                                              .orElseThrow(() -> new AssertionError("Eek!")))
                         .min()
                         .orElseThrow(() -> new AssertionError("Ook!")) - 512;
 
-        var maxY = walls.stream().mapToInt(wall -> wall.stream()
-                                                       .mapToInt(Coordinate::y)
-                                                       .max()
-                                                       .orElseThrow(() -> new AssertionError("Eek!")))
+        var maxY = walls.stream()
+                        .mapToInt(wall -> wall.stream()
+                                              .mapToInt(Coordinate::y)
+                                              .max()
+                                              .orElseThrow(() -> new AssertionError("Eek!")))
                         .max()
                         .orElseThrow(() -> new AssertionError("Ook!")) + offset;
 
