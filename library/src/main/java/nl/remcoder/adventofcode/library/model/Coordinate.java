@@ -90,4 +90,8 @@ public record Coordinate(int x, int y) {
     public Coordinate bottomRight() {
         return new Coordinate(x + 1, y + 1);
     }
+    
+    public int getDistanceTo(Coordinate other) {
+        return Math.abs(x - other.x) + Math.abs(y - other.y);
+    }
 }
