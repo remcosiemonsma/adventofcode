@@ -49,14 +49,14 @@ public class Day15 implements AdventOfCodeSolution<Long> {
                 if (left != null) {
                     if (left.x() >= 0) {
                         if (sensors.stream().noneMatch(sensor1 -> sensor1.isCoordinateInRange(left))) {
-                            return ((long) left.x() * 4000000L) + left.y();
+                            return (left.x() * 4000000L) + left.y();
                         }
                     }
                 }
                 if (right != null) {
                     if (right.x() <= expectedRows) {
                         if (sensors.stream().noneMatch(sensor1 -> sensor1.isCoordinateInRange(right))) {
-                            return ((long) right.x() * 4000000L) + right.y();
+                            return (right.x() * 4000000L) + right.y();
                         }
                     }
                 }
