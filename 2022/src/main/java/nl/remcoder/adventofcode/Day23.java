@@ -15,43 +15,31 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var elvesList = new ArrayList<Elf>();
 
-        Elf[][] elves = input.map(s -> s.chars()
-                                        .mapToObj(value -> value == '#' ? new Elf() : null)
-                                        .toArray(Elf[]::new))
-                             .toArray(Elf[][]::new);
+        var elves = parseInput(input);
 
         var elvesGrid = new Grid<>(elves);
 
-        for (int y = elvesGrid.getStarty(); y <= elvesGrid.getEndy(); y++) {
-            for (int x = elvesGrid.getStartx(); x <= elvesGrid.getEndx(); x++) {
-                Coordinate coordinate = new Coordinate(x, y);
-                var elf = elvesGrid.get(coordinate);
-                if (elf != null) {
-                    elvesList.add(elf);
-                    elf.setPosition(coordinate);
-                }
-            }
-        }
+        fillElves(elvesList, elvesGrid);
 
-        for (int round = 0; round < 10; round++) {
-            Map<Coordinate, Integer> coordinateCount = elvesList.stream()
-                                                                .map(elf -> elf.determineNextPosition(elvesGrid))
-                                                                .collect(new CountingCollector<>());
-            
+        for (var round = 0; round < 10; round++) {
+            var coordinateCount = elvesList.stream()
+                                           .map(elf -> elf.determineNextPosition(elvesGrid))
+                                           .collect(new CountingCollector<>());
+
             elvesList.forEach(elf -> elf.move(elvesGrid, coordinateCount));
         }
 
         elvesGrid.calculateSize();
-        
-        int count = 0;
-        for (int y = elvesGrid.getStarty(); y <= elvesGrid.getEndy(); y++) {
-            for (int x = elvesGrid.getStartx(); x <= elvesGrid.getEndx(); x++) {
+
+        var count = 0;
+        for (var y = elvesGrid.getStarty(); y <= elvesGrid.getEndy(); y++) {
+            for (var x = elvesGrid.getStartx(); x <= elvesGrid.getEndx(); x++) {
                 if (elvesGrid.get(new Coordinate(x, y)) == null) {
                     count++;
                 }
             }
         }
-        
+
         return count;
     }
 
@@ -59,16 +47,37 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         var elvesList = new ArrayList<Elf>();
 
-        Elf[][] elves = input.map(s -> s.chars()
-                                        .mapToObj(value -> value == '#' ? new Elf() : null)
-                                        .toArray(Elf[]::new))
-                             .toArray(Elf[][]::new);
+        var elves = parseInput(input);
 
         var elvesGrid = new Grid<>(elves);
 
-        for (int y = elvesGrid.getStarty(); y <= elvesGrid.getEndy(); y++) {
-            for (int x = elvesGrid.getStartx(); x <= elvesGrid.getEndx(); x++) {
-                Coordinate coordinate = new Coordinate(x, y);
+        fillElves(elvesList, elvesGrid);
+
+        var round = 0;
+
+        var elvesMoved = true;
+
+        while (elvesMoved) {
+            var coordinateCount = elvesList.stream()
+                                           .map(elf -> elf.determineNextPosition(elvesGrid))
+                                           .collect(new CountingCollector<>());
+
+            var moveCount = elvesList.stream()
+                                     .map(elf -> elf.move(elvesGrid, coordinateCount))
+                                     .filter(Boolean::booleanValue)
+                                     .count();
+
+            elvesMoved = moveCount != 0;
+            round++;
+        }
+
+        return round;
+    }
+
+    private void fillElves(ArrayList<Elf> elvesList, Grid<Elf> elvesGrid) {
+        for (var y = elvesGrid.getStarty(); y <= elvesGrid.getEndy(); y++) {
+            for (var x = elvesGrid.getStartx(); x <= elvesGrid.getEndx(); x++) {
+                var coordinate = new Coordinate(x, y);
                 var elf = elvesGrid.get(coordinate);
                 if (elf != null) {
                     elvesList.add(elf);
@@ -76,26 +85,13 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
                 }
             }
         }
-        
-        int round = 0;
-        
-        boolean elvesMoved = true;
-        
-        while (elvesMoved) {
-            Map<Coordinate, Integer> coordinateCount = elvesList.stream()
-                                                                .map(elf -> elf.determineNextPosition(elvesGrid))
-                                                                .collect(new CountingCollector<>());
-            
-            var moveCount = elvesList.stream()
-                                     .map(elf -> elf.move(elvesGrid, coordinateCount))
-                                     .filter(Boolean::booleanValue)
-                                     .count();
-            
-            elvesMoved = moveCount != 0;
-            round++;
-        }
-        
-        return round;
+    }
+
+    private Elf[][] parseInput(Stream<String> input) {
+        return input.map(s -> s.chars()
+                               .mapToObj(value -> value == '#' ? new Elf() : null)
+                               .toArray(Elf[]::new))
+                    .toArray(Elf[][]::new);
     }
 
     private static class Elf {
@@ -114,7 +110,7 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
 
         public Coordinate determineNextPosition(Grid<Elf> grid) {
             if (isMovementPossible(grid)) {
-                for (int i = 0; i < 4; i++) {
+                for (var i = 0; i < 4; i++) {
                     var direction = DIRECTIONS[(firstDirection + i) % 4];
                     switch (direction) {
                         case UP -> {
@@ -176,7 +172,7 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
                 firstDirection = 0;
             }
         }
-        
+
         private boolean isMovementPossible(Grid<Elf> grid) {
             return position.getAllNeighbours().stream().anyMatch(coordinate -> grid.get(coordinate) != null);
         }
