@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Grid<T> {
-    private final int startx;
-    private final int starty;
-    private final int endx;
-    private final int endy;
+    private int startx;
+    private int starty;
+    private int endx;
+    private int endy;
     private final Map<Coordinate, T> values = new HashMap<>();
 
     public Grid(T[][] data) {
@@ -17,26 +17,7 @@ public class Grid<T> {
             }
         }
 
-        startx = values.keySet()
-                       .stream()
-                       .mapToInt(Coordinate::x)
-                       .min()
-                       .orElseThrow(() -> new AssertionError("Eek!"));
-        endx = values.keySet()
-                     .stream()
-                     .mapToInt(Coordinate::x)
-                     .max()
-                     .orElseThrow(() -> new AssertionError("Eek!"));
-        starty = values.keySet()
-                       .stream()
-                       .mapToInt(Coordinate::y)
-                       .min()
-                       .orElseThrow(() -> new AssertionError("Eek!"));
-        endy = values.keySet()
-                     .stream()
-                     .mapToInt(Coordinate::y)
-                     .max()
-                     .orElseThrow(() -> new AssertionError("Eek!"));
+        calculateSize();
     }
 
     public Grid(int startx, int starty, int endx, int endy) {
@@ -80,14 +61,46 @@ public class Grid<T> {
     }
 
     public void set(int x, int y, T value) {
-        values.put(new Coordinate(x, y), value);
+        if (value == null) {
+            values.remove(new Coordinate(x, y));
+        } else {
+            values.put(new Coordinate(x, y), value);
+        }
     }
 
     public void set(Coordinate coordinate, T value) {
-        values.put(coordinate, value);
+        if (value == null) {
+            values.remove(coordinate);
+        } else {
+            values.put(coordinate, value);
+        }
+    }
+    
+    public void calculateSize() {
+        startx = values.keySet()
+                       .stream()
+                       .mapToInt(Coordinate::x)
+                       .min()
+                       .orElseThrow(() -> new AssertionError("Eek!"));
+        endx = values.keySet()
+                     .stream()
+                     .mapToInt(Coordinate::x)
+                     .max()
+                     .orElseThrow(() -> new AssertionError("Eek!"));
+        starty = values.keySet()
+                       .stream()
+                       .mapToInt(Coordinate::y)
+                       .min()
+                       .orElseThrow(() -> new AssertionError("Eek!"));
+        endy = values.keySet()
+                     .stream()
+                     .mapToInt(Coordinate::y)
+                     .max()
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public void printGrid() {
+        calculateSize();
         for (int y = starty; y <= endy; y++) {
             for (int x = startx; x <= endx; x++) {
                 Coordinate coordinate = new Coordinate(x, y);
@@ -95,7 +108,7 @@ public class Grid<T> {
                 Object value = values.get(coordinate);
 
                 if (value == null) {
-                    System.out.print(' ');
+                    System.out.print('.');
                 } else {
                     if (value instanceof Boolean b) {
                         if (b) {

@@ -29,6 +29,22 @@ public record Coordinate(int x, int y) {
         return Set.of(below(), right(), bottomRight());
     }
     
+    public Set<Coordinate> getTopNeighbours() {
+        return Set.of(above(), topRight(), topLeft());
+    }
+    
+    public Set<Coordinate> getLeftNeighbours() {
+        return Set.of(left(), bottomLeft(), topLeft());
+    }
+    
+    public Set<Coordinate> getRightNeighbours() {
+        return Set.of(right(), topRight(), bottomRight());
+    }
+    
+    public Set<Coordinate> getBottomNeighbours() {
+        return Set.of(below(), bottomLeft(), bottomRight());
+    }
+    
     public List<Coordinate> getAllBetween(Coordinate other) {
         var coordinates = new ArrayList<Coordinate>();
         
