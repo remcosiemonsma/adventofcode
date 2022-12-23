@@ -150,7 +150,7 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
             }
             incrementDirection();
             nextPosition = position;
-            return position;
+            return nextPosition;
         }
 
         public boolean move(Grid<Elf> grid, Map<Coordinate, Integer> coordinateCount) {
