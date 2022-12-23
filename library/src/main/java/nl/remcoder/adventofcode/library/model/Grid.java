@@ -13,7 +13,9 @@ public class Grid<T> {
     public Grid(T[][] data) {
         for (var y = 0; y < data.length; y++) {
             for (var x = 0; x < data[y].length; x++) {
-                values.put(new Coordinate(x, y), data[y][x]);
+                if (data[y][x] != null) {
+                    values.put(new Coordinate(x, y), data[y][x]);
+                }
             }
         }
 
