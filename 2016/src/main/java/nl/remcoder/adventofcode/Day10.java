@@ -1,16 +1,19 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day10 {
+public class Day10 implements AdventOfCodeSolution<Integer> {
     private static final Pattern VALUE_PATTERN = Pattern.compile("value (\\d+) goes to bot (\\d+)");
     private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("bot (\\d+) gives low to (bot|output) (\\d+) " +
                                                                        "and high to (bot|output) (\\d+)");
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var bots = new HashMap<Integer, Bot>();
         var outputs = new HashMap<Integer, Output>();
 
@@ -24,7 +27,8 @@ public class Day10 {
                    .orElse(0);
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var bots = new HashMap<Integer, Bot>();
         var outputs = new HashMap<Integer, Output>();
 

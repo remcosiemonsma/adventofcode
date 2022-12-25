@@ -1,104 +1,111 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.model.Coordinate;
+import nl.remcoder.adventofcode.library.model.Grid;
+
 import java.util.stream.Stream;
 
-public class Day2 {
+public class Day2 implements AdventOfCodeSolution<String> {
+    @Override
     public String handlePart1(Stream<String> input) {
-        var digits = new char[][]{{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+        var lines = input.toList();
+
+        var digits = new Character[][] {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+
+        var grid = new Grid<>(digits);
 
         var result = new StringBuilder();
 
-        var position = new Position(1, 1);
+        var position = new Coordinate(1, 1);
 
-        input.map(String::toCharArray)
-             .forEach(steps -> {
-                 for (char step : steps) {
-                     switch (step) {
-                         case 'U' -> {
-                             position.posy--;
-                             if (position.posy < 0) {
-                                 position.posy = 0;
-                             }
-                         }
-                         case 'R' -> {
-                             position.posx++;
-                             if (position.posx > 2) {
-                                 position.posx = 2;
-                             }
-                         }
-                         case 'D' -> {
-                             position.posy++;
-                             if (position.posy > 2) {
-                                 position.posy = 2;
-                             }
-                         }
-                         case 'L' -> {
-                             position.posx--;
-                             if (position.posx < 0) {
-                                 position.posx = 0;
-                             }
-                         }
-                         default -> throw new RuntimeException(step + " was invalid");
-                     }
-                 }
-                 result.append(digits[position.posy][position.posx]);
-             });
-
-        return result.toString();
-    }
-
-    public String handlePart2(Stream<String> input) {
-        var digits =
-                new Character[][]{{null, null, '1', null, null},
-                                  {null, '2', '3', '4', null},
-                                  {'5', '6', '7', '8', '9'},
-                                  {null, 'A', 'B', 'C', null},
-                                  {null, null, 'D', null, null}};
-
-        StringBuilder result = new StringBuilder();
-
-        Position position = new Position(0, 2);
-
-        input.map(String::toCharArray)
-             .forEach(steps -> {
-                 for (char step : steps) {
-                     switch (step) {
-                         case 'U' -> {
-                             if (position.posy > 0 && digits[position.posy - 1][position.posx] != null) {
-                                 position.posy--;
-                             }
-                         }
-                         case 'R' -> {
-                             if (position.posx < 4 && digits[position.posy][position.posx + 1] != null) {
-                                 position.posx++;
-                             }
-                         }
-                         case 'D' -> {
-                             if (position.posy < 4 && digits[position.posy + 1][position.posx] != null) {
-                                 position.posy++;
-                             }
-                         }
-                         case 'L' -> {
-                             if (position.posx > 0 && digits[position.posy][position.posx - 1] != null) {
-                                 position.posx--;
-                             }
-                         }
-                         default -> throw new RuntimeException(step + " was invalid");
-                     }
-                 }
-                 result.append(digits[position.posy][position.posx]);
-             });
-
-        return result.toString();
-    }
-
-    private static class Position {
-        int posx;
-        int posy;
-
-        public Position(int posx, int posy) {
-            this.posx = posx;
-            this.posy = posy;
+        for (var line : lines) {
+            var steps = line.toCharArray();
+            for (var step : steps) {
+                switch (step) {
+                    case 'U' -> {
+                        var newPosition = new Coordinate(position.x(), position.y() - 1);
+                        if (grid.isCoordinateInGrid(newPosition)) {
+                            position = newPosition;
+                        }
+                    }
+                    case 'R' -> {
+                        var newPosition = new Coordinate(position.x() + 1, position.y());
+                        if (grid.isCoordinateInGrid(newPosition)) {
+                            position = newPosition;
+                        }
+                    }
+                    case 'D' -> {
+                        var newPosition = new Coordinate(position.x(), position.y() + 1);
+                        if (grid.isCoordinateInGrid(newPosition)) {
+                            position = newPosition;
+                        }
+                    }
+                    case 'L' -> {
+                        var newPosition = new Coordinate(position.x() - 1, position.y());
+                        if (grid.isCoordinateInGrid(newPosition)) {
+                            position = newPosition;
+                        }
+                    }
+                    default -> throw new AssertionError("Eek!");
+                }
+            }
+            result.append(grid.get(position));
         }
+
+        return result.toString();
+    }
+
+    @Override
+    public String handlePart2(Stream<String> input) {
+        var lines = input.toList();
+
+        var digits = new Character[][] {{null, null, '1', null, null},
+                                        {null, '2', '3', '4', null},
+                                        {'5', '6', '7', '8', '9'},
+                                        {null, 'A', 'B', 'C', null},
+                                        {null, null, 'D', null, null}};
+
+        var grid = new Grid<>(digits);
+
+        var result = new StringBuilder();
+
+        var position = new Coordinate(0, 2);
+
+        for (var line : lines) {
+            var steps = line.toCharArray();
+            for (var step : steps) {
+                switch (step) {
+                    case 'U' -> {
+                        var newPosition = new Coordinate(position.x(), position.y() - 1);
+                        if (grid.get(newPosition) != null) {
+                            position = newPosition;
+                        }
+                    }
+                    case 'R' -> {
+                        var newPosition = new Coordinate(position.x() + 1, position.y());
+                        if (grid.get(newPosition) != null) {
+                            position = newPosition;
+                        }
+                    }
+                    case 'D' -> {
+                        var newPosition = new Coordinate(position.x(), position.y() + 1);
+                        if (grid.get(newPosition) != null) {
+                            position = newPosition;
+                        }
+                    }
+                    case 'L' -> {
+                        var newPosition = new Coordinate(position.x() - 1, position.y());
+                        if (grid.get(newPosition) != null) {
+                            position = newPosition;
+                        }
+                    }
+                    default -> throw new AssertionError("Eek!");
+                }
+            }
+            result.append(grid.get(position));
+        }
+
+        return result.toString();
     }
 }

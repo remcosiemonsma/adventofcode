@@ -4,5 +4,23 @@ public enum Direction {
     UP,
     LEFT,
     DOWN,
-    RIGHT
+    RIGHT;
+
+    public Direction rotateClockWise() {
+        return switch (this) {
+            case UP -> RIGHT;
+            case RIGHT -> DOWN;
+            case DOWN -> LEFT;
+            case LEFT -> UP;
+        };
+    }
+
+    public Direction rotateCounterClockWise() {
+        return switch (this) {
+            case UP -> LEFT;
+            case LEFT -> DOWN;
+            case DOWN -> RIGHT;
+            case RIGHT -> UP;
+        };
+    }
 }

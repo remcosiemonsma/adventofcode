@@ -1,9 +1,11 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day9 {
-    public long handlePart1(Stream<String> input) {
+public class Day9 implements AdventOfCodeSolution<Long> {
+    public Long handlePart1(Stream<String> input) {
         var compressed = input.findFirst()
                               .orElseThrow(() -> new AssertionError("Eek!"));
 
@@ -19,7 +21,6 @@ public class Day9 {
                     marker.append(compressed.charAt(position));
                 } else {
                     readingMarker = false;
-                    //process marker
 
                     var markerparts = marker.toString().split("x");
 
@@ -43,10 +44,10 @@ public class Day9 {
             }
         }
 
-        return decompressed.length();
+        return (long) decompressed.length();
     }
 
-    public long handlePart2(Stream<String> input) {
+    public Long handlePart2(Stream<String> input) {
         var compressed = input.findFirst()
                               .orElseThrow(() -> new AssertionError("Eek!"));
 
@@ -66,7 +67,6 @@ public class Day9 {
                     marker.append(compressed.charAt(position));
                 } else {
                     readingMarker = false;
-                    //process marker
 
                     var markerparts = marker.toString().split("x");
 

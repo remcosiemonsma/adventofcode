@@ -1,14 +1,17 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day12 {
+public class Day12 implements AdventOfCodeSolution<Integer> {
     private int registera = 0;
     private int registerb = 0;
     private int registerc = 0;
     private int registerd = 0;
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var instructions = input.map(s -> s.split(" ")).toArray(String[][]::new);
 
         performOperations(instructions);
@@ -16,7 +19,8 @@ public class Day12 {
         return registera;
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var instructions = input.map(s -> s.split(" ")).toArray(String[][]::new);
 
         registerc = 1;
@@ -30,7 +34,7 @@ public class Day12 {
         var instructionCounter = 0;
 
         while (instructionCounter < instructions.length) {
-            String[] parts = instructions[instructionCounter];
+            var parts = instructions[instructionCounter];
 
             switch (parts[0]) {
                 case "cpy" -> {

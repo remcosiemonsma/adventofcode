@@ -1,70 +1,82 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.model.Coordinate;
+import nl.remcoder.adventofcode.library.model.Direction;
+import nl.remcoder.adventofcode.library.model.Vector;
+
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.stream.Stream;
 
-public class Day1 {
-    public int handlePart1(Stream<String> input) {
+public class Day1 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var steps = input.findFirst()
                               .map(s -> s.split(", "))
                               .orElse(new String[0]);
 
-        var position = new Position();
+        var position = new Vector(new Coordinate(0, 0), Direction.UP);
 
         for (var step : steps) {
-            walk(position, step);
+            position = walk(position, step);
         }
 
-        return Math.abs(position.posx) + Math.abs(position.posy);
+        return position.coordinate().getDistanceTo(new Coordinate(0, 0));
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var steps = input.findFirst()
                               .map(s -> s.split(", "))
                               .orElse(new String[0]);
 
         var visitedPositions = new HashSet<>();
 
-        var position = new Position();
-        visitedPositions.add(position.clone());
+        var position = new Vector(new Coordinate(0, 0), Direction.UP);
+        visitedPositions.add(position.coordinate());
 
         outer:
         for (String step : steps) {
-            switch (step.charAt(0)) {
-                case 'R' -> position.direction = rotateClockWise(position.direction);
-                case 'L' -> position.direction = rotateCounterCLockWise(position.direction);
-            }
+            var direction = position.direction();
+            direction = switch (step.charAt(0)) {
+                case 'R' -> direction.rotateClockWise();
+                case 'L' -> direction.rotateCounterClockWise();
+                default -> throw new AssertionError("Eek!");
+            };
             int distance = Integer.parseInt(step.substring(1));
-            switch (position.direction) {
-                case NORTH -> {
+            switch (direction) {
+                case UP -> {
                     for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
-                        position.posy++;
-                        if (!visitedPositions.add(position.clone())) {
+                        position = new Vector(new Coordinate(position.coordinate().x(), 
+                                                             position.coordinate().y() + 1), direction);
+                        if (!visitedPositions.add(position.coordinate())) {
                             break outer;
                         }
                     }
                 }
-                case EAST -> {
+                case RIGHT -> {
                     for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
-                        position.posx++;
-                        if (!visitedPositions.add(position.clone())) {
+                        position = new Vector(new Coordinate(position.coordinate().x() + 1,
+                                                             position.coordinate().y()), direction);
+                        if (!visitedPositions.add(position.coordinate())) {
                             break outer;
                         }
                     }
                 }
-                case SOUTH -> {
+                case DOWN -> {
                     for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
-                        position.posy--;
-                        if (!visitedPositions.add(position.clone())) {
+                        position = new Vector(new Coordinate(position.coordinate().x(),
+                                                             position.coordinate().y() - 1), direction);
+                        if (!visitedPositions.add(position.coordinate())) {
                             break outer;
                         }
                     }
                 }
-                case WEST -> {
+                case LEFT -> {
                     for (var stepcounter = 0; stepcounter < distance; stepcounter++) {
-                        position.posx--;
-                        if (!visitedPositions.add(position.clone())) {
+                        position = new Vector(new Coordinate(position.coordinate().x() - 1,
+                                                             position.coordinate().y()), direction);
+                        if (!visitedPositions.add(position.coordinate())) {
                             break outer;
                         }
                     }
@@ -72,79 +84,22 @@ public class Day1 {
             }
         }
 
-        return Math.abs(position.posx) + Math.abs(position.posy);
+        return position.coordinate().getDistanceTo(new Coordinate(0, 0));
     }
 
-    private void walk(Position position, String step) {
-        switch (step.charAt(0)) {
-            case 'R' -> position.direction = rotateClockWise(position.direction);
-            case 'L' -> position.direction = rotateCounterCLockWise(position.direction);
-        }
+    private Vector walk(Vector position, String step) {
+        var direction = position.direction();
+        direction = switch (step.charAt(0)) {
+            case 'R' -> direction.rotateClockWise();
+            case 'L' -> direction.rotateCounterClockWise();
+            default -> throw new AssertionError("Eek!");
+        };
         var distance = Integer.parseInt(step.substring(1));
-        switch (position.direction) {
-            case NORTH -> position.posy += distance;
-            case EAST -> position.posx += distance;
-            case SOUTH -> position.posy -= distance;
-            case WEST -> position.posx -= distance;
-        }
-    }
-
-    private Direction rotateCounterCLockWise(Direction direction) {
-        switch (direction) {
-            case NORTH -> direction = Direction.WEST;
-            case EAST -> direction = Direction.NORTH;
-            case SOUTH -> direction = Direction.EAST;
-            case WEST -> direction = Direction.SOUTH;
-        }
-        return direction;
-    }
-
-    private Direction rotateClockWise(Direction direction) {
-        switch (direction) {
-            case NORTH -> direction = Direction.EAST;
-            case EAST -> direction = Direction.SOUTH;
-            case SOUTH -> direction = Direction.WEST;
-            case WEST -> direction = Direction.NORTH;
-        }
-        return direction;
-    }
-
-    private static class Position implements Cloneable {
-        int posx = 0;
-        int posy = 0;
-        Direction direction = Direction.NORTH;
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Position position = (Position) o;
-            return posx == position.posx && posy == position.posy;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(posx, posy);
-        }
-
-        @Override
-        public Position clone() {
-            try {
-                return (Position) super.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new AssertionError();
-            }
-        }
-    }
-
-    private enum Direction {
-        NORTH,
-        EAST,
-        SOUTH,
-        WEST
+        return switch (direction) {
+            case UP -> new Vector(new Coordinate(position.coordinate().x(), position.coordinate().y() + distance), direction);
+            case LEFT -> new Vector(new Coordinate(position.coordinate().x() + distance, position.coordinate().y()), direction);
+            case DOWN -> new Vector(new Coordinate(position.coordinate().x(), position.coordinate().y() - distance), direction);
+            case RIGHT -> new Vector(new Coordinate(position.coordinate().x() - distance, position.coordinate().y()), direction);
+        };
     }
 }

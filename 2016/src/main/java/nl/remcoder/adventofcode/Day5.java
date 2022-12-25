@@ -1,10 +1,12 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.stream.Stream;
 
-public class Day5 {
+public class Day5 implements AdventOfCodeSolution<String> {
     private static final MessageDigest MD5;
 
     static {
@@ -15,6 +17,7 @@ public class Day5 {
         }
     }
 
+    @Override
     public String handlePart1(Stream<String> input) {
         var doorId = input.findFirst()
                 .orElseThrow(() -> new AssertionError("Eek!"));
@@ -38,6 +41,7 @@ public class Day5 {
         return passwordBuilder.toString();
     }
 
+    @Override
     public String handlePart2(Stream<String> input) {
         var doorId = input.findFirst()
                           .orElseThrow(() -> new AssertionError("Eek!"));
