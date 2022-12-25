@@ -1,12 +1,13 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.stream.Stream;
 
-public class Day14 {
+public class Day14 implements AdventOfCodeSolution<Integer> {
     private static final MessageDigest MD5;
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
 
@@ -18,7 +19,8 @@ public class Day14 {
         }
     }
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var salt = input.findFirst()
                 .orElseThrow(() -> new AssertionError("Eek!"));
 
@@ -29,9 +31,9 @@ public class Day14 {
             hashes.add(hash);
         }
 
-        int counter = 1001;
+        var counter = 1001;
 
-        int foundPasswords = 0;
+        var foundPasswords = 0;
 
         while (foundPasswords < 64) {
             var hash = hashes.remove();
@@ -62,11 +64,12 @@ public class Day14 {
         return counter - 1002;
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var salt = input.findFirst()
                         .orElseThrow(() -> new AssertionError("Eek!"));
 
-        Deque<String> hashes = new ArrayDeque<>(1001);
+        var hashes = new ArrayDeque<String>(1001);
 
         for (var i = 0; i < 1001; i++) {
             var hash = createStretchedHash(salt, i);

@@ -8,11 +8,11 @@ public class Screen {
     public Screen(int width, int height) {
         screen = new boolean[height][width];
     }
-    
+
     public void drawPixel(int x, int y) {
         screen[y][x] = true;
     }
-    
+
     public String readScreen() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -22,8 +22,34 @@ public class Screen {
 
             stringBuilder.append(matchCaracter(character));
         }
-        
+
         return stringBuilder.toString();
+    }
+
+    public boolean[][] getData() {
+        return screen;
+    }
+
+    public int getWidth() {
+        return screen[0].length;
+    }
+
+    public int getHeight() {
+        return screen.length;
+    }
+
+    public int countPixels() {
+        int counter = 0;
+
+        for (var line : screen) {
+            for (var pixel : line) {
+                if (pixel) {
+                    counter++;
+                }
+            }
+        }
+
+        return counter;
     }
     
     public void printScreen() {
@@ -52,55 +78,55 @@ public class Screen {
         if (Arrays.deepEquals(Character.A, character)) {
             return 'A';
         } else if (Arrays.deepEquals(Character.B, character)) {
-            return'B';
+            return 'B';
         } else if (Arrays.deepEquals(Character.C, character)) {
-            return'C';
+            return 'C';
         } else if (Arrays.deepEquals(Character.D, character)) {
-            return'D';
+            return 'D';
         } else if (Arrays.deepEquals(Character.E, character)) {
-            return'E';
+            return 'E';
         } else if (Arrays.deepEquals(Character.F, character)) {
-            return'F';
+            return 'F';
         } else if (Arrays.deepEquals(Character.G, character)) {
-            return'G';
+            return 'G';
         } else if (Arrays.deepEquals(Character.H, character)) {
-            return'H';
+            return 'H';
         } else if (Arrays.deepEquals(Character.I, character)) {
-            return'I';
+            return 'I';
         } else if (Arrays.deepEquals(Character.J, character)) {
-            return'J';
+            return 'J';
         } else if (Arrays.deepEquals(Character.K, character)) {
-            return'K';
+            return 'K';
         } else if (Arrays.deepEquals(Character.L, character)) {
-            return'L';
+            return 'L';
         } else if (Arrays.deepEquals(Character.M, character)) {
-            return'M';
+            return 'M';
         } else if (Arrays.deepEquals(Character.N, character)) {
-            return'N';
+            return 'N';
         } else if (Arrays.deepEquals(Character.O, character)) {
-            return'O';
+            return 'O';
         } else if (Arrays.deepEquals(Character.P, character)) {
-            return'P';
+            return 'P';
         } else if (Arrays.deepEquals(Character.Q, character)) {
-            return'Q';
+            return 'Q';
         } else if (Arrays.deepEquals(Character.R, character)) {
-            return'R';
+            return 'R';
         } else if (Arrays.deepEquals(Character.S, character)) {
-            return'S';
+            return 'S';
         } else if (Arrays.deepEquals(Character.T, character)) {
-            return'T';
+            return 'T';
         } else if (Arrays.deepEquals(Character.U, character)) {
-            return'U';
+            return 'U';
         } else if (Arrays.deepEquals(Character.V, character)) {
-            return'V';
+            return 'V';
         } else if (Arrays.deepEquals(Character.W, character)) {
-            return'W';
+            return 'W';
         } else if (Arrays.deepEquals(Character.X, character)) {
-            return'X';
+            return 'X';
         } else if (Arrays.deepEquals(Character.Y, character)) {
-            return'Y';
+            return 'Y';
         } else if (Arrays.deepEquals(Character.Z, character)) {
-            return'Z';
+            return 'Z';
         }
         return '#';
     }

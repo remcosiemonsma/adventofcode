@@ -2,7 +2,9 @@ package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
+import nl.remcoder.adventofcode.library.model.Direction;
 import nl.remcoder.adventofcode.library.model.Grid;
+import nl.remcoder.adventofcode.library.model.Vector;
 
 import java.util.stream.Stream;
 
@@ -248,8 +250,6 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         return vector;
     }
 
-    private record Vector(Coordinate coordinate, Direction direction) {}
-    
     private char determineEdge(Vector vector) {
         var position = vector.coordinate();
         if (position.y() == 199 && position.x() >= 0 && position.x() < 50 && vector.direction() == Direction.DOWN) {
@@ -296,12 +296,5 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         }
         System.out.println(position);
         throw new AssertionError("Eek!");
-    }
-
-    private enum Direction {
-        UP,
-        LEFT,
-        DOWN,
-        RIGHT
     }
 }

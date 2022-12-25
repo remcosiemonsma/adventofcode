@@ -1,15 +1,17 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Day7 {
-    public long handlePart1(Stream<String> input) {
+public class Day7 implements AdventOfCodeSolution<Long> {
+    public Long handlePart1(Stream<String> input) {
         return input.filter(this::doesIpSupportTLS)
                     .count();
     }
 
-    public long handlePart2(Stream<String> input) {
+    public Long handlePart2(Stream<String> input) {
         return input.filter(this::doesIpSupportSSL)
                     .count();
     }
@@ -77,10 +79,10 @@ public class Day7 {
         var chars = part.toCharArray();
 
         for (var position = 0; position <= chars.length - 4; position++) {
-            char c1 = chars[position];
-            char c2 = chars[position + 1];
-            char c3 = chars[position + 2];
-            char c4 = chars[position + 3];
+            var c1 = chars[position];
+            var c2 = chars[position + 1];
+            var c3 = chars[position + 2];
+            var c4 = chars[position + 3];
 
             if (c1 == c4 && c2 == c3 && c1 != c2) {
                 return true;
