@@ -1,0 +1,15 @@
+Disc #1 has 7 positions; at time=0, it is at position 0.
+Disc #2 has 13 positions; at time=0, it is at position 0.
+Disc #3 has 3 positions; at time=0, it is at position 2.
+Disc #4 has 5 positions; at time=0, it is at position 2.
+Disc #5 has 17 positions; at time=0, it is at position 0.
+Disc #6 has 19 positions; at time=0, it is at position 7.
+
+
+
+disc 1 moet naar positie 6, dit gebeurt elke 6 + 7*i rotaties
+disc 2 moet naar positie 11, dit gebeurt elke 11 + 13*i rotaties
+disc 3 moet naar positie 0, dit gebeurt elke 1 + 3*i rotaties
+disc 4 moet naar positie 1, dit gebeurt elke 4 + 5*i rotaties
+disc 5 moet naar positie 12, dit gebeurt elke 12 + 17*i rotaties
+disc 6 moet naar positie 13, dit gebeurt elke 6 + 19*i rotaties
