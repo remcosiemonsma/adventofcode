@@ -77,7 +77,7 @@ public class Grid<T> {
             values.put(coordinate, value);
         }
     }
-    
+
     public void calculateSize() {
         startx = values.keySet()
                        .stream()
@@ -135,8 +135,17 @@ public class Grid<T> {
             }
         }
     }
-    
+
     public long countElements(T value) {
         return values.values().stream().filter(t -> t.equals(value)).count();
+    }
+
+    public Coordinate findValue(T value) {
+        return values.entrySet()
+                     .stream()
+                     .filter(entry -> entry.getValue().equals(value))
+                     .findFirst()
+                     .map(Map.Entry::getKey)
+                     .orElseThrow(() -> new AssertionError("Value not found!"));
     }
 }
