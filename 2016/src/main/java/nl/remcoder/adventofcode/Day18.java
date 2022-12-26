@@ -3,7 +3,6 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Grid;
 
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class Day18 implements AdventOfCodeSolution<Integer> {
