@@ -18,7 +18,7 @@ public class Day21 {
         var start = new Game(shop, player, boss);
         start.setDistance(0);
 
-        return (int) Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner());
+        return (int) Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner()).getDistance();
     }
 
     public int handlePart2(Stream<String> input) {

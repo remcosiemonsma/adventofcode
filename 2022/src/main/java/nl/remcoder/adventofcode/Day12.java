@@ -41,7 +41,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         start.setDistance(0);
         start.setPath(List.of(start));
 
-        return Dijkstra.findShortestDistance(start, node -> ((HillSide) node).getHeight() == 'E');
+        return Dijkstra.findShortestDistance(start, node -> ((HillSide) node).getHeight() == 'E').getDistance();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
 
         long shortestDistance = Long.MAX_VALUE;
         try {
-            shortestDistance = Dijkstra.findShortestDistance(start, node -> ((HillSide) node).getHeight() == 'E');
+            shortestDistance = Dijkstra.findShortestDistance(start, node -> ((HillSide) node).getHeight() == 'E').getDistance();
         } catch (RuntimeException ignored) {}
 
         allHillSides.forEach(HillSide::reset);

@@ -4,7 +4,7 @@ import java.util.PriorityQueue;
 import java.util.function.Predicate;
 
 public class Dijkstra {
-    public static long findShortestDistance(Node from, Predicate<Node> isNodeEndstate) {
+    public static Node findShortestDistance(Node from, Predicate<Node> isNodeEndstate) {
         var toVisit = new PriorityQueue<Node>();
         toVisit.add(from);
 
@@ -12,7 +12,7 @@ public class Dijkstra {
             var min = toVisit.remove();
             if (isNodeEndstate.test(min)) {
                 min.printStateInformation();
-                return min.getDistance();
+                return min;
             }
             if (min.isVisited()) {
                 continue;
