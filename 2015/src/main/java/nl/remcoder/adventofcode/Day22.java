@@ -20,7 +20,7 @@ public class Day22 {
         turn.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(turn,
-                                             node -> ((Turn) node).isGameFinished() && ((Turn) node).isPlayerAlive());
+                                             node -> ((Turn) node).isGameFinished() && ((Turn) node).isPlayerAlive()).getDistance();
     }
 
     public int handlePart2(Stream<String> input) {
@@ -33,7 +33,7 @@ public class Day22 {
         turn.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(turn,
-                                                   node -> ((Turn2) node).isGameFinished() && ((Turn2) node).isPlayerAlive());
+                                                   node -> ((Turn2) node).isGameFinished() && ((Turn2) node).isPlayerAlive()).getDistance();
     }
 
     private Set<Spell> createSpells() {

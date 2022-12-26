@@ -22,7 +22,7 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
         var start = new Step(new Coordinate(1, 1), grid);
         start.setDistance(0);
         
-        return (int) Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(desiredPosition));
+        return (int) Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(desiredPosition)).getDistance();
     }
 
     @Override
