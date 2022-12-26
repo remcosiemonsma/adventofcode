@@ -1,10 +1,15 @@
 package nl.remcoder.adventofcode.asembunny;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 public class CPU {
+    private final BlockingQueue<Integer> output = new ArrayBlockingQueue<>(100000);
     private int registera = 0;
     private int registerb = 0;
     private int registerc = 0;
     private int registerd = 0;
+    private boolean running;
 
     public int getRegistera() {
         return registera;
@@ -38,10 +43,19 @@ public class CPU {
         this.registerd = registerd;
     }
 
+    public void stop() {
+        this.running = false;
+    }
+
+    public BlockingQueue<Integer> getOutput() {
+        return output;
+    }
+
     public void performOperations(String[][] instructions) {
+        running = true;
         var instructionCounter = 0;
 
-        while (instructionCounter < instructions.length) {
+        while (instructionCounter < instructions.length && running) {
             var parts = instructions[instructionCounter];
 
             switch (parts[0]) {
@@ -79,6 +93,11 @@ public class CPU {
                             default -> throw new AssertionError("Eek!");
                         };
                     }
+                    instructionCounter++;
+                }
+                case "out" -> {
+                    int value = getValue(parts[1]);
+                    output.add(value);
                     instructionCounter++;
                 }
             }
