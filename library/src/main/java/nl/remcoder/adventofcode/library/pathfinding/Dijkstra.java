@@ -11,7 +11,6 @@ public class Dijkstra {
         while (!toVisit.isEmpty()) {
             var min = toVisit.remove();
             if (isNodeEndstate.test(min)) {
-                min.printStateInformation();
                 return min;
             }
             if (min.isVisited()) {
