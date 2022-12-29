@@ -1,16 +1,18 @@
-package nl.remcoder.adventofcode.day15;
+package nl.remcoder.adventofcode;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class Part1 {
-    public static void main(String[] args) throws Exception {
-        List<String> data = Files.readAllLines(Paths.get(ClassLoader.getSystemResource("day15/input").toURI()));
+public class Day15 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var data = input.toList();
 
         char[][] grid = new char[data.size()][];
 
@@ -48,7 +50,8 @@ public class Part1 {
         game:
         while (goblins.stream().anyMatch(goblin -> goblin.health > 1) &&
                elfs.stream().anyMatch(elf -> elf.health > 1)) {
-            units.sort(byPosY.thenComparing(byPosX));
+            units.sort(Comparator.comparing(Unit::getPosy)
+                                 .thenComparing(Unit::getPosx));
 
             for (Unit unit : units) {
                 switch (unit.unitType) {
@@ -99,8 +102,8 @@ public class Part1 {
 
                         for (Coordinate coordinate : possibleAttackVectors) {
                             Optional<Coordinate> nextBestMove = findNextBestMove(grid,
-                                                                                 new Coordinate(unit.posx, unit.posy),
-                                                                                 coordinate);
+                                                                                       new Coordinate(unit.posx, unit.posy),
+                                                                                       coordinate);
 
                             nextBestMove.map(coordinate1 -> new Move(coordinate1, coordinate))
                                         .ifPresent(possibleMoves::add);
@@ -130,43 +133,185 @@ public class Part1 {
                          .collect(Collectors.toList());
 
             rounds++;
-
-            printGrid(grid);
-
-            System.out.println(elfs);
-
-            System.out.println(goblins);
-
-            System.out.println(units);
-
-            System.out.println(rounds);
         }
 
-        System.out.println(rounds);
         Integer elfHealth = elfs.stream()
                                 .filter(elf -> elf.health > 0)
                                 .map(elf -> elf.health)
                                 .reduce(0, Integer::sum);
-        System.out.println(elfHealth);
 
         Integer goblinHealth = goblins.stream()
                                       .filter(goblin -> goblin.health > 0)
                                       .map(goblin -> goblin.health)
                                       .reduce(0, Integer::sum);
-        System.out.println(goblinHealth);
 
-        System.out.println((goblinHealth + elfHealth) * rounds);
+        return (goblinHealth + elfHealth) * rounds;
     }
 
-    private static void printGrid(char[][] grid) {
-        for (char[] line : grid) {
-            for (char pixel : line) {
-                System.out.print(pixel);
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var data = input.toList();
+
+        char[][] grid = new char[data.size()][];
+
+        List<Unit> goblins = new ArrayList<>();
+        List<Unit> elfs = new ArrayList<>();
+        List<Unit> units = new ArrayList<>();
+
+        int elfAttackIncrementer = 1;
+
+        boolean elfLost = true;
+
+        int rounds = 0;
+        while (elfLost) {
+            elfAttackIncrementer++;
+            elfs.clear();
+            goblins.clear();
+            units.clear();
+
+            initializeGame(data, grid, goblins, elfs, units, elfAttackIncrementer);
+
+            rounds = 0;
+
+            elfLost = false;
+
+            game:
+            while (goblins.stream().anyMatch(goblin -> goblin.health > 1) &&
+                   elfs.stream().anyMatch(elf -> elf.health > 1)) {
+                units.sort(Comparator.comparing(Unit::getPosy).thenComparing(Unit::getPosx));
+
+                for (Unit unit : units) {
+                    switch (unit.unitType) {
+                        case GOBLIN -> {
+                            if (elfs.stream().noneMatch(elf -> elf.health > 0)) {
+                                break game;
+                            }
+                        }
+                        case ELF -> {
+                            if (goblins.stream().noneMatch(goblin -> goblin.health > 0)) {
+                                break game;
+                            }
+                        }
+                    }
+
+                    if (unit.health > 0) {
+                        boolean turncomplete = switch (unit.unitType) {
+                            case ELF -> unit.attack(goblins, grid);
+                            case GOBLIN -> unit.attack(elfs, grid);
+                        };
+
+                        if (!turncomplete) {
+                            List<Coordinate> possibleAttackVectors = new ArrayList<>();
+
+                            List<Unit> enemies = switch (unit.unitType) {
+                                case ELF -> goblins;
+                                case GOBLIN -> elfs;
+                            };
+
+                            enemies.stream()
+                                   .filter(enemy -> enemy.health > 0)
+                                   .forEach(enemy -> {
+                                       if (grid[enemy.posy - 1][enemy.posx] == '.') {
+                                           possibleAttackVectors.add(new Coordinate(enemy.posx, enemy.posy - 1));
+                                       }
+                                       if (grid[enemy.posy][enemy.posx - 1] == '.') {
+                                           possibleAttackVectors.add(new Coordinate(enemy.posx - 1, enemy.posy));
+                                       }
+                                       if (grid[enemy.posy][enemy.posx + 1] == '.') {
+                                           possibleAttackVectors.add(new Coordinate(enemy.posx + 1, enemy.posy));
+                                       }
+                                       if (grid[enemy.posy + 1][enemy.posx] == '.') {
+                                           possibleAttackVectors.add(new Coordinate(enemy.posx, enemy.posy + 1));
+                                       }
+                                   });
+
+                            List<Move> possibleMoves = new ArrayList<>();
+
+                            for (Coordinate coordinate : possibleAttackVectors) {
+                                Optional<Coordinate> nextBestMove = findNextBestMove(grid,
+                                                                                           new Coordinate(unit.posx,
+                                                                                                                unit.posy),
+                                                                                           coordinate);
+
+                                nextBestMove.map(coordinate1 -> new Move(coordinate1, coordinate))
+                                            .ifPresent(possibleMoves::add);
+                            }
+
+                            possibleMoves.stream()
+                                         .min(byMoveSteps.thenComparing(byMoveTargetY).thenComparing(byMoveTargetX)
+                                                         .thenComparing(byMoveNextY).thenComparing(byMoveNextX))
+                                         .map(move -> move.nextStep)
+                                         .ifPresent(coordinate -> {
+                                             char temp = grid[unit.posy][unit.posx];
+                                             grid[unit.posy][unit.posx] = '.';
+                                             grid[coordinate.y][coordinate.x] = temp;
+                                             unit.posx = coordinate.x;
+                                             unit.posy = coordinate.y;
+                                         });
+
+                            switch (unit.unitType) {
+                                case ELF -> unit.attack(goblins, grid);
+                                case GOBLIN -> unit.attack(elfs, grid);
+                            }
+                        }
+                    }
+                }
+
+                units = units.stream()
+                             .filter(unit -> unit.health > 0)
+                             .collect(Collectors.toList());
+
+                rounds++;
+
+                if (elfs.stream().anyMatch(elf -> elf.health < 1)) {
+                    elfLost = true;
+                    break;
+                }
             }
-            System.out.println();
+        }
+
+        Integer elfHealth = elfs.stream()
+                                .filter(elf -> elf.health > 0)
+                                .map(elf -> elf.health)
+                                .reduce(0, Integer::sum);
+
+        Integer goblinHealth = goblins.stream()
+                                      .filter(goblin -> goblin.health > 0)
+                                      .map(goblin -> goblin.health)
+                                      .reduce(0, Integer::sum);
+
+        return (goblinHealth + elfHealth) * rounds;
+    }
+
+    private static void initializeGame(List<String> data, char[][] grid, List<Unit> goblins,
+                                       List<Unit> elfs, List<Unit> units, int elfAttackIncrementer) {
+        for (int y = 0; y < data.size(); y++) {
+            String s = data.get(y);
+            char[] line = new char[s.length()];
+            for (int x = 0; x < s.length(); x++) {
+                switch (s.charAt(x)) {
+                    case '#' -> line[x] = '#';
+                    case '.' -> line[x] = '.';
+                    case 'G' -> {
+                        Unit goblin = new Unit(x, y, UnitType.GOBLIN);
+                        goblins.add(goblin);
+                        units.add(goblin);
+                        line[x] = 'G';
+                    }
+                    case 'E' -> {
+                        Unit elf = new Unit(x, y, UnitType.ELF);
+                        elf.damage += elfAttackIncrementer;
+                        elfs.add(elf);
+                        units.add(elf);
+                        line[x] = 'E';
+                    }
+                }
+            }
+
+            grid[y] = line;
         }
     }
-
+    
     private static Optional<Coordinate> findNextBestMove(char[][] grid, Coordinate start, Coordinate goal) {
         boolean startFound = false;
 
@@ -223,33 +368,21 @@ public class Part1 {
         }
 
         List<List<Coordinate>> validRoutes = possibleRoutes.stream()
-                                                           .filter(possibleRoute ->
-                                                                           possibleRoute
-                                                                                   .get(possibleRoute.size() - 1).x ==
-                                                                           start.x &&
-                                                                           possibleRoute
-                                                                                   .get(possibleRoute.size() - 1).y ==
-                                                                           start.y)
-                                                           .toList();
+                                                                 .filter(possibleRoute ->
+                                                                                 possibleRoute
+                                                                                         .get(possibleRoute.size() - 1).x ==
+                                                                                 start.x &&
+                                                                                 possibleRoute
+                                                                                         .get(possibleRoute.size() - 1).y ==
+                                                                                 start.y)
+                                                                 .toList();
 
         return validRoutes.stream()
                           .map(validRoute -> validRoute.get(validRoute.size() - 2))
-                          .min(byY.thenComparing(byX));
+                          .min(Comparator.comparing(Coordinate::getY)
+                                         .thenComparing(Coordinate::getX));
     }
-
-    private static final Comparator<Coordinate> byY = Comparator.comparingInt(coordinate -> coordinate.y);
-    private static final Comparator<Coordinate> byX = Comparator.comparingInt(coordinate -> coordinate.x);
     
-    private static final Comparator<Move> byMoveSteps = Comparator.comparing(move -> move.nextStep.steps);
-    private static final Comparator<Move> byMoveTargetY = Comparator.comparing(move -> move.target.y);
-    private static final Comparator<Move> byMoveTargetX = Comparator.comparing(move -> move.target.x);
-    private static final Comparator<Move> byMoveNextY = Comparator.comparing(move -> move.target.y);
-    private static final Comparator<Move> byMoveNextX = Comparator.comparing(move -> move.target.x);
-
-    private static final Comparator<Unit> byPosY = Comparator.comparingInt(unit -> unit.posy);
-    private static final Comparator<Unit> byPosX = Comparator.comparingInt(unit -> unit.posx);
-    private static final Comparator<Unit> byHealth = Comparator.comparing(unit -> unit.health);
-
     private static void checkAndAddStep(List<List<Coordinate>> possibleRoutes, Coordinate currentStep,
                                         List<Coordinate> nextSteps, char[][] grid, int i, int x, Coordinate goal) {
         if (goal.x == x && goal.y == i) {
@@ -273,7 +406,7 @@ public class Part1 {
             }
         }
     }
-
+    
     private static class Unit {
         int health = 200;
         int damage = 3;
@@ -287,18 +420,32 @@ public class Part1 {
             this.unitType = unitType;
         }
 
+        public int getPosx() {
+            return posx;
+        }
+
+        public int getPosy() {
+            return posy;
+        }
+
+        public int getHealth() {
+            return health;
+        }
+
         boolean attack(List<Unit> enemies, char[][] grid) {
             Optional<Unit> optionalUnit = enemies.stream()
-                                                 .filter(unit -> unit.health > 0)
-                                                 .filter(unit -> (unit.posx == this.posx + 1 &&
-                                                                  unit.posy == this.posy) ||
-                                                                 (unit.posx == this.posx - 1 &&
-                                                                  unit.posy == this.posy) ||
-                                                                 (unit.posy == this.posy + 1 &&
-                                                                  unit.posx == this.posx) ||
-                                                                 (unit.posy == this.posy - 1 &&
-                                                                  unit.posx == this.posx))
-                                                 .min(byHealth.thenComparing(byPosY).thenComparing(byPosX));
+                                                       .filter(unit -> unit.health > 0)
+                                                       .filter(unit -> (unit.posx == this.posx + 1 &&
+                                                                        unit.posy == this.posy) ||
+                                                                       (unit.posx == this.posx - 1 &&
+                                                                        unit.posy == this.posy) ||
+                                                                       (unit.posy == this.posy + 1 &&
+                                                                        unit.posx == this.posx) ||
+                                                                       (unit.posy == this.posy - 1 &&
+                                                                        unit.posx == this.posx))
+                                                       .min(Comparator.comparing(Unit::getHealth)
+                                                                      .thenComparing(Unit::getPosx)
+                                                                      .thenComparing(Unit::getPosy));
             optionalUnit.ifPresent(unit -> unit.health -= this.damage);
 
             optionalUnit.filter(unit -> unit.health < 1)
@@ -352,4 +499,10 @@ public class Part1 {
             this.target = target;
         }
     }
+
+    private final Comparator<Move> byMoveSteps = Comparator.comparing(move -> move.nextStep.steps);
+    private final Comparator<Move> byMoveTargetY = Comparator.comparing(move -> move.target.y);
+    private final Comparator<Move> byMoveTargetX = Comparator.comparing(move -> move.target.x);
+    private final Comparator<Move> byMoveNextY = Comparator.comparing(move -> move.target.y);
+    private final Comparator<Move> byMoveNextX = Comparator.comparing(move -> move.target.x);
 }
