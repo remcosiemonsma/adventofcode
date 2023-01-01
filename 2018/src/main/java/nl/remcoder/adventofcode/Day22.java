@@ -3,6 +3,7 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Grid;
+import nl.remcoder.adventofcode.library.pathfinding.Dijkstra;
 import nl.remcoder.adventofcode.library.pathfinding.Node;
 
 import java.util.*;
@@ -100,92 +101,90 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
             }
         }
 
-        var stateMap = new HashMap<State, Integer>();
-        var steps = new HashMap<State, List<State>>();
-
-        var start = new State(new Coordinate(0, 0), Equipment.TORCH);
-        stateMap.put(start, 0);
-        steps.put(start, List.of(start));
-
-        var statesToCheck = List.of(start);
-
-        while (!statesToCheck.isEmpty()) {
-            var newStates = new ArrayList<State>();
-
-            for (var state : statesToCheck) {
-                for (var coordinate : state.position().getStraightNeighbours()) {
-                    if (grid.isCoordinateInGrid(coordinate)) {
-                        var region = grid.get(coordinate);
-                        switch (region.regionType) {
-                            case ROCKY -> {
-                                processState(stateMap, newStates, state, coordinate, Equipment.TORCH,
-                                             steps);
-                                processState(stateMap, newStates, state, coordinate,
-                                             Equipment.CLIMBING_GEAR, steps);
-                            }
-                            case NARROW -> {
-                                processState(stateMap, newStates, state, coordinate,
-                                             Equipment.NEITHER, steps);
-                                processState(stateMap, newStates, state, coordinate, Equipment.TORCH,
-                                             steps);
-                            }
-                            case WET -> {
-                                processState(stateMap, newStates, state, coordinate,
-                                             Equipment.NEITHER, steps);
-                                processState(stateMap, newStates, state, coordinate,
-                                             Equipment.CLIMBING_GEAR, steps);
-                            }
-                        }
-                    }
-                }
-            }
-
-            statesToCheck = newStates;
-        }
-
-
-//        var start = new Step(new Coordinate(0, 0), target, Equipment.TORCH, grid,
-//                             List.of(new State(new Coordinate(0, 0), Equipment.TORCH)));
-//        start.setDistance(0);
+//        var stateMap = new HashMap<State, Integer>();
+//        var steps = new HashMap<State, List<State>>();
 //
-//        STEP_MAP.put(new State(new Coordinate(0, 0), Equipment.TORCH), start);
+//        var start = new State(new Coordinate(0, 0), Equipment.TORCH);
+//        stateMap.put(start, 0);
+//        steps.put(start, List.of(start));
 //
-//        Node end = Dijkstra.findShortestDistance(start, node -> {
-//            var step = (Step) node;
-//            return step.currentPosition.equals(target);
-//        });
+//        var statesToCheck = List.of(start);
 //
-//        end.printStateInformation();
-//        
-//        return (int) end.getDistance();
+//        while (!statesToCheck.isEmpty()) {
+//            var newStates = new ArrayList<State>();
+//
+//            for (var state : statesToCheck) {
+//                var currentDistance = stateMap.get(state);
+//                for (var coordinate : state.position().getStraightNeighbours()) {
+//                    if (grid.isCoordinateInGrid(coordinate)) {
+//                        var region = grid.get(coordinate);
+//                        switch (region.regionType) {
+//                            case ROCKY -> {
+//                                processState(stateMap, newStates, state, currentDistance, coordinate, Equipment.TORCH,
+//                                             steps);
+//                                processState(stateMap, newStates, state, currentDistance, coordinate,
+//                                             Equipment.CLIMBING_GEAR, steps);
+//                            }
+//                            case NARROW -> {
+//                                processState(stateMap, newStates, state, currentDistance, coordinate,
+//                                             Equipment.NEITHER, steps);
+//                                processState(stateMap, newStates, state, currentDistance, coordinate, Equipment.TORCH,
+//                                             steps);
+//                            }
+//                            case WET -> {
+//                                processState(stateMap, newStates, state, currentDistance, coordinate,
+//                                             Equipment.NEITHER, steps);
+//                                processState(stateMap, newStates, state, currentDistance, coordinate,
+//                                             Equipment.CLIMBING_GEAR, steps);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//            statesToCheck = newStates;
+//        }
+//
+//        var end = new State(target, Equipment.TORCH);
+//
+//        for (var step : steps.get(end)) {
+//            System.out.println(step);
+//            System.out.println(grid.get(step.position()).regionType);
+//            System.out.println(stateMap.get(step));
+//        }
+//
+//        return stateMap.get(end);
+        var start = new Step(new Coordinate(0, 0), target, Equipment.TORCH, grid,
+                             List.of(new State(new Coordinate(0, 0), Equipment.TORCH)));
+        start.setDistance(0);
 
-        var end = new State(target, Equipment.TORCH);
+        STEP_MAP.put(new State(new Coordinate(0, 0), Equipment.TORCH), start);
 
-        for (var step : steps.get(end)) {
-            System.out.println(step);
-            System.out.println(stateMap.get(step));
-        }
+        Node end = Dijkstra.findShortestDistance(start, node -> {
+            var step = (Step) node;
+            return step.currentPosition.equals(target);
+        });
 
-        return stateMap.get(end);
+        end.printStateInformation();
+
+        return (int) end.getDistance();
     }
 
     private void processState(HashMap<State, Integer> stateMap, ArrayList<State> newStates, State state,
-                              Coordinate coordinate, Equipment equipment, Map<State, List<State>> steps) {
-        var currentDistance = stateMap.get(state);
-        State newState;
-        int distanceToState;
+                              Integer currentDistance, Coordinate coordinate, Equipment equipment,
+                              Map<State, List<State>> steps) {
+        var newState = new State(coordinate, equipment);
+        int distanceToTorchState;
         if (state.equipment() == equipment) {
-            newState = new State(coordinate, equipment);
-            distanceToState = currentDistance + 1;
+            distanceToTorchState = currentDistance + 1;
         } else {
-            newState = new State(state.position(), equipment);
-            distanceToState = currentDistance + 7;
+            distanceToTorchState = currentDistance + 8;
         }
-        if (distanceToState < stateMap.getOrDefault(newState, Integer.MAX_VALUE)) {
+        if (distanceToTorchState < stateMap.getOrDefault(newState, Integer.MAX_VALUE)) {
             var newSteps = new ArrayList<>(steps.get(state));
             newSteps.add(newState);
             steps.put(newState, newSteps);
-            stateMap.put(newState, distanceToState);
+            stateMap.put(newState, distanceToTorchState);
             newStates.add(newState);
         }
     }
