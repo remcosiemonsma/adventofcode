@@ -78,7 +78,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         for (var y = 0; y <= target.y() * 2; y++) {
             for (var x = 0; x <= target.x() * 2; x++) {
                 int geologicIndex;
-                if ((x == 0 && y == 0) || (x == target.x() && y == target.y())) {
+                if ((x == 0 && y == 0)) {
                     geologicIndex = 0;
                 } else if (x == 0) {
                     geologicIndex = y * 48271;
@@ -100,6 +100,8 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                 grid.set(new Coordinate(x, y), region);
             }
         }
+        
+        grid.set(target, new Region(0, 0, RegionType.ROCKY));
 
 //        var stateMap = new HashMap<State, Integer>();
 //        var steps = new HashMap<State, List<State>>();

@@ -32,6 +32,10 @@ public record Coordinate3D(int x, int y, int z) {
         return Set.of(getLeft(), getRight(), getAbove(), getBelow(), getFront(), getRear());
     }
 
+    public int getDistanceTo(Coordinate3D other) {
+        return Math.abs(x - other.x) + Math.abs(y - other.y) + Math.abs(z - other.z);
+    }
+    
     @Override
     public String toString() {
         return x + "," + y + "," + z;
