@@ -113,27 +113,26 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
             var newStates = new ArrayList<State>();
 
             for (var state : statesToCheck) {
-                var currentDistance = stateMap.get(state);
                 for (var coordinate : state.position().getStraightNeighbours()) {
                     if (grid.isCoordinateInGrid(coordinate)) {
                         var region = grid.get(coordinate);
                         switch (region.regionType) {
                             case ROCKY -> {
-                                processState(stateMap, newStates, state, currentDistance, coordinate, Equipment.TORCH,
+                                processState(stateMap, newStates, state, coordinate, Equipment.TORCH,
                                              steps);
-                                processState(stateMap, newStates, state, currentDistance, coordinate,
+                                processState(stateMap, newStates, state, coordinate,
                                              Equipment.CLIMBING_GEAR, steps);
                             }
                             case NARROW -> {
-                                processState(stateMap, newStates, state, currentDistance, coordinate,
+                                processState(stateMap, newStates, state, coordinate,
                                              Equipment.NEITHER, steps);
-                                processState(stateMap, newStates, state, currentDistance, coordinate, Equipment.TORCH,
+                                processState(stateMap, newStates, state, coordinate, Equipment.TORCH,
                                              steps);
                             }
                             case WET -> {
-                                processState(stateMap, newStates, state, currentDistance, coordinate,
+                                processState(stateMap, newStates, state, coordinate,
                                              Equipment.NEITHER, steps);
-                                processState(stateMap, newStates, state, currentDistance, coordinate,
+                                processState(stateMap, newStates, state, coordinate,
                                              Equipment.CLIMBING_GEAR, steps);
                             }
                         }
@@ -161,30 +160,32 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
 //        return (int) end.getDistance();
 
         var end = new State(target, Equipment.TORCH);
-        
+
         for (var step : steps.get(end)) {
             System.out.println(step);
             System.out.println(stateMap.get(step));
         }
-        
+
         return stateMap.get(end);
     }
 
     private void processState(HashMap<State, Integer> stateMap, ArrayList<State> newStates, State state,
-                              Integer currentDistance, Coordinate coordinate, Equipment equipment,
-                              Map<State, List<State>> steps) {
-        var newState = new State(coordinate, equipment);
-        int distanceToTorchState;
+                              Coordinate coordinate, Equipment equipment, Map<State, List<State>> steps) {
+        var currentDistance = stateMap.get(state);
+        State newState;
+        int distanceToState;
         if (state.equipment() == equipment) {
-            distanceToTorchState = currentDistance + 1;
+            newState = new State(coordinate, equipment);
+            distanceToState = currentDistance + 1;
         } else {
-            distanceToTorchState = currentDistance + 8;
+            newState = new State(state.position(), equipment);
+            distanceToState = currentDistance + 7;
         }
-        if (distanceToTorchState < stateMap.getOrDefault(newState, Integer.MAX_VALUE)) {
+        if (distanceToState < stateMap.getOrDefault(newState, Integer.MAX_VALUE)) {
             var newSteps = new ArrayList<>(steps.get(state));
             newSteps.add(newState);
             steps.put(newState, newSteps);
-            stateMap.put(newState, distanceToTorchState);
+            stateMap.put(newState, distanceToState);
             newStates.add(newState);
         }
     }
