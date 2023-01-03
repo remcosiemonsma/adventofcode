@@ -44,8 +44,6 @@ class Day22Test {
     
     @Test
     void testPart2Input() throws Exception {
-        //1309 too high
-        //997 too low
         assertEquals(1004, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
     }

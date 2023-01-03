@@ -23,39 +23,16 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         var target = new Coordinate(Integer.parseInt(targetCoords[0]),
                                     Integer.parseInt(targetCoords[1]));
 
-        var grid = new Grid<Region>(0, 0, target.x(), target.y());
+        var grid = generateGrid(depth, target, 1);
 
         var riskLevel = 0;
 
         for (var y = 0; y <= target.y(); y++) {
             for (var x = 0; x <= target.x(); x++) {
-                int geologicIndex;
-                if ((x == 0 && y == 0) || (x == target.x() && y == target.y())) {
-                    geologicIndex = 0;
-                } else if (x == 0) {
-                    geologicIndex = y * 48271;
-                } else if (y == 0) {
-                    geologicIndex = x * 16807;
-                } else {
-                    geologicIndex = (grid.get(x - 1, y).erosionLevel() * grid.get(x, y - 1).erosionLevel());
+                switch (grid.get(x, y).regionType) {
+                    case WET -> riskLevel++;
+                    case NARROW -> riskLevel += 2;
                 }
-                int erosionLevel = (geologicIndex + depth) % 20183;
-
-                var regionType = switch (erosionLevel % 3) {
-                    case 0 -> RegionType.ROCKY;
-                    case 1 -> {
-                        riskLevel++;
-                        yield RegionType.WET;
-                    }
-                    case 2 -> {
-                        riskLevel += 2;
-                        yield RegionType.NARROW;
-                    }
-                    default -> throw new AssertionError("Impossible!");
-                };
-
-                var region = new Region(geologicIndex, erosionLevel, regionType);
-                grid.set(new Coordinate(x, y), region);
             }
         }
 
@@ -64,6 +41,8 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
+        STEP_MAP.clear();
+        
         var lines = input.toList();
 
         var depth = Integer.parseInt(lines.get(0).substring(7));
@@ -73,12 +52,30 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         var target = new Coordinate(Integer.parseInt(targetCoords[0]),
                                     Integer.parseInt(targetCoords[1]));
 
-        var grid = new Grid<Region>(0, 0, target.x() * 2, target.y() * 2);
+        var grid = generateGrid(depth, target, 2);
 
-        for (var y = 0; y <= target.y() * 2; y++) {
-            for (var x = 0; x <= target.x() * 2; x++) {
+        var start = new Step(new Coordinate(0, 0), target, Equipment.TORCH, grid,
+                             List.of(new State(new Coordinate(0, 0), Equipment.TORCH)));
+        start.setDistance(0);
+
+        STEP_MAP.put(new State(new Coordinate(0, 0), Equipment.TORCH), start);
+
+        Node end = Dijkstra.findShortestDistance(start, node -> {
+            var step = (Step) node;
+            return step.currentPosition.equals(target) && 
+                   step.currentEquipment == Equipment.TORCH;
+        });
+
+        return (int) end.getDistance();
+    }
+
+    private Grid<Region> generateGrid(int depth, Coordinate target, int growthFactor) {
+        var grid = new Grid<Region>(0, 0, target.x() * growthFactor, target.y() * growthFactor);
+
+        for (var y = 0; y <= target.y() * growthFactor; y++) {
+            for (var x = 0; x <= target.x() * growthFactor; x++) {
                 int geologicIndex;
-                if ((x == 0 && y == 0)) {
+                if ((x == 0 && y == 0) || (x == target.x() && y == target.y())) {
                     geologicIndex = 0;
                 } else if (x == 0) {
                     geologicIndex = y * 48271;
@@ -100,95 +97,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                 grid.set(new Coordinate(x, y), region);
             }
         }
-        
-        grid.set(target, new Region(0, 0, RegionType.ROCKY));
-
-//        var stateMap = new HashMap<State, Integer>();
-//        var steps = new HashMap<State, List<State>>();
-//
-//        var start = new State(new Coordinate(0, 0), Equipment.TORCH);
-//        stateMap.put(start, 0);
-//        steps.put(start, List.of(start));
-//
-//        var statesToCheck = List.of(start);
-//
-//        while (!statesToCheck.isEmpty()) {
-//            var newStates = new ArrayList<State>();
-//
-//            for (var state : statesToCheck) {
-//                var currentDistance = stateMap.get(state);
-//                for (var coordinate : state.position().getStraightNeighbours()) {
-//                    if (grid.isCoordinateInGrid(coordinate)) {
-//                        var region = grid.get(coordinate);
-//                        switch (region.regionType) {
-//                            case ROCKY -> {
-//                                processState(stateMap, newStates, state, currentDistance, coordinate, Equipment.TORCH,
-//                                             steps);
-//                                processState(stateMap, newStates, state, currentDistance, coordinate,
-//                                             Equipment.CLIMBING_GEAR, steps);
-//                            }
-//                            case NARROW -> {
-//                                processState(stateMap, newStates, state, currentDistance, coordinate,
-//                                             Equipment.NEITHER, steps);
-//                                processState(stateMap, newStates, state, currentDistance, coordinate, Equipment.TORCH,
-//                                             steps);
-//                            }
-//                            case WET -> {
-//                                processState(stateMap, newStates, state, currentDistance, coordinate,
-//                                             Equipment.NEITHER, steps);
-//                                processState(stateMap, newStates, state, currentDistance, coordinate,
-//                                             Equipment.CLIMBING_GEAR, steps);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            statesToCheck = newStates;
-//        }
-//
-//        var end = new State(target, Equipment.TORCH);
-//
-//        for (var step : steps.get(end)) {
-//            System.out.println(step);
-//            System.out.println(grid.get(step.position()).regionType);
-//            System.out.println(stateMap.get(step));
-//        }
-//
-//        return stateMap.get(end);
-        var start = new Step(new Coordinate(0, 0), target, Equipment.TORCH, grid,
-                             List.of(new State(new Coordinate(0, 0), Equipment.TORCH)));
-        start.setDistance(0);
-
-        STEP_MAP.put(new State(new Coordinate(0, 0), Equipment.TORCH), start);
-
-        Node end = Dijkstra.findShortestDistance(start, node -> {
-            var step = (Step) node;
-            return step.currentPosition.equals(target);
-        });
-
-        end.printStateInformation();
-
-        return (int) end.getDistance();
-    }
-
-    private void processState(HashMap<State, Integer> stateMap, ArrayList<State> newStates, State state,
-                              Integer currentDistance, Coordinate coordinate, Equipment equipment,
-                              Map<State, List<State>> steps) {
-        var newState = new State(coordinate, equipment);
-        int distanceToTorchState;
-        if (state.equipment() == equipment) {
-            distanceToTorchState = currentDistance + 1;
-        } else {
-            distanceToTorchState = currentDistance + 8;
-        }
-        if (distanceToTorchState < stateMap.getOrDefault(newState, Integer.MAX_VALUE)) {
-            var newSteps = new ArrayList<>(steps.get(state));
-            newSteps.add(newState);
-            steps.put(newState, newSteps);
-            stateMap.put(newState, distanceToTorchState);
-            newStates.add(newState);
-        }
+        return grid;
     }
 
     private static class Step extends Node {
@@ -212,64 +121,62 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
             var neighbors = new HashMap<Step, Long>();
 
             for (var newPosition : currentPosition.getStraightNeighbours()) {
-                if (newPosition.equals(target)) {
-                    var newVisitedStates = new ArrayList<>(visitedStates);
-                    newVisitedStates.add(new State(newPosition, Equipment.TORCH));
-                    if (currentEquipment == Equipment.TORCH) {
-                        neighbors.put(new Step(newPosition, target, currentEquipment, grid, newVisitedStates), 1L);
-                    } else {
-                        neighbors.put(new Step(newPosition, target, Equipment.TORCH, grid, newVisitedStates), 8L);
-                    }
-                    break;
-                }
-
                 if (!grid.isCoordinateInGrid(newPosition)) {
                     continue;
                 }
                 var newRegion = grid.get(newPosition);
-                switch (newRegion.regionType()) {
-                    case ROCKY -> {
-                        var step = createStep(newPosition, Equipment.TORCH);
-                        if (currentEquipment == Equipment.TORCH) {
+                switch (currentEquipment) {
+                    case TORCH -> {
+                        if (newRegion.regionType == RegionType.ROCKY || 
+                            newRegion.regionType == RegionType.NARROW) {
+                            var step = createStep(newPosition, Equipment.TORCH);
                             neighbors.put(step, 1L);
-                        } else {
-                            neighbors.put(step, 8L);
-                        }
-                        step = createStep(newPosition, Equipment.CLIMBING_GEAR);
-                        if (currentEquipment == Equipment.CLIMBING_GEAR) {
-                            neighbors.put(step, 1L);
-                        } else {
-                            neighbors.put(step, 8L);
                         }
                     }
-                    case NARROW -> {
-                        var step = createStep(newPosition, Equipment.NEITHER);
-                        if (currentEquipment == Equipment.NEITHER) {
+                    case NEITHER -> {
+                        if (newRegion.regionType == RegionType.WET ||
+                            newRegion.regionType == RegionType.NARROW) {
+                            var step = createStep(newPosition, Equipment.NEITHER);
                             neighbors.put(step, 1L);
-                        } else {
-                            neighbors.put(step, 8L);
-                        }
-                        step = createStep(newPosition, Equipment.TORCH);
-                        if (currentEquipment == Equipment.TORCH) {
-                            neighbors.put(step, 1L);
-                        } else {
-                            neighbors.put(step, 8L);
                         }
                     }
-                    case WET -> {
-                        var step = createStep(newPosition, Equipment.NEITHER);
-                        if (currentEquipment == Equipment.NEITHER) {
+                    case CLIMBING_GEAR -> {
+                        if (newRegion.regionType == RegionType.ROCKY ||
+                            newRegion.regionType == RegionType.WET) {
+                            var step = createStep(newPosition, Equipment.CLIMBING_GEAR);
                             neighbors.put(step, 1L);
-                        } else {
-                            neighbors.put(step, 8L);
-                        }
-                        step = createStep(newPosition, Equipment.CLIMBING_GEAR);
-                        if (currentEquipment == Equipment.CLIMBING_GEAR) {
-                            neighbors.put(step, 1L);
-                        } else {
-                            neighbors.put(step, 8L);
                         }
                     }
+                }
+            }
+            var currentRegion = grid.get(currentPosition);
+            switch (currentRegion.regionType) {
+                case ROCKY -> {
+                    Step step;
+                    if (currentEquipment == Equipment.TORCH) {
+                        step = createStep(currentPosition, Equipment.CLIMBING_GEAR);
+                    } else {
+                        step = createStep(currentPosition, Equipment.TORCH);
+                    }
+                    neighbors.put(step, 7L);
+                }
+                case WET -> {
+                    Step step;
+                    if (currentEquipment == Equipment.CLIMBING_GEAR) {
+                        step = createStep(currentPosition, Equipment.NEITHER);
+                    } else {
+                        step = createStep(currentPosition, Equipment.CLIMBING_GEAR);
+                    }
+                    neighbors.put(step, 7L);
+                }
+                case NARROW -> {
+                    Step step;
+                    if (currentEquipment == Equipment.TORCH) {
+                        step = createStep(currentPosition, Equipment.NEITHER);
+                    } else {
+                        step = createStep(currentPosition, Equipment.TORCH);
+                    }
+                    neighbors.put(step, 7L);
                 }
             }
 
@@ -288,22 +195,9 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         @Override
         public void printStateInformation() {
             for (var state : visitedStates) {
-//                var step = STEP_MAP.get(state);
-//                System.out.println(step.getDistance());
                 System.out.println(state);
             }
         }
-
-//        @Override
-//        public int compareTo(Node o) {
-//            if (o instanceof Step step) {
-//                return Comparator.comparing(Step::getDistance)
-//                                 .thenComparing(step1 -> step1.currentPosition.getDistanceTo(target))
-//                                 .compare(this, step);
-//            } else {
-//                return super.compareTo(o);
-//            }
-//        }
     }
 
     private record State(Coordinate position, Equipment equipment) {
