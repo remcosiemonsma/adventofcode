@@ -1,220 +1,110 @@
 package nl.remcoder.adventofcode;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.model.Coordinate;
+import nl.remcoder.adventofcode.library.model.Direction;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
-public class Day3 {
-    public int handlePart1(Stream<String> input) {
-        List<String> lines = input.collect(Collectors.toList());
+public class Day3 implements AdventOfCodeSolution<Integer> {
+    public Integer handlePart1(Stream<String> input) {
+        var lines = input.toList();
 
-        String line1 = lines.get(0);
-        String line2 = lines.get(1);
+        var line1 = lines.get(0);
+        var line2 = lines.get(1);
 
-        String[] path1 = line1.split(",");
-        String[] path2 = line2.split(",");
+        var path1 = parsePath(line1.split(","));
+        var path2 = parsePath(line2.split(","));
 
-        int[][] grid = new int[32384][32384];
+        var start = new Coordinate(0, 0);
 
-        grid[16192][16192] = 4;
+        return path1.stream()
+                    .filter(path2::contains)
+                    .mapToInt(other -> start.getDistanceTo(other.coordinate()))
+                    .min()
+                    .orElseThrow(() -> new AssertionError("Eek!"));
+    }
 
-        fillGridWithPath(path1, grid, 1);
-        List<Point> intersections = fillGridWithPath(path2, grid, 2);
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var lines = input.toList();
 
-        int shortestDistance = Integer.MAX_VALUE;
+        var line1 = lines.get(0);
+        var line2 = lines.get(1);
 
-        for (Point intersection : intersections) {
-            int distance = Math.abs(intersection.x - 16192) + Math.abs(intersection.y - 16192);
+        var path1 = parsePath(line1.split(","));
+        var path2 = parsePath(line2.split(","));
 
-            if (distance < shortestDistance) {
-                shortestDistance = distance;
+        var path1Intersections = path1.stream()
+                                      .filter(path2::contains)
+                                      .toList();
+        var path2Intersections = path2.stream()
+                                      .filter(path1::contains)
+                                      .toList();
+        
+        var minimalPath = Integer.MAX_VALUE;
+        
+        for (var intersection : path1Intersections) {
+            for (var otherInsection : path2Intersections) {
+                if (intersection.equals(otherInsection)) {
+                    var pathLength = intersection.steps + otherInsection.steps;
+                    if (pathLength < minimalPath) {
+                        minimalPath = pathLength;
+                    }
+                }
             }
         }
 
-        return shortestDistance;
+        return minimalPath;
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<String> lines = input.collect(Collectors.toList());
+    private Set<PositionWithSteps> parsePath(String[] path) {
+        var currentPosition = new PositionWithSteps(new Coordinate(0, 0), 0);
 
-        String line1 = lines.get(0);
-        String line2 = lines.get(1);
+        var coordinates = new HashSet<PositionWithSteps>();
 
-        String[] path1 = line1.split(",");
-        String[] path2 = line2.split(",");
-
-        int[][] grid = new int[32384][32384];
-
-        grid[16192][16192] = 4;
-
-        fillGridWithPath(path1, grid, 1);
-        List<Point> intersections = fillGridWithPath(path2, grid, 2);
-
-        Map<Point, Integer> totalDistances = new HashMap<>();
-
-        for (Point point : intersections) {
-            int steps = calculateStepsToPoint(path1, point);
-            steps += calculateStepsToPoint(path2, point);
-
-            totalDistances.put(point, steps);
-        }
-
-        return totalDistances.values()
-                             .stream()
-                             .min(Comparator.naturalOrder())
-                             .get();
-    }
-
-    private List<Point> fillGridWithPath(String[] path1, int[][] grid, int pathNumber) {
-        List<Point> intersections = new ArrayList<>();
-
-        int posx = 16192;
-        int posy = 16192;
-
-        for (String segment : path1) {
+        for (String segment : path) {
             int distance = Integer.parseInt(segment.substring(1));
             switch (segment.charAt(0)) {
-                case 'D':
-                    for (int y = 0; y < distance; y++) {
-                        grid[++posx][posy] |= pathNumber;
-                        if (grid[posx][posy] == 3) {
-                            Point point = new Point();
-                            point.x = posx;
-                            point.y = posy;
-
-                            intersections.add(point);
-                        }
-                    }
-                    break;
-                case 'U':
-                    for (int y = 0; y < distance; y++) {
-                        grid[--posx][posy] |= pathNumber;
-                        if (grid[posx][posy] == 3) {
-                            Point point = new Point();
-                            point.x = posx;
-                            point.y = posy;
-
-                            intersections.add(point);
-                        }
-                    }
-                    break;
-                case 'L':
-                    for (int x = 0; x < distance; x++) {
-                        grid[posx][--posy] |= pathNumber;
-                        if (grid[posx][posy] == 3) {
-                            Point point = new Point();
-                            point.x = posx;
-                            point.y = posy;
-
-                            intersections.add(point);
-                        }
-                    }
-                    break;
-                case 'R':
-                    for (int x = 0; x < distance; x++) {
-                        grid[posx][++posy] |= pathNumber;
-                        if (grid[posx][posy] == 3) {
-                            Point point = new Point();
-                            point.x = posx;
-                            point.y = posy;
-
-                            intersections.add(point);
-                        }
-                    }
-                    break;
+                case 'D' -> currentPosition = fillNextSegment(Direction.DOWN, distance, coordinates, currentPosition);
+                case 'U' -> currentPosition = fillNextSegment(Direction.UP, distance, coordinates, currentPosition);
+                case 'L' -> currentPosition = fillNextSegment(Direction.LEFT, distance, coordinates, currentPosition);
+                case 'R' -> currentPosition = fillNextSegment(Direction.RIGHT, distance, coordinates, currentPosition);
             }
         }
 
-        return intersections;
+        return coordinates;
     }
 
-    private int calculateStepsToPoint(String[] path1, Point point) {
-        int posx = 16192;
-        int posy = 16192;
-
-        int steps = 0;
-
-        outer: for (String segment : path1) {
-            int distance = Integer.parseInt(segment.substring(1));
-
-            boolean posxequals = false;
-            boolean posyequals = false;
-
-            if (posx == point.x) {
-                posxequals = true;
-            }
-            if (posy == point.y) {
-                posyequals = true;
-            }
-
-            if (!posxequals && !posyequals) {
-                steps += distance;
-            }
-
-            switch (segment.charAt(0)) {
-                case 'D':
-                    for (int y = 0; y < distance; y++) {
-                        if (posyequals) {
-                            if (posx == point.x) {
-                                break outer;
-                            }
-                            steps++;
-                        }
-                        posx++;
-                    }
-                    break;
-                case 'U':
-                    for (int y = 0; y < distance; y++) {
-                        if (posyequals) {
-                            if (posx == point.x) {
-                                break outer;
-                            }
-                            steps++;
-                        }
-                        posx--;
-                    }
-                    break;
-                case 'L':
-                    for (int x = 0; x < distance; x++) {
-                        if (posxequals) {
-                            if (posy == point.y) {
-                                break outer;
-                            }
-                            steps++;
-                        }
-                        posy--;
-                    }
-                    break;
-                case 'R':
-                    for (int x = 0; x < distance; x++) {
-                        if (posxequals) {
-                            if (posy == point.y) {
-                                break outer;
-                            }
-                            steps++;
-                        }
-                        posy++;
-                    }
-                    break;
-            }
+    private PositionWithSteps fillNextSegment(Direction direction, int distance, Set<PositionWithSteps> coordinates,
+                                              PositionWithSteps currentPosition) {
+        for (var step = 0; step < distance; step++) {
+            currentPosition = new PositionWithSteps(currentPosition.coordinate().getNeighbor(direction),
+                                                    currentPosition.steps + 1);
+            coordinates.add(currentPosition);
         }
-        return steps;
+        return currentPosition;
     }
 
-    private static class Point {
-        int x;
-        int y;
+    private record PositionWithSteps(Coordinate coordinate, int steps) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            PositionWithSteps that = (PositionWithSteps) o;
+            return Objects.equals(coordinate, that.coordinate);
+        }
 
         @Override
-        public String toString() {
-            return "Point{" +
-                   "x=" + x +
-                   ", y=" + y +
-                   '}';
+        public int hashCode() {
+            return Objects.hash(coordinate);
         }
     }
 }
