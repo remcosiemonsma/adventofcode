@@ -185,8 +185,6 @@ public class Day6 {
         public String toString() {
             return "Planet{" +
                    "id='" + id + '\'' +
-//                   ", orbits=" + orbits +
-//                   ", orbit=" + orbit +
                    "distance='" + distance + '\'' +
                    '}';
         }

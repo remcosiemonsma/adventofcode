@@ -1,16 +1,20 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day1 {
+public class Day1 implements AdventOfCodeSolution<Integer> {
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.mapToInt(Integer::parseInt)
                     .map(this::calculateFuelRequirements)
                     .sum();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         return input.mapToInt(Integer::parseInt)
                     .map(this::calculateFuelRequirementsWithAddedMass)
                     .sum();
@@ -21,9 +25,9 @@ public class Day1 {
     }
 
     private int calculateFuelRequirementsWithAddedMass(int mass) {
-        int totalFuel = 0;
+        var totalFuel = 0;
 
-        int fuelRequired = mass;
+        var fuelRequired = mass;
 
         while ((fuelRequired = (int) Math.floor(fuelRequired / 3d) - 2) > 0) {
             totalFuel += fuelRequired;

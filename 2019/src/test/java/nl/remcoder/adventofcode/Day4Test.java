@@ -3,6 +3,9 @@ package nl.remcoder.adventofcode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class Day4Test {
@@ -16,41 +19,56 @@ class Day4Test {
 
     @Test
     public void testPart1Case1() {
-        assertEquals(1, testSubject.handlePart1(111111, 111111));
+        var input = "111111-111111";
+
+        assertEquals(1, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Case2() {
-        assertEquals(0, testSubject.handlePart1(223450, 223450));
+        var input = "223450-223450";
+
+        assertEquals(0, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Case3() {
-        assertEquals(0, testSubject.handlePart1(123789, 123789));
+        var input = "123789-123789";
+
+        assertEquals(0, testSubject.handlePart1(input.lines()));
     }
 
     @Test
-    public void testPart1Input() {
-        assertEquals(1246, testSubject.handlePart1(234208, 765869));
+    public void testPart1Input() throws Exception {
+        assertEquals(1246, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day4/input").toURI()))));
     }
 
     @Test
     public void testPart2Case1() {
-        assertEquals(1, testSubject.handlePart2(112233, 112233));
+        var input = "112233-112233";
+
+        assertEquals(1, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Case2() {
-        assertEquals(0, testSubject.handlePart2(123444, 123444));
+        var input = "123444-123444";
+       
+        assertEquals(0, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Case3() {
-        assertEquals(1, testSubject.handlePart2(111122, 111122));
+        var input = "111122-111122";
+       
+        assertEquals(1, testSubject.handlePart2(input.lines()));
     }
 
     @Test
-    public void testPart2Input() {
-        assertEquals(814, testSubject.handlePart2(234208, 765869));
+    public void testPart2Input() throws Exception {
+        assertEquals(814, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day4/input").toURI()))));
+
     }
 }

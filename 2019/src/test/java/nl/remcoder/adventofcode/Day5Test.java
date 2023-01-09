@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,15 +18,11 @@ class Day5Test {
 
     @Test
     public void testPart1Input() throws Exception {
-        Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()));
-
-        assertEquals(9025675, testSubject.handlePart1(input));
+        assertEquals(9025675, testSubject.handlePart1(Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()))));
     }
 
     @Test
     public void testPart2Input() throws Exception {
-        Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()));
-
-        assertEquals(11981754, testSubject.handlePart2(input));
+        assertEquals(11981754, testSubject.handlePart2(Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()))));
     }
 }

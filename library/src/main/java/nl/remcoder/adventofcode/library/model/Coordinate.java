@@ -107,6 +107,15 @@ public record Coordinate(int x, int y) {
         return new Coordinate(x + 1, y + 1);
     }
     
+    public Coordinate getNeighbor(Direction direction) {
+        return switch (direction) {
+            case UP -> above();
+            case LEFT -> left();
+            case DOWN -> below();
+            case RIGHT -> right();
+        };
+    }
+    
     public int getDistanceTo(Coordinate other) {
         return Math.abs(x - other.x) + Math.abs(y - other.y);
     }

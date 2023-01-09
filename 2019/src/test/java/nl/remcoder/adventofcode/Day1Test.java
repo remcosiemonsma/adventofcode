@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,60 +18,62 @@ class Day1Test {
 
     @Test
     public void testPart1Case1() {
-        Stream<String> input = Stream.of("12");
+        var input = "12";
 
-        assertEquals(2, testSubject.handlePart1(input));
+        assertEquals(2, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Case2() {
-        Stream<String> input = Stream.of("14");
+        var input = "14";
 
-        assertEquals(2, testSubject.handlePart1(input));
+        assertEquals(2, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Case3() {
-        Stream<String> input = Stream.of("1969");
+        var input = "1969";
 
-        assertEquals(654, testSubject.handlePart1(input));
+        assertEquals(654, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Case4() {
-        Stream<String> input = Stream.of("100756");
+        var input = "100756";
 
-        assertEquals(33583, testSubject.handlePart1(input));
+        assertEquals(33583, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Input() throws Exception {
-        assertEquals(3367126, testSubject.handlePart1(Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
+        assertEquals(3367126, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
     }
 
     @Test
     public void testPart2Case1() {
-        Stream<String> input = Stream.of("14");
+        var input = "14";
 
-        assertEquals(2, testSubject.handlePart2(input));
+        assertEquals(2, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Case2() {
-        Stream<String> input = Stream.of("1969");
+        var input = "1969";
 
-        assertEquals(966, testSubject.handlePart2(input));
+        assertEquals(966, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Case3() {
-        Stream<String> input = Stream.of("100756");
+        var input = "100756";
 
-        assertEquals(50346, testSubject.handlePart2(input));
+        assertEquals(50346, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Input() throws Exception {
-        assertEquals(5047796, testSubject.handlePart2(Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
+        assertEquals(5047796, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
     }
 }

@@ -1,60 +1,64 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.intcodecomputer.ConsumingQueue;
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
+import nl.remcoder.adventofcode.intcodecomputer.ProducingQueue;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
-public class Day5 {
-    public long handlePart1(Stream<String> input) throws Exception {
-        String line = input.findFirst().orElseThrow(AssertionError::new);
+public class Day5 implements AdventOfCodeSolution<Long> {
+    Long output;
+    Long input;
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+    @Override
+    public Long handlePart1(Stream<String> input) {
+        var line = input.findFirst()
+                        .orElseThrow(() -> new AssertionError("Eek!"));
 
-        BlockingQueue<Long> inputState = new LinkedBlockingQueue<>();
-        BlockingQueue<Long> outputState = new LinkedBlockingQueue<>();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        inputState.put(1L);
+        var inputState = new ProducingQueue(this::provideInput);
+        var outputState = new ConsumingQueue(this::procesOutput);
 
-        IntCodeComputer intCodeComputer = new IntCodeComputer(opcodes, inputState, outputState);
+        this.input = 1L;
+
+        var intCodeComputer = new IntCodeComputer(opcodes, inputState, outputState);
 
         intCodeComputer.runProgram();
-
-        long output = 0;
-
-        while (!outputState.isEmpty()) {
-            output = outputState.take();
-        }
 
         return output;
     }
 
-    public long handlePart2(Stream<String> input) throws Exception {
-        String line = input.findFirst().orElseThrow(AssertionError::new);
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var line = input.findFirst()
+                        .orElseThrow(() -> new AssertionError("Eek!"));
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                              .mapToLong(Long::parseLong)
-                              .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        BlockingQueue<Long> inputState = new LinkedBlockingQueue<>();
-        BlockingQueue<Long> outputState = new LinkedBlockingQueue<>();
+        var inputState = new ProducingQueue(this::provideInput);
+        var outputState = new ConsumingQueue(this::procesOutput);
 
-        inputState.put(5L);
+        this.input = 5L;
 
-        IntCodeComputer intCodeComputer = new IntCodeComputer(opcodes, inputState, outputState);
+        var intCodeComputer = new IntCodeComputer(opcodes, inputState, outputState);
 
         intCodeComputer.runProgram();
 
-        long output = 0;
-
-        while (!outputState.isEmpty()) {
-            output = outputState.take();
-        }
-
         return output;
+    }
+
+    private Long provideInput() {
+        return input;
+    }
+
+    private void procesOutput(Long output) {
+        this.output = output;
     }
 }
