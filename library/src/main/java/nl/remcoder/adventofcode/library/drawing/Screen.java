@@ -12,6 +12,10 @@ public class Screen {
     public void drawPixel(int x, int y) {
         screen[y][x] = true;
     }
+    
+    public void drawPixel(int x, int y, boolean value) {
+        screen[y][x] = value;
+    }
 
     public String readScreen() {
         StringBuilder stringBuilder = new StringBuilder();

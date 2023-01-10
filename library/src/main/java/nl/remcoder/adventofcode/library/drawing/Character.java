@@ -4,8 +4,8 @@ public class Character {
     public static final boolean[][] A = new boolean[][]{
             {false, true, true, false, false},
             {true, false, false, true, false},
-            {true, true, true, true, false},
             {true, false, false, true, false},
+            {true, true, true, true, false},
             {true, false, false, true, false},
             {true, false, false, true, false}
     };
