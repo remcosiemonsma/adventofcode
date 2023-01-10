@@ -1,39 +1,41 @@
 package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
-public class Day7 {
-    public long handlePart1(Stream<String> input) throws Exception {
-        String line = input.findFirst().orElseThrow(AssertionError::new);
+public class Day7 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) throws Exception {
+        var line = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        long highestSignal = Integer.MIN_VALUE;
+        var highestSignal = Long.MIN_VALUE;
 
-        for (long input1 = 0; input1 <= 4; input1++) {
-            for (long input2 = 0; input2 <= 4; input2++) {
+        for (var input1 = 0L; input1 <= 4; input1++) {
+            for (var input2 = 0L; input2 <= 4; input2++) {
                 if (input2 == input1) {
                     continue;
                 }
 
-                for (long input3 = 0; input3 <= 4; input3++) {
+                for (var input3 = 0L; input3 <= 4; input3++) {
                     if (input3 == input1 || input3 == input2) {
                         continue;
                     }
 
-                    for (long input4 = 0; input4 <= 4; input4++) {
+                    for (var input4 = 0L; input4 <= 4; input4++) {
                         if (input4 == input1 || input4 == input2 || input4 == input3) {
                             continue;
                         }
 
-                        for (long input5 = 0; input5 <= 4; input5++) {
+                        for (var input5 = 0L; input5 <= 4; input5++) {
                             if (input5 == input1 || input5 == input2 || input5 == input3 || input5 == input4) {
                                 continue;
                             }
@@ -76,36 +78,36 @@ public class Day7 {
                 }
             }
         }
-
         return highestSignal;
     }
 
-    public long handlePart2(Stream<String> input) throws Exception {
-        String line = input.findFirst().orElseThrow(AssertionError::new);
+    @Override
+    public Long handlePart2(Stream<String> input) throws Exception {
+        var line = input.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        long highestSignal = Integer.MIN_VALUE;
+        var highestSignal = Long.MIN_VALUE;
 
-        for (long input1 = 5; input1 <= 9; input1++) {
-            for (long input2 = 5; input2 <= 9; input2++) {
+        for (var input1 = 5L; input1 <= 9; input1++) {
+            for (var input2 = 5L; input2 <= 9; input2++) {
                 if (input2 == input1) {
                     continue;
                 }
 
-                for (long input3 = 5; input3 <= 9; input3++) {
+                for (var input3 = 5L; input3 <= 9; input3++) {
                     if (input3 == input1 || input3 == input2) {
                         continue;
                     }
 
-                    for (long input4 = 5; input4 <= 9; input4++) {
+                    for (var input4 = 5L; input4 <= 9; input4++) {
                         if (input4 == input1 || input4 == input2 || input4 == input3) {
                             continue;
                         }
 
-                        for (long input5 = 5; input5 <= 9; input5++) {
+                        for (var input5 = 5L; input5 <= 9; input5++) {
                             if (input5 == input1 || input5 == input2 || input5 == input3 || input5 == input4) {
                                 continue;
                             }
@@ -138,7 +140,7 @@ public class Day7 {
                             cpu5.join();
 
                             if (output5.isEmpty()) {
-                                return -1;
+                                return -1L;
                             }
 
                             long result = output5.take();

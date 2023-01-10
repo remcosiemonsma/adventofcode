@@ -1,80 +1,64 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day6 {
-    public int handlePart1(Stream<String> input) {
-        Map<String, Planet> planets = new HashMap<>();
+public class Day6 implements AdventOfCodeSolution<Integer> {
 
-        input.map(s -> s.split("\\)"))
-             .forEach(strings -> {
-                 Planet planet1 = planets.computeIfAbsent(strings[0], s -> new Planet(strings[0]));
-                 Planet planet2 = planets.computeIfAbsent(strings[1], s -> new Planet(strings[1]));
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var planets = parsePlanets(input);
 
-                 planet1.orbits.add(planet2);
-                 planet2.orbit = planet1;
-             });
-
-        Planet root = planets.values()
-                             .stream()
-                             .filter(planet -> planet.orbit == null)
-                             .findFirst()
-                             .orElseThrow(AssertionError::new);
+        var root = planets.get("COM");
 
         return countOrbits(root, 0);
     }
 
-    public int handlePart2(Stream<String> input) {
-        Map<String, Planet> planets = new HashMap<>();
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var planets = parsePlanets(input);
 
-        input.map(s -> s.split("\\)"))
-             .forEach(strings -> {
-                 Planet planet1 = planets.computeIfAbsent(strings[0], s -> new Planet(strings[0]));
-                 Planet planet2 = planets.computeIfAbsent(strings[1], s -> new Planet(strings[1]));
+        var root = planets.get("COM");
 
-                 planet1.orbits.add(planet2);
-                 planet2.orbit = planet1;
-             });
+        var you = planets.get("YOU");
 
-        Planet root = planets.values()
-                             .stream()
-                             .filter(planet -> planet.orbit == null)
-                             .findFirst()
-                             .orElseThrow(AssertionError::new);
-
-        Planet you = planets.values()
-                            .stream()
-                            .filter(planet -> "YOU".equals(planet.id))
-                            .findFirst()
-                            .orElseThrow(AssertionError::new);
-
-        Planet santa = planets.values()
-                              .stream()
-                              .filter(planet -> "SAN".equals(planet.id))
-                              .findFirst()
-                              .orElseThrow(AssertionError::new);
+        var santa = planets.get("SAN");
 
         countOrbits(root, 0);
 
         return determineDistanceToSanta(you, santa);
     }
 
+    private HashMap<String, Planet> parsePlanets(Stream<String> input) {
+        var planets = new HashMap<String, Planet>();
+
+        input.map(s -> s.split("\\)"))
+             .forEach(strings -> {
+                 var planet1 = planets.computeIfAbsent(strings[0], s -> new Planet(strings[0]));
+                 var planet2 = planets.computeIfAbsent(strings[1], s -> new Planet(strings[1]));
+
+                 planet1.orbits.add(planet2);
+                 planet2.orbit = planet1;
+             });
+
+        return planets;
+    }
+
     private int determineDistanceToSanta(Planet you, Planet santa) {
-        Planet santaOrbit = santa.orbit;
+        var santaOrbit = santa.orbit;
 
-        int pathLength = 0;
+        var pathLength = 0;
 
-        int currentDistance = you.distance;
+        var currentDistance = you.distance;
 
-        Set<Planet> visitedPlanets = new HashSet<>();
+        var visitedPlanets = new HashSet<Planet>();
         visitedPlanets.add(you);
         visitedPlanets.add(you.orbit);
 
@@ -86,13 +70,13 @@ public class Day6 {
         }
 
         while (!you.orbit.equals(santaOrbit)) {
-            List<Planet> possibleSantaPaths = you.orbit.orbits.stream()
-                                                              .filter(planet -> !visitedPlanets.contains(planet))
-                                                              .collect(Collectors.toList());
+            var possibleSantaPaths = you.orbit.orbits.stream()
+                                                     .filter(planet -> !visitedPlanets.contains(planet))
+                                                     .toList();
 
-            boolean santaFound = false;
+            var santaFound = false;
 
-            for (Planet planet : possibleSantaPaths) {
+            for (var planet : possibleSantaPaths) {
                 if (doesPathContainSanta(planet, visitedPlanets)) {
                     santaFound = true;
                 }
@@ -107,7 +91,7 @@ public class Day6 {
                     you.orbit = you.orbit.orbits.stream()
                                                 .filter(planet -> !visitedPlanets.contains(planet))
                                                 .findFirst()
-                                                .orElseThrow(AssertionError::new);
+                                                .orElseThrow(() -> new AssertionError("Eek!"));
 
                     pathLength++;
                 }
@@ -118,9 +102,9 @@ public class Day6 {
     }
 
     private boolean doesPathContainSanta(Planet planet, Set<Planet> visitedPlanets) {
-        boolean santaFound = false;
+        var santaFound = false;
 
-        for (Planet orbit : planet.orbits) {
+        for (var orbit : planet.orbits) {
             if ("SAN".equals(orbit.id)) {
                 santaFound = true;
                 break;
@@ -145,8 +129,8 @@ public class Day6 {
         if (planet.orbits.isEmpty()) {
             return foundOrbits;
         } else {
-            int total = foundOrbits;
-            for (Planet orbit : planet.orbits) {
+            var total = foundOrbits;
+            for (var orbit : planet.orbits) {
                 total += countOrbits(orbit, foundOrbits + 1);
             }
             return total;

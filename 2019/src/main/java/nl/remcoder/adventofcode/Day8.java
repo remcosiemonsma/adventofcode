@@ -1,42 +1,50 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.drawing.Screen;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
-public class Day8 {
+public class Day8 implements BiAdventOfCodeSolution<Integer, String> {
+    private int width;
+    private int height;
 
-    public int handlePart1(Stream<String> input, int width, int height, int fewestDigit, int multiply1, int multiply2) {
-        String imageData = input.findFirst().orElseThrow(AssertionError::new);
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var imageData = input.findFirst()
+                             .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int amountOfLayers = imageData.length() / (width * height);
+        var amountOfLayers = imageData.length() / (width * height);
 
-        List<Layer> layers = new ArrayList<>();
+        var layers = new ArrayList<Layer>();
 
-        for (int layerPosition = 0; layerPosition < amountOfLayers; layerPosition++) {
-            Layer layer = new Layer();
-            layers.add(layer);
-            for (int position = 0; position < width * height; position++) {
-                char c = imageData.charAt((layerPosition * width * height) + position);
+        for (var layerPosition = 0; layerPosition < amountOfLayers; layerPosition++) {
+            var amountFewest = 0;
+            var amountMultiply1 = 0;
+            var amountMultiply2 = 0;
+            for (var position = 0; position < width * height; position++) {
+                var c = imageData.charAt((layerPosition * width * height) + position);
 
-                int value = c - '0';
+                var value = c - '0';
 
-                if (value == fewestDigit) {
-                    layer.amountFewest++;
+                if (value == 0) {
+                    amountFewest++;
                 }
-                if (value == multiply1) {
-                    layer.amountMultiply1++;
+                if (value == 1) {
+                    amountMultiply1++;
                 }
-                if (value == multiply2) {
-                    layer.amountMultiply2++;
+                if (value == 2) {
+                    amountMultiply2++;
                 }
             }
+            var layer = new Layer(amountFewest, amountMultiply1, amountMultiply2);
+            layers.add(layer);
         }
 
-        Layer lowestAmount = layers.get(0);
+        var lowestAmount = layers.get(0);
 
-        for (Layer layer : layers) {
+        for (var layer : layers) {
             if (layer.amountFewest < lowestAmount.amountFewest) {
                 lowestAmount = layer;
             }
@@ -45,66 +53,42 @@ public class Day8 {
         return lowestAmount.amountMultiply1 * lowestAmount.amountMultiply2;
     }
 
-    public String handlePart2(Stream<String> input, int width, int height, int valueBlack, int valueWhite, int valueTransparent) {
-        String imageData = input.findFirst().orElseThrow(AssertionError::new);
+    public String handlePart2(Stream<String> input) {
+        var imageData = input.findFirst()
+                             .orElseThrow(() -> new AssertionError("Eek!"));
 
-        PixelState[][] image = new PixelState[height][width];
-
-        for (PixelState[] line : image) {
-            Arrays.fill(line, PixelState.TRANSPARENT);
-        }
+        var screen = new Screen(width, height);
 
         int amountOfLayers = imageData.length() / (width * height);
 
-        for (int layerPosition = 0; layerPosition < amountOfLayers; layerPosition++) {
-            int offset = layerPosition * width * height;
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    if (image[y][x] == PixelState.TRANSPARENT) {
-                        char c = imageData.charAt(offset + (y * width) + x);
+        for (var layerPosition = amountOfLayers - 1; layerPosition >= 0; layerPosition--) {
+            var offset = layerPosition * width * height;
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
+                    char c = imageData.charAt(offset + (y * width) + x);
 
-                        int value = c - '0';
+                    int value = c - '0';
 
-                        if (value == valueBlack) {
-                            image[y][x] = PixelState.BLACK;
-                        } else if (value == valueWhite) {
-                            image[y][x] = PixelState.WHITE;
-                        }
+                    if (value == 0) {
+                        screen.drawPixel(x, y, false);
+                    } else if (value == 1) {
+                        screen.drawPixel(x, y, true);
                     }
                 }
             }
         }
-
-        return parseImageToString(image, valueBlack, valueWhite, valueTransparent);
+        
+        return screen.readScreen();
     }
 
-
-    private String parseImageToString(PixelState[][] image, int valueBlack, int valueWhite, int valueTransparent) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (PixelState[] line : image) {
-            for (PixelState pixel : line) {
-                switch (pixel) {
-                    case WHITE -> stringBuilder.append(valueWhite);
-                    case BLACK -> stringBuilder.append(valueBlack);
-                    case TRANSPARENT -> stringBuilder.append(valueTransparent);
-                }
-            }
-            stringBuilder.append("\n");
-        }
-
-        return stringBuilder.toString();
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    private static class Layer {
-        private int amountFewest = 0;
-        private int amountMultiply1 = 0;
-        private int amountMultiply2 = 0;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
-    private enum PixelState {
-        TRANSPARENT,
-        BLACK,
-        WHITE
+    private record Layer(int amountFewest, int amountMultiply1, int amountMultiply2) {
     }
 }
