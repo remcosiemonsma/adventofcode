@@ -1,45 +1,47 @@
 package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
-public class Day9 {
-    public long handlePart1(Stream<String> inputData) throws Exception {
-        String line = inputData.findFirst().orElseThrow(AssertionError::new);
+public class Day9 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> inputData) throws Exception {
+        var line = inputData.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
+        var opcodes = Arrays.stream(line.split(","))
                                .mapToLong(Long::parseLong)
                                .toArray();
 
-        BlockingQueue<Long> input = new LinkedBlockingQueue<>();
-        BlockingQueue<Long> output = new LinkedBlockingQueue<>();
+        var input = new LinkedBlockingQueue<Long>();
+        var output = new LinkedBlockingQueue<Long>();
 
         input.put(1L);
 
-        IntCodeComputer intCodeComputer = new IntCodeComputer(opcodes, input, output);
+        var intCodeComputer = new IntCodeComputer(opcodes, input, output);
 
         intCodeComputer.runProgram();
 
         return output.take();
     }
 
-    public long handlePart2(Stream<String> inputData) throws Exception {
-        String line = inputData.findFirst().orElseThrow(AssertionError::new);
+    @Override
+    public Long handlePart2(Stream<String> inputData) throws Exception {
+        var line = inputData.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        BlockingQueue<Long> input = new LinkedBlockingQueue<>();
-        BlockingQueue<Long> output = new LinkedBlockingQueue<>();
+        var input = new LinkedBlockingQueue<Long>();
+        var output = new LinkedBlockingQueue<Long>();
 
         input.put(2L);
 
-        IntCodeComputer intCodeComputer = new IntCodeComputer(opcodes, input, output);
+        var intCodeComputer = new IntCodeComputer(opcodes, input, output);
 
         intCodeComputer.runProgram();
 

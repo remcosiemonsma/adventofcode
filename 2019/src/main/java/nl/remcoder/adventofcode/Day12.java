@@ -1,19 +1,23 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day12 {
-    public int handlePart1(Stream<String> input, int steps) {
-        List<Moon> moons = input.map(this::mapToMoon)
-                                .collect(Collectors.toList());
+public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
+    private int steps;
+    
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var moons = input.map(this::mapToMoon)
+                         .toList();
 
-        for (int step = 0; step < steps; step++) {
+        for (var step = 0; step < steps; step++) {
             calculateVelocityForMoons(moons);
 
             moveMoons(moons);
@@ -22,20 +26,21 @@ public class Day12 {
         return calculateMoonEnergyOfAllMoons(moons);
     }
 
-    public long handlePart2(Stream<String> input) {
-        List<String> originalInput = input.collect(Collectors.toList());
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var originalInput = input.toList();
 
-        List<Moon> moons = originalInput.stream()
-                                        .map(this::mapToMoon)
-                                        .collect(Collectors.toList());
+        var moons = originalInput.stream()
+                                 .map(this::mapToMoon)
+                                 .collect(Collectors.toList());
 
-        Set<Long> periods = new HashSet<>();
+        var periods = new HashSet<Long>();
 
-        long xPeriod = 0;
-        long yPeriod = 0;
-        long zPeriod = 0;
+        var xPeriod = 0L;
+        var yPeriod = 0L;
+        var zPeriod = 0L;
 
-        long counter = 0;
+        var counter = 0;
 
         while (xPeriod == 0 || yPeriod == 0 || zPeriod == 0) {
             calculateVelocityForMoons(moons);
@@ -60,41 +65,45 @@ public class Day12 {
         return determineLowestCommonMultiple(periods);
     }
 
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
+
     private void calculateVelocityForMoons(List<Moon> moons) {
-        List<Moon> workingMoons = new ArrayList<>(moons);
+        var workingMoons = new ArrayList<>(moons);
 
         while (!workingMoons.isEmpty()) {
-            Moon moon = workingMoons.remove(0);
+            var moon = workingMoons.remove(0);
 
-            for (Moon otherMoon : workingMoons) {
+            for (var otherMoon : workingMoons) {
                 calculateVelocityForMoon(moon, otherMoon);
             }
         }
     }
 
     private long determineLowestCommonMultiple(Set<Long> numbers) {
-        List<List<Long>> primeFactors = numbers.stream()
-                                               .map(this::primeFactors)
-                                               .collect(Collectors.toList());
+        var primeFactors = numbers.stream()
+                                  .map(this::primeFactors)
+                                  .toList();
 
-        Set<Long> primes = primeFactors.stream()
-                                       .flatMap(List::stream)
-                                       .collect(Collectors.toSet());
+        var primes = primeFactors.stream()
+                                 .flatMap(List::stream)
+                                 .collect(Collectors.toSet());
 
-        Map<Long, Long> highestCountPerPrime = primes.stream()
-                                                     .collect(Collectors.toMap(prime -> prime, prime ->
-                                                                                       primeFactors.stream()
-                                                                                                   .mapToLong(primes1 -> primes1.stream()
-                                                                                                                                .filter(prime1 -> prime1
-                                                                                                                                        .equals(prime))
-                                                                                                                                .count())
-                                                                                                   .max()
-                                                                                                   .orElseThrow(AssertionError::new)
-                                                                              ));
+        var highestCountPerPrime = primes.stream()
+                                         .collect(Collectors.toMap(prime -> prime, prime ->
+                                                                           primeFactors.stream()
+                                                                                       .mapToLong(primes1 -> primes1.stream()
+                                                                                                                    .filter(prime1 -> prime1
+                                                                                                                            .equals(prime))
+                                                                                                                    .count())
+                                                                                       .max()
+                                                                                       .orElseThrow(AssertionError::new)
+                                                                  ));
 
-        long lcm = 1;
+        var lcm = 1L;
 
-        for (long prime : highestCountPerPrime.keySet()) {
+        for (var prime : highestCountPerPrime.keySet()) {
             lcm *= Math.pow(prime, highestCountPerPrime.get(prime));
         }
 
@@ -102,8 +111,8 @@ public class Day12 {
     }
 
     private List<Long> primeFactors(long number) {
-        List<Long> factors = new ArrayList<>();
-        for (long possibleFactor = 2; possibleFactor <= number; possibleFactor++) {
+        var factors = new ArrayList<Long>();
+        for (var possibleFactor = 2L; possibleFactor <= number; possibleFactor++) {
             while (number % possibleFactor == 0) {
                 factors.add(possibleFactor);
                 number /= possibleFactor;
@@ -154,7 +163,7 @@ public class Day12 {
     }
 
     private Moon mapToMoon(String moonData) {
-        String[] positions = moonData.replaceAll("[^\\-0-9,]", "").split(",");
+        var positions = moonData.replaceAll("[^\\-0-9,]", "").split(",");
 
         return new Moon(Integer.parseInt(positions[0]), Integer.parseInt(positions[1]), Integer.parseInt(positions[2]));
     }

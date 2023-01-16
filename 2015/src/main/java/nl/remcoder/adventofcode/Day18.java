@@ -22,7 +22,7 @@ public class Day18 {
             grid = newGrid;
         }
 
-        return grid.countState(true);
+        return grid.countElements(true);
     }
 
     public long handlePart2(Stream<String> input) {
@@ -47,7 +47,7 @@ public class Day18 {
             grid = newGrid;
         }
 
-        return grid.countState(true);
+        return grid.countElements(true);
     }
 
     private void switchState(Grid<Boolean> grid, Grid<Boolean> newGrid, int x, int y) {

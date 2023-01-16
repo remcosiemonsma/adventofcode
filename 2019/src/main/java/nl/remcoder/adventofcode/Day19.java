@@ -1,21 +1,24 @@
 package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.model.Grid;
 
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
-public class Day19 {
-    public int handlePart1(Stream<String> inputStream) throws InterruptedException {
-        String line = inputStream.findFirst().orElseThrow(AssertionError::new);
+public class Day19 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> inputStream) throws InterruptedException {
+        var line = inputStream.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        long[][] grid = new long[50][50];
+        var grid = new Grid<Long>(0, 0, 50, 50);
 
         for (int y = 0; y < 50; y++) {
             for (int x = 0; x < 50; x++) {
@@ -29,25 +32,24 @@ public class Day19 {
 
                 intCodeComputer.runProgram();
 
-                grid[y][x] = output.take();
+                grid.set(x, y, output.take());
             }
         }
 
-        printGrid(grid);
-
-        return countAffectedPoints(grid);
+        return (int) grid.countElements(1L);
     }
 
-    public int handlePart2(Stream<String> input) throws InterruptedException {
-        String line = input.findFirst().orElseThrow(AssertionError::new);
+    @Override
+    public Integer handlePart2(Stream<String> input) throws InterruptedException {
+        var line = input.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
+        var opcodes = Arrays.stream(line.split(","))
                                .mapToLong(Long::parseLong)
                                .toArray();
 
-        int y = 100;
-        int x = findStartX(y, opcodes);
-        int endX = findEndX(y, x, opcodes);
+        var y = 100;
+        var x = findStartX(y, opcodes);
+        var endX = findEndX(y, x, opcodes);
 
         while (endX - x != 100) {
             y++;
@@ -55,10 +57,10 @@ public class Day19 {
             endX = findEndX(y, x, opcodes);
         }
 
-        boolean santaFound = false;
+        var santaFound = false;
 
-        int santaX = 0;
-        int santaY = 0;
+        var santaX = 0;
+        var santaY = 0;
 
         while (!santaFound) {
             y++;
@@ -75,8 +77,8 @@ public class Day19 {
     }
 
     private boolean doesSantaFit(int x, int y, long[] opcodes) throws InterruptedException {
-        BlockingQueue<Long> output = new LinkedBlockingQueue<>();
-        BlockingQueue<Long> input = new LinkedBlockingQueue<>();
+        var output = new LinkedBlockingQueue<Long>();
+        var input = new LinkedBlockingQueue<Long>();
 
         input.put((long) x - 99);
         input.put((long) y + 99);
@@ -89,13 +91,13 @@ public class Day19 {
     }
 
     private int findEndX(int y, int startX, long[] opcodes) throws InterruptedException {
-        boolean endFound = false;
+        var endFound = false;
 
-        int x = startX;
+        var x = startX;
 
         while (!endFound) {
-            BlockingQueue<Long> output = new LinkedBlockingQueue<>();
-            BlockingQueue<Long> input = new LinkedBlockingQueue<>();
+            var output = new LinkedBlockingQueue<Long>();
+            var input = new LinkedBlockingQueue<Long>();
 
             input.put((long) x);
             input.put((long) y);
@@ -116,13 +118,13 @@ public class Day19 {
     }
 
     private int findStartX(int y, long[] opcodes) throws InterruptedException {
-        boolean startFound = false;
+        var startFound = false;
 
-        int x = 0;
+        var x = 0;
 
         while (!startFound) {
-            BlockingQueue<Long> output = new LinkedBlockingQueue<>();
-            BlockingQueue<Long> input = new LinkedBlockingQueue<>();
+            var output = new LinkedBlockingQueue<Long>();
+            var input = new LinkedBlockingQueue<Long>();
 
             input.put((long) x);
             input.put((long) y);
@@ -139,28 +141,5 @@ public class Day19 {
         }
 
         return x;
-    }
-
-    private int countAffectedPoints(long[][] grid) {
-        int amount = 0;
-
-        for (long[] line : grid) {
-            for (long pixel : line) {
-                if (pixel == 1) {
-                    amount++;
-                }
-            }
-        }
-
-        return amount;
-    }
-
-    private void printGrid(long[][] grid) {
-        for (long[] line : grid) {
-            for (long pixel : line) {
-                System.out.print(pixel);
-            }
-            System.out.println();
-        }
     }
 }

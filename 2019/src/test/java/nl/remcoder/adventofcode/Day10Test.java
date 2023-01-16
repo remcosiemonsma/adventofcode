@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,122 +18,136 @@ class Day10Test {
 
     @Test
     void testPart1Case1() {
-        Stream<String> input = Stream.of(".#..#", ".....", "#####", "....#", "...##");
+        var input = """
+                    .#..#
+                    .....
+                    #####
+                    ....#
+                    ...##
+                    """;
 
-        assertEquals(8, testSubject.handlePart1(input));
+        assertEquals(8, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case2() {
-        Stream<String> input = Stream.of("......#.#.",
-                                         "#..#.#....",
-                                         "..#######.",
-                                         ".#.#.###..",
-                                         ".#..#.....",
-                                         "..#....#.#",
-                                         "#..#....#.",
-                                         ".##.#..###",
-                                         "##...#..#.",
-                                         ".#....####");
+        var input = """
+                    ......#.#.
+                    #..#.#....
+                    ..#######.
+                    .#.#.###..
+                    .#..#.....
+                    ..#....#.#
+                    #..#....#.
+                    .##.#..###
+                    ##...#..#.
+                    .#....####
+                    """;
 
-        assertEquals(33, testSubject.handlePart1(input));
+        assertEquals(33, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case3() {
-        Stream<String> input = Stream.of("#.#...#.#.",
-                                         ".###....#.",
-                                         ".#....#...",
-                                         "##.#.#.#.#",
-                                         "....#.#.#.",
-                                         ".##..###.#",
-                                         "..#...##..",
-                                         "..##....##",
-                                         "......#...",
-                                         ".####.###.");
+        var input = """
+                    #.#...#.#.
+                    .###....#.
+                    .#....#...
+                    ##.#.#.#.#
+                    ....#.#.#.
+                    .##..###.#
+                    ..#...##..
+                    ..##....##
+                    ......#...
+                    .####.###.
+                    """;
 
-        assertEquals(35, testSubject.handlePart1(input));
+        assertEquals(35, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case4() {
-        Stream<String> input = Stream.of(".#..#..###",
-                                         "####.###.#",
-                                         "....###.#.",
-                                         "..###.##.#",
-                                         "##.##.#.#.",
-                                         "....###..#",
-                                         "..#.#..#.#",
-                                         "#..#.#.###",
-                                         ".##...##.#",
-                                         ".....#.#..");
+        var input = """
+                    .#..#..###
+                    ####.###.#
+                    ....###.#.
+                    ..###.##.#
+                    ##.##.#.#.
+                    ....###..#
+                    ..#.#..#.#
+                    #..#.#.###
+                    .##...##.#
+                    .....#.#..
+                    """;
 
-        assertEquals(41, testSubject.handlePart1(input));
+        assertEquals(41, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case5() {
-        Stream<String> input = Stream.of(".#..##.###...#######",
-                                         "##.############..##.",
-                                         ".#.######.########.#",
-                                         ".###.#######.####.#.",
-                                         "#####.##.#.##.###.##",
-                                         "..#####..#.#########",
-                                         "####################",
-                                         "#.####....###.#.#.##",
-                                         "##.#################",
-                                         "#####.##.###..####..",
-                                         "..######..##.#######",
-                                         "####.##.####...##..#",
-                                         ".#####..#.######.###",
-                                         "##...#.##########...",
-                                         "#.##########.#######",
-                                         ".####.#.###.###.#.##",
-                                         "....##.##.###..#####",
-                                         ".#.#.###########.###",
-                                         "#.#.#.#####.####.###",
-                                         "###.##.####.##.#..##");
+        var input = """
+                    .#..##.###...#######
+                    ##.############..##.
+                    .#.######.########.#
+                    .###.#######.####.#.
+                    #####.##.#.##.###.##
+                    ..#####..#.#########
+                    ####################
+                    #.####....###.#.#.##
+                    ##.#################
+                    #####.##.###..####..
+                    ..######..##.#######
+                    ####.##.####...##..#
+                    .#####..#.######.###
+                    ##...#.##########...
+                    #.##########.#######
+                    .####.#.###.###.#.##
+                    ....##.##.###..#####
+                    .#.#.###########.###
+                    #.#.#.#####.####.###
+                    ###.##.####.##.#..##
+                    """;
 
-        assertEquals(210, testSubject.handlePart1(input));
+        assertEquals(210, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Input() throws Exception {
-        Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day10/input").toURI()));
-
-        assertEquals(282, testSubject.handlePart1(input));
+        assertEquals(282, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day10/input").toURI()))));
     }
 
     @Test
-    void testPart2Case1 () {
-        Stream<String> input = Stream.of(".#..##.###...#######",
-                                         "##.############..##.",
-                                         ".#.######.########.#",
-                                         ".###.#######.####.#.",
-                                         "#####.##.#.##.###.##",
-                                         "..#####..#.#########",
-                                         "####################",
-                                         "#.####....###.#.#.##",
-                                         "##.#################",
-                                         "#####.##.###..####..",
-                                         "..######..##.#######",
-                                         "####.##.####...##..#",
-                                         ".#####..#.######.###",
-                                         "##...#.##########...",
-                                         "#.##########.#######",
-                                         ".####.#.###.###.#.##",
-                                         "....##.##.###..#####",
-                                         ".#.#.###########.###",
-                                         "#.#.#.#####.####.###",
-                                         "###.##.####.##.#..##");
+    void testPart2Case1() {
+        var input = """
+                    .#..##.###...#######
+                    ##.############..##.
+                    .#.######.########.#
+                    .###.#######.####.#.
+                    #####.##.#.##.###.##
+                    ..#####..#.#########
+                    ####################
+                    #.####....###.#.#.##
+                    ##.#################
+                    #####.##.###..####..
+                    ..######..##.#######
+                    ####.##.####...##..#
+                    .#####..#.######.###
+                    ##...#.##########...
+                    #.##########.#######
+                    .####.#.###.###.#.##
+                    ....##.##.###..#####
+                    .#.#.###########.###
+                    #.#.#.#####.####.###
+                    ###.##.####.##.#..##
+                    """;
 
-        assertEquals(802, testSubject.handlePart2(input));
+        assertEquals(802, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Input() throws Exception {
-        Stream<String> input = Files.lines(Paths.get(ClassLoader.getSystemResource("day10/input").toURI()));
-
-        assertEquals(1008, testSubject.handlePart2(input));
+        assertEquals(1008, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day10/input").toURI()))));
     }
 }
