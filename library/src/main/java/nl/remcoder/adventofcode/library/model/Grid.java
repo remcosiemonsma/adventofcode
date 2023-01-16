@@ -58,10 +58,6 @@ public class Grid<T> {
         return values.get(coordinate);
     }
 
-    public long countState(T state) {
-        return values.values().stream().filter(value -> value.equals(state)).count();
-    }
-
     public void set(int x, int y, T value) {
         if (value == null) {
             values.remove(new Coordinate(x, y));

@@ -3,52 +3,82 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.intcodecomputer.ConsumingQueue;
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
 import nl.remcoder.adventofcode.intcodecomputer.ProducingQueue;
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.drawing.Screen;
+import nl.remcoder.adventofcode.library.model.Coordinate;
+import nl.remcoder.adventofcode.library.model.Direction;
+import nl.remcoder.adventofcode.library.model.Grid;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.BlockingQueue;
 import java.util.stream.Stream;
 
-public class Day11 {
-    private int ypos;
-    private int xpos;
+public class Day11 implements BiAdventOfCodeSolution<Integer, String> {
+    private Coordinate position;
     private Direction direction;
-    private boolean[][] grid;
-    private Set<Point> paintedPoints;
+    private Grid<Boolean> grid;
+    private Set<Coordinate> paintedPoints;
     private OutputState outputState = OutputState.PAINT;
 
-    public int handlePart1(Stream<String> inputStream) {
-        String line = inputStream.findFirst().orElseThrow(AssertionError::new);
+    @Override
+    public Integer handlePart1(Stream<String> inputStream) {
+        var line = inputStream.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        BlockingQueue<Long> output = new ConsumingQueue(this::handleOutput);
-        BlockingQueue<Long> input = new ProducingQueue(this::provideInput);
+        var output = new ConsumingQueue(this::handleOutput);
+        var input = new ProducingQueue(this::provideInput);
 
-        grid = new boolean[96][96];
+        grid = new Grid<>(0, 0, 96, 96);
 
-        ypos = 48;
-        xpos = 48;
+        position = new Coordinate(48, 48);
 
         direction = Direction.UP;
 
         paintedPoints = new HashSet<>();
 
-        IntCodeComputer robotBrain = new IntCodeComputer(opcodes, input, output);
+        var robotBrain = new IntCodeComputer(opcodes, input, output);
 
         robotBrain.runProgram();
-
-        printGrid();
 
         return paintedPoints.size();
     }
 
+    @Override
+    public String handlePart2(Stream<String> inputStream) {
+        var line = inputStream.findFirst().orElseThrow(AssertionError::new);
+
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
+
+        var output = new ConsumingQueue(this::handleOutput);
+        var input = new ProducingQueue(this::provideInput);
+
+        grid = new Grid<>(0, 0, 96, 96);
+
+        position = new Coordinate(48, 48);
+
+        direction = Direction.UP;
+
+        grid.set(position, true);
+
+        paintedPoints = new HashSet<>();
+
+        var robotBrain = new IntCodeComputer(opcodes, input, output);
+
+        robotBrain.runProgram();
+
+        var screen = new Screen(grid);
+
+        return screen.readScreen();
+    }
+
     private long provideInput() {
-        return grid[ypos][xpos] ? 1L : 0L;
+        return Boolean.TRUE.equals(grid.get(position)) ? 1L : 0L;
     }
 
     private void handleOutput(Long outputValue) {
@@ -65,49 +95,6 @@ public class Day11 {
         }
     }
 
-    private void printGrid() {
-        for (boolean[] line : grid) {
-            for (boolean pixel : line) {
-                if (pixel) {
-                    System.out.print('#');
-                } else {
-                    System.out.print(' ');
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    public int handlePart2(Stream<String> inputStream) {
-        String line = inputStream.findFirst().orElseThrow(AssertionError::new);
-
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
-
-        BlockingQueue<Long> output = new ConsumingQueue(this::handleOutput);
-        BlockingQueue<Long> input = new ProducingQueue(this::provideInput);
-
-        grid = new boolean[96][96];
-
-        ypos = 48;
-        xpos = 48;
-
-        direction = Direction.UP;
-
-        grid[ypos][xpos] = true;
-
-        paintedPoints = new HashSet<>();
-
-        IntCodeComputer robotBrain = new IntCodeComputer(opcodes, input, output);
-
-        robotBrain.runProgram();
-
-        printGrid();
-
-        return paintedPoints.size();
-    }
-
     private void rotate(Long direction) {
         if (direction == 0) {
             rotateLeft();
@@ -117,21 +104,21 @@ public class Day11 {
     }
 
     private void paint(Long color) {
-        paintedPoints.add(new Point(xpos, ypos));
+        paintedPoints.add(position);
         if (color == 0) {
-            grid[ypos][xpos] = false;
+            grid.set(position, false);
         } else if (color == 1) {
-            grid[ypos][xpos] = true;
+            grid.set(position, true);
         }
     }
 
     private void move() {
-        switch (direction) {
-            case UP -> ypos--;
-            case LEFT -> xpos--;
-            case DOWN -> ypos++;
-            case RIGHT -> xpos++;
-        }
+        position = switch (direction) {
+            case UP -> position.above();
+            case LEFT -> position.left();
+            case DOWN -> position.below();
+            case RIGHT -> position.right();
+        };
     }
 
     private void rotateLeft() {
@@ -152,43 +139,8 @@ public class Day11 {
         }
     }
 
-    private enum Direction {
-        LEFT,
-        RIGHT,
-        DOWN,
-        UP
-    }
-
     private enum OutputState {
         PAINT,
         DIRECTION
-    }
-
-    private static class Point {
-        private final int x;
-        private final int y;
-
-        Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Point point = (Point) o;
-            return x == point.x &&
-                   y == point.y;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, y);
-        }
     }
 }

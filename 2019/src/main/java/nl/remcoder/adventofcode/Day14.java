@@ -1,5 +1,7 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,46 +9,48 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day14 {
-    public int handlePart1(Stream<String> input) {
-        Map<String, Reaction> reactions = input.map(this::createReactionFromString)
-                                               .collect(Collectors.toMap(reaction -> reaction.chemical,
-                                                                         reaction -> reaction));
+public class Day14 implements BiAdventOfCodeSolution<Integer, Long> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var reactions = input.map(this::createReactionFromString)
+                             .collect(Collectors.toMap(reaction -> reaction.chemical,
+                                                       reaction -> reaction));
 
-        Reaction fuelReaction = reactions.get("FUEL");
+        var fuelReaction = reactions.get("FUEL");
 
-        Map<String, Long> waste = new HashMap<>();
+        var waste = new HashMap<String, Long>();
 
         return processReactionToOreNeeded(reactions, fuelReaction, waste);
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         Map<String, Reaction> reactions = input.map(this::createReactionFromString)
                                                .collect(Collectors.toMap(reaction -> reaction.chemical,
                                                                          reaction -> reaction));
 
-        long amountOfOre = 1000000000000L;
+        var amountOfOre = 1000000000000L;
 
-        Reaction fuelReaction = reactions.get("FUEL");
+        var fuelReaction = reactions.get("FUEL");
 
-        Map<String, Long> waste = new HashMap<>();
+        var waste = new HashMap<String, Long>();
 
-        Map<String, Integer> originalInput = fuelReaction.input;
+        var originalInput = new HashMap<>(fuelReaction.input);
 
-        int amountNeededForFuel = processReactionToOreNeeded(reactions, fuelReaction, waste);
+        var amountNeededForFuel = processReactionToOreNeeded(reactions, fuelReaction, waste);
 
-        fuelReaction.input = originalInput;
+        fuelReaction.input = new HashMap<>(originalInput);
 
         long amountFuelProduced = 0;
 
         while (amountOfOre > amountNeededForFuel) {
-            long amountTimesReaction = amountOfOre / amountNeededForFuel;
+            var amountTimesReaction = amountOfOre / amountNeededForFuel;
             System.out.println(amountTimesReaction);
 
             amountFuelProduced += amountTimesReaction;
             System.out.println(amountFuelProduced);
 
-            HashMap<String, Long> totalWaste = new HashMap<>(waste);
+            var totalWaste = new HashMap<>(waste);
 
             totalWaste.replaceAll((s, amount) -> amount * amountTimesReaction);
 
@@ -62,14 +66,14 @@ public class Day14 {
 
     private void flattenWasteToOre(Map<String, Long> waste,
                                    Map<String, Reaction> reactions) {
-        long amountOre = 0;
+        var amountOre = 0L;
 
-        for (String chemical : waste.keySet()) {
-            Reaction reaction = reactions.get(chemical);
+        for (var chemical : waste.keySet()) {
+            var reaction = reactions.get(chemical);
 
-            long reactionTimes = waste.get(chemical) / reaction.amount;
+            var reactionTimes = waste.get(chemical) / reaction.amount;
 
-            int amountOreNeeded = processReactionToOreNeeded(reactions, reaction, new HashMap<>());
+            var amountOreNeeded = processReactionToOreNeeded(reactions, reaction, new HashMap<>());
 
             amountOre += amountOreNeeded * reactionTimes;
         }
@@ -81,20 +85,20 @@ public class Day14 {
 
     private int processReactionToOreNeeded(Map<String, Reaction> reactions, Reaction fuelReaction,
                                            Map<String, Long> waste) {
-        boolean reactionFinished = false;
+        var reactionFinished = false;
 
         while (!reactionFinished) {
-            Map<String, Integer> newInput = new HashMap<>();
+            var newInput = new HashMap<String, Integer>();
 
-            for (String chemical : fuelReaction.input.keySet()) {
+            for (var chemical : fuelReaction.input.keySet()) {
                 if ("ORE".equals(chemical)) {
                     continue;
                 }
 
-                int amountNeeded = fuelReaction.input.get(chemical);
+                var amountNeeded = (long) fuelReaction.input.get(chemical);
 
                 if (waste.getOrDefault(chemical, 0L) >= amountNeeded) {
-                    int subtract = amountNeeded;
+                    var subtract = amountNeeded;
                     waste.compute(chemical, (s, amount) -> {
                         if (amount == null) {
                             throw new AssertionError();
@@ -107,14 +111,14 @@ public class Day14 {
 
                     Reaction reaction = reactions.get(chemical);
 
-                    int reactionTimes = (int) Math.ceil((double) amountNeeded / (double) reaction.amount);
+                    var reactionTimes = (int) Math.ceil((double) amountNeeded / (double) reaction.amount);
 
-                    int remainder = (reaction.amount * reactionTimes) - amountNeeded;
+                    var remainder = ((long) reaction.amount * reactionTimes) - amountNeeded;
 
                     waste.compute(chemical, (s, amount) -> amount == null ? remainder : amount + remainder);
 
-                    for (String inputChemical : reaction.input.keySet()) {
-                        int amountRequired = reaction.input.get(inputChemical) * reactionTimes;
+                    for (var inputChemical : reaction.input.keySet()) {
+                        var amountRequired = reaction.input.get(inputChemical) * reactionTimes;
                         newInput.compute(inputChemical,
                                          (s, amount) -> amount == null ? amountRequired : amount + amountRequired);
                     }
@@ -137,10 +141,10 @@ public class Day14 {
     }
 
     private Reaction createReactionFromString(String input) {
-        String[] split = input.split(" => ");
-        String[] inputs = split[0].split(", ");
+        var split = input.split(" => ");
+        var inputs = split[0].split(", ");
 
-        Reaction reaction = new Reaction();
+        var reaction = new Reaction();
 
         reaction.input = Arrays.stream(inputs)
                                .map(s -> s.split(" "))

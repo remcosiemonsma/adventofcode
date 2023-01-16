@@ -1,60 +1,63 @@
 package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
-public class Day17 {
-    public int handlePart1(Stream<String> inputStream) throws InterruptedException {
-        String line = inputStream.findFirst().orElseThrow(AssertionError::new);
+public class Day17 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> inputStream) throws InterruptedException {
+        var line = inputStream.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        BlockingQueue<Long> outputState = new LinkedBlockingQueue<>();
+        var outputState = new LinkedBlockingQueue<Long>();
 
-        IntCodeComputer intCodeComputer = new IntCodeComputer(opcodes, null, outputState);
+        var intCodeComputer = new IntCodeComputer(opcodes, null, outputState);
 
         intCodeComputer.runProgram();
 
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
         while (!outputState.isEmpty()) {
-            char c = (char) outputState.take().intValue();
+            var c = (char) outputState.take().intValue();
 
             stringBuilder.append(c);
         }
 
-        String grid = stringBuilder.toString();
+        var grid = stringBuilder.toString();
 
-        System.out.println(grid);
-
-        List<Point> intersections = findIntersections(grid);
+        var intersections = findIntersections(grid);
 
         return intersections.stream()
                             .mapToInt(point -> point.x * point.y)
                             .sum();
     }
 
+    @Override
+    public Integer handlePart2(Stream<String> input) throws Exception {
+        return null;
+    }
+
     private List<Point> findIntersections(String gridString) {
-        List<Point> intersections = new ArrayList<>();
+        var intersections = new ArrayList<Point>();
 
-        String[] lines = gridString.split("\\n");
+        var grid = gridString.lines()
+                             .map(String::toCharArray)
+                             .toArray(char[][]::new);
 
-        char[][] grid = Arrays.stream(lines)
-                                   .map(String::toCharArray)
-                                   .toArray(char[][]::new);
-
-        for (int y = 1; y < grid.length - 1; y++) {
-            for (int x = 1; x < grid[0].length - 1; x++) {
-                if (grid[y][x] == '#' && grid[y][x - 1] == '#' && grid[y][x + 1] == '#' && grid[y - 1][x] == '#' && grid[y + 1][x] == '#') {
-                    Point point = new Point(x, y);
+        for (var y = 1; y < grid.length - 1; y++) {
+            for (var x = 1; x < grid[0].length - 1; x++) {
+                if (grid[y][x] == '#' && grid[y][x - 1] == '#' && grid[y][x + 1] == '#' && grid[y - 1][x] == '#' &&
+                    grid[y + 1][x] == '#') {
+                    var point = new Point(x, y);
                     intersections.add(point);
                 }
             }
@@ -63,21 +66,6 @@ public class Day17 {
         return intersections;
     }
 
-    private static class Point {
-        private final int x;
-        private final int y;
-
-        private Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public String toString() {
-            return "Point{" +
-                   "x=" + x +
-                   ", y=" + y +
-                   '}';
-        }
+    private record Point(int x, int y) {
     }
 }

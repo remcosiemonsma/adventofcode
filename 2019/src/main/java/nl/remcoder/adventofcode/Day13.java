@@ -4,23 +4,25 @@ import nl.remcoder.adventofcode.intcodecomputer.ConsumingQueue;
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
 import nl.remcoder.adventofcode.intcodecomputer.OutputConsumer;
 import nl.remcoder.adventofcode.intcodecomputer.ProducingQueue;
+import nl.remcoder.adventofcode.library.model.Coordinate;
+import nl.remcoder.adventofcode.library.model.Grid;
 
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.stream.Stream;
 
 public class Day13 {
-    private int[][] grid;
+    private Grid<Integer> grid;
     private int score = 0;
 
     public int handlePart1(Stream<String> inputStream) {
-        String line = inputStream.findFirst().orElseThrow(AssertionError::new);
+        var line = inputStream.findFirst().orElseThrow(AssertionError::new);
 
-        long[] opcodes = Arrays.stream(line.split(","))
-                               .mapToLong(Long::parseLong)
-                               .toArray();
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
 
-        grid = new int[44][44];
+        grid = new Grid<>(0, 0, 0, 0);
 
         BlockingQueue<Long> output = new ConsumingQueue(new OutputHandler());
 
@@ -28,7 +30,7 @@ public class Day13 {
 
         intCodeComputer.runProgram();
 
-        return countAmountOfTiles(2);
+        return (int) grid.countElements(2);
     }
 
     public int handlePart2(Stream<String> inputStream) {
@@ -40,7 +42,7 @@ public class Day13 {
 
         opcodes[0] = 2;
 
-        grid = new int[44][44];
+        grid = new Grid<>(0, 0, 0, 0);
 
         BlockingQueue<Long> output = new ConsumingQueue(new OutputHandler());
         BlockingQueue<Long> input = new ProducingQueue(() -> {
@@ -57,57 +59,11 @@ public class Day13 {
     }
 
     private int findPaddleX() {
-        for (int[] line : grid) {
-            for (int i = 0; i < line.length; i++) {
-                int pixel = line[i];
-                if (pixel == 3) {
-                    return i;
-                }
-            }
-        }
-        return -1;
+        return grid.findValue(3).x();
     }
 
     private int findBallX() {
-        for (int[] line : grid) {
-            for (int i = 0; i < line.length; i++) {
-                int pixel = line[i];
-                if (pixel == 4) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    private void printGrid() {
-        System.out.println(String.format("Score: %d", score));
-        for (int[] line : grid) {
-            for (int pixel : line) {
-                switch (pixel) {
-                    case 0 -> System.out.print(' ');
-                    case 1 -> System.out.print('|');
-                    case 2 -> System.out.print('-');
-                    case 3 -> System.out.print('_');
-                    case 4 -> System.out.print('o');
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    private int countAmountOfTiles(int tileId) {
-        int amount = 0;
-
-        for (int[] line : grid) {
-            for (int pixel : line) {
-                if (pixel == tileId) {
-                    amount++;
-                }
-            }
-        }
-
-        return amount;
+        return grid.findValue(4).x();
     }
 
     private class OutputHandler implements OutputConsumer {
@@ -119,21 +75,21 @@ public class Day13 {
 
         @Override
         public void consumeLongValue(Long outputValue) {
-            switch (state) {
+            state = switch (state) {
                 case X -> {
                     xValue = outputValue;
-                    state = State.Y;
+                    yield State.Y;
                 }
                 case Y -> {
                     yValue = outputValue;
-                    state = State.ID;
+                    yield State.ID;
                 }
                 case ID -> {
                     idValue = outputValue;
                     performPaintOperation((int) xValue, (int) yValue, (int) idValue);
-                    state = State.X;
+                    yield State.X;
                 }
-            }
+            };
         }
     }
 
@@ -141,7 +97,7 @@ public class Day13 {
         if (x == -1 && y == 0) {
             score = id;
         } else {
-            grid[y][x] = id;
+            grid.set(new Coordinate(x, y), id);
         }
     }
 
