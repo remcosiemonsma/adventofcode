@@ -1,18 +1,17 @@
 package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
+import nl.remcoder.adventofcode.intcodecomputer.ProducingQueue;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
 public class Day17 implements AdventOfCodeSolution<Integer> {
     @Override
-    public Integer handlePart1(Stream<String> inputStream) throws InterruptedException {
-        var line = inputStream.findFirst().orElseThrow(AssertionError::new);
+    public Integer handlePart1(Stream<String> input) throws InterruptedException {
+        var line = input.findFirst().orElseThrow(AssertionError::new);
 
         var opcodes = Arrays.stream(line.split(","))
                             .mapToLong(Long::parseLong)
@@ -34,6 +33,8 @@ public class Day17 implements AdventOfCodeSolution<Integer> {
 
         var grid = stringBuilder.toString();
 
+        System.out.println(grid);
+
         var intersections = findIntersections(grid);
 
         return intersections.stream()
@@ -43,7 +44,48 @@ public class Day17 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) throws Exception {
-        return null;
+        var line = input.findFirst().orElseThrow(AssertionError::new);
+
+        var opcodes = Arrays.stream(line.split(","))
+                            .mapToLong(Long::parseLong)
+                            .toArray();
+        
+        //Path = L,12,L,12,L,6,L,6,R,8,R,4,L,12,L,12,L,12,L,6,L,6,L,12,L6,R,12,R,8,R,8,R,4,L,12,L,12,L,12,L,6,L,6,L,12,L,6,R,12,R,8,R,8,R,4,L,12,L,12,L,12,L,6,L,6,L,12,L,6,R,12,R,8
+        
+        String main = "A,B,A,C,B,A,C,B,A,C\n";
+        String A = "L,12,L,12,L,6,L,6\n";
+        String B = "R,8,R,4,L,12\n";
+        String C = "L,12,L,6,R,12,R,8\n";
+        String videoFeed = "n\n";
+        
+        String program = main + A + B + C + videoFeed;
+
+        Queue<Long> chars = new ArrayDeque<>(); 
+        
+        for (char c : program.toCharArray()) {
+            chars.add((long) c);
+        }
+        
+        opcodes[0] = 2;
+
+        var outputState = new LinkedBlockingQueue<Long>();
+        var inputState = new ProducingQueue(chars::remove);
+
+        var intCodeComputer = new IntCodeComputer(opcodes, inputState, outputState);
+
+        Thread thread = new Thread(intCodeComputer);
+
+        thread.start();
+        
+        thread.join();
+        
+        long dust = 0;
+
+        while (!outputState.isEmpty()) {
+            dust = outputState.take();
+        }
+
+        return (int) dust;
     }
 
     private List<Point> findIntersections(String gridString) {
