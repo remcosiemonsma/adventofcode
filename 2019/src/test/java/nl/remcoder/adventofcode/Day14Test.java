@@ -174,4 +174,10 @@ class Day14Test {
 
         assertEquals(460664, testSubject.handlePart2(input.lines()));
     }
+
+    @Test
+    void testPart2Input() throws Exception {
+        assertEquals(2371699, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day14/input").toURI()))));
+    }
 }
