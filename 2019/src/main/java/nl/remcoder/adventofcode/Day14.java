@@ -51,41 +51,6 @@ public class Day14 implements AdventOfCodeSolution<Long> {
         return lower;
     }
 
-    private Reaction createReactionFromString(String reactionString) {
-        var split = reactionString.split(" => ");
-        var inputs = split[0].split(", ");
-
-        var input = Arrays.stream(inputs)
-                          .map(s -> s.split(" "))
-                          .collect(Collectors.toMap(strings -> strings[1],
-                                                    strings -> Integer.parseInt(strings[0])));
-        var chemical = split[1].split(" ")[1];
-        var amount = Integer.parseInt(split[1].split(" ")[0]);
-
-        return new Reaction(chemical, amount, input);
-    }
-
-    private static class Reaction {
-        String chemical;
-        int amount;
-        Map<String, Integer> input;
-
-        public Reaction(String chemical, int amount, Map<String, Integer> input) {
-            this.chemical = chemical;
-            this.amount = amount;
-            this.input = input;
-        }
-
-        @Override
-        public String toString() {
-            return "Reaction{" +
-                   "chemical='" + chemical + '\'' +
-                   ", amount=" + amount +
-                   ", input=" + input +
-                   '}';
-        }
-    }
-
     private long calculateRequiredOre(Map<String, Reaction> reactions, long fuelQuantity) {
         var requiredOre = 0L;
         var leftovers = new HashMap<String, Long>();
@@ -124,4 +89,20 @@ public class Day14 implements AdventOfCodeSolution<Long> {
         }
         return requiredOre;
     }
+
+    private Reaction createReactionFromString(String reactionString) {
+        var split = reactionString.split(" => ");
+        var inputs = split[0].split(", ");
+
+        var input = Arrays.stream(inputs)
+                          .map(s -> s.split(" "))
+                          .collect(Collectors.toMap(strings -> strings[1],
+                                                    strings -> Integer.parseInt(strings[0])));
+        var chemical = split[1].split(" ")[1];
+        var amount = Integer.parseInt(split[1].split(" ")[0]);
+
+        return new Reaction(chemical, amount, input);
+    }
+
+    private record Reaction(String chemical, int amount, Map<String, Integer> input) {}
 }
