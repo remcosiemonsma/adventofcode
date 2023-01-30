@@ -3,6 +3,7 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -16,35 +17,192 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart1(Stream<String> input) {
-        var lines = input.toList();
+        var allUnits = parseUnits(input);
+
         var immuneSystem = new ArrayList<Unit>();
         var infection = new ArrayList<Unit>();
-        var allUnits = new ArrayList<Unit>();
 
-        var counter = 1;
-        var prefix = "Immune System group ";
-        var current = immuneSystem;
-        var type = Type.IMMUNE_SYSTEM;
-        for (String line : lines) {
-            if (line.isBlank()) {
-                current = infection;
-                prefix = "Infection group ";
-                counter = 1;
-                type = Type.INFECTION;
-                continue;
+        allUnits.forEach(unit -> {
+            switch (unit.type) {
+                case IMMUNE_SYSTEM -> immuneSystem.add(unit);
+                case INFECTION -> infection.add(unit);
             }
-            if (line.contains(":")) {
-                continue;
+        });
+
+        doBattle(allUnits, immuneSystem, infection);
+
+        var aliveImmuneUnits = immuneSystem.stream().mapToInt(Unit::size).sum();
+        var aliveInfectionUnits = infection.stream().mapToInt(Unit::size).sum();
+
+        return Math.max(aliveImmuneUnits, aliveInfectionUnits);
+    }
+
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var allUnits = parseUnits(input);
+
+        int neededBoost = doLinearSearch(allUnits);
+
+        var result = 0;
+        
+        allUnits.forEach(Unit::reset);
+
+        var battleUnits = new ArrayList<>(allUnits);
+
+        var immuneSystem = new ArrayList<Unit>();
+        var infection = new ArrayList<Unit>();
+
+        battleUnits.forEach(unit -> {
+            switch (unit.type) {
+                case IMMUNE_SYSTEM -> immuneSystem.add(unit);
+                case INFECTION -> infection.add(unit);
             }
-            var unit = createUnit(line, prefix + counter++, type);
-            current.add(unit);
-            allUnits.add(unit);
+        });
+
+        immuneSystem.forEach(unit -> unit.setBoost(neededBoost));
+
+        doBattle(battleUnits, immuneSystem, infection);
+
+        result = immuneSystem.stream().mapToInt(Unit::size).sum();
+
+        return result;
+    }
+
+    private int doLinearSearch(List<Unit> allUnits) {
+        var resultFound = false;
+
+        int boost = 0;
+
+        while (!resultFound) {
+            boost++;
+
+            allUnits.forEach(Unit::reset);
+
+            var battleUnits = new ArrayList<>(allUnits);
+
+            var immuneSystem = new ArrayList<Unit>();
+            var infection = new ArrayList<Unit>();
+
+            battleUnits.forEach(unit -> {
+                switch (unit.type) {
+                    case IMMUNE_SYSTEM -> immuneSystem.add(unit);
+                    case INFECTION -> infection.add(unit);
+                }
+            });
+
+            var finalBoost = boost;
+            immuneSystem.forEach(unit -> unit.setBoost(finalBoost));
+
+            doBattle(battleUnits, immuneSystem, infection);
+
+            if (infection.isEmpty()) {
+                resultFound = true;
+            }
         }
 
-        allUnits.sort(Comparator.comparing(Unit::initiative).reversed());
+        return boost;
+    }
 
-        while (immuneSystem.stream().anyMatch(Unit::isAlive) &&
-               infection.stream().anyMatch(Unit::isAlive)) {
+    private int doBinarySearch(List<Unit> allUnits) {
+        var lower = 1;
+        var upper = 1;
+
+        boolean upperBoundFound = false;
+
+        while (!upperBoundFound) {
+            allUnits.forEach(Unit::reset);
+
+            var battleUnits = new ArrayList<>(allUnits);
+
+            var immuneSystem = new ArrayList<Unit>();
+            var infection = new ArrayList<Unit>();
+
+            battleUnits.forEach(unit -> {
+                switch (unit.type) {
+                    case IMMUNE_SYSTEM -> immuneSystem.add(unit);
+                    case INFECTION -> infection.add(unit);
+                }
+            });
+
+            int currentBoost = lower;
+
+            System.out.println(currentBoost);
+
+            immuneSystem.forEach(unit -> unit.setBoost(currentBoost));
+
+            doBattle(battleUnits, immuneSystem, infection);
+
+            if (!infection.isEmpty()) {
+//                System.out.println(infection);
+                lower *= 2;
+            } else {
+                upper = lower;
+                lower /= 2;
+                upperBoundFound = true;
+            }
+        }
+
+//        System.out.println(upper);
+
+        var mid = (upper - lower) / 2;
+
+        var resultFound = false;
+        var survivedLastRound = true;
+
+        var current = upper - mid;
+
+        while (!resultFound) {
+            System.out.println(current);
+            allUnits.forEach(Unit::reset);
+
+            var battleUnits = new ArrayList<>(allUnits);
+
+            var immuneSystem = new ArrayList<Unit>();
+            var infection = new ArrayList<Unit>();
+
+            battleUnits.forEach(unit -> {
+                switch (unit.type) {
+                    case IMMUNE_SYSTEM -> immuneSystem.add(unit);
+                    case INFECTION -> infection.add(unit);
+                }
+            });
+
+            int finalCurrent = current;
+            immuneSystem.forEach(unit -> unit.setBoost(finalCurrent));
+
+            doBattle(battleUnits, immuneSystem, infection);
+
+            if (infection.isEmpty()) {
+                if (mid != 1) {
+                    mid /= 2;
+                    current -= mid;
+                    survivedLastRound = true;
+                } else {
+                    current--;
+                    if (!survivedLastRound) {
+                        resultFound = true;
+                    }
+                }
+            } else {
+                if (mid != 1) {
+                    mid /= 2;
+                    current += mid;
+                    survivedLastRound = false;
+                } else {
+                    current++;
+                    if (survivedLastRound) {
+                        resultFound = true;
+                    }
+                }
+            }
+        }
+        return current;
+    }
+
+    private void doBattle(List<Unit> allUnits, ArrayList<Unit> immuneSystem, ArrayList<Unit> infection) {
+        while (!immuneSystem.isEmpty() && !infection.isEmpty()) {
+            allUnits.forEach(unit -> unit.nextAttackBy = null);
+
             var unitsBefore = allUnits.stream().mapToInt(Unit::size).sum();
             infection.stream()
                      .sorted(Comparator.comparing(Unit::getEffectivePower)
@@ -57,31 +215,47 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                                           .reversed())
                         .forEach(unit -> unit.determineNextAttack(infection));
 
-            for (var unit : allUnits) {
-                if (unit.isAlive()) {
-                    unit.attack();
-                }
-            }
+            allUnits.stream()
+                    .filter(Unit::isAlive)
+                    .forEach(Unit::attack);
+
+            infection.removeIf(Predicate.not(Unit::isAlive));
+            immuneSystem.removeIf(Predicate.not(Unit::isAlive));
+            allUnits.removeIf(Predicate.not(Unit::isAlive));
+
             var unitsAfter = allUnits.stream().mapToInt(Unit::size).sum();
-            
+
             if (unitsBefore == unitsAfter) {
-                System.out.println("Stalemate detected!");
+//                System.out.println("Stalemate detected!");
                 break;
             }
         }
-
-        var aliveImmuneUnits = immuneSystem.stream().mapToInt(Unit::size).sum();
-        var aliveInfectionUnits = infection.stream().mapToInt(Unit::size).sum();
-
-        System.out.println(aliveImmuneUnits);
-        System.out.println(aliveInfectionUnits);
-
-        return Math.max(aliveImmuneUnits, aliveInfectionUnits);
     }
 
-    @Override
-    public Integer handlePart2(Stream<String> input) {
-        return null;
+    private List<Unit> parseUnits(Stream<String> input) {
+        var lines = input.toList();
+        var allUnits = new ArrayList<Unit>();
+
+        var counter = 1;
+        var prefix = "Immune System group ";
+        var type = Type.IMMUNE_SYSTEM;
+        for (String line : lines) {
+            if (line.isBlank()) {
+                prefix = "Infection group ";
+                counter = 1;
+                type = Type.INFECTION;
+                continue;
+            }
+            if (line.contains(":")) {
+                continue;
+            }
+            var unit = createUnit(line, prefix + counter++, type);
+            allUnits.add(unit);
+        }
+
+        allUnits.sort(Comparator.comparing(Unit::initiative).reversed());
+
+        return allUnits;
     }
 
     private Unit createUnit(String line, String name, Type type) {
@@ -122,26 +296,29 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
     private static final class Unit {
         private final String name;
+        private final int originalSize;
         private int size;
         private final int hp;
         private final List<String> immunities;
         private final List<String> weaknesses;
         private final String weaponType;
-        private final int damage;
+        private final int originalDamage;
+        private int damage;
         private final int initiative;
         private final Type type;
         private Unit nextAttack;
         private Unit nextAttackBy;
 
-
         private Unit(String name, int size, int hp, List<String> immunities, List<String> weaknesses, String weaponType,
                      int damage, int initiative, Type type) {
             this.name = name;
+            originalSize = size;
             this.size = size;
             this.hp = hp;
             this.immunities = immunities;
             this.weaknesses = weaknesses;
             this.weaponType = weaponType;
+            originalDamage = damage;
             this.damage = damage;
             this.initiative = initiative;
             this.type = type;
@@ -155,7 +332,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                     killed = size;
                 }
 
-                System.out.println(nextAttackBy.name + " attacks " + name + ", killing " + killed + " units");
+//                System.out.println(nextAttackBy.name + " attacks " + name + ", killing " + killed + " units");
 
                 size = size - killed;
             }
@@ -208,7 +385,8 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                                       .orElse(null);
                 if (nextAttack != null) {
                     nextAttack.nextAttackBy = this;
-                    System.out.println(name + " would deal " + nextAttack.name + " " + calculateDamage(nextAttack) + " damage");
+//                    System.out.println(
+//                            name + " would deal " + nextAttack.name + " " + calculateDamage(nextAttack) + " damage");
                 }
             }
         }
@@ -247,7 +425,17 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                    ", weaponType='" + weaponType + '\'' +
                    ", damage=" + damage +
                    ", initiative=" + initiative +
+                   ", type=" + type +
                    '}';
+        }
+
+        public void setBoost(int boost) {
+            damage += boost;
+        }
+
+        public void reset() {
+            damage = originalDamage;
+            size = originalSize;
         }
     }
 
