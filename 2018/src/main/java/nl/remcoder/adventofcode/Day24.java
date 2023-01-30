@@ -43,8 +43,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
         int neededBoost = doLinearSearch(allUnits);
 
-        var result = 0;
-        
         allUnits.forEach(Unit::reset);
 
         var battleUnits = new ArrayList<>(allUnits);
@@ -63,9 +61,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
         doBattle(battleUnits, immuneSystem, infection);
 
-        result = immuneSystem.stream().mapToInt(Unit::size).sum();
-
-        return result;
+        return immuneSystem.stream().mapToInt(Unit::size).sum();
     }
 
     private int doLinearSearch(List<Unit> allUnits) {
@@ -99,6 +95,8 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                 resultFound = true;
             }
         }
+
+        System.out.println(boost);
 
         return boost;
     }
