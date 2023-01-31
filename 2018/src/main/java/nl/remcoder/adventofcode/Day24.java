@@ -61,41 +61,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
         return immuneSystem.stream().mapToInt(Unit::size).sum();
     }
 
-    private int doLinearSearch(List<Unit> allUnits) {
-        var resultFound = false;
-
-        int boost = 0;
-
-        var immuneSystem = new ArrayList<Unit>();
-        var infection = new ArrayList<Unit>();
-
-        allUnits.forEach(unit -> {
-            switch (unit.type) {
-                case IMMUNE_SYSTEM -> immuneSystem.add(unit);
-                case INFECTION -> infection.add(unit);
-            }
-        });
-
-        while (!resultFound) {
-            boost++;
-
-            allUnits.forEach(Unit::reset);
-            
-            var finalBoost = boost;
-            immuneSystem.forEach(unit -> unit.setBoost(finalBoost));
-
-            doBattle(allUnits, immuneSystem, infection);
-
-            if (infection.isEmpty()) {
-                resultFound = true;
-            }
-        }
-
-        System.out.println(boost);
-
-        return boost;
-    }
-
     private int doBinarySearch(List<Unit> allUnits) {
         var lower = 1;
         var upper = 1;
@@ -114,7 +79,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
         while (!upperBoundFound) {
             allUnits.forEach(Unit::reset);
-            
+
             int currentBoost = lower;
 
             System.out.println(currentBoost);
@@ -124,7 +89,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
             doBattle(allUnits, immuneSystem, infection);
 
             if (infection.stream().anyMatch(Unit::isAlive)) {
-//                System.out.println(infection);
                 lower *= 2;
             } else {
                 upper = lower;
@@ -132,8 +96,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                 upperBoundFound = true;
             }
         }
-
-//        System.out.println(upper);
 
         var mid = (upper - lower) / 2;
 
@@ -145,7 +107,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
         while (!resultFound) {
             System.out.println(current);
             allUnits.forEach(Unit::reset);
-            
+
             int finalCurrent = current;
             immuneSystem.forEach(unit -> unit.setBoost(finalCurrent));
 
@@ -157,9 +119,10 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                     current -= mid;
                     survivedLastRound = true;
                 } else {
-                    current--;
                     if (!survivedLastRound) {
                         resultFound = true;
+                    } else {
+                        current--;
                     }
                 }
             } else {
@@ -201,7 +164,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
             var unitsAfter = allUnits.stream().mapToInt(Unit::size).sum();
 
             if (unitsBefore == unitsAfter) {
-//                System.out.println("Stalemate detected!");
                 break;
             }
         }
@@ -307,8 +269,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                     killed = size;
                 }
 
-//                System.out.println(nextAttackBy.name + " attacks " + name + ", killing " + killed + " units");
-
                 size = size - killed;
             }
             nextAttackBy = null;
@@ -355,14 +315,13 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                 nextAttack = defenders.stream()
                                       .filter(Unit::isAlive)
                                       .filter(unit -> unit.nextAttackBy == null)
+                                      .filter(unit -> this.calculateDamage(unit) > 0)
                                       .max(Comparator.comparing(this::calculateDamage)
                                                      .thenComparing(Unit::getEffectivePower)
                                                      .thenComparing(Unit::initiative))
                                       .orElse(null);
                 if (nextAttack != null) {
                     nextAttack.nextAttackBy = this;
-//                    System.out.println(
-//                            name + " would deal " + nextAttack.name + " " + calculateDamage(nextAttack) + " damage");
                 }
             }
         }

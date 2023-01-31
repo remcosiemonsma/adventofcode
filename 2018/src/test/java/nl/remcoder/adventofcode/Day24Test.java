@@ -56,8 +56,7 @@ class Day24Test {
 
     @Test
     void testPart2Input() throws Exception {
-        //2116 too high
-        assertEquals(108618801, testSubject.handlePart2(
+        assertEquals(862, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day24/input").toURI()))));
     }
 }
