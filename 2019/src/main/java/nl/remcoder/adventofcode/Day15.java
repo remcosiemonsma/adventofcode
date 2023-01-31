@@ -109,10 +109,10 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                         outputState.take();
                     }
                     current = lastNode;
+                    openSides = determineOpenSides(current, inputState, outputState);
                 }
             }
             //move to next unvisited side
-            openSides = determineOpenSides(current, inputState, outputState);
             boolean allSidesVisited = true;
             for (var openSide : openSides) {
                 Coordinate next = current.getNeighbor(openSide);
@@ -152,6 +152,10 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
         }
         
         intcodeComputer.stop();
+        
+        grid.set(oxygenSystem, new Square(State.OXYGEN));
+        
+        grid.printGrid();
     }
 
     private boolean allSidesVisited(Coordinate current) {
@@ -286,7 +290,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                 neighbors.put(foundSteps.get(coordinate), 1L);
             } else {
                 var next = grid.get(coordinate);
-                if (next != null && next.getState() == State.OPEN) {
+                if (next != null && next.getState() != State.WALL) {
                     var newSteps = new ArrayList<>(steps);
                     newSteps.add(step);
                     var newStep = new Step(coordinate, grid, newSteps, foundSteps);
@@ -331,6 +335,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                 case OPEN -> " ";
                 case WALL -> "#";
                 case START -> "D";
+                case OXYGEN -> "@";
             };
         }
     }
@@ -338,6 +343,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
     private enum State {
         WALL,
         OPEN,
-        START
+        START,
+        OXYGEN
     }
 }
