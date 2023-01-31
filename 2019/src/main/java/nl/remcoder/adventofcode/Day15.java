@@ -150,6 +150,8 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                 }
             }
         }
+        
+        intcodeComputer.stop();
     }
 
     private boolean allSidesVisited(Coordinate current) {
