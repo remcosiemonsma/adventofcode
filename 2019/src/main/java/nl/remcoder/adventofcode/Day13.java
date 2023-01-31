@@ -59,11 +59,11 @@ public class Day13 {
     }
 
     private int findPaddleX() {
-        return grid.findValue(3).x();
+        return grid.findValue(3).orElseThrow(() -> new AssertionError("Eek!")).x();
     }
 
     private int findBallX() {
-        return grid.findValue(4).x();
+        return grid.findValue(4).orElseThrow(() -> new AssertionError("Eek!")).x();
     }
 
     private class OutputHandler implements OutputConsumer {
