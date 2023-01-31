@@ -9,6 +9,7 @@ public class IntCodeComputer implements Runnable {
     private long[] opcodes;
     private int opcodeCounter;
     private int relativeBase;
+    private boolean running = true;
 
     public IntCodeComputer(long[] opcodes, BlockingQueue<Long> input, BlockingQueue<Long> output) {
         this.opcodes = Arrays.copyOf(opcodes, 1024 * 64);
@@ -24,7 +25,7 @@ public class IntCodeComputer implements Runnable {
     }
 
     public void runProgram() {
-        while (opcodes[opcodeCounter] != 99) {
+        while (opcodes[opcodeCounter] != 99 && running) {
             switch ((int) (opcodes[opcodeCounter] % 100)) {
                 case 1 -> performSummation();
                 case 2 -> performMultiplication();
@@ -209,6 +210,10 @@ public class IntCodeComputer implements Runnable {
         return opcodes[position];
     }
 
+    public void stop() {
+        running = false;
+    }
+    
     private Mode determineMode(int parameterMode) {
         return switch (parameterMode) {
             case 0 -> Mode.POSITION;
