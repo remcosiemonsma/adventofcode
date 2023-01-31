@@ -1,7 +1,9 @@
 package nl.remcoder.adventofcode.library.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Grid<T> {
     private int startx;
@@ -136,12 +138,19 @@ public class Grid<T> {
         return values.values().stream().filter(t -> t.equals(value)).count();
     }
 
-    public Coordinate findValue(T value) {
+    public Optional<Coordinate> findValue(T value) {
         return values.entrySet()
                      .stream()
                      .filter(entry -> entry.getValue().equals(value))
                      .findFirst()
+                     .map(Map.Entry::getKey);
+    }
+
+    public List<Coordinate> findValues(T value) {
+        return values.entrySet()
+                     .stream()
+                     .filter(entry -> entry.getValue().equals(value))
                      .map(Map.Entry::getKey)
-                     .orElseThrow(() -> new AssertionError("Value not found!"));
+                     .toList();
     }
 }
