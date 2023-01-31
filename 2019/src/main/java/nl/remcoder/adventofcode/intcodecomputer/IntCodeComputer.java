@@ -6,7 +6,7 @@ import java.util.concurrent.BlockingQueue;
 public class IntCodeComputer implements Runnable {
     private final BlockingQueue<Long> input;
     private final BlockingQueue<Long> output;
-    private long[] opcodes;
+    private final long[] opcodes;
     private int opcodeCounter;
     private int relativeBase;
     private boolean running = true;
