@@ -24,21 +24,23 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
         start.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(start, node -> {
-            var step = (Step) node;
-            return step.current.equals(oxygenSystem);
-        }).getDistance();
+                                 var step = (Step) node;
+                                 return step.current.equals(oxygenSystem);
+                             })
+                             .orElseThrow(() -> new AssertionError("Eek!"))
+                             .getDistance();
     }
 
     @Override
     public Integer handlePart2(Stream<String> input) throws Exception {
         generateGrid(input);
-        
+
         var filledNodes = new HashSet<Coordinate>();
         var nodesToProcess = new ArrayList<Coordinate>();
         nodesToProcess.add(oxygenSystem);
-        
+
         var minutes = 0;
-        
+
         while (!nodesToProcess.isEmpty()) {
             var newNodesToProcess = new ArrayList<Coordinate>();
             for (var node : nodesToProcess) {
@@ -54,7 +56,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
             nodesToProcess = newNodesToProcess;
             minutes++;
         }
-        
+
         return minutes - 1;
     }
 
@@ -103,7 +105,8 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                     var path = (Step) Dijkstra.findShortestDistance(start, node -> {
                         var step = (Step) node;
                         return step.current.equals(lastNode);
-                    });
+                    })
+                                              .orElseThrow(() -> new AssertionError("Eek!"));
                     for (var step : path.steps) {
                         inputState.put(step);
                         outputState.take();
@@ -141,7 +144,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                     var path = (Step) Dijkstra.findShortestDistance(start, node -> {
                         var step = (Step) node;
                         return step.current.equals(lastNode);
-                    });
+                    }).orElseThrow(() -> new AssertionError("Eek!"));
                     for (var step : path.steps) {
                         inputState.put(step);
                         outputState.take();
@@ -150,11 +153,11 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                 }
             }
         }
-        
+
         intcodeComputer.stop();
-        
+
         grid.set(oxygenSystem, new Square(State.OXYGEN));
-        
+
         grid.printGrid();
     }
 

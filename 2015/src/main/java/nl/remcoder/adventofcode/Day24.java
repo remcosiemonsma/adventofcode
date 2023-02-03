@@ -31,7 +31,7 @@ public class Day24 {
         return Dijkstra.findShortestDistance(start, node -> {
             var loadOut = (LoadOut) node;
             return loadOut.getWeight() == wantedWeight;
-        }).getDistance();
+        }).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
     public long handlePart2(Stream<String> input) {
@@ -55,7 +55,7 @@ public class Day24 {
         return Dijkstra.findShortestDistance(start, node -> {
             var loadOut = (LoadOut) node;
             return loadOut.getWeight() == wantedWeight;
-        }).getDistance();
+        }).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
     private class LoadOut extends Node {

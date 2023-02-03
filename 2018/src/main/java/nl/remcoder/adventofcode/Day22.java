@@ -64,7 +64,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
             var step = (Step) node;
             return step.currentPosition.equals(target) && 
                    step.currentEquipment == Equipment.TORCH;
-        });
+        }).orElseThrow(() -> new AssertionError("Eek!"));
 
         return (int) end.getDistance();
     }
