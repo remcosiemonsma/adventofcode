@@ -45,7 +45,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
         STEPS.put(state, start);
         STEPS.put(endState, end);
 
-        return Dijkstra.findShortestDistance(start, node -> node == end).getDistance();
+        return Dijkstra.findShortestDistance(start, node -> node == end).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
         STEPS.put(state, start);
         STEPS.put(endState, end);
 
-        return Dijkstra.findShortestDistance(start, node -> node == end).getDistance();
+        return Dijkstra.findShortestDistance(start, node -> node == end).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
     private Floor parseFloor(String line) {

@@ -20,7 +20,9 @@ public class Day22 {
         turn.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(turn,
-                                             node -> ((Turn) node).isGameFinished() && ((Turn) node).isPlayerAlive()).getDistance();
+                                                   node -> ((Turn) node).isGameFinished() &&
+                                                           ((Turn) node).isPlayerAlive())
+                             .orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
     public int handlePart2(Stream<String> input) {
@@ -33,7 +35,10 @@ public class Day22 {
         turn.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(turn,
-                                                   node -> ((Turn2) node).isGameFinished() && ((Turn2) node).isPlayerAlive()).getDistance();
+                                                   node -> ((Turn2) node).isGameFinished() &&
+                                                           ((Turn2) node).isPlayerAlive())
+                             .orElseThrow(() -> new AssertionError("Eek!"))
+                             .getDistance();
     }
 
     private Set<Spell> createSpells() {
@@ -84,7 +89,8 @@ public class Day22 {
 
             var totalDamage = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::damage).sum();
             var totalHealing = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::healing).sum();
-            var totalManaIncrease = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
+            var totalManaIncrease =
+                    activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
             var totalDefense = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::defense).sum();
 
             activeSpells.forEach(ActiveSpell::decrementDuration);
@@ -141,12 +147,14 @@ public class Day22 {
                 if (newBoss.hitPoints <= 0) {
                     newPlayer = new Player(player.hitPoints, player.mana);
                 } else {
-                    newPlayer = new Player(player.hitPoints + totalHealing - bossAttack, player.mana + totalManaIncrease);
+                    newPlayer =
+                            new Player(player.hitPoints + totalHealing - bossAttack, player.mana + totalManaIncrease);
                 }
 
                 var newActiveSpells = new ArrayList<ActiveSpell>();
 
-                activeSpells.forEach(activeSpell -> newActiveSpells.add(new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
+                activeSpells.forEach(activeSpell -> newActiveSpells.add(
+                        new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
 
                 var nextTurn = new Turn(newPlayer, newBoss, newActiveSpells, spells, castedSpells, true);
                 neighbors.put(nextTurn, 0L);
@@ -178,8 +186,8 @@ public class Day22 {
         private final boolean isPlayerTurn;
 
         private Turn2(Player player, Boss boss, List<ActiveSpell> activeSpells,
-                     Set<Spell> spells, List<Spell> castedSpells,
-                     boolean isPlayerTurn) {
+                      Set<Spell> spells, List<Spell> castedSpells,
+                      boolean isPlayerTurn) {
             this.player = player;
             this.boss = boss;
             this.activeSpells = activeSpells;
@@ -198,7 +206,8 @@ public class Day22 {
 
             var totalDamage = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::damage).sum();
             var totalHealing = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::healing).sum();
-            var totalManaIncrease = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
+            var totalManaIncrease =
+                    activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::manaIncrease).sum();
             var totalDefense = activeSpells.stream().map(ActiveSpell::getSpell).mapToInt(Spell::defense).sum();
 
             activeSpells.forEach(ActiveSpell::decrementDuration);
@@ -213,7 +222,8 @@ public class Day22 {
                 if (boss.hitPoints - totalDamage <= 0) {
                     var newPlayer = new Player(player.hitPoints + totalHealing, player.mana + totalManaIncrease);
                     var newBoss = new Boss(boss.hitPoints - totalDamage, boss.attack);
-                    var nextTurn = new Turn2(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
+                    var nextTurn =
+                            new Turn2(newPlayer, newBoss, activeSpells, spells, List.copyOf(castedSpells), false);
                     neighbors.put(nextTurn, 0L);
                 } else {
                     for (var spell : spells) {
@@ -247,7 +257,7 @@ public class Day22 {
 
                         var nextTurn =
                                 new Turn2(newPlayer, newBoss, newActiveSpells, spells, List.copyOf(newCastedSpells),
-                                         false);
+                                          false);
                         neighbors.put(nextTurn, (long) spell.cost);
                     }
                 }
@@ -260,12 +270,14 @@ public class Day22 {
                 if (newBoss.hitPoints <= 0) {
                     newPlayer = new Player(player.hitPoints, player.mana);
                 } else {
-                    newPlayer = new Player(player.hitPoints + totalHealing - bossAttack, player.mana + totalManaIncrease);
+                    newPlayer =
+                            new Player(player.hitPoints + totalHealing - bossAttack, player.mana + totalManaIncrease);
                 }
 
                 var newActiveSpells = new ArrayList<ActiveSpell>();
 
-                activeSpells.forEach(activeSpell -> newActiveSpells.add(new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
+                activeSpells.forEach(activeSpell -> newActiveSpells.add(
+                        new ActiveSpell(activeSpell.spell, activeSpell.remainingDuration)));
 
                 var nextTurn = new Turn2(newPlayer, newBoss, newActiveSpells, spells, castedSpells, true);
                 neighbors.put(nextTurn, 0L);

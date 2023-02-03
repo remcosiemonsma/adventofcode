@@ -21,20 +21,22 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
 
         var start = new Step(new Coordinate(1, 1), grid);
         start.setDistance(0);
-        
-        return (int) Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(desiredPosition)).getDistance();
+
+        return (int) Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(desiredPosition))
+                             .orElseThrow(() -> new AssertionError("Eek!"))
+                             .getDistance();
     }
 
     @Override
     public Integer handlePart2(Stream<String> input) {
         var grid = generateGrid(input);
-        
+
         var visitedCoordinates = new HashSet<Coordinate>();
-        
+
         var currentCoordinates = new HashSet<Coordinate>();
-        
+
         currentCoordinates.add(new Coordinate(1, 1));
-        
+
         for (var i = 0; i < 50; i++) {
             var newCoordinates = new HashSet<Coordinate>();
             for (var coordinate : currentCoordinates) {
@@ -47,9 +49,9 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
             }
             currentCoordinates = newCoordinates;
         }
-        
+
         visitedCoordinates.addAll(currentCoordinates);
-        
+
         return visitedCoordinates.size();
     }
 
@@ -97,19 +99,20 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
         @Override
         public Map<? extends Node, Long> getNeighbors() {
             var neighbors = new HashMap<Step, Long>();
-            
+
             for (var coordinate : currentPosition.getStraightNeighbours()) {
                 if (Boolean.TRUE.equals(grid.get(coordinate))) {
                     neighbors.put(STEPS.computeIfAbsent(coordinate, coordinate1 -> new Step(coordinate1, grid)), 1L);
                 }
             }
-            
+
             return neighbors;
         }
+
         @Override
         public void printStateInformation() {
 
         }
-    
+
     }
 }

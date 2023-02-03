@@ -33,7 +33,7 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
 
         var end = new Coordinate(3, 3);
 
-        return ((Step) Dijkstra.findShortestDistance(start, node -> end.equals(((Step) node).position))).steps;
+        return ((Step) Dijkstra.findShortestDistance(start, node -> end.equals(((Step) node).position)).orElseThrow(() -> new AssertionError("Eek!"))).steps;
     }
 
     @Override
