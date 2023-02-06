@@ -2,10 +2,10 @@ package nl.remcoder.adventofcode.library.pathfinding;
 
 import java.util.Map;
 
-public abstract class Node implements Comparable<Node> {
+public abstract class Node<T extends Node<?>> implements Comparable<T> {
     private long distance = Long.MAX_VALUE;
     private boolean visited;
-    public abstract Map<? extends Node, Long> getNeighbors();
+    public abstract Map<T, Long> getNeighbors();
     public long getDistance() {
         return distance;
     }
@@ -21,7 +21,7 @@ public abstract class Node implements Comparable<Node> {
     public abstract void printStateInformation();
 
     @Override
-    public int compareTo(Node o) {
+    public int compareTo(T o) {
         return Long.compare(this.getDistance(), o.getDistance());
     }
 }

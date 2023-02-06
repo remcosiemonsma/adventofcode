@@ -5,8 +5,8 @@ import java.util.PriorityQueue;
 import java.util.function.Predicate;
 
 public class Dijkstra {
-    public static Optional<Node> findShortestDistance(Node from, Predicate<Node> isNodeEndstate) {
-        var toVisit = new PriorityQueue<Node>();
+    public static Optional<Node<?>> findShortestDistance(Node<?> from, Predicate<Node<?>> isNodeEndstate) {
+        var toVisit = new PriorityQueue<Node<?>>();
         toVisit.add(from);
 
         while (!toVisit.isEmpty()) {
@@ -21,7 +21,7 @@ public class Dijkstra {
             for (var neighborEntry : min.getNeighbors().entrySet()) {
                 long adjacentDistance = min.getDistance() + neighborEntry.getValue();
                 var neighbor = neighborEntry.getKey();
-                if (neighbor.getDistance() > adjacentDistance && !neighbor.isVisited()) {
+                if (neighbor.getDistance() > adjacentDistance) {
                     neighbor.setDistance(adjacentDistance);
                     toVisit.add(neighbor);
                 }
