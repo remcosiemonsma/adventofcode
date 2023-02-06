@@ -157,8 +157,6 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
         intcodeComputer.stop();
 
         grid.set(oxygenSystem, new Square(State.OXYGEN));
-
-        grid.printGrid();
     }
 
     private boolean allSidesVisited(Coordinate current) {

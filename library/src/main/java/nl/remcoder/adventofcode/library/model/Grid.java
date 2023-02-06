@@ -1,9 +1,6 @@
 package nl.remcoder.adventofcode.library.model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Grid<T> {
     private int startx;
@@ -99,7 +96,9 @@ public class Grid<T> {
                      .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
-    public void printGrid() {
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
         calculateSize();
         for (int y = starty; y <= endy; y++) {
             for (int x = startx; x <= endx; x++) {
@@ -108,22 +107,22 @@ public class Grid<T> {
                 Object value = values.get(coordinate);
 
                 if (value == null) {
-                    System.out.print('.');
+                    sb.append('.');
                 } else {
                     if (value instanceof Boolean b) {
                         if (b) {
-                            System.out.print('#');
+                            sb.append('#');
                         } else {
-                            System.out.print('.');
+                            sb.append('.');
                         }
                     } else {
-                        System.out.print(value);
+                        sb.append(value);
                     }
                 }
             }
-            System.out.println();
+            sb.append('\n');
         }
-        System.out.println();
+        return sb.toString();
     }
 
     public void fill(T value) {
@@ -152,5 +151,13 @@ public class Grid<T> {
                      .filter(entry -> entry.getValue().equals(value))
                      .map(Map.Entry::getKey)
                      .toList();
+    }
+    
+    public Set<Coordinate> coordinates() {
+        return values.keySet();
+    }
+    
+    public Collection<T> values() {
+        return values.values();
     }
 }
