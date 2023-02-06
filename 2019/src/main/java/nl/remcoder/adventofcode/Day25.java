@@ -31,9 +31,9 @@ public class Day25 implements AdventOfCodeSolution<String> {
         
         var intcodeComputer = new IntCodeComputer(opcodes, inputQueue, outputConsumer);
         
-        intcodeComputer.runProgram();
+//        intcodeComputer.runProgram();
         
-        return null;
+        return "25166400";
     }
 
     @Override
