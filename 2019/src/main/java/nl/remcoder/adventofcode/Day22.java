@@ -19,6 +19,7 @@ public class Day22 implements AdventOfCodeSolution<Long> {
     @Override
     public Long handlePart2(Stream<String> input) {
         return solveB(input.toList());
+        //https://github.com/nibarius/aoc/blob/master/src/main/aoc2019/Day22.kt, werkt niet...
 //        var deckSize = 119_315_717_514_047L;
 //        var repeats = 101_741_582_076_661L;
 //        var targetPosition = 2020L;
