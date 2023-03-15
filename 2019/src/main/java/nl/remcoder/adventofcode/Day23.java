@@ -171,27 +171,7 @@ public class Day23 implements AdventOfCodeSolution<Long> {
             super(opcodes, computerMap, 255);
             this.computerMap = computerMap;
             this.output = output;
-            var thread = new Thread(() -> {
-                while (isRunning) {
-                    if (lastPacket != null && computerMap.values().stream().allMatch(Computer::isIdle)) {
-                        if (lastSentPacket != null && lastSentPacket.y == lastPacket.y){
-                            try {
-                                output.put(lastPacket.y);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        } else {
-                            lastSentPacket = lastPacket;
-                            computerMap.get(0).acceptValue(lastPacket);
-                        }
-                    }
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
+            var thread = new Thread(new IdleChecker());
             thread.start();
         }
 
@@ -211,6 +191,31 @@ public class Day23 implements AdventOfCodeSolution<Long> {
         @Override
         public boolean isIdle() {
             return true;
+        }
+
+        private class IdleChecker implements Runnable {
+            @Override
+            public void run() {
+                while (isRunning) {
+                    if (lastPacket != null && computerMap.values().stream().allMatch(Computer::isIdle)) {
+                        if (lastSentPacket != null && lastSentPacket.y == lastPacket.y) {
+                            try {
+                                output.put(lastPacket.y);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else {
+                            lastSentPacket = lastPacket;
+                            computerMap.get(0).acceptValue(lastPacket);
+                        }
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         }
     }
 
