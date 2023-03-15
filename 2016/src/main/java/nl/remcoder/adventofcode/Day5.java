@@ -6,6 +6,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.stream.Stream;
 
+import static nl.remcoder.adventofcode.library.Utils.byteArrayToHex;
+
 public class Day5 implements AdventOfCodeSolution<String> {
     private static final MessageDigest MD5;
 
@@ -68,13 +70,5 @@ public class Day5 implements AdventOfCodeSolution<String> {
         }
 
         return new String(password);
-    }
-
-    private String byteArrayToHex(byte[] hash) {
-        var sb = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
     }
 }
