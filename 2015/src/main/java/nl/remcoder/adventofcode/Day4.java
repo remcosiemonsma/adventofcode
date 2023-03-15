@@ -5,10 +5,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static nl.remcoder.adventofcode.library.Utils.byteArrayToHex;
+
 public class Day4 {
     public int handlePart1(Stream<String> input) {
         var line = input.findFirst()
-                           .orElseThrow(() -> new AssertionError("Eek!"));;
+                           .orElseThrow(() -> new AssertionError("Eek!"));
 
         return IntStream.iterate(0, value -> value + 1)
                         .parallel()
@@ -45,13 +47,5 @@ public class Day4 {
         var md5line = byteArrayToHex(md5data);
 
         return md5line.startsWith(prefix);
-    }
-
-    private String byteArrayToHex(byte[] a) {
-        var sb = new StringBuilder(a.length * 2);
-        for (var b : a) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
     }
 }

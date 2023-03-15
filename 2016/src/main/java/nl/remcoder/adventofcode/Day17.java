@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static nl.remcoder.adventofcode.library.Utils.byteArrayToHex;
+
 public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
     private static final MessageDigest MD5;
 
@@ -55,11 +57,10 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
             
             for (var step : steps) {
                 for (var node : step.getNeighbors().keySet()) {
-                    var newStep = (Step) node;
-                    if (newStep.position.equals(end)) {
+                    if (node.position.equals(end)) {
                         longestPath = currentPath;
                     } else {
-                        newSteps.add(newStep);
+                        newSteps.add(node);
                     }
                 }
             }
@@ -70,7 +71,7 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
         return longestPath;
     }
     
-    private static class Step extends Node {
+    private static class Step extends Node<Step> {
         private final Coordinate position;
         private final String passcode;
         private final String steps;
@@ -82,7 +83,7 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Step, Long> getNeighbors() {
             String hash = getHash(passcode + steps);
             
             var neighbors = new HashMap<Step, Long>();
@@ -149,13 +150,5 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
         var hash = MD5.digest(passcode.getBytes());
         
         return byteArrayToHex(hash);
-    }
-    
-    private static String byteArrayToHex(byte[] hash) {
-        var sb = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
     }
 }
