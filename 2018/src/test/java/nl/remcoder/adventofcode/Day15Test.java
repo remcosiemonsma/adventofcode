@@ -1,7 +1,6 @@
 package nl.remcoder.adventofcode;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
@@ -115,7 +114,6 @@ class Day15Test {
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day15/input").toURI()))));
     }
 
-    @Disabled("Currently fails")
     @Test
     void part2Case1() {
         String data = """
@@ -131,7 +129,6 @@ class Day15Test {
         assertEquals(4988, testSubject.handlePart2(data.lines()));
     }
 
-    @Disabled("Currently fails")
     @Test
     void part2Case2() {
         String data = """
@@ -177,7 +174,6 @@ class Day15Test {
         assertEquals(6474, testSubject.handlePart2(data.lines()));
     }
 
-    @Disabled("Currently fails")
     @Test
     void part2Case5() {
         String data = """
