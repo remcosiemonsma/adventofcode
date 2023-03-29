@@ -20,7 +20,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
         
         var grid = new Grid<>(data);
         
-        var start = grid.findValue('0');
+        var start = grid.findValue('0').orElseThrow(() -> new AssertionError("Eek!"));
         
         var steps = 0;
         
@@ -61,7 +61,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
         var grid = new Grid<>(data);
 
-        var start = grid.findValue('0');
+        var start = grid.findValue('0').orElseThrow(() -> new AssertionError("Eek!"));
 
         var steps = 0;
 
