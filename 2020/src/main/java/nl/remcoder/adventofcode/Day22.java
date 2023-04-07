@@ -1,22 +1,23 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day22 {
-    public int handlePart1(Stream<String> input) {
-        List<String> lines = input.skip(1).collect(Collectors.toList());
+public class Day22 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var lines = input.skip(1).toList();
 
-        List<Integer> player1 = new ArrayList<>();
-        List<Integer> player2 = new ArrayList<>();
+        var player1 = new ArrayList<Integer>();
+        var player2 = new ArrayList<Integer>();
 
-        List<Integer> currentPlayer = player1;
+        var currentPlayer = player1;
 
-        for (String line : lines) {
+        for (var line : lines) {
             if (line.isBlank()) {
                 continue;
             }
@@ -45,24 +46,25 @@ public class Day22 {
             winningPlayer = player1;
         }
 
-        int score = 0;
+        var score = 0;
 
-        for (int position = 0; position < winningPlayer.size(); position++) {
+        for (var position = 0; position < winningPlayer.size(); position++) {
             score += winningPlayer.get(position) * (winningPlayer.size() - position);
         }
 
         return score;
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<String> lines = input.skip(1).collect(Collectors.toList());
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var lines = input.skip(1).toList();
 
-        List<Integer> player1 = new ArrayList<>();
-        List<Integer> player2 = new ArrayList<>();
+        var player1 = new ArrayList<Integer>();
+        var player2 = new ArrayList<Integer>();
 
-        List<Integer> currentPlayer = player1;
+        var currentPlayer = player1;
 
-        for (String line : lines) {
+        for (var line : lines) {
             if (line.isBlank()) {
                 continue;
             }
@@ -93,7 +95,7 @@ public class Day22 {
     }
 
     private void playRecursiveCombat(List<Integer> player1, List<Integer> player2) {
-        Set<List<List<Integer>>> memory = new HashSet<>();
+        var memory = new HashSet<List<List<Integer>>>();
 
         while (!player1.isEmpty() && !player2.isEmpty()) {
             if (memory.contains(List.of(new ArrayList<>(player1), new ArrayList<>(player2)))) {
@@ -104,8 +106,8 @@ public class Day22 {
             }
 
             if (player1.size() > player1.get(0) && player2.size() > player2.get(0)) {
-                List<Integer> player1SubList = new ArrayList<>(player1.subList(1, player1.get(0) + 1));
-                List<Integer> player2SubList = new ArrayList<>(player2.subList(1, player2.get(0) + 1));
+                var player1SubList = new ArrayList<>(player1.subList(1, player1.get(0) + 1));
+                var player2SubList = new ArrayList<>(player2.subList(1, player2.get(0) + 1));
                 playRecursiveCombat(player1SubList, player2SubList);
                 if (player1SubList.isEmpty()) {
                     player2.add(player2.remove(0));

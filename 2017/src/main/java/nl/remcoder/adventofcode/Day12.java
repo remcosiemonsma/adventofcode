@@ -21,10 +21,10 @@ public class Day12 implements AdventOfCodeSolution<Integer> {
         var connectionMap = input.map(this::parseConnection)
                                  .collect(Collectors.toMap(Connection::getId, connection -> connection));
 
-        int groups = 0;
+        var groups = 0;
 
-        for (int i = 0; i < connectionMap.size(); i++) {
-            if (!connectionMap.get(i).isVisited()) {
+        for (var i = 0; i < connectionMap.size(); i++) {
+            if (connectionMap.get(i).isNotVisitied()) {
                 countConnections(connectionMap, i);
                 groups++;
             }
@@ -33,12 +33,12 @@ public class Day12 implements AdventOfCodeSolution<Integer> {
         return groups;
     }
 
-    private static int countConnections(Map<Integer, Connection> connectionMap, int position) {
+    private int countConnections(Map<Integer, Connection> connectionMap, int position) {
         var connection = connectionMap.get(position);
 
         var connections = 1;
 
-        if (!connection.isVisited()) {
+        if (connection.isNotVisitied()) {
             connection.setVisited(true);
 
             for (var conn : connection.getConnections()) {
@@ -51,8 +51,8 @@ public class Day12 implements AdventOfCodeSolution<Integer> {
     }
 
     private Connection parseConnection(String line) {
-        String[] data = line.split(" <-> ");
-        int id = Integer.parseInt(data[0]);
+        var data = line.split(" <-> ");
+        var id = Integer.parseInt(data[0]);
         var connections = Arrays.stream(data[1].split(", "))
                                 .mapToInt(Integer::parseInt)
                                 .toArray();
@@ -79,8 +79,8 @@ public class Day12 implements AdventOfCodeSolution<Integer> {
             return connections;
         }
 
-        public boolean isVisited() {
-            return visited;
+        public boolean isNotVisitied() {
+            return !visited;
         }
 
         public void setVisited(boolean visited) {

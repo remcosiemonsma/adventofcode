@@ -1,34 +1,34 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day7 {
+public class Day7 implements BiAdventOfCodeSolution<Integer, Long> {
     private static final Pattern BAG_REGEX = Pattern.compile("(\\d+) (.*?) bag");
 
-    public int handlePart1(Stream<String> input) {
-        List<Bag> bags = input.map(this::transformStringToBag)
-                              .collect(Collectors.toList());
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var bags = input.map(this::transformStringToBag)
+                        .toList();
 
-        Set<String> colours = new HashSet<>();
+        var colours = new HashSet<String>();
         colours.add("shiny gold");
 
-        Set<String> outerbags = new HashSet<>();
+        var outerbags = new HashSet<String>();
 
         while (!colours.isEmpty()) {
-            Set<String> newColours = new HashSet<>();
+            var newColours = new HashSet<String>();
 
             colours.stream()
                    .map(colour -> bags.stream()
-                                      .filter(bag -> bag.getContents().containsKey(colour))
-                                      .map(Bag::getColour)
+                                      .filter(bag -> bag.contents().containsKey(colour))
+                                      .map(Bag::colour)
                                       .collect(Collectors.toSet()))
                    .forEach(newColours::addAll);
 
@@ -42,34 +42,35 @@ public class Day7 {
         return outerbags.size();
     }
 
-    public long handlePart2(Stream<String> input) {
-        Map<String, Bag> bags = input.map(this::transformStringToBag)
-                                     .collect(Collectors.toMap(Bag::getColour, bag -> bag));
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var bags = input.map(this::transformStringToBag)
+                        .collect(Collectors.toMap(Bag::colour, bag -> bag));
 
         return countBagsInBag("shiny gold", bags);
     }
 
     private long countBagsInBag(String bagColour, Map<String, Bag> bags) {
-        Bag bag = bags.get(bagColour);
+        var bag = bags.get(bagColour);
 
-        long totalAmount = 0;
+        var totalAmount = 0;
 
-        for (String colour : bag.getContents().keySet()) {
-            long bagsInBag = countBagsInBag(colour, bags);
-            totalAmount += (bagsInBag * bag.getContents().get(colour)) + bag.getContents().get(colour);
+        for (var colour : bag.contents().keySet()) {
+            var bagsInBag = countBagsInBag(colour, bags);
+            totalAmount += (bagsInBag * bag.contents().get(colour)) + bag.contents().get(colour);
         }
 
         return totalAmount;
     }
 
     private Bag transformStringToBag(String data) {
-        String[] split = data.split(" bags contain ");
-        String[] contentSplit = split[1].split(", ");
+        var split = data.split(" bags contain ");
+        var contentSplit = split[1].split(", ");
 
-        Map<String, Long> contents = new HashMap<>();
+        var contents = new HashMap<String, Long>();
 
-        for (String content : contentSplit) {
-            Matcher matcher = BAG_REGEX.matcher(content);
+        for (var content : contentSplit) {
+            var matcher = BAG_REGEX.matcher(content);
             if (matcher.find()) {
                 contents.put(matcher.group(2), Long.valueOf(matcher.group(1)));
             }
@@ -78,29 +79,6 @@ public class Day7 {
         return new Bag(split[0], Map.copyOf(contents));
     }
 
-    private static class Bag {
-        private final String colour;
-        private final Map<String, Long> contents;
-
-        private Bag(String colour, Map<String, Long> contents) {
-            this.colour = colour;
-            this.contents = contents;
-        }
-
-        public String getColour() {
-            return colour;
-        }
-
-        public Map<String, Long> getContents() {
-            return contents;
-        }
-
-        @Override
-        public String toString() {
-            return "Bag{" +
-                   "color='" + colour + '\'' +
-                   ", contents=" + contents +
-                   '}';
-        }
+    private record Bag(String colour, Map<String, Long> contents) {
     }
 }

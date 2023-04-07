@@ -4,26 +4,25 @@ import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 public class Day19 implements AdventOfCodeSolution<Integer> {
     @Override
     public Integer handlePart1(Stream<String> input) {
-        List<String> lines = input.toList();
+        var lines = input.toList();
 
-        String instructionPointerString = lines.get(0);
+        var instructionPointerString = lines.get(0);
 
-        int instructionPointer = Integer.parseInt(instructionPointerString.substring(4));
+        var instructionPointer = Integer.parseInt(instructionPointerString.substring(4));
 
-        List<Operation> operations = lines.stream()
-                                          .skip(1)
-                                          .map(s -> s.split(" "))
-                                          .map(this::parseStringArrayToOperation)
-                                          .toList();
+        var operations = lines.stream()
+                              .skip(1)
+                              .map(s -> s.split(" "))
+                              .map(this::parseStringArrayToOperation)
+                              .toList();
 
-        int[] registers = new int[6];
+        var registers = new int[6];
 
         Arrays.fill(registers, 0);
 
@@ -38,11 +37,11 @@ public class Day19 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
-        int number = 10551296;
+        var number = 10551296;
 
-        int result = 0;
+        var result = 0;
 
-        for (int i = 1; i <= number; i++) {
+        for (var i = 1; i <= number; i++) {
             if (number % i == 0) {
                 result += i;
             }
@@ -107,18 +106,9 @@ public class Day19 implements AdventOfCodeSolution<Integer> {
     @FunctionalInterface
     private interface Opcode {
         void doOp(int[] registers, int[] opcode);
-
     }
 
-    private static class Operation {
-        final Opcode opcode;
-        final int[] parameters;
-
-        private Operation(Opcode opcode, int[] parameters) {
-            this.opcode = opcode;
-            this.parameters = parameters;
-        }
-
+    private record Operation(Opcode opcode, int[] parameters) {
         private void doOp(int[] registers) {
             opcode.doOp(registers, parameters);
         }

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,14 +18,12 @@ class Day25Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                5764801
-                17807724
-                """;
+        String input = """
+                       5764801
+                       17807724
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(14897079, testSubject.handlePart1(input));
+        assertEquals(14897079, testSubject.handlePart1(input.lines()));
     }
 
     @Test

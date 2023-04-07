@@ -1,5 +1,7 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -7,30 +9,32 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day5 {
+public class Day5 implements AdventOfCodeSolution<String> {
     private static final Pattern STACK_PATTERN = Pattern.compile("(\\[[A-Z]] ?| {3} ?)");
     private static final Pattern MOVE_PATTERN = Pattern.compile("move (\\d+) from (\\d+) to (\\d+)");
     private Stack<Character>[] stacks;
     private Mode mode = Mode.STACKING;
 
+    @Override
     public String handlePart1(Stream<String> input) {
         input.forEach(this::processLine);
 
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
-        for (Stack<Character> stack : stacks) {
+        for (var stack : stacks) {
             stringBuilder.append(stack.peek());
         }
 
         return stringBuilder.toString();
     }
 
+    @Override
     public String handlePart2(Stream<String> input) {
         input.forEach(this::processLine2);
 
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
-        for (Stack<Character> stack : stacks) {
+        for (var stack : stacks) {
             stringBuilder.append(stack.peek());
         }
 
@@ -52,33 +56,33 @@ public class Day5 {
     }
 
     private void move(String line) {
-        Matcher matcher = MOVE_PATTERN.matcher(line);
+        var matcher = MOVE_PATTERN.matcher(line);
 
         if (matcher.matches()) {
-            int amount = Integer.parseInt(matcher.group(1));
-            int from = Integer.parseInt(matcher.group(2)) - 1;
-            int to = Integer.parseInt(matcher.group(3)) - 1;
+            var amount = Integer.parseInt(matcher.group(1));
+            var from = Integer.parseInt(matcher.group(2)) - 1;
+            var to = Integer.parseInt(matcher.group(3)) - 1;
 
-            Stack<Character> source = stacks[from];
-            Stack<Character> target = stacks[to];
+            var source = stacks[from];
+            var target = stacks[to];
 
-            for (int i = 0; i < amount; i++) {
+            for (var i = 0; i < amount; i++) {
                 target.push(source.pop());
             }
         }
     }
 
     private void move2(String line) {
-        Matcher matcher = MOVE_PATTERN.matcher(line);
+        var matcher = MOVE_PATTERN.matcher(line);
 
         if (matcher.matches()) {
-            int amount = Integer.parseInt(matcher.group(1));
-            int from = Integer.parseInt(matcher.group(2)) - 1;
-            int to = Integer.parseInt(matcher.group(3)) - 1;
+            var amount = Integer.parseInt(matcher.group(1));
+            var from = Integer.parseInt(matcher.group(2)) - 1;
+            var to = Integer.parseInt(matcher.group(3)) - 1;
 
-            Stack<Character> source = stacks[from];
-            Stack<Character> target = stacks[to];
-            Stack<Character> temp = new Stack<>();
+            var source = stacks[from];
+            var target = stacks[to];
+            var temp = new Stack<Character>();
 
             for (int i = 0; i < amount; i++) {
                 temp.push(source.pop());
@@ -97,9 +101,9 @@ public class Day5 {
             return;
         }
 
-        Matcher matcher = STACK_PATTERN.matcher(line);
+        var matcher = STACK_PATTERN.matcher(line);
 
-        List<Character> crates = processCrates(matcher);
+        var crates = processCrates(matcher);
 
         if (stacks == null) {
             stacks = new Stack[crates.size()];

@@ -1,14 +1,17 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Day4 {
-    public int handlePart1(Stream<String> input) {
-        List<Board> boards = parseInput(input);
+public class Day4 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var boards = parseInput(input);
 
         return boards.stream()
                      .min(Comparator.comparing(Board::getWinInRound))
@@ -16,8 +19,9 @@ public class Day4 {
                      .orElse(-1);
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<Board> boards = parseInput(input);
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var boards = parseInput(input);
 
         return boards.stream()
                      .max(Comparator.comparing(Board::getWinInRound))
@@ -26,18 +30,18 @@ public class Day4 {
     }
 
     private List<Board> parseInput(Stream<String> input) {
-        List<String> lines = input.toList();
+        var lines = input.toList();
 
-        List<Integer> numbers = Arrays.stream(lines.get(0).split(","))
-                                      .map(Integer::parseInt)
-                                      .toList();
+        var numbers = Arrays.stream(lines.get(0).split(","))
+                            .map(Integer::parseInt)
+                            .toList();
 
-        List<Board> boards = new ArrayList<>();
+        var boards = new ArrayList<Board>();
 
         for (int i = 2; i < lines.size(); i += 6) {
-            int[][] board = new int[5][];
+            var board = new int[5][];
 
-            for (int j = 0; j < 5; j++) {
+            for (var j = 0; j < 5; j++) {
                 board[j] = Arrays.stream(lines.get(i + j).trim().split(" +"))
                                  .mapToInt(Integer::parseInt)
                                  .toArray();
@@ -53,8 +57,8 @@ public class Day4 {
         private final int winningScore;
 
         public Board(List<Integer> numbers, int[][] board) {
-            int round = 0;
-            int lastNumber = 0;
+            var round = 0;
+            var lastNumber = 0;
             for (; round < numbers.size(); round++) {
                 lastNumber = numbers.get(round);
                 drawNumber(board, lastNumber);
@@ -76,8 +80,8 @@ public class Day4 {
         }
 
         private void drawNumber(int[][] board, int number) {
-            for (int[] line : board) {
-                for (int i = 0; i < line.length; i++) {
+            for (var line : board) {
+                for (var i = 0; i < line.length; i++) {
                     if (line[i] == number) {
                         line[i] = -1;
                     }
@@ -86,10 +90,12 @@ public class Day4 {
         }
 
         private boolean isBoardWinner(int[][] board) {
-            if (Arrays.stream(board).anyMatch(line -> Arrays.stream(line).allMatch(i -> i == -1))) {
+            if (Arrays.stream(board)
+                      .anyMatch(line -> Arrays.stream(line)
+                                              .allMatch(i -> i == -1))) {
                 return true;
             }
-            for (int i = 0; i < board.length; i++) {
+            for (var i = 0; i < board.length; i++) {
                 if (board[0][i] == -1 && board[1][i] == -1 && board[2][i] == -1 && board[3][i] == -1 &&
                     board[4][i] == -1) {
                     return true;

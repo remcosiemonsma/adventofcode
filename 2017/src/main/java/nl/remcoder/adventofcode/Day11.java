@@ -45,7 +45,7 @@ public class Day11 implements AdventOfCodeSolution<Integer> {
                      case "se" -> moveSouthEast(coordinate);
                  }
 
-                 int distance = determineDistance(coordinate);
+                 var distance = determineDistance(coordinate);
 
                  if (distance > distanceContainer.get()) {
                      distanceContainer.set(distance);
@@ -100,9 +100,9 @@ public class Day11 implements AdventOfCodeSolution<Integer> {
     }
 
     private int determineDistance(Coordinate coordinate) {
-        int steps = 0;
+        var steps = 0;
 
-        Coordinate coordinateCopy = new Coordinate();
+        var coordinateCopy = new Coordinate();
         coordinateCopy.x = coordinate.x;
         coordinateCopy.y = coordinate.y;
 

@@ -9,22 +9,22 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var number = input.mapToInt(Integer::parseInt).findFirst().orElseThrow(() -> new AssertionError("Eek!"));
         
-        int lowerRight = 0;
+        var lowerRight = 0;
 
-        int counter = 1;
+        var counter = 1;
 
         while (lowerRight < number) {
             counter += 2;
             lowerRight = counter * counter;
         }
 
-        int upperLeft = ((counter - 1) * (counter - 1)) + 1;
+        var upperLeft = ((counter - 1) * (counter - 1)) + 1;
 
-        int length = ((lowerRight - upperLeft) / 2) + 1;
-        int center = (length - 1) / 2;
+        var length = ((lowerRight - upperLeft) / 2) + 1;
+        var center = (length - 1) / 2;
 
         if (number <= upperLeft) {
-            int upperRight = (upperLeft - length) + 1;
+            var upperRight = (upperLeft - length) + 1;
 
             if (number <= upperRight) {
                 return determineDistance(number, center, upperRight);
@@ -32,7 +32,7 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
                 return determineDistance(number, center, upperLeft);
             }
         } else {
-            int lowerLeft = (upperLeft + length) - 1;
+            var lowerLeft = (upperLeft + length) - 1;
 
             if (number <= lowerLeft) {
                 return determineDistance(number, center, lowerLeft);
@@ -59,8 +59,8 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
     }
 
     private int determineDistance(int number, int center, int upperright) {
-        int distance = upperright - number;
-        int position = Math.abs(center - distance);
+        var distance = upperright - number;
+        var position = Math.abs(center - distance);
 
         return position + center;
     }

@@ -1,30 +1,33 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Day25 {
-    public int handlePart1(Stream<String> input) {
-        char[][] grid = input.map(String::toCharArray)
+public class Day25 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var grid = input.map(String::toCharArray)
                              .toArray(char[][]::new);
 
-        boolean movePossible = true;
-        int steps = 0;
+        var movePossible = true;
+        var steps = 0;
 
-        int maxy = grid.length;
-        int maxx = grid[0].length;
+        var maxy = grid.length;
+        var maxx = grid[0].length;
 
         while (movePossible) {
             movePossible = false;
 
-            char[][] newGrid = new char[grid.length][grid[0].length];
+            var newGrid = new char[grid.length][grid[0].length];
 
-            for (int y = 0; y < grid.length; y++) {
+            for (var y = 0; y < grid.length; y++) {
                 newGrid[y] = Arrays.copyOf(grid[y], grid[y].length);
             }
 
-            for (int y = 0; y < maxy; y++) {
-                for (int x = 0; x < maxx; x++) {
+            for (var y = 0; y < maxy; y++) {
+                for (var x = 0; x < maxx; x++) {
                     if (grid[y][x] == '>' && grid[y][(x + 1) % maxx] == '.') {
                         newGrid[y][x] = '.';
                         newGrid[y][(x + 1) % maxx] = '>';
@@ -37,12 +40,12 @@ public class Day25 {
 
             newGrid = new char[grid.length][grid[0].length];
 
-            for (int y = 0; y < grid.length; y++) {
+            for (var y = 0; y < grid.length; y++) {
                 newGrid[y] = Arrays.copyOf(grid[y], grid[y].length);
             }
 
-            for (int x = 0; x < maxx; x++) {
-                for (int y = 0; y < maxy; y++) {
+            for (var x = 0; x < maxx; x++) {
+                for (var y = 0; y < maxy; y++) {
                     if (grid[y][x] == 'v' && grid[(y + 1) % maxy][x] == '.') {
                         newGrid[y][x] = '.';
                         newGrid[(y + 1) % maxy][x] = 'v';
@@ -58,5 +61,11 @@ public class Day25 {
         }
 
         return steps;
+    }
+
+    @Override
+    public Integer handlePart2(Stream<String> input) throws Exception {
+        System.out.println("Merry Christmas!");
+        return null;
     }
 }

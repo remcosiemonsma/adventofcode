@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,28 +18,28 @@ class Day14Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      NNCB
-                      
-                      CH -> B
-                      HH -> N
-                      CB -> H
-                      NH -> C
-                      HB -> C
-                      HC -> B
-                      HN -> C
-                      NN -> C
-                      BH -> H
-                      NC -> B
-                      NB -> B
-                      BN -> B
-                      BB -> N
-                      BC -> B
-                      CC -> N
-                      CN -> C
-                      """;
+        String input = """
+                       NNCB
+                                             
+                       CH -> B
+                       HH -> N
+                       CB -> H
+                       NH -> C
+                       HB -> C
+                       HC -> B
+                       HN -> C
+                       NN -> C
+                       BH -> H
+                       NC -> B
+                       NB -> B
+                       BN -> B
+                       BB -> N
+                       BC -> B
+                       CC -> N
+                       CN -> C
+                       """;
 
-        assertEquals(1588, testSubject.handlePart1(data.lines()));
+        assertEquals(1588, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -51,28 +50,28 @@ class Day14Test {
 
     @Test
     void testPart2Case1() {
-        String data = """
-                      NNCB
-                      
-                      CH -> B
-                      HH -> N
-                      CB -> H
-                      NH -> C
-                      HB -> C
-                      HC -> B
-                      HN -> C
-                      NN -> C
-                      BH -> H
-                      NC -> B
-                      NB -> B
-                      BN -> B
-                      BB -> N
-                      BC -> B
-                      CC -> N
-                      CN -> C
-                      """;
+        String input = """
+                       NNCB
+                                             
+                       CH -> B
+                       HH -> N
+                       CB -> H
+                       NH -> C
+                       HB -> C
+                       HC -> B
+                       HN -> C
+                       NN -> C
+                       BH -> H
+                       NC -> B
+                       NB -> B
+                       BN -> B
+                       BB -> N
+                       BC -> B
+                       CC -> N
+                       CN -> C
+                       """;
 
-        assertEquals(2188189693529L, testSubject.handlePart2(data.lines()));
+        assertEquals(2188189693529L, testSubject.handlePart2(input.lines()));
     }
 
     @Test

@@ -19,39 +19,41 @@ class Day1Test {
 
     @Test
     public void part1Case1() {
-        String data = """
-                1721
-                979
-                366
-                299
-                675
-                1456
-                """;
+        String input = """
+                       1721
+                       979
+                       366
+                       299
+                       675
+                       1456
+                       """;
 
-        assertEquals(514579, testSubject.handlePart1(data.lines()));
+        assertEquals(514579, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Input() throws Exception {
-        assertEquals(980499, testSubject.handlePart1(Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
+        assertEquals(980499, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
     }
 
     @Test
     public void part2Case1() {
-        String data = """
-                1721
-                979
-                366
-                299
-                675
-                1456
-                """;
+        String input = """
+                       1721
+                       979
+                       366
+                       299
+                       675
+                       1456
+                       """;
 
-        assertEquals(241861950, testSubject.handlePart2(data.lines()));
+        assertEquals(241861950, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Input() throws Exception {
-        assertEquals(200637446, testSubject.handlePart2(Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
+        assertEquals(200637446, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
     }
 }

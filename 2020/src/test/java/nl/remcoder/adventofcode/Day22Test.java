@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,25 +18,23 @@ class Day22Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                Player 1:
-                9
-                2
-                6
-                3
-                1
-                                
-                Player 2:
-                5
-                8
-                4
-                7
-                10
-                """;
+        String input = """
+                       Player 1:
+                       9
+                       2
+                       6
+                       3
+                       1
+                                       
+                       Player 2:
+                       5
+                       8
+                       4
+                       7
+                       10
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(306, testSubject.handlePart1(input));
+        assertEquals(306, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -48,25 +45,23 @@ class Day22Test {
 
     @Test
     public void testPart2Case1() {
-        String data = """
-                Player 1:
-                9
-                2
-                6
-                3
-                1
-                                
-                Player 2:
-                5
-                8
-                4
-                7
-                10
-                """;
+        String input = """
+                       Player 1:
+                       9
+                       2
+                       6
+                       3
+                       1
+                                       
+                       Player 2:
+                       5
+                       8
+                       4
+                       7
+                       10
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(291, testSubject.handlePart2(input));
+        assertEquals(291, testSubject.handlePart2(input.lines()));
     }
 
     @Test

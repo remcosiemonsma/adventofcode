@@ -24,17 +24,17 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
     }
 
     private int countMatches(Generator generatorA, Generator generatorB, int rounds) {
-        int matches = 0;
+        var matches = 0;
 
-        for (int i = 0; i < rounds; i++) {
-            long valueA = generatorA.generateValue();
-            long valueB = generatorB.generateValue();
+        for (var i = 0; i < rounds; i++) {
+            var valueA = generatorA.generateValue();
+            var valueB = generatorB.generateValue();
 
-            String bitsA = Long.toBinaryString(valueA);
-            String bitsB = Long.toBinaryString(valueB);
+            var bitsA = Long.toBinaryString(valueA);
+            var bitsB = Long.toBinaryString(valueB);
 
-            String significantBitsA = bitsA.length() > 16 ? bitsA.substring(bitsA.length() - 16) : bitsA;
-            String significantBitsB = bitsB.length() > 16 ? bitsB.substring(bitsB.length() - 16) : bitsB;
+            var significantBitsA = bitsA.length() > 16 ? bitsA.substring(bitsA.length() - 16) : bitsA;
+            var significantBitsB = bitsB.length() > 16 ? bitsB.substring(bitsB.length() - 16) : bitsB;
 
             if(significantBitsA.equals(significantBitsB)) {
                 matches++;

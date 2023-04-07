@@ -1,18 +1,21 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day17 {
-    public int handlePart1(Stream<String> input) {
-        boolean[][] slice = input.map(this::mapLineToGridLine)
-                                 .toArray(boolean[][]::new);
+public class Day17 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var slice = input.map(this::mapLineToGridLine)
+                         .toArray(boolean[][]::new);
 
-        boolean[][][] grid = new boolean[24][24][24];
+        var grid = new boolean[24][24][24];
 
-        boolean[][] shiftedSlice = new boolean[24][24];
+        var shiftedSlice = new boolean[24][24];
 
-        for (int position = 0; position < slice.length; position++) {
-            boolean[] line = new boolean[24];
+        for (var position = 0; position < slice.length; position++) {
+            var line = new boolean[24];
 
             System.arraycopy(slice[position], 0, line, 12 - (slice[position].length / 2), slice[position].length);
 
@@ -21,23 +24,24 @@ public class Day17 {
 
         grid[12] = shiftedSlice;
 
-        for (int cycle = 0; cycle < 6; cycle++) {
+        for (var cycle = 0; cycle < 6; cycle++) {
             grid = activateCubes(grid);
         }
 
         return countActiveCubes(grid);
     }
 
-    public int handlePart2(Stream<String> input) {
-        boolean[][] slice = input.map(this::mapLineToGridLine)
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var slice = input.map(this::mapLineToGridLine)
                                  .toArray(boolean[][]::new);
 
-        boolean[][][][] grid = new boolean[24][24][24][24];
+        var grid = new boolean[24][24][24][24];
 
-        boolean[][] shiftedSlice = new boolean[24][24];
+        var shiftedSlice = new boolean[24][24];
 
-        for (int position = 0; position < slice.length; position++) {
-            boolean[] line = new boolean[24];
+        for (var position = 0; position < slice.length; position++) {
+            var line = new boolean[24];
 
             System.arraycopy(slice[position], 0, line, 12 - (slice[position].length / 2), slice[position].length);
 
@@ -46,7 +50,7 @@ public class Day17 {
 
         grid[12][12] = shiftedSlice;
 
-        for (int cycle = 0; cycle < 6; cycle++) {
+        for (var cycle = 0; cycle < 6; cycle++) {
             grid = activateCubes(grid);
         }
 
@@ -54,32 +58,33 @@ public class Day17 {
     }
 
     private boolean[][][][] activateCubes(boolean[][][][] grid) {
-        boolean[][][][] newGrid = new boolean[grid.length][grid[0].length][grid[0][0].length][grid[0][0][0].length];
+        var newGrid = new boolean[grid.length][grid[0].length][grid[0][0].length][grid[0][0][0].length];
 
-        for (int wPosition = 0; wPosition < grid.length; wPosition++) {
-            for (int zPosition = 0; zPosition < grid[0].length; zPosition++) {
-                for (int yPosition = 0; yPosition < grid[0][0].length; yPosition++) {
-                    for (int xPosition = 0; xPosition < grid[0][0][0].length; xPosition++) {
-                        int amountOfActiveNeighbors = 0;
+        for (var wPosition = 0; wPosition < grid.length; wPosition++) {
+            for (var zPosition = 0; zPosition < grid[0].length; zPosition++) {
+                for (var yPosition = 0; yPosition < grid[0][0].length; yPosition++) {
+                    for (var xPosition = 0; xPosition < grid[0][0][0].length; xPosition++) {
+                        var amountOfActiveNeighbors = 0;
 
                         outer:
-                        for (int wIndex = wPosition - 1; wIndex <= wPosition + 1; wIndex++) {
+                        for (var wIndex = wPosition - 1; wIndex <= wPosition + 1; wIndex++) {
                             if (wIndex < 0 || wIndex >= grid.length) {
                                 continue;
                             }
-                            for (int zIndex = zPosition - 1; zIndex <= zPosition + 1; zIndex++) {
+                            for (var zIndex = zPosition - 1; zIndex <= zPosition + 1; zIndex++) {
                                 if (zIndex < 0 || zIndex >= grid[0].length) {
                                     continue;
                                 }
-                                for (int yIndex = yPosition - 1; yIndex <= yPosition + 1; yIndex++) {
+                                for (var yIndex = yPosition - 1; yIndex <= yPosition + 1; yIndex++) {
                                     if (yIndex < 0 || yIndex >= grid[0][0].length) {
                                         continue;
                                     }
-                                    for (int xIndex = xPosition - 1; xIndex <= xPosition + 1; xIndex++) {
+                                    for (var xIndex = xPosition - 1; xIndex <= xPosition + 1; xIndex++) {
                                         if (xIndex < 0 || xIndex >= grid[0][0][0].length) {
                                             continue;
                                         }
-                                        if (wIndex == wPosition && zIndex == zPosition && yIndex == yPosition && xIndex == xPosition) {
+                                        if (wIndex == wPosition && zIndex == zPosition && yIndex == yPosition &&
+                                            xIndex == xPosition) {
                                             continue;
                                         }
                                         if (grid[wIndex][zIndex][yIndex][xIndex]) {
@@ -111,23 +116,23 @@ public class Day17 {
     }
 
     private boolean[][][] activateCubes(boolean[][][] grid) {
-        boolean[][][] newGrid = new boolean[grid.length][grid[0].length][grid[0][0].length];
+        var newGrid = new boolean[grid.length][grid[0].length][grid[0][0].length];
 
-        for (int zPosition = 0; zPosition < grid.length; zPosition++) {
-            for (int yPosition = 0; yPosition < grid[0].length; yPosition++) {
-                for (int xPosition = 0; xPosition < grid[0][0].length; xPosition++) {
-                    int amountOfActiveNeighbors = 0;
+        for (var zPosition = 0; zPosition < grid.length; zPosition++) {
+            for (var yPosition = 0; yPosition < grid[0].length; yPosition++) {
+                for (var xPosition = 0; xPosition < grid[0][0].length; xPosition++) {
+                    var amountOfActiveNeighbors = 0;
 
                     outer:
-                    for (int zIndex = zPosition - 1; zIndex <= zPosition + 1; zIndex++) {
+                    for (var zIndex = zPosition - 1; zIndex <= zPosition + 1; zIndex++) {
                         if (zIndex < 0 || zIndex >= grid.length) {
                             continue;
                         }
-                        for (int yIndex = yPosition - 1; yIndex <= yPosition + 1; yIndex++) {
+                        for (var yIndex = yPosition - 1; yIndex <= yPosition + 1; yIndex++) {
                             if (yIndex < 0 || yIndex >= grid[0].length) {
                                 continue;
                             }
-                            for (int xIndex = xPosition - 1; xIndex <= xPosition + 1; xIndex++) {
+                            for (var xIndex = xPosition - 1; xIndex <= xPosition + 1; xIndex++) {
                                 if (xIndex < 0 || xIndex >= grid[0][0].length) {
                                     continue;
                                 }
@@ -161,11 +166,11 @@ public class Day17 {
     }
 
     private int countActiveCubes(boolean[][][] grid) {
-        int activeCubes = 0;
+        var activeCubes = 0;
 
-        for (boolean[][] slice : grid) {
-            for (boolean[] line : slice) {
-                for (boolean cube : line) {
+        for (var slice : grid) {
+            for (var line : slice) {
+                for (var cube : line) {
                     if (cube) {
                         activeCubes++;
                     }
@@ -179,10 +184,10 @@ public class Day17 {
     private int countActiveCubes(boolean[][][][] grid) {
         int activeCubes = 0;
 
-        for (boolean[][][] cube : grid) {
-            for (boolean[][] slice : cube) {
-                for (boolean[] line : slice) {
-                    for (boolean hyperCube : line) {
+        for (var cube : grid) {
+            for (var slice : cube) {
+                for (var line : slice) {
+                    for (var hyperCube : line) {
                         if (hyperCube) {
                             activeCubes++;
                         }
@@ -195,7 +200,7 @@ public class Day17 {
     }
 
     private boolean[] mapLineToGridLine(String line) {
-        boolean[] gridLine = new boolean[line.length()];
+        var gridLine = new boolean[line.length()];
 
         for (int position = 0; position < line.length(); position++) {
             gridLine[position] = line.charAt(position) == '#';

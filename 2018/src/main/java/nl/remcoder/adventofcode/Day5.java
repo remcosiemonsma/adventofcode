@@ -23,7 +23,7 @@ public class Day5 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         var polymer = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
-        int shortestPolymerLength = Integer.MAX_VALUE;
+        var shortestPolymerLength = Integer.MAX_VALUE;
 
         for (var c = 'a'; c <= 'z'; c++) {
             var removedPolymer = polymer.replaceAll("[" + c + Character.toUpperCase(c) + "]", "");

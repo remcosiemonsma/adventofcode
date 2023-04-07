@@ -1,6 +1,6 @@
 package nl.remcoder.adventofcode;
 
-import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Grid;
 import nl.remcoder.adventofcode.library.pathfinding.Dijkstra;
@@ -11,24 +11,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class Day13 implements AdventOfCodeSolution<Integer> {
+public class Day13 implements BiAdventOfCodeSolution<Long, Integer> {
     private static final Map<Coordinate, Step> STEPS = new HashMap<>();
     private Coordinate desiredPosition = new Coordinate(0, 0);
 
     @Override
-    public Integer handlePart1(Stream<String> input) {
+    public Long handlePart1(Stream<String> input) {
+        STEPS.clear();
         var grid = generateGrid(input);
 
         var start = new Step(new Coordinate(1, 1), grid);
         start.setDistance(0);
 
-        return (int) Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(desiredPosition))
+        return Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(desiredPosition))
                              .orElseThrow(() -> new AssertionError("Eek!"))
                              .getDistance();
     }
 
     @Override
     public Integer handlePart2(Stream<String> input) {
+        STEPS.clear();
         var grid = generateGrid(input);
 
         var visitedCoordinates = new HashSet<Coordinate>();
@@ -86,7 +88,7 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
         this.desiredPosition = desiredPosition;
     }
 
-    private static class Step extends Node {
+    private static class Step extends Node<Step> {
         private final Coordinate currentPosition;
 
         private final Grid<Boolean> grid;
@@ -97,7 +99,7 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Step, Long> getNeighbors() {
             var neighbors = new HashMap<Step, Long>();
 
             for (var coordinate : currentPosition.getStraightNeighbours()) {

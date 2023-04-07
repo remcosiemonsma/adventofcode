@@ -1,39 +1,43 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Day12 {
-    public int handlePart1(Stream<String> input) {
-        Map<String, Cave> caves = new HashMap<>();
+public class Day12 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var caves = new HashMap<String, Cave>();
 
         input.map(s -> s.split("-"))
              .forEach(strings -> {
-                 Cave cave1 = caves.computeIfAbsent(strings[0], Cave::new);
-                 Cave cave2 = caves.computeIfAbsent(strings[1], Cave::new);
+                 var cave1 = caves.computeIfAbsent(strings[0], Cave::new);
+                 var cave2 = caves.computeIfAbsent(strings[1], Cave::new);
 
                  cave1.connections.add(cave2);
                  cave2.connections.add(cave1);
              });
 
-        Cave start = caves.get("start");
+        var start = caves.get("start");
 
         return findNumberOfRoutes(start, List.of(start));
     }
 
-    public int handlePart2(Stream<String> input) {
-        Map<String, Cave> caves = new HashMap<>();
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var caves = new HashMap<String, Cave>();
 
         input.map(s -> s.split("-"))
              .forEach(strings -> {
-                 Cave cave1 = caves.computeIfAbsent(strings[0], Cave::new);
-                 Cave cave2 = caves.computeIfAbsent(strings[1], Cave::new);
+                 var cave1 = caves.computeIfAbsent(strings[0], Cave::new);
+                 var cave2 = caves.computeIfAbsent(strings[1], Cave::new);
 
                  cave1.connections.add(cave2);
                  cave2.connections.add(cave1);
              });
 
-        Cave start = caves.get("start");
+        var start = caves.get("start");
 
         start.connections.forEach(cave -> cave.connections.removeIf(cave1 -> "start".equals(cave1.label)));
 
@@ -41,21 +45,21 @@ public class Day12 {
     }
 
     private int findNumberOfRoutes(Cave cave, List<Cave> currentRoute) {
-        List<Cave> route = List.copyOf(currentRoute);
+        var route = List.copyOf(currentRoute);
 
-        int numberOfRoutes = 0;
+        var numberOfRoutes = 0;
 
         if ("end".equals(cave.label)) {
             return 1;
         } else {
-            for (Cave otherCave : cave.connections) {
+            for (var otherCave : cave.connections) {
                 if (otherCave.isLarge) {
-                    List<Cave> newRoute = new ArrayList<>(route);
+                    var newRoute = new ArrayList<>(route);
                     newRoute.add(otherCave);
                     numberOfRoutes += findNumberOfRoutes(otherCave, newRoute);
                 } else {
                     if (!currentRoute.contains(otherCave)) {
-                        List<Cave> newRoute = new ArrayList<>(route);
+                        var newRoute = new ArrayList<>(route);
                         newRoute.add(otherCave);
                         numberOfRoutes += findNumberOfRoutes(otherCave, newRoute);
                     }
@@ -67,26 +71,26 @@ public class Day12 {
     }
 
     private int findNumberOfRoutes(Cave cave, List<Cave> currentRoute, boolean smallVisitedTwice) {
-        List<Cave> route = List.copyOf(currentRoute);
+        var route = List.copyOf(currentRoute);
 
-        int numberOfRoutes = 0;
+        var numberOfRoutes = 0;
 
         if ("end".equals(cave.label)) {
             return 1;
         } else {
-            for (Cave otherCave : cave.connections) {
+            for (var otherCave : cave.connections) {
                 if (otherCave.isLarge) {
-                    List<Cave> newRoute = new ArrayList<>(route);
+                    var newRoute = new ArrayList<>(route);
                     newRoute.add(otherCave);
                     numberOfRoutes += findNumberOfRoutes(otherCave, newRoute, smallVisitedTwice);
                 } else {
                     if (!currentRoute.contains(otherCave)) {
-                        List<Cave> newRoute = new ArrayList<>(route);
+                        var newRoute = new ArrayList<>(route);
                         newRoute.add(otherCave);
                         numberOfRoutes += findNumberOfRoutes(otherCave, newRoute, smallVisitedTwice);
                     } else {
                         if (!smallVisitedTwice) {
-                            List<Cave> newRoute = new ArrayList<>(route);
+                            var newRoute = new ArrayList<>(route);
                             newRoute.add(otherCave);
                             numberOfRoutes += findNumberOfRoutes(otherCave, newRoute, true);
                         }

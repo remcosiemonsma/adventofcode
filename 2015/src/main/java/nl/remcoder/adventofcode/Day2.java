@@ -1,10 +1,13 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Day2 {
-    public int handlePart1(Stream<String> input) {
+public class Day2 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.map(line -> line.split("x"))
                     .map(this::mapToDimension)
                     .map(this::mapToSides)
@@ -12,7 +15,8 @@ public class Day2 {
                     .sum();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         return input.map(line -> line.split("x"))
                     .map(this::mapToDimension)
                     .map(this::mapToLengths)

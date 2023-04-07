@@ -28,10 +28,10 @@ public class Day21 implements AdventOfCodeSolution<Integer> {
     }
 
     private int countPixels(boolean[][] grid) {
-        int counter = 0;
+        var counter = 0;
 
-        for (boolean[] row : grid) {
-            for (boolean pixel : row) {
+        for (var row : grid) {
+            for (var pixel : row) {
                 if (pixel) {
                     counter++;
                 }
@@ -42,7 +42,7 @@ public class Day21 implements AdventOfCodeSolution<Integer> {
     }
     
     private boolean[][] generateGrid(int iterations, List<Operation> operations) {
-        boolean[][] grid = new boolean[][]{{false, true, false}, {false, false, true}, {true, true, true}};
+        var grid = new boolean[][]{{false, true, false}, {false, false, true}, {true, true, true}};
 
         for (var unused = 0; unused < iterations; unused++) {
             if (grid.length % 2 == 0) {
@@ -248,14 +248,7 @@ public class Day21 implements AdventOfCodeSolution<Integer> {
         
         return new Operation(input, output);
     }
-    
-    private static class Operation {
-        private final boolean[][] input;
-        private final boolean[][] output;
 
-        public Operation(boolean[][] input, boolean[][] output) {
-            this.input = input;
-            this.output = output;
-        }
+    private record Operation(boolean[][] input, boolean[][] output) {
     }
 }

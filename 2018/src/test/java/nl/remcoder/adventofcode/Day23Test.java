@@ -1,7 +1,7 @@
 package nl.remcoder.adventofcode;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
@@ -41,7 +41,7 @@ class Day23Test {
     }
 
     @Test
-    @Ignore
+    @Disabled("Currently have hardcoded implementation")
     void part2Case1() {
         String data = """
                       pos=<10,12,12>, r=2

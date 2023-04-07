@@ -14,11 +14,11 @@ public class Day19 implements AdventOfCodeSolution<Integer> {
 
         var elves = new LinkedList<Integer>();
 
-        for (int i = 1; i < totalElves + 1; i++) {
+        for (var i = 1; i < totalElves + 1; i++) {
             elves.add(i);
         }
 
-        boolean take = false;
+        var take = false;
         while (elves.size() > 1) {
             var iterator = elves.iterator();
 
@@ -41,8 +41,8 @@ public class Day19 implements AdventOfCodeSolution<Integer> {
                               .orElseThrow(() -> new AssertionError("Eek!"));
 
 
-        LinkedList<Integer> firstElves = new LinkedList<>();
-        LinkedList<Integer> lastElves = new LinkedList<>();
+        var firstElves = new LinkedList<Integer>();
+        var lastElves = new LinkedList<Integer>();
         for (int i = 1; i <= totalElves; i++) {
             if (i <= totalElves / 2) {
                 firstElves.addLast(i);
@@ -52,14 +52,14 @@ public class Day19 implements AdventOfCodeSolution<Integer> {
         }
 
         while (firstElves.size() + lastElves.size() != 1) {
-            int currentElf = firstElves.pollFirst();
+            var currentElf = firstElves.pollFirst();
             if (firstElves.size() == lastElves.size()) {
                 firstElves.pollLast();
             } else {
                 lastElves.pollFirst();
             }
             lastElves.addLast(currentElf);
-            int elfToMove = lastElves.pollFirst();
+            var elfToMove = lastElves.pollFirst();
             firstElves.addLast(elfToMove);
         }
 

@@ -1,10 +1,13 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day2 {
-    public int handlePart1(Stream<String> input) {
-        Position position = new Position();
+public class Day2 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var position = new Position();
 
         input.map(this::mapToStep1)
              .forEach(step -> step.performStep(position));
@@ -12,8 +15,9 @@ public class Day2 {
         return position.depth * position.horizontal;
     }
 
-    public int handlePart2(Stream<String> input) {
-        Position2 position = new Position2();
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var position = new Position2();
 
         input.map(this::mapToStep2)
              .forEach(step -> step.performStep(position));
@@ -22,7 +26,7 @@ public class Day2 {
     }
 
     private Step1 mapToStep1(String s) {
-        String[] parts = s.split(" ");
+        var parts = s.split(" ");
 
         return switch (parts[0]) {
             case "forward" -> new ForwardStep1(Integer.parseInt(parts[1]));
@@ -33,7 +37,7 @@ public class Day2 {
     }
 
     private Step2 mapToStep2(String s) {
-        String[] parts = s.split(" ");
+        var parts = s.split(" ");
 
         return switch (parts[0]) {
             case "forward" -> new ForwardStep2(Integer.parseInt(parts[1]));

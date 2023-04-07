@@ -1,30 +1,39 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day10 {
-    public int handlePart1(Stream<String> input) {
-        List<Integer> jolts = input.map(Integer::parseInt)
-                                   .sorted()
-                                   .collect(Collectors.toList());
+public class Day10 implements BiAdventOfCodeSolution<Integer, Long> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var jolts = new ArrayList<Integer>();
 
-        jolts.add(0, 0);
+        jolts.add(0);
+
+        jolts.addAll(input.map(Integer::parseInt)
+                          .sorted()
+                          .toList());
+
         jolts.add(jolts.get(jolts.size() - 1) + 3);
 
         return countDifferences(jolts);
     }
 
-    public long handlePart2(Stream<String> input) {
-        List<Integer> jolts = input.map(Integer::parseInt)
-                                   .sorted()
-                                   .collect(Collectors.toList());
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var jolts = new ArrayList<Integer>();
 
-        jolts.add(0, 0);
+        jolts.add(0);
+
+        jolts.addAll(input.map(Integer::parseInt)
+                          .sorted()
+                          .toList());
+
         jolts.add(jolts.get(jolts.size() - 1) + 3);
 
-        Map<Integer, Long> cache = new HashMap<>();
+        var cache = new HashMap<Integer, Long>();
 
         return countCombinations(jolts, cache);
     }
@@ -34,16 +43,16 @@ public class Day10 {
             return 1;
         }
 
-        Integer lastJolt = jolts.get(jolts.size() - 1);
+        var lastJolt = jolts.get(jolts.size() - 1);
 
         if (cache.containsKey(lastJolt)) {
             return cache.get(lastJolt);
         }
 
-        long combinations = 0;
+        var combinations = 0L;
 
-        for (int position = jolts.size() - 2; position > jolts.size() - 5 && position >= 0; position--) {
-            Integer jolt = jolts.get(position);
+        for (var position = jolts.size() - 2; position > jolts.size() - 5 && position >= 0; position--) {
+            var jolt = jolts.get(position);
 
             if (lastJolt - jolt <= 3) {
                 combinations += countCombinations(jolts.subList(0, position + 1), cache);
@@ -56,12 +65,12 @@ public class Day10 {
     }
 
     private int countDifferences(List<Integer> jolts) {
-        int differences1 = 0;
-        int differences3 = 0;
+        var differences1 = 0;
+        var differences3 = 0;
 
-        for (int position = 0; position < jolts.size() - 1; position++) {
-            Integer jolt1 = jolts.get(position);
-            Integer jolt2 = jolts.get(position + 1);
+        for (var position = 0; position < jolts.size() - 1; position++) {
+            var jolt1 = jolts.get(position);
+            var jolt2 = jolts.get(position + 1);
 
             if (jolt2 - jolt1 == 1) {
                 differences1++;

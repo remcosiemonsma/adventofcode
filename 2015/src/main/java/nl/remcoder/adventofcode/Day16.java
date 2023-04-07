@@ -1,12 +1,11 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
-import java.util.regex.Matcher;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day16 {
+public class Day16 implements AdventOfCodeSolution<Integer> {
     private static final Pattern ID_PATTERN = Pattern.compile("Sue (\\d+)");
     private static final Pattern CHILDREN_PATTERN = Pattern.compile("children: (\\d+)");
     private static final Pattern CATS_PATTERN = Pattern.compile("cats: (\\d+)");
@@ -29,7 +28,8 @@ public class Day16 {
     private final int expectedCars = 2;
     private final int expectedPerfumes = 1;
     
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.map(Aunt::new)
                     .filter(aunt -> aunt.children == null || aunt.children == expectedChildren)
                     .filter(aunt -> aunt.cats == null || aunt.cats == expectedCats)
@@ -46,7 +46,8 @@ public class Day16 {
                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         return input.map(Aunt::new)
                     .filter(aunt -> aunt.children == null || aunt.children == expectedChildren)
                     .filter(aunt -> aunt.cats == null || aunt.cats > expectedCats)
@@ -64,7 +65,7 @@ public class Day16 {
     }
 
     private static class Aunt {
-        private final int id;
+        private final Integer id;
         private final Integer children;
         private final Integer cats;
         private final Integer samoyeds;
@@ -77,74 +78,28 @@ public class Day16 {
         private final Integer perfumes;
 
         private Aunt(String line) {
-            Matcher idMatcher = ID_PATTERN.matcher(line);
-            if (idMatcher.find()) {
-                id = Integer.parseInt(idMatcher.group(1));
-            } else {
-                throw new AssertionError("Eek!");
-            }
-            Matcher childrenMatcher = CHILDREN_PATTERN.matcher(line);
-            if (childrenMatcher.find()) {
-                children = Integer.parseInt(childrenMatcher.group(1));
-            } else {
-                children = null;
-            }
-            Matcher catsMatcher = CATS_PATTERN.matcher(line);
-            if (catsMatcher.find()) {
-                cats = Integer.parseInt(catsMatcher.group(1));
-            } else {
-                cats = null;
-            }
-            Matcher samoyedsMatcher = SAMOYEDS_PATTERN.matcher(line);
-            if (samoyedsMatcher.find()) {
-                samoyeds = Integer.parseInt(samoyedsMatcher.group(1));
-            } else {
-                samoyeds = null;
-            }
-            Matcher pomeraniansMatcher = POMERANIANS_PATTERN.matcher(line);
-            if (pomeraniansMatcher.find()) {
-                pomeranians = Integer.parseInt(pomeraniansMatcher.group(1));
-            } else {
-                pomeranians = null;
-            }
-            Matcher akitasMatcher = AKITAS_PATTERN.matcher(line);
-            if (akitasMatcher.find()) {
-                akitas = Integer.parseInt(akitasMatcher.group(1));
-            } else {
-                akitas = null;
-            }
-            Matcher vizslasMatcher = VIZSLAS_PATTERN.matcher(line);
-            if (vizslasMatcher.find()) {
-                vizslas = Integer.parseInt(vizslasMatcher.group(1));
-            } else {
-                vizslas = null;
-            }
-            Matcher goldfishMatcher = GOLDFISH_PATTERN.matcher(line);
-            if (goldfishMatcher.find()) {
-                goldfish = Integer.parseInt(goldfishMatcher.group(1));
-            } else {
-                goldfish = null;
-            }
-            Matcher treesMatcher = TREES_PATTERN.matcher(line);
-            if (treesMatcher.find()) {
-                trees = Integer.parseInt(treesMatcher.group(1));
-            } else {
-                trees = null;
-            }
-            Matcher carsMatcher = CARS_PATTERN.matcher(line);
-            if (carsMatcher.find()) {
-                cars = Integer.parseInt(carsMatcher.group(1));
-            } else {
-                cars = null;
-            }
-            Matcher perfumesMatcher = PERFUMES_PATTERN.matcher(line);
-            if (perfumesMatcher.find()) {
-                perfumes = Integer.parseInt(perfumesMatcher.group(1));
-            } else {
-                perfumes = null;
-            }
+            id = getValueForPattern(ID_PATTERN, line);
+            children = getValueForPattern(CHILDREN_PATTERN, line);
+            cats = getValueForPattern(CATS_PATTERN, line);
+            samoyeds = getValueForPattern(SAMOYEDS_PATTERN, line);
+            pomeranians = getValueForPattern(POMERANIANS_PATTERN, line);
+            akitas = getValueForPattern(AKITAS_PATTERN, line);
+            vizslas = getValueForPattern(VIZSLAS_PATTERN, line);
+            goldfish = getValueForPattern(GOLDFISH_PATTERN, line);
+            trees = getValueForPattern(TREES_PATTERN, line);
+            cars = getValueForPattern(CARS_PATTERN, line);
+            perfumes = getValueForPattern(PERFUMES_PATTERN, line);
         }
 
+        private Integer getValueForPattern(Pattern pattern, String line) {
+            var matcher = pattern.matcher(line);
+            if (matcher.find()) {
+                return Integer.parseInt(matcher.group(1));
+            } else {
+                return null;
+            }
+        }
+        
         public int getId() {
             return id;
         }

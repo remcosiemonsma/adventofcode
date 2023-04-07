@@ -1,27 +1,30 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day3 {
+public class Day3 implements AdventOfCodeSolution<Integer> {
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.mapToInt(this::mapToPriority)
                     .sum();
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<String> lines = input.toList();
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var lines = input.toList();
 
-        int sum = 0;
+        var sum = 0;
 
-        for (int i = 0; i < lines.size(); i += 3) {
-            String line1 = lines.get(i);
-            String line2 = lines.get(i + 1);
-            String line3 = lines.get(i + 2);
+        for (var i = 0; i < lines.size(); i += 3) {
+            var line1 = lines.get(i);
+            var line2 = lines.get(i + 1);
+            var line3 = lines.get(i + 2);
 
-            for (char c : line1.toCharArray()) {
-                if (line2.contains("" + c) && line3.contains("" + c)) {
+            for (var c : line1.toCharArray()) {
+                if (line2.contains(String.valueOf(c)) && line3.contains(String.valueOf(c))) {
                     sum += getPriority(c);
                     break;
                 }
@@ -32,11 +35,11 @@ public class Day3 {
     }
 
     private int mapToPriority(String line) {
-        String compartment1 = line.substring(0, line.length() / 2);
-        String compartment2 = line.substring(line.length() / 2);
+        var compartment1 = line.substring(0, line.length() / 2);
+        var compartment2 = line.substring(line.length() / 2);
 
-        for (char c : compartment1.toCharArray()) {
-            if (compartment2.contains("" + c)) {
+        for (var c : compartment1.toCharArray()) {
+            if (compartment2.contains(String.valueOf(c))) {
                 return getPriority(c);
             }
         }

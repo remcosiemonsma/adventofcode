@@ -29,7 +29,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
         components.removeAll(componentsToRemove);
 
-        int highestScore = 0;
+        var highestScore = 0;
 
         for (var component : components) {
             if (component.ports.contains(0)) {
@@ -98,9 +98,9 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
     }
 
     private Component parseComponent(String line) {
-        Component component = new Component();
+        var component = new Component();
 
-        for (String port : line.split("/")) {
+        for (var port : line.split("/")) {
             component.ports.add(Integer.parseInt(port));
         }
         
@@ -139,17 +139,17 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
     }
     
     private int buildBridge1(int connectingComponent, List<Component> possibleConnections) {
-        int highestScore = 0;
+        var highestScore = 0;
 
-        for (Component component : possibleConnections) {
+        for (var component : possibleConnections) {
             if (component.ports.contains(connectingComponent)) {
-                List<Component> newPossibleConnections = new ArrayList<>(possibleConnections);
+                var newPossibleConnections = new ArrayList<>(possibleConnections);
                 newPossibleConnections.remove(component);
 
                 int possibleHighScore = 0;
 
-                boolean duplicate = false;
-                for (int port : component.ports) {
+                var duplicate = false;
+                for (var port : component.ports) {
                     if (duplicate || port != connectingComponent) {
                         possibleHighScore = buildBridge1(port, newPossibleConnections);
                     } else {

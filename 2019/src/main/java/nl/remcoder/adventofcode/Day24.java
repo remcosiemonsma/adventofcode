@@ -169,22 +169,22 @@ public class Day24 implements AdventOfCodeSolution<Long> {
             lowestLevel--;
             gridMap.put(lowestLevel, newGrid);
             if (bug8Alive) {
-                for (int x = 0; x <= 4; x++) {
+                for (var x = 0; x <= 4; x++) {
                     newGrid.get(x, 0).setNextState(State.ALIVE);
                 }
             }
             if (bug12Alive) {
-                for (int y = 0; y <= 4; y++) {
+                for (var y = 0; y <= 4; y++) {
                     newGrid.get(0, y).setNextState(State.ALIVE);
                 }
             }
             if (bug14Alive) {
-                for (int y = 0; y <= 4; y++) {
+                for (var y = 0; y <= 4; y++) {
                     newGrid.get(4, y).setNextState(State.ALIVE);
                 }
             }
             if (bug18Alive) {
-                for (int x = 0; x <= 4; x++) {
+                for (var x = 0; x <= 4; x++) {
                     newGrid.get(x, 4).setNextState(State.ALIVE);
                 }
             }

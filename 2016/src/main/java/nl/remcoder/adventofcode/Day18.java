@@ -41,9 +41,6 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
         var grid = new Grid<>(new Boolean[][] {traps});
         
         for (var y = 1; y < 400000; y++) {
-            if (y % 1000 == 0) {
-                System.out.println(y);
-            }
             for (var x = 0; x < traps.length; x++) {
                 if ((Boolean.TRUE.equals(grid.get(x - 1, y - 1)) && !Boolean.TRUE.equals(grid.get(x + 1, y - 1))) ||
                     (!Boolean.TRUE.equals(grid.get(x - 1, y - 1)) && Boolean.TRUE.equals(grid.get(x + 1, y - 1)))) {

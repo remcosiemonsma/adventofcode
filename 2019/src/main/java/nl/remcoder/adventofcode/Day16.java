@@ -41,14 +41,14 @@ public class Day16 implements AdventOfCodeSolution<List<Integer>> {
 
         var expandedList = expandList(numbers);
 
-        Integer[] array = expandedList.toArray(new Integer[0]);
-        for (int i = 0; i < 100; i++) {
-            for (int j = array.length - 1; j > offset - 1; j--) {
+        var array = expandedList.toArray(new Integer[0]);
+        for (var i = 0; i < 100; i++) {
+            for (var j = array.length - 1; j > offset - 1; j--) {
                 array[j - 1] = (array[j - 1] + array[j]) % 10;
             }
         }
 
-        Integer[] result = new Integer[8];
+        var result = new Integer[8];
         
         System.arraycopy(array, offset, result, 0, 8);
         

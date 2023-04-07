@@ -1,29 +1,33 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day17 {
-    private static final Pattern PATTERN = Pattern.compile("target area: x=(-?\\d+)\\.\\.(-?\\d+), y=(-?\\d+)\\.\\.(-?\\d+)");
+public class Day17 implements AdventOfCodeSolution<Integer> {
+    private static final Pattern PATTERN =
+            Pattern.compile("target area: x=(-?\\d+)\\.\\.(-?\\d+), y=(-?\\d+)\\.\\.(-?\\d+)");
 
-    public int handlePart1(Stream<String> input) {
-        Target target = input.findFirst()
-                             .map(PATTERN::matcher)
-                             .filter(Matcher::matches)
-                             .map(matcher -> new Target(Integer.parseInt(matcher.group(1)),
-                                                        Integer.parseInt(matcher.group(2)),
-                                                        Integer.parseInt(matcher.group(4)),
-                                                        Integer.parseInt(matcher.group(3))))
-                             .orElseThrow(() -> new AssertionError("Eek!"));
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var target = input.findFirst()
+                          .map(PATTERN::matcher)
+                          .filter(Matcher::matches)
+                          .map(matcher -> new Target(Integer.parseInt(matcher.group(1)),
+                                                     Integer.parseInt(matcher.group(2)),
+                                                     Integer.parseInt(matcher.group(4)),
+                                                     Integer.parseInt(matcher.group(3))))
+                          .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int xVelocity = 1;
-        int yVelocity = 1;
+        var xVelocity = 1;
+        var yVelocity = 1;
 
-        int highestPoint = 0;
+        var highestPoint = 0;
 
         while (yVelocity < 150) {
-            Probe probe = new Probe(xVelocity, yVelocity);
+            var probe = new Probe(xVelocity, yVelocity);
 
             while (probe.x <= target.x2 && probe.y >= target.y2) {
                 probe.move();
@@ -45,23 +49,24 @@ public class Day17 {
         return highestPoint;
     }
 
-    public int handlePart2(Stream<String> input) {
-        Target target = input.findFirst()
-                             .map(PATTERN::matcher)
-                             .filter(Matcher::matches)
-                             .map(matcher -> new Target(Integer.parseInt(matcher.group(1)),
-                                                        Integer.parseInt(matcher.group(2)),
-                                                        Integer.parseInt(matcher.group(4)),
-                                                        Integer.parseInt(matcher.group(3))))
-                             .orElseThrow(() -> new AssertionError("Eek!"));
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var target = input.findFirst()
+                          .map(PATTERN::matcher)
+                          .filter(Matcher::matches)
+                          .map(matcher -> new Target(Integer.parseInt(matcher.group(1)),
+                                                     Integer.parseInt(matcher.group(2)),
+                                                     Integer.parseInt(matcher.group(4)),
+                                                     Integer.parseInt(matcher.group(3))))
+                          .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int xVelocity = 1;
-        int yVelocity = target.y2;
+        var xVelocity = 1;
+        var yVelocity = target.y2;
 
-        int amountOfHits = 0;
+        var amountOfHits = 0;
 
         while (yVelocity < 150) {
-            Probe probe = new Probe(xVelocity, yVelocity);
+            var probe = new Probe(xVelocity, yVelocity);
 
             while (probe.x <= target.x2 && probe.y >= target.y2) {
                 probe.move();
@@ -81,7 +86,8 @@ public class Day17 {
         return amountOfHits;
     }
 
-    private record Target(int x1, int x2, int y1, int y2){}
+    private record Target(int x1, int x2, int y1, int y2) {
+    }
 
     private static class Probe {
         private int xVelocity;

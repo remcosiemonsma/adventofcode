@@ -22,7 +22,7 @@ public class Day25 implements AdventOfCodeSolution<Integer> {
         var constellations = 0;
         
         while (!coordinates.isEmpty()) {
-            var constellation = findNextConstellation(coordinates);
+            findNextConstellation(coordinates);
 
             constellations++;
         }
@@ -36,7 +36,7 @@ public class Day25 implements AdventOfCodeSolution<Integer> {
         return null;
     }
     
-    private List<CoordinateNDimensional> findNextConstellation(List<CoordinateNDimensional> coordinates) {
+    private void findNextConstellation(List<CoordinateNDimensional> coordinates) {
         var constellation = new ArrayList<CoordinateNDimensional>();
         
         constellation.add(coordinates.remove(0));
@@ -56,7 +56,5 @@ public class Day25 implements AdventOfCodeSolution<Integer> {
             added = sizebefore != sizeafter;
         }
         coordinates.removeAll(constellation);
-        
-        return constellation;
     }
 }

@@ -1,28 +1,29 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Day11 {
-    public long handlePart1(Stream<String> input) {
-        char[][] grid = input.map(String::toCharArray)
+public class Day11 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
+        var grid = input.map(String::toCharArray)
+                        .toArray(char[][]::new);
+
+        var previous = Arrays.stream(grid)
+                             .map(char[]::clone)
                              .toArray(char[][]::new);
 
-        char[][] previous = Arrays.stream(grid)
-                                  .map(char[]::clone)
-                                  .toArray(char[][]::new);
-
-        boolean finished = false;
+        var finished = false;
 
         while (!finished) {
-            char[][] newLayout = new char[grid.length][grid[0].length];
+            var newLayout = new char[grid.length][grid[0].length];
 
-            for (int yPosition = 0; yPosition < grid.length; yPosition++) {
-                for (int xPosition = 0; xPosition < grid[0].length; xPosition++) {
-                    int amountAdjacentSeatsFilled = 0;
+            for (var yPosition = 0; yPosition < grid.length; yPosition++) {
+                for (var xPosition = 0; xPosition < grid[0].length; xPosition++) {
+                    var amountAdjacentSeatsFilled = 0;
 
                     if (yPosition > 0) {
                         if (xPosition > 0) {
@@ -97,27 +98,28 @@ public class Day11 {
                      .count();
     }
 
-    public long handlePart2(Stream<String> input) {
-        char[][] grid = input.map(String::toCharArray)
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var grid = input.map(String::toCharArray)
+                        .toArray(char[][]::new);
+
+        var previous = Arrays.stream(grid)
+                             .map(char[]::clone)
                              .toArray(char[][]::new);
 
-        char[][] previous = Arrays.stream(grid)
-                                  .map(char[]::clone)
-                                  .toArray(char[][]::new);
-
-        boolean finished = false;
+        var finished = false;
 
         while (!finished) {
-            char[][] newLayout = new char[grid.length][grid[0].length];
+            var newLayout = new char[grid.length][grid[0].length];
 
-            for (int yPosition = 0; yPosition < grid.length; yPosition++) {
-                for (int xPosition = 0; xPosition < grid[0].length; xPosition++) {
+            for (var yPosition = 0; yPosition < grid.length; yPosition++) {
+                for (var xPosition = 0; xPosition < grid[0].length; xPosition++) {
                     if (previous[yPosition][xPosition] == '.') {
                         newLayout[yPosition][xPosition] = '.';
                         continue;
                     }
 
-                    int amountSeatsInSightFilled = 0;
+                    var amountSeatsInSightFilled = 0;
 
                     for (int y = yPosition - 1, x = xPosition - 1; y >= 0 && x >= 0; y--, x--) {
                         if (previous[y][x] == '#') {
@@ -153,7 +155,7 @@ public class Day11 {
                         }
                     }
 
-                    for (int x = xPosition - 1; x >= 0; x--) {
+                    for (var x = xPosition - 1; x >= 0; x--) {
                         if (previous[yPosition][x] == '#') {
                             amountSeatsInSightFilled++;
                             break;
@@ -161,7 +163,7 @@ public class Day11 {
                             break;
                         }
                     }
-                    for (int x = xPosition + 1; x < grid[0].length; x++) {
+                    for (var x = xPosition + 1; x < grid[0].length; x++) {
                         if (previous[yPosition][x] == '#') {
                             amountSeatsInSightFilled++;
                             break;
@@ -170,7 +172,7 @@ public class Day11 {
                         }
                     }
 
-                    for (int y = yPosition - 1; y >= 0; y--) {
+                    for (var y = yPosition - 1; y >= 0; y--) {
                         if (previous[y][xPosition] == '#') {
                             amountSeatsInSightFilled++;
                             break;
@@ -178,7 +180,7 @@ public class Day11 {
                             break;
                         }
                     }
-                    for (int y = yPosition + 1; y < grid.length; y++) {
+                    for (var y = yPosition + 1; y < grid.length; y++) {
                         if (previous[y][xPosition] == '#') {
                             amountSeatsInSightFilled++;
                             break;
@@ -215,15 +217,5 @@ public class Day11 {
                      .flatMap(IntStream::boxed)
                      .filter(character -> character == '#')
                      .count();
-    }
-
-    private void printGrid(char[][] grid) {
-        for (char[] line : grid) {
-            for (char c : line) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 }

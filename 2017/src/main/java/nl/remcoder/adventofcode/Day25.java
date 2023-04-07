@@ -7,13 +7,13 @@ import java.util.stream.Stream;
 public class Day25 implements AdventOfCodeSolution<Integer> {
     @Override
     public Integer handlePart1(Stream<String> input) {
-        boolean[] tape = new boolean[12656374];
+        var tape = new boolean[12656374];
 
-        State state = State.A;
+        var state = State.A;
 
-        int position = 12656374/2;
+        var position = 12656374/2;
 
-        for (int counter = 0; counter < 12656374; counter++) {
+        for (var counter = 0; counter < 12656374; counter++) {
             switch (state) {
                 case A -> {
                     if (!tape[position]) {
@@ -102,6 +102,7 @@ public class Day25 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
+        System.out.println("Merry Christmas!");
         return null;
     }
 

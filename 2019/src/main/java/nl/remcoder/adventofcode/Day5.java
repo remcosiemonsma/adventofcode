@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Day5 implements AdventOfCodeSolution<Long> {
-    Long output;
-    Long input;
+    private Long output;
+    private Long input;
 
     @Override
     public Long handlePart1(Stream<String> input) {

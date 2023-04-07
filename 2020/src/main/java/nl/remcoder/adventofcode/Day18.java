@@ -1,27 +1,31 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day18 {
-    public long handlePart1(Stream<String> input) {
+public class Day18 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         return input.mapToLong(this::calculateExpressionPart1)
                     .sum();
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         return input.mapToLong(this::calculateExpressionPart2)
                     .sum();
     }
 
     private long calculateExpressionPart2(String expression) {
-        long result = 0;
+        var result = 0L;
 
-        StringBuilder parenthesesStringBuilder = new StringBuilder();
-        int parenthesesCount = 0;
+        var parenthesesStringBuilder = new StringBuilder();
+        var parenthesesCount = 0;
 
-        char[] charArray = expression.toCharArray();
-        for (int position = 0; position < charArray.length; position++) {
-            char character = charArray[position];
+        var charArray = expression.toCharArray();
+        for (var position = 0; position < charArray.length; position++) {
+            var character = charArray[position];
             if (parenthesesCount > 0) {
                 if (character == '(') {
                     parenthesesCount++;
@@ -60,14 +64,14 @@ public class Day18 {
     }
 
     private long calculateExpressionPart1(String expression) {
-        long result = 0;
+        var result = 0L;
 
-        Mode mode = Mode.ADDITION;
+        var mode = Mode.ADDITION;
 
-        StringBuilder parenthesesStringBuilder = new StringBuilder();
-        int parenthesesCount = 0;
+        var parenthesesStringBuilder = new StringBuilder();
+        var parenthesesCount = 0;
 
-        for (char character : expression.toCharArray()) {
+        for (var character : expression.toCharArray()) {
             if (parenthesesCount > 0) {
                 if (character == '(') {
                     parenthesesCount++;

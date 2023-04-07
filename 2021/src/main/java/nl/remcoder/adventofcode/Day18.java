@@ -1,33 +1,35 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day18 {
-    public long handlePart1(Stream<String> input) {
+public class Day18 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         return input.map((String number) -> createSnailNumber(number, null, 0))
                     .peek(this::reduceSnailNumber)
                     .reduce(this::addSnailNumbers)
                     .map(SnailNumber::calculateMagnitude)
-                    .get();
+                    .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
-    public long handlePart2(Stream<String> input) {
-        List<SnailNumber> snailNumbers = input.map((String number) -> createSnailNumber(number, null, 0))
-                                         .peek(this::reduceSnailNumber)
-                                         .collect(Collectors.toList());
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var snailNumbers = input.map((String number) -> createSnailNumber(number, null, 0))
+                                .peek(this::reduceSnailNumber)
+                                .toList();
 
-        long greatestMagnitude = 0;
+        var greatestMagnitude = 0L;
 
-        for (SnailNumber firstSnailNumber : snailNumbers) {
-            for (SnailNumber secondSnailNumber : snailNumbers) {
+        for (var firstSnailNumber : snailNumbers) {
+            for (var secondSnailNumber : snailNumbers) {
                 if (firstSnailNumber == secondSnailNumber) {
                     continue;
                 }
-                SnailNumber snailNumber = firstSnailNumber.copy(null);
-                SnailNumber otherSnailNumber = secondSnailNumber.copy(null);
-                SnailNumber combined = addSnailNumbers(snailNumber, otherSnailNumber);
+                var snailNumber = firstSnailNumber.copy(null);
+                var otherSnailNumber = secondSnailNumber.copy(null);
+                var combined = addSnailNumbers(snailNumber, otherSnailNumber);
                 reduceSnailNumber(combined);
                 long magnitude = combined.calculateMagnitude();
                 if (magnitude > greatestMagnitude) {
@@ -40,7 +42,7 @@ public class Day18 {
     }
 
     private SnailNumber addSnailNumbers(SnailNumber left, SnailNumber right) {
-        SnailNumber snailNumber = new SnailNumber();
+        var snailNumber = new SnailNumber();
         snailNumber.nesting = 0;
         snailNumber.left = left;
         left.parent = snailNumber;
@@ -71,12 +73,9 @@ public class Day18 {
             if (canNumberBeExploded(snailNumber.left)) {
                 return true;
             } else {
-                if (canNumberBeExploded(snailNumber.right)) {
-                    return true;
-                }
+                return canNumberBeExploded(snailNumber.right);
             }
         }
-        return false;
     }
 
     private boolean canNumberBeSplit(SnailNumber snailNumber) {
@@ -90,57 +89,54 @@ public class Day18 {
             if (canNumberBeSplit(snailNumber.left)) {
                 return true;
             } else {
-                if (canNumberBeSplit(snailNumber.right)) {
-                    return true;
-                }
+                return canNumberBeSplit(snailNumber.right);
             }
         }
-        return false;
     }
 
     private SnailNumber createSnailNumber(String number, SnailNumber parent, int nesting) {
-        int position = 1;
+        var position = 1;
 
-        SnailNumber snailNumber = new SnailNumber();
+        var snailNumber = new SnailNumber();
         snailNumber.parent = parent;
         snailNumber.nesting = nesting;
 
         while (position < number.length()) {
             if (Character.isDigit(number.charAt(position))) {
-                int leftValue = Character.digit(number.charAt(position), 10);
-                SnailNumber left = new SnailNumber();
+                var leftValue = Character.digit(number.charAt(position), 10);
+                var left = new SnailNumber();
                 left.parent = snailNumber;
                 left.value = leftValue;
                 left.nesting = nesting + 1;
                 snailNumber.left = left;
                 position += 2;
                 if (Character.isDigit(number.charAt(position))) {
-                    int rightValue = Character.digit(number.charAt(position), 10);
-                    SnailNumber right = new SnailNumber();
+                    var rightValue = Character.digit(number.charAt(position), 10);
+                    var right = new SnailNumber();
                     right.parent = snailNumber;
                     right.value = rightValue;
                     right.nesting = nesting + 1;
                     snailNumber.right = right;
                     position += 2;
                 } else {
-                    String subNumber = createSubNumber(number, position);
+                    var subNumber = createSubNumber(number, position);
                     snailNumber.right = createSnailNumber(subNumber, snailNumber, nesting + 1);
                     position += subNumber.length() + 1;
                 }
             } else {
-                String subNumber = createSubNumber(number, position);
+                var subNumber = createSubNumber(number, position);
                 snailNumber.left = createSnailNumber(subNumber, snailNumber, nesting + 1);
                 position += subNumber.length() + 1;
                 if (Character.isDigit(number.charAt(position))) {
-                    int rightValue = Character.digit(number.charAt(position), 10);
-                    SnailNumber right = new SnailNumber();
+                    var rightValue = Character.digit(number.charAt(position), 10);
+                    var right = new SnailNumber();
                     right.parent = snailNumber;
                     right.value = rightValue;
                     right.nesting = nesting + 1;
                     snailNumber.right = right;
                     position += 2;
                 } else {
-                    String subRight = createSubNumber(number, position);
+                    var subRight = createSubNumber(number, position);
                     snailNumber.right = createSnailNumber(subRight, snailNumber, nesting + 1);
                     position += subRight.length() + 1;
                 }
@@ -151,9 +147,9 @@ public class Day18 {
     }
 
     private String createSubNumber(String number, int position) {
-        int count = 1;
+        var count = 1;
 
-        int end = position + 1;
+        var end = position + 1;
 
         while (count > 0) {
             switch (number.charAt(end++)) {
@@ -189,7 +185,7 @@ public class Day18 {
                 explodeLeftSide();
                 explodeRightSide();
 
-                SnailNumber newNumber = new SnailNumber();
+                var newNumber = new SnailNumber();
                 newNumber.value = 0;
                 newNumber.parent = this.parent;
                 newNumber.nesting = nesting;
@@ -209,9 +205,9 @@ public class Day18 {
                 if (parent.left.isRegularNumber()) {
                     parent.left.value += left.value;
                 } else {
-                    boolean exploded = false;
+                    var exploded = false;
 
-                    SnailNumber previous = parent.left;
+                    var previous = parent.left;
 
                     while (!exploded) {
                         if (previous.right.isRegularNumber()) {
@@ -223,9 +219,9 @@ public class Day18 {
                     }
                 }
             } else {
-                SnailNumber previousParent = parent;
+                var previousParent = parent;
 
-                boolean rightParentFound = false;
+                var rightParentFound = false;
 
                 while (!rightParentFound) {
                     if (previousParent.parent == null) {
@@ -239,9 +235,9 @@ public class Day18 {
                 }
 
                 if (rightParentFound) {
-                    boolean exploded = false;
+                    var exploded = false;
 
-                    SnailNumber previous = previousParent.left;
+                    var previous = previousParent.left;
 
                     if (previous.isRegularNumber()) {
                         previous.value += left.value;
@@ -264,9 +260,9 @@ public class Day18 {
                 if (parent.right.isRegularNumber()) {
                     parent.right.value += right.value;
                 } else {
-                    boolean exploded = false;
+                    var exploded = false;
 
-                    SnailNumber previous = parent.right;
+                    var previous = parent.right;
 
                     while (!exploded) {
                         if (previous.left.isRegularNumber()) {
@@ -278,9 +274,9 @@ public class Day18 {
                     }
                 }
             } else {
-                SnailNumber previousParent = parent;
+                var previousParent = parent;
 
-                boolean leftParentFound = false;
+                var leftParentFound = false;
 
                 while (!leftParentFound) {
                     if (previousParent.parent == null) {
@@ -294,9 +290,9 @@ public class Day18 {
                 }
 
                 if (leftParentFound) {
-                    boolean exploded = false;
+                    var exploded = false;
 
-                    SnailNumber previous = previousParent.right;
+                    var previous = previousParent.right;
 
                     if (previous.isRegularNumber()) {
                         previous.value += right.value;
@@ -316,8 +312,8 @@ public class Day18 {
 
         public void split() {
             if (mustBeSplit()) {
-                int leftValue = (int) Math.floor(value / 2d);
-                int rightValue = (int) Math.ceil(value / 2d);
+                var leftValue = (int) Math.floor(value / 2d);
+                var rightValue = (int) Math.ceil(value / 2d);
 
                 value = null;
 
@@ -352,7 +348,7 @@ public class Day18 {
         }
 
         public SnailNumber copy(SnailNumber parent) {
-            SnailNumber copy = new SnailNumber();
+            var copy = new SnailNumber();
             copy.parent = parent;
             copy.value = this.value;
             copy.nesting = this.nesting;

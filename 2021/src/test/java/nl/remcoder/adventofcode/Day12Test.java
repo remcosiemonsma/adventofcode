@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,61 +18,61 @@ class Day12Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      start-A
-                      start-b
-                      A-c
-                      A-b
-                      b-d
-                      A-end
-                      b-end
-                      """;
+        String input = """
+                       start-A
+                       start-b
+                       A-c
+                       A-b
+                       b-d
+                       A-end
+                       b-end
+                       """;
 
-        assertEquals(10, testSubject.handlePart1(data.lines()));
+        assertEquals(10, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case2() {
-        String data = """
-                      dc-end
-                      HN-start
-                      start-kj
-                      dc-start
-                      dc-HN
-                      LN-dc
-                      HN-end
-                      kj-sa
-                      kj-HN
-                      kj-dc
-                      """;
+        String input = """
+                       dc-end
+                       HN-start
+                       start-kj
+                       dc-start
+                       dc-HN
+                       LN-dc
+                       HN-end
+                       kj-sa
+                       kj-HN
+                       kj-dc
+                       """;
 
-        assertEquals(19, testSubject.handlePart1(data.lines()));
+        assertEquals(19, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case3() {
-        String data = """
-                      fs-end
-                      he-DX
-                      fs-he
-                      start-DX
-                      pj-DX
-                      end-zg
-                      zg-sl
-                      zg-pj
-                      pj-he
-                      RW-he
-                      fs-DX
-                      pj-RW
-                      zg-RW
-                      start-pj
-                      he-WI
-                      zg-he
-                      pj-fs
-                      start-RW
-                      """;
+        String input = """
+                       fs-end
+                       he-DX
+                       fs-he
+                       start-DX
+                       pj-DX
+                       end-zg
+                       zg-sl
+                       zg-pj
+                       pj-he
+                       RW-he
+                       fs-DX
+                       pj-RW
+                       zg-RW
+                       start-pj
+                       he-WI
+                       zg-he
+                       pj-fs
+                       start-RW
+                       """;
 
-        assertEquals(226, testSubject.handlePart1(data.lines()));
+        assertEquals(226, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -84,61 +83,61 @@ class Day12Test {
 
     @Test
     void testPart2Case1() {
-        String data = """
-                      start-A
-                      start-b
-                      A-c
-                      A-b
-                      b-d
-                      A-end
-                      b-end
-                      """;
+        String input = """
+                       start-A
+                       start-b
+                       A-c
+                       A-b
+                       b-d
+                       A-end
+                       b-end
+                       """;
 
-        assertEquals(36, testSubject.handlePart2(data.lines()));
+        assertEquals(36, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case2() {
-        String data = """
-                      dc-end
-                      HN-start
-                      start-kj
-                      dc-start
-                      dc-HN
-                      LN-dc
-                      HN-end
-                      kj-sa
-                      kj-HN
-                      kj-dc
-                      """;
+        String input = """
+                       dc-end
+                       HN-start
+                       start-kj
+                       dc-start
+                       dc-HN
+                       LN-dc
+                       HN-end
+                       kj-sa
+                       kj-HN
+                       kj-dc
+                       """;
 
-        assertEquals(103, testSubject.handlePart2(data.lines()));
+        assertEquals(103, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case3() {
-        String data = """
-                      fs-end
-                      he-DX
-                      fs-he
-                      start-DX
-                      pj-DX
-                      end-zg
-                      zg-sl
-                      zg-pj
-                      pj-he
-                      RW-he
-                      fs-DX
-                      pj-RW
-                      zg-RW
-                      start-pj
-                      he-WI
-                      zg-he
-                      pj-fs
-                      start-RW
-                      """;
+        String input = """
+                       fs-end
+                       he-DX
+                       fs-he
+                       start-DX
+                       pj-DX
+                       end-zg
+                       zg-sl
+                       zg-pj
+                       pj-he
+                       RW-he
+                       fs-DX
+                       pj-RW
+                       zg-RW
+                       start-pj
+                       he-WI
+                       zg-he
+                       pj-fs
+                       start-RW
+                       """;
 
-        assertEquals(3509, testSubject.handlePart2(data.lines()));
+        assertEquals(3509, testSubject.handlePart2(input.lines()));
     }
 
     @Test

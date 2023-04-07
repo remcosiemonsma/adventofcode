@@ -83,8 +83,8 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         long shortestDistance = Long.MAX_VALUE;
         try {
             shortestDistance = Dijkstra.findShortestDistance(start, node -> ((HillSide) node).getHeight() == 'E')
-                                       .orElseThrow(() -> new AssertionError("Eek!"))
-                                       .getDistance();
+                                       .map(Node::getDistance)
+                                       .orElse(Long.MAX_VALUE);
         } catch (RuntimeException ignored) {
         }
 
@@ -93,7 +93,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         return shortestDistance;
     }
 
-    private static class HillSide extends Node {
+    private static class HillSide extends Node<HillSide> {
         private final char height;
         private final Coordinate coordinate;
         private final Grid<HillSide> hill;
@@ -106,7 +106,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<HillSide, Long> getNeighbors() {
             Map<HillSide, Long> neighbors = new HashMap<>();
 
             for (Coordinate neighborCoordinate : coordinate.getStraightNeighbours()) {
@@ -145,7 +145,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
 
         @Override
         public String toString() {
-            return "" + height;
+            return String.valueOf(height);
         }
 
         public char getHeight() {

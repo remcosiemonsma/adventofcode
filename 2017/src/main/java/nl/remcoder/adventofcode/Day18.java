@@ -107,15 +107,15 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
         var program0 = new Program(operations, 0, queue1, queue0);
         var program1 = new Program(operations, 1, queue0, queue1);
 
-        while (!program0.isWaiting() || !program1.isWaiting()) {
-            while (!program0.isWaiting()) {
+        while (program0.isNotWaiting() || program1.isNotWaiting()) {
+            while (program0.isNotWaiting()) {
                 program0.performOperations();
             }
             if (!program0.sendQueue.isEmpty()) {
                 program1.waiting = false;
             }
 
-            while (!program1.isWaiting()) {
+            while (program1.isNotWaiting()) {
                 program1.performOperations();
             }
             if (!program1.sendQueue.isEmpty()) {
@@ -153,14 +153,14 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
             return sendCounter;
         }
 
-        public boolean isWaiting() {
-            return waiting;
+        public boolean isNotWaiting() {
+            return !waiting;
         }
 
         public void performOperations() {
-            String operation = operations.get(counter);
+            var operation = operations.get(counter);
 
-            String[] operationParts = operation.split(" ");
+            var operationParts = operation.split(" ");
 
             switch (operationParts[0]) {
                 case "snd" -> {
@@ -201,7 +201,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
                     if (receiveQueue.isEmpty()) {
                         waiting = true;
                     } else {
-                        Long received = receiveQueue.remove();
+                        var received = receiveQueue.remove();
 
                         waiting = false;
 
@@ -211,10 +211,9 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
                     }
                 }
                 case "jgz" -> {
-                    long register1 = getValue(operationParts[1]);
+                    var register1 = getValue(operationParts[1]);
                     if (register1 > 0) {
-                        long register2;
-                        register2 = getValue(operationParts[2]);
+                        var register2 = getValue(operationParts[2]);
                         counter += register2;
                     } else {
                         counter++;

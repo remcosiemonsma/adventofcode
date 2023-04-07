@@ -82,8 +82,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
             int currentBoost = lower;
 
-            System.out.println(currentBoost);
-
             immuneSystem.forEach(unit -> unit.setBoost(currentBoost));
 
             doBattle(allUnits, immuneSystem, infection);
@@ -105,7 +103,6 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
         var current = upper - mid;
 
         while (!resultFound) {
-            System.out.println(current);
             allUnits.forEach(Unit::reset);
 
             int finalCurrent = current;

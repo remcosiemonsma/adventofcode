@@ -21,9 +21,10 @@ public class Day17 implements AdventOfCodeSolution<Long> {
                                                                 {true}};
     private static final boolean[][] SQUARE_BLOCK = new boolean[][] {{true, true},
                                                                      {true, true}};
-    private static final Queue<boolean[][]> BLOCK_QUEUE = new ArrayDeque<>();
+    private final Queue<boolean[][]> BLOCK_QUEUE = new ArrayDeque<>();
 
-    static {
+    private void initializeQueue() {
+        BLOCK_QUEUE.clear();
         BLOCK_QUEUE.add(BAR_BLOCK);
         BLOCK_QUEUE.add(CROSS_BLOCK);
         BLOCK_QUEUE.add(L_BLOCK);
@@ -33,6 +34,7 @@ public class Day17 implements AdventOfCodeSolution<Long> {
 
     @Override
     public Long handlePart1(Stream<String> input) {
+        initializeQueue();
         var movementQueue = new ArrayDeque<>(input.flatMap(s -> s.chars()
                                                                  .mapToObj(value -> (char) value))
                                                   .toList());
@@ -73,6 +75,7 @@ public class Day17 implements AdventOfCodeSolution<Long> {
 
     @Override
     public Long handlePart2(Stream<String> input) {
+        initializeQueue();
         var movementQueue = new ArrayDeque<>(input.flatMap(s -> s.chars()
                                                                  .mapToObj(value -> (char) value))
                                                   .toList());

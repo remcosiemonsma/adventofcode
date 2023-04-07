@@ -94,6 +94,7 @@ public class Day20 implements AdventOfCodeSolution<Long> {
                                 return possibleEndpoint;
                             }
                         }
+                        assert nextAlphabeticCoordinate != null;
                         for (var possibleEndpoint : nextAlphabeticCoordinate.getStraightNeighbours()) {
                             var character = grid.get(possibleEndpoint);
                             if (character != null && character == '.') {
@@ -138,6 +139,7 @@ public class Day20 implements AdventOfCodeSolution<Long> {
                         }
                     }
                     if (endPoint == null) {
+                        assert nextAlphabeticCoordinate != null;
                         for (var possibleEndpoint : nextAlphabeticCoordinate.getStraightNeighbours()) {
                             var character = grid.get(possibleEndpoint);
                             if (character != null && character == '.') {
@@ -148,11 +150,13 @@ public class Day20 implements AdventOfCodeSolution<Long> {
                     }
                     if (unmappedGates.containsKey(gate)) {
                         if (!unmappedGates.get(gate).coordinate().equals(endPoint)) {
+                            assert endPoint != null;
                             mappedGates.put(gate,
                                             new Pair<>(new Gate(endPoint, determineGateType(endPoint, holeCorners)),
                                                        unmappedGates.remove(gate)));
                         }
                     } else {
+                        assert endPoint != null;
                         unmappedGates.put(gate, new Gate(endPoint, determineGateType(endPoint, holeCorners)));
                     }
                 }

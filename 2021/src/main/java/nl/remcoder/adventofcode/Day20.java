@@ -1,45 +1,48 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day20 {
-    public int handlePart1(Stream<String> input) {
-        List<String> lines = input.toList();
+public class Day20 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var lines = input.toList();
 
-        String first = lines.get(0);
+        var first = lines.get(0);
 
-        boolean[] enhancement = createImageLine(first);
+        var enhancement = createImageLine(first);
 
-        boolean[][] grid = lines.stream()
-                                .skip(2)
-                                .map(this::createImageLine)
-                                .toArray(boolean[][]::new);
+        var grid = lines.stream()
+                        .skip(2)
+                        .map(this::createImageLine)
+                        .toArray(boolean[][]::new);
 
         grid = growGrid(grid, 2);
 
-        for (int iteration = 0; iteration < 2; iteration++) {
+        for (var iteration = 0; iteration < 2; iteration++) {
             grid = enhance(grid, enhancement, iteration % 2 == 0);
         }
 
         return countPixels(grid);
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<String> lines = input.toList();
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var lines = input.toList();
 
-        String first = lines.get(0);
+        var first = lines.get(0);
 
-        boolean[] enhancement = createImageLine(first);
+        var enhancement = createImageLine(first);
 
-        boolean[][] grid = lines.stream()
-                                .skip(2)
-                                .map(this::createImageLine)
-                                .toArray(boolean[][]::new);
+        var grid = lines.stream()
+                        .skip(2)
+                        .map(this::createImageLine)
+                        .toArray(boolean[][]::new);
 
         grid = growGrid(grid, 50);
 
-        for (int iteration = 0; iteration < 50; iteration++) {
+        for (var iteration = 0; iteration < 50; iteration++) {
             grid = enhance(grid, enhancement, iteration % 2 == 0);
         }
 
@@ -47,9 +50,9 @@ public class Day20 {
     }
 
     private boolean[] createImageLine(String line) {
-        boolean[] imageline = new boolean[line.length()];
+        var imageline = new boolean[line.length()];
 
-        for (int i = 0; i < line.length(); i++) {
+        for (var i = 0; i < line.length(); i++) {
             imageline[i] = line.charAt(i) == '#';
         }
 
@@ -57,10 +60,10 @@ public class Day20 {
     }
 
     private boolean[][] enhance(boolean[][] grid, boolean[] enhancement, boolean isEvenOperation) {
-        boolean[][] newGrid = new boolean[grid.length][grid[0].length];
+        var newGrid = new boolean[grid.length][grid[0].length];
 
-        for (int y = 0; y < newGrid.length; y++) {
-            for (int x = 0; x < newGrid[y].length; x++) {
+        for (var y = 0; y < newGrid.length; y++) {
+            for (var x = 0; x < newGrid[y].length; x++) {
                 newGrid[y][x] = getNewValue(grid, enhancement, x, y, isEvenOperation);
             }
         }
@@ -69,12 +72,12 @@ public class Day20 {
     }
 
     private boolean getNewValue(boolean[][] grid, boolean[] enhancement, int x, int y, boolean isEvenOperation) {
-        StringBuilder numberBuilder = new StringBuilder();
+        var numberBuilder = new StringBuilder();
 
-        for (int yoffset = -1; yoffset <= 1; yoffset++) {
-            for (int xoffset = -1; xoffset <= 1; xoffset++) {
-                int ypos = y + yoffset;
-                int xpos = x + xoffset;
+        for (var yoffset = -1; yoffset <= 1; yoffset++) {
+            for (var xoffset = -1; xoffset <= 1; xoffset++) {
+                var ypos = y + yoffset;
+                var xpos = x + xoffset;
 
                 if (isPositionInvalid(grid, ypos, xpos)) {
                     if (isEvenOperation) {
@@ -106,9 +109,9 @@ public class Day20 {
     }
 
     private boolean[][] growGrid(boolean[][] grid, int times) {
-        boolean[][] newGrid = new boolean[grid.length + (times * 2)][grid[0].length + (times * 2)];
+        var newGrid = new boolean[grid.length + (times * 2)][grid[0].length + (times * 2)];
 
-        for (int y = 0; y < grid.length; y++) {
+        for (var y = 0; y < grid.length; y++) {
             System.arraycopy(grid[y], 0, newGrid[y + times], times, grid[y].length);
         }
 
@@ -116,10 +119,10 @@ public class Day20 {
     }
 
     private int countPixels(boolean[][] grid) {
-        int count = 0;
+        var count = 0;
 
-        for (boolean[] line : grid) {
-            for (boolean pixel : line) {
+        for (var line : grid) {
+            for (var pixel : line) {
                 if (pixel) {
                     count++;
                 }

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,20 +18,20 @@ class Day11Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      5483143223
-                      2745854711
-                      5264556173
-                      6141336146
-                      6357385478
-                      4167524645
-                      2176841721
-                      6882881134
-                      4846848554
-                      5283751526
-                      """;
+        String input = """
+                       5483143223
+                       2745854711
+                       5264556173
+                       6141336146
+                       6357385478
+                       4167524645
+                       2176841721
+                       6882881134
+                       4846848554
+                       5283751526
+                       """;
 
-        assertEquals(1656, testSubject.handlePart1(data.lines()));
+        assertEquals(1656, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -43,20 +42,20 @@ class Day11Test {
 
     @Test
     void testPart2Case1() {
-        String data = """
-                      5483143223
-                      2745854711
-                      5264556173
-                      6141336146
-                      6357385478
-                      4167524645
-                      2176841721
-                      6882881134
-                      4846848554
-                      5283751526
-                      """;
+        String input = """
+                       5483143223
+                       2745854711
+                       5264556173
+                       6141336146
+                       6357385478
+                       4167524645
+                       2176841721
+                       6882881134
+                       4846848554
+                       5283751526
+                       """;
 
-        assertEquals(195, testSubject.handlePart2(data.lines()));
+        assertEquals(195, testSubject.handlePart2(input.lines()));
     }
 
     @Test

@@ -66,8 +66,8 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
 
         var coordinates = new HashSet<PositionWithSteps>();
 
-        for (String segment : path) {
-            int distance = Integer.parseInt(segment.substring(1));
+        for (var segment : path) {
+            var distance = Integer.parseInt(segment.substring(1));
             switch (segment.charAt(0)) {
                 case 'D' -> currentPosition = fillNextSegment(Direction.DOWN, distance, coordinates, currentPosition);
                 case 'U' -> currentPosition = fillNextSegment(Direction.UP, distance, coordinates, currentPosition);

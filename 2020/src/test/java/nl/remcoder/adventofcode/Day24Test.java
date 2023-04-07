@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,32 +18,30 @@ class Day24Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                sesenwnenenewseeswwswswwnenewsewsw
-                neeenesenwnwwswnenewnwwsewnenwseswesw
-                seswneswswsenwwnwse
-                nwnwneseeswswnenewneswwnewseswneseene
-                swweswneswnenwsewnwneneseenw
-                eesenwseswswnenwswnwnwsewwnwsene
-                sewnenenenesenwsewnenwwwse
-                wenwwweseeeweswwwnwwe
-                wsweesenenewnwwnwsenewsenwwsesesenwne
-                neeswseenwwswnwswswnw
-                nenwswwsewswnenenewsenwsenwnesesenew
-                enewnwewneswsewnwswenweswnenwsenwsw
-                sweneswneswneneenwnewenewwneswswnese
-                swwesenesewenwneswnwwneseswwne
-                enesenwswwswneneswsenwnewswseenwsese
-                wnwnesenesenenwwnenwsewesewsesesew
-                nenewswnwewswnenesenwnesewesw
-                eneswnwswnwsenenwnwnwwseeswneewsenese
-                neswnwewnwnwseenwseesewsenwsweewe
-                wseweeenwnesenwwwswnew
-                """;
+        String input = """
+                       sesenwnenenewseeswwswswwnenewsewsw
+                       neeenesenwnwwswnenewnwwsewnenwseswesw
+                       seswneswswsenwwnwse
+                       nwnwneseeswswnenewneswwnewseswneseene
+                       swweswneswnenwsewnwneneseenw
+                       eesenwseswswnenwswnwnwsewwnwsene
+                       sewnenenenesenwsewnenwwwse
+                       wenwwweseeeweswwwnwwe
+                       wsweesenenewnwwnwsenewsenwwsesesenwne
+                       neeswseenwwswnwswswnw
+                       nenwswwsewswnenenewsenwsenwnesesenew
+                       enewnwewneswsewnwswenweswnenwsenwsw
+                       sweneswneswneneenwnewenewwneswswnese
+                       swwesenesewenwneswnwwneseswwne
+                       enesenwswwswneneswsenwnewswseenwsese
+                       wnwnesenesenenwwnenwsewesewsesesew
+                       nenewswnwewswnenesenwnesewesw
+                       eneswnwswnwsenenwnwnwwseeswneewsenese
+                       neswnwewnwnwseenwseesewsenwsweewe
+                       wseweeenwnesenwwwswnew
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(10, testSubject.handlePart1(input));
+        assertEquals(10, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -55,32 +52,30 @@ class Day24Test {
 
     @Test
     public void testPart2Case1() {
-        String data = """
-                sesenwnenenewseeswwswswwnenewsewsw
-                neeenesenwnwwswnenewnwwsewnenwseswesw
-                seswneswswsenwwnwse
-                nwnwneseeswswnenewneswwnewseswneseene
-                swweswneswnenwsewnwneneseenw
-                eesenwseswswnenwswnwnwsewwnwsene
-                sewnenenenesenwsewnenwwwse
-                wenwwweseeeweswwwnwwe
-                wsweesenenewnwwnwsenewsenwwsesesenwne
-                neeswseenwwswnwswswnw
-                nenwswwsewswnenenewsenwsenwnesesenew
-                enewnwewneswsewnwswenweswnenwsenwsw
-                sweneswneswneneenwnewenewwneswswnese
-                swwesenesewenwneswnwwneseswwne
-                enesenwswwswneneswsenwnewswseenwsese
-                wnwnesenesenenwwnenwsewesewsesesew
-                nenewswnwewswnenesenwnesewesw
-                eneswnwswnwsenenwnwnwwseeswneewsenese
-                neswnwewnwnwseenwseesewsenwsweewe
-                wseweeenwnesenwwwswnew
-                """;
+        String input = """
+                       sesenwnenenewseeswwswswwnenewsewsw
+                       neeenesenwnwwswnenewnwwsewnenwseswesw
+                       seswneswswsenwwnwse
+                       nwnwneseeswswnenewneswwnewseswneseene
+                       swweswneswnenwsewnwneneseenw
+                       eesenwseswswnenwswnwnwsewwnwsene
+                       sewnenenenesenwsewnenwwwse
+                       wenwwweseeeweswwwnwwe
+                       wsweesenenewnwwnwsenewsenwwsesesenwne
+                       neeswseenwwswnwswswnw
+                       nenwswwsewswnenenewsenwsenwnesesenew
+                       enewnwewneswsewnwswenweswnenwsenwsw
+                       sweneswneswneneenwnewenewwneswswnese
+                       swwesenesewenwneswnwwneseswwne
+                       enesenwswwswneneswsenwnewswseenwsese
+                       wnwnesenesenenwwnenwsewesewsesesew
+                       nenewswnwewswnenesenwnesewesw
+                       eneswnwswnwsenenwnwnwwseeswneewsenese
+                       neswnwewnwnwseenwseesewsenwsweewe
+                       wseweeenwnesenwwwswnew
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(2208, testSubject.handlePart2(input));
+        assertEquals(2208, testSubject.handlePart2(input.lines()));
     }
 
     @Test

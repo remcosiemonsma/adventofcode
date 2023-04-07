@@ -22,9 +22,9 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
         registers.put("g", 0L);
         registers.put("h", 0L);
 
-        int pc = 0;
+        var pc = 0;
 
-        int timesmul = 0;
+        var timesmul = 0;
 
         while (0 <= pc && pc < operations.length) {
             String[] opparts = operations[pc].split(" ");
@@ -58,9 +58,9 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
-        int h = 0;
+        var h = 0;
 
-        for (int i = 109300; i <= 126300; i += 17) {
+        for (var i = 109300; i <= 126300; i += 17) {
             if (isComposite(i)) {
                 h++;
             }

@@ -1,14 +1,18 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day8 {
-    public int handlePart1(Stream<String> input) {
+public class Day8 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.mapToInt(this::calculateReducedSizeDifference)
                     .sum();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         return input.mapToInt(this::calculateExpandedSizeDifference)
                     .sum();
     }

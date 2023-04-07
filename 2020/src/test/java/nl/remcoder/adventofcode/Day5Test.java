@@ -18,22 +18,24 @@ class Day5Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                BFFFBBFRRR
-                FFFBBBFRRR
-                BBFFBBFRLL
-                """;
+        String input = """
+                       BFFFBBFRRR
+                       FFFBBBFRRR
+                       BBFFBBFRLL
+                       """;
 
-        assertEquals(820, testSubject.handlePart1(data.lines()));
+        assertEquals(820, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Input() throws Exception {
-        assertEquals(816, testSubject.handlePart1(Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()))));
+        assertEquals(816, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()))));
     }
 
     @Test
     public void testPart2Input() throws Exception {
-        assertEquals(539, testSubject.handlePart2(Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()))));
+        assertEquals(539, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day5/input").toURI()))));
     }
 }

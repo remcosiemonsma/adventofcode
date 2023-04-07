@@ -1,18 +1,19 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day1 {
-    public int handlePart1(Stream<String> input) {
-        int sum = 2020;
+public class Day1 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var sum = 2020;
 
-        List<Integer> entries = input.map(Integer::parseInt)
-                                     .collect(Collectors.toList());
+        var entries = input.map(Integer::parseInt)
+                           .toList();
 
-        for (int entry : entries) {
-            int difference = sum - entry;
+        for (var entry : entries) {
+            var difference = sum - entry;
 
             if (entries.contains(difference)) {
                 return difference * entry;
@@ -22,16 +23,17 @@ public class Day1 {
         return 0;
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<Integer> entries = input.map(Integer::parseInt)
-                                     .sorted()
-                                     .collect(Collectors.toList());
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var entries = input.map(Integer::parseInt)
+                           .sorted()
+                           .toList();
 
-        int entriesSize = entries.size();
+        var entriesSize = entries.size();
 
-        for (int first = 0; first < entriesSize; first++) {
-            for (int second = first + 1; second < entriesSize; second++) {
-                for (int third = second + 1; third < entriesSize; third++) {
+        for (var first = 0; first < entriesSize; first++) {
+            for (var second = first + 1; second < entriesSize; second++) {
+                for (var third = second + 1; third < entriesSize; third++) {
                     if (entries.get(first) + entries.get(second) + entries.get(third) == 2020) {
                         return entries.get(first) * entries.get(second) * entries.get(third);
                     }

@@ -19,9 +19,9 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
         var readingNodeHeaderMetadata = false;
         var readingMetadata = false;
 
-        char nodeId = 'A';
+        var nodeId = 'A';
 
-        var currentNode = new Node("" + nodeId++);
+        var currentNode = new Node(String.valueOf(nodeId++));
 
         for (var entry : data) {
             if (readingNodeHeaderChildren) {
@@ -37,7 +37,7 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
                 if (currentNode.amountOfChildNodes > 0) {
                     readingNodeHeaderChildren = true;
 
-                    Node newNode = new Node("" + nodeId++);
+                    Node newNode = new Node(String.valueOf(nodeId++));
                     currentNode.childNodes.add(newNode);
                     newNode.parent = currentNode;
 
@@ -64,7 +64,7 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
                     if (currentNode.amountOfChildNodes > currentNode.childNodes.size()) {
                         readingNodeHeaderChildren = true;
 
-                        Node newNode = new Node("" + nodeId++);
+                        Node newNode = new Node(String.valueOf(nodeId++));
                         currentNode.childNodes.add(newNode);
                         newNode.parent = currentNode;
 
@@ -91,7 +91,7 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
 
         var nodeId = 'A';
         
-        var root = new Node("" + nodeId++);
+        var root = new Node(String.valueOf(nodeId++));
 
         var currentNode = root;
 
@@ -109,7 +109,7 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
                 if (currentNode.amountOfChildNodes > 0) {
                     readingNodeHeaderChildren = true;
 
-                    Node newNode = new Node("" + nodeId++);
+                    Node newNode = new Node(String.valueOf(nodeId++));
                     currentNode.childNodes.add(newNode);
                     newNode.parent = currentNode;
 
@@ -121,7 +121,7 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
                 continue;
             }
             if (readingMetadata) {
-                int metadataEntry = Integer.parseInt(entry);
+                var metadataEntry = Integer.parseInt(entry);
 
                 currentNode.metadataEntries.add(metadataEntry);
 
@@ -134,7 +134,7 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
                     if (currentNode.amountOfChildNodes > currentNode.childNodes.size()) {
                         readingNodeHeaderChildren = true;
 
-                        Node newNode = new Node("" + nodeId++);
+                        Node newNode = new Node(String.valueOf(nodeId++));
                         currentNode.childNodes.add(newNode);
                         newNode.parent = currentNode;
 

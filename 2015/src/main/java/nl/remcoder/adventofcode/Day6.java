@@ -1,9 +1,13 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day6 {
-    public int handlePart1(Stream<String> input) {
+public class Day6 implements AdventOfCodeSolution<Integer> {
+
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var grid = new boolean[1000][1000];
 
         input.map(this::mapStringToInstruction)
@@ -19,7 +23,8 @@ public class Day6 {
         return countActivePixels(grid);
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var grid = new int[1000][1000];
 
         input.map(this::mapStringToInstruction)
@@ -108,17 +113,17 @@ public class Day6 {
     }
 
     private Instruction mapStringToInstruction(String line) {
-        String[] instructionparts = line.split("(\\s(?=\\d)| through )");
+        var instructionparts = line.split("(\\s(?=\\d)| through )");
 
-        String[] start = instructionparts[1].split(",");
-        String[] end = instructionparts[2].split(",");
+        var start = instructionparts[1].split(",");
+        var end = instructionparts[2].split(",");
 
-        int startx = Integer.parseInt(start[0]);
-        int starty = Integer.parseInt(start[1]);
-        int endx = Integer.parseInt(end[0]);
-        int endy = Integer.parseInt(end[1]);
+        var startx = Integer.parseInt(start[0]);
+        var starty = Integer.parseInt(start[1]);
+        var endx = Integer.parseInt(end[0]);
+        var endy = Integer.parseInt(end[1]);
 
-        Operation operation = switch (instructionparts[0]) {
+        var operation = switch (instructionparts[0]) {
             case "turn on" -> Operation.TURN_ON;
             case "turn off" -> Operation.TURN_OFF;
             case "toggle" -> Operation.TOGGLE;
@@ -134,5 +139,6 @@ public class Day6 {
         TURN_OFF
     }
 
-    private record Instruction(Operation operation, int startx, int starty, int endx, int endy) {}
+    private record Instruction(Operation operation, int startx, int starty, int endx, int endy) {
+    }
 }

@@ -1,5 +1,7 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.stream.IntStream;
@@ -7,8 +9,9 @@ import java.util.stream.Stream;
 
 import static nl.remcoder.adventofcode.library.Utils.byteArrayToHex;
 
-public class Day4 {
-    public int handlePart1(Stream<String> input) {
+public class Day4 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var line = input.findFirst()
                            .orElseThrow(() -> new AssertionError("Eek!"));
 
@@ -19,7 +22,8 @@ public class Day4 {
                         .orElseThrow(() -> new AssertionError("Ook!"));
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var line = input.findFirst()
                            .orElseThrow(() -> new AssertionError("Eek!"));
 

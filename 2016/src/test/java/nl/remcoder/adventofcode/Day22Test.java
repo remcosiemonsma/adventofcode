@@ -17,13 +17,7 @@ class Day22Test {
     }
 
     @Test
-    void testPart1Input() throws Exception {
-        assertEquals(937, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
-    }
-    
-    @Test
-    void part2Case1() {
+    void part1Case1() {
         String data = """
                       Filesystem            Size  Used  Avail  Use%
                       /dev/grid/node-x0-y0   10T    8T     2T   80%
@@ -37,7 +31,13 @@ class Day22Test {
                       /dev/grid/node-x2-y2    9T    6T     3T   66%
                       """;
 
-        assertEquals(7, testSubject.handlePart2(data.lines()));
+        assertEquals(7, testSubject.handlePart1(data.lines()));
+    }
+    
+    @Test
+    void testPart1Input() throws Exception {
+        assertEquals(937, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
     }
     
     @Test

@@ -12,13 +12,7 @@ import java.util.stream.Stream;
 public class Day8 implements AdventOfCodeSolution<Long> {
     @Override
     public Long handlePart1(Stream<String> input) {
-        long start = System.currentTimeMillis();
-
         Grid<Integer> trees = GridFactory.createNumberedGridFromInput(input);
-
-        long end = System.currentTimeMillis();
-
-        System.out.printf("Took %d millis to parse grid%n", end - start);
 
         Set<Coordinate> visibleTrees = determineVisibleTrees(trees);
 

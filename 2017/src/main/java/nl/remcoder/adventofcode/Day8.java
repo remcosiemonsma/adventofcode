@@ -16,7 +16,7 @@ public class Day8 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         input.forEach(this::processOperation);
 
-        int largestRegisterValue = Integer.MIN_VALUE;
+        var largestRegisterValue = Integer.MIN_VALUE;
 
         for (String register : registers.keySet()) {
             if (largestRegisterValue < registers.get(register)) {

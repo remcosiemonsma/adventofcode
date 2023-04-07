@@ -1,16 +1,19 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class Day9 {
-    public long handlePart1(Stream<String> input,
-                            int preambleLength) {
+public class Day9 implements AdventOfCodeSolution<Long> {
+    private int preambleLength;
+    
+    @Override
+    public Long handlePart1(Stream<String> input) {
         List<Long> numbers = input.map(Long::parseLong)
-                                  .collect(Collectors.toList());
+                                  .toList();
 
         List<Long> preamble = new ArrayList<>(numbers.subList(0, preambleLength));
 
@@ -21,12 +24,12 @@ public class Day9 {
                       .orElse(-1L);
     }
 
-    public long handlePart2(Stream<String> input,
-                            int preambleLength) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         List<Long> numbers = input.map(Long::parseLong)
-                                  .collect(Collectors.toList());
+                                  .toList();
 
-        long invalidNumber = handlePart1(numbers.stream().map(Object::toString), preambleLength);
+        long invalidNumber = handlePart1(numbers.stream().map(Object::toString));
 
         long result = -1;
 
@@ -62,6 +65,10 @@ public class Day9 {
         }
 
         return result;
+    }
+
+    public void setPreambleLength(int preambleLength) {
+        this.preambleLength = preambleLength;
     }
 
     private boolean isNumberInPreamble(long number, List<Long> preamble) {

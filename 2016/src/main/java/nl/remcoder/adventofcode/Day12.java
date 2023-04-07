@@ -10,7 +10,7 @@ public class Day12 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var instructions = input.map(s -> s.split(" ")).toArray(String[][]::new);
 
-        CPU cpu = new CPU();
+        var cpu = new CPU();
         
         cpu.performOperations(instructions);
 
@@ -21,7 +21,7 @@ public class Day12 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         var instructions = input.map(s -> s.split(" ")).toArray(String[][]::new);
 
-        CPU cpu = new CPU();
+        var cpu = new CPU();
         
         cpu.setRegisterc(1);
 

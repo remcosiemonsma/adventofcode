@@ -1,13 +1,16 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day4 {
+public class Day4 implements AdventOfCodeSolution<Long> {
     private final static Pattern ASSIGNMENT = Pattern.compile("(\\d*)-(\\d*),(\\d*)-(\\d*)");
 
-    public long handlePart1(Stream<String> input) {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         return input.map(ASSIGNMENT::matcher)
                     .filter(Matcher::matches)
                     .map(this::mapToPair)
@@ -15,7 +18,8 @@ public class Day4 {
                     .count();
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         return input.map(ASSIGNMENT::matcher)
                     .filter(Matcher::matches)
                     .map(this::mapToPair)

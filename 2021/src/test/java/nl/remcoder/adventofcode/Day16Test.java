@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,47 +18,47 @@ class Day16Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      D2FE28
-                      """;
+        String input = """
+                       D2FE28
+                       """;
 
-        assertEquals(6, testSubject.handlePart1(data.lines()));
+        assertEquals(6, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case2() {
-        String data = """
-                      8A004A801A8002F478
-                      """;
+        String input = """
+                       8A004A801A8002F478
+                       """;
 
-        assertEquals(16, testSubject.handlePart1(data.lines()));
+        assertEquals(16, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case3() {
-        String data = """
-                      620080001611562C8802118E34
-                      """;
+        String input = """
+                       620080001611562C8802118E34
+                       """;
 
-        assertEquals(12, testSubject.handlePart1(data.lines()));
+        assertEquals(12, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case4() {
-        String data = """
-                      C0015000016115A2E0802F182340
-                      """;
+        String input = """
+                       C0015000016115A2E0802F182340
+                       """;
 
-        assertEquals(23, testSubject.handlePart1(data.lines()));
+        assertEquals(23, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     void testPart1Case5() {
-        String data = """
-                      A0016C880162017C3686B18A3D4780
-                      """;
+        String input = """
+                       A0016C880162017C3686B18A3D4780
+                       """;
 
-        assertEquals(31, testSubject.handlePart1(data.lines()));
+        assertEquals(31, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -70,74 +69,74 @@ class Day16Test {
 
     @Test
     void testPart2Case1() {
-        String data = """
-                      C200B40A82
-                      """;
+        String input = """
+                       C200B40A82
+                       """;
 
-        assertEquals(3, testSubject.handlePart2(data.lines()));
+        assertEquals(3, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case2() {
-        String data = """
-                      04005AC33890
-                      """;
+        String input = """
+                       04005AC33890
+                       """;
 
-        assertEquals(54, testSubject.handlePart2(data.lines()));
+        assertEquals(54, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case3() {
-        String data = """
-                      880086C3E88112
-                      """;
+        String input = """
+                       880086C3E88112
+                       """;
 
-        assertEquals(7, testSubject.handlePart2(data.lines()));
+        assertEquals(7, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case5() {
-        String data = """
-                      CE00C43D881120
-                      """;
+        String input = """
+                       CE00C43D881120
+                       """;
 
-        assertEquals(9, testSubject.handlePart2(data.lines()));
+        assertEquals(9, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case6() {
-        String data = """
-                      D8005AC2A8F0
-                      """;
+        String input = """
+                       D8005AC2A8F0
+                       """;
 
-        assertEquals(1, testSubject.handlePart2(data.lines()));
+        assertEquals(1, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case7() {
-        String data = """
-                      F600BC2D8F
-                      """;
+        String input = """
+                       F600BC2D8F
+                       """;
 
-        assertEquals(0, testSubject.handlePart2(data.lines()));
+        assertEquals(0, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case8() {
-        String data = """
-                      9C005AC2F8F0
-                      """;
+        String input = """
+                       9C005AC2F8F0
+                       """;
 
-        assertEquals(0, testSubject.handlePart2(data.lines()));
+        assertEquals(0, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     void testPart2Case9() {
-        String data = """
-                      9C0141080250320F1802104A08
-                      """;
+        String input = """
+                       9C0141080250320F1802104A08
+                       """;
 
-        assertEquals(1, testSubject.handlePart2(data.lines()));
+        assertEquals(1, testSubject.handlePart2(input.lines()));
     }
 
     @Test

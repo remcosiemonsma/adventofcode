@@ -18,8 +18,9 @@ class Day22Test {
 
     @Test
     void testPart1Case1() {
-        testSubject.playerHitPoints = 10;
-        testSubject.playerMana = 250;
+        testSubject.setPlayerHitPoints(10);
+        testSubject.setPlayerMana(250);
+        
         String input = """
                        Hit Points: 13
                        Damage: 8
@@ -30,8 +31,8 @@ class Day22Test {
 
     @Test
     void testPart1Case2() {
-        testSubject.playerHitPoints = 10;
-        testSubject.playerMana = 250;
+        testSubject.setPlayerHitPoints(10);
+        testSubject.setPlayerMana(250);
 
         String input = """
                        Hit Points: 14
@@ -43,12 +44,18 @@ class Day22Test {
 
     @Test
     void testPart1Input() throws Exception {
+        testSubject.setPlayerHitPoints(50);
+        testSubject.setPlayerMana(500);
+        
         assertEquals(900, testSubject.handlePart1(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
     }
 
     @Test
     void testPart2Input() throws Exception {
+        testSubject.setPlayerHitPoints(50);
+        testSubject.setPlayerMana(500);
+        
         assertEquals(1216, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
     }

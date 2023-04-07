@@ -1,32 +1,36 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class Day2 {
+public class Day2 implements AdventOfCodeSolution<Long> {
 
-    public long handlePart1(Stream<String> input) {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         return input.map(this::mapStringToPassword)
                     .filter(this::isPasswordValidPart1)
                     .count();
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         return input.map(this::mapStringToPassword)
                     .filter(this::isPasswordValidPart2)
                     .count();
     }
 
     public Password mapStringToPassword(String password) {
-        String[] split = password.split(": ");
+        var split = password.split(": ");
         return new Password(new PasswordRule(split[0]), split[1]);
     }
 
     private boolean isPasswordValidPart1(Password password) {
-        Integer amount = password.passwordMap.get(password.passwordRule.c);
-        if (amount != null){
+        var amount = password.passwordMap.get(password.passwordRule.c);
+        if (amount != null) {
             return amount >= password.passwordRule.minAmount && amount <= password.passwordRule.maxAmount;
         } else {
             return false;
@@ -53,9 +57,9 @@ public class Day2 {
             this.passwordRule = passwordRule;
             this.password = password;
             this.passwordMap = password.chars()
-                                          .collect((Supplier<HashMap<Character, Integer>>) HashMap::new,
-                                                   this::countCharInMap,
-                                                   this::combineMaps);
+                                       .collect((Supplier<HashMap<Character, Integer>>) HashMap::new,
+                                                this::countCharInMap,
+                                                this::combineMaps);
         }
 
         private void combineMaps(Map<Character, Integer> mapToKeep,

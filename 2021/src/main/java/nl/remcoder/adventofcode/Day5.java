@@ -1,14 +1,17 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day5 {
+public class Day5 implements AdventOfCodeSolution<Integer> {
     private static final Pattern LINE_PATTERN = Pattern.compile("(\\d+),(\\d+) -> (\\d+),(\\d+)");
 
-    public int handlePart1(Stream<String> input) {
-        Grid grid = new Grid();
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var grid = new Grid();
 
         input.map(LINE_PATTERN::matcher)
              .filter(Matcher::matches)
@@ -19,8 +22,9 @@ public class Day5 {
         return grid.overlap;
     }
 
-    public int handlePart2(Stream<String> input) {
-        Grid grid = new Grid();
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var grid = new Grid();
 
         input.map(LINE_PATTERN::matcher)
              .filter(Matcher::matches)
@@ -86,7 +90,6 @@ public class Day5 {
                 Point leftMostPoint;
                 Point upperMostPont;
                 Point rightMostPoint;
-                Point lowerMostPoint;
 
                 if (line.p1.x < line.p2.x) {
                     leftMostPoint = line.p1;
@@ -98,40 +101,29 @@ public class Day5 {
 
                 if (line.p1.y < line.p2.y) {
                     upperMostPont = line.p1;
-                    lowerMostPoint = line.p2;
                 } else {
                     upperMostPont = line.p2;
-                    lowerMostPoint = line.p1;
                 }
 
-                int startx = leftMostPoint.x;
-                int starty = leftMostPoint.y;
-                int length = Math.abs(leftMostPoint.x - rightMostPoint.x);
+                var startx = leftMostPoint.x;
+                var starty = leftMostPoint.y;
+                var length = Math.abs(leftMostPoint.x - rightMostPoint.x);
 
                 if (leftMostPoint == upperMostPont) {
-                    for (int i = 0; i <= length; i++) {
+                    for (var i = 0; i <= length; i++) {
                         grid[starty + i][startx + i]++;
                         if (grid[starty + i][startx + i] == 2) {
                             overlap++;
                         }
                     }
                 } else {
-                    for (int i = 0; i <= length; i++) {
+                    for (var i = 0; i <= length; i++) {
                         grid[starty - i][startx + i]++;
                         if (grid[starty - i][startx + i] == 2) {
                             overlap++;
                         }
                     }
                 }
-            }
-        }
-
-        public void print() {
-            for (int[] line : grid) {
-                for (int pixel : line) {
-                    System.out.print(pixel);
-                }
-                System.out.println();
             }
         }
     }

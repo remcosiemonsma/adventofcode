@@ -76,12 +76,12 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
 
         var startPositions = grid.findValues('@');
 
-        Map<Coordinate, Set<Character>> reachableKeysForPositions = startPositions.stream()
-                                                                                  .collect(Collectors.toMap(
-                                                                                          Function.identity(),
-                                                                                          startPosition -> findReachableKeysForRobot(
-                                                                                                  startPosition,
-                                                                                                  grid)));
+        var reachableKeysForPositions = startPositions.stream()
+                                                      .collect(Collectors.toMap(
+                                                              Function.identity(),
+                                                              startPosition -> findReachableKeysForRobot(
+                                                                      startPosition,
+                                                                      grid)));
 
         var keyPositions = keys.stream()
                                .collect(Collectors.toMap(Function.identity(),
@@ -107,14 +107,16 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
                                                                  Function.identity(),
                                                                  otherKey -> {
                                                                      Coordinate startPosition = keyPositions.get(key);
-                                                                     Coordinate targetPosition = keyPositions.get(otherKey);
+                                                                     Coordinate targetPosition =
+                                                                             keyPositions.get(otherKey);
                                                                      if (startPosition == null) {
                                                                          startPosition = entry.getKey();
                                                                      }
                                                                      if (targetPosition == null) {
                                                                          targetPosition = entry.getKey();
                                                                      }
-                                                                     return createPathTo(startPosition, targetPosition, grid);
+                                                                     return createPathTo(startPosition, targetPosition,
+                                                                                         grid);
                                                                  }))
                                                                ))
                                          ));
@@ -126,8 +128,11 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
                                                findShortestPath(startPosition,
                                                                 reachableKeysForPositions.entrySet()
                                                                                          .stream()
-                                                                                         .filter(entry -> !entry.getKey().equals(startPosition))
-                                                                                         .flatMap(entry -> entry.getValue().stream())
+                                                                                         .filter(entry -> !entry.getKey()
+                                                                                                                .equals(startPosition))
+                                                                                         .flatMap(
+                                                                                                 entry -> entry.getValue()
+                                                                                                               .stream())
                                                                                          .collect(Collectors.toSet()),
                                                                 reachableKeysForPositions.get(startPosition),
                                                                 keyPositions,
@@ -226,7 +231,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
                        .map(step -> new Path(step.foundDoors, (int) step.getDistance()));
     }
 
-    private static class Step extends Node {
+    private static class Step extends Node<Step> {
         private final Coordinate currentPosition;
         private final Set<Character> foundDoors;
         private final Grid<Character> grid;
@@ -241,7 +246,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Step, Long> getNeighbors() {
             var neighbors = new HashMap<Step, Long>();
             for (var nextPosition : currentPosition.getStraightNeighbours()) {
                 if (visitedPositions.containsKey(nextPosition)) {

@@ -58,7 +58,7 @@ public class Day10 implements AdventOfCodeSolution<Integer> {
         var angleCounter = 0;
 
         while (destroyedAsteroids.size() < 200) {
-            List<Asteroid> lineOfAsteroids = sortedAsteroids.get(angles[angleCounter++]);
+            var lineOfAsteroids = sortedAsteroids.get(angles[angleCounter++]);
 
             if (!lineOfAsteroids.isEmpty()) {
                 Asteroid destroyedAsteroid = lineOfAsteroids.remove(0);
@@ -80,7 +80,7 @@ public class Day10 implements AdventOfCodeSolution<Integer> {
         var grid = input.toList();
 
         for (var y = 0; y < grid.size(); y++) {
-            String line = grid.get(y);
+            var line = grid.get(y);
             for (var x = 0; x < line.length(); x++) {
                 char c = line.charAt(x);
 

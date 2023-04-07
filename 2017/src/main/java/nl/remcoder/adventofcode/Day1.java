@@ -9,7 +9,7 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var line = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
-        char previousChar = line.charAt(line.length() - 1);
+        var previousChar = line.charAt(line.length() - 1);
 
         var result = 0;
 

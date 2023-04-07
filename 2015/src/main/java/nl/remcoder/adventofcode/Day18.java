@@ -1,13 +1,15 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.GridFactory;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Grid;
 
 import java.util.stream.Stream;
 
-public class Day18 {
-    public long handlePart1(Stream<String> input) {
+public class Day18 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         var grid = GridFactory.createBooleanGridFromInput(input);
 
         for (int i = 0; i < 100; i++) {
@@ -25,7 +27,8 @@ public class Day18 {
         return grid.countElements(true);
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         var grid = GridFactory.createBooleanGridFromInput(input);
 
         for (int i = 0; i < 100; i++) {

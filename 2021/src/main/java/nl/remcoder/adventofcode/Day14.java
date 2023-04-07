@@ -1,17 +1,21 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.model.Pair;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class Day14 {
-    public long handlePart1(Stream<String> input) {
-        Map<Pair<Character, Character>, List<Pair<Character, Character>>> reactions = new HashMap<>();
+public class Day14 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
+        var reactions = new HashMap<Pair<Character, Character>, List<Pair<Character, Character>>>();
 
-        Map<Pair<Character, Character>, Long> pairCounts = new HashMap<>();
+        var pairCounts = new HashMap<Pair<Character, Character>, Long>();
 
-        AtomicReference<Character> tail = new AtomicReference<>();
+        var tail = new AtomicReference<Character>();
 
         parseInput(input, reactions, pairCounts, tail);
 
@@ -21,12 +25,13 @@ public class Day14 {
                countLeastCommonElement(pairCounts, tail.get());
     }
 
-    public long handlePart2(Stream<String> input) {
-        Map<Pair<Character, Character>, List<Pair<Character, Character>>> reactions = new HashMap<>();
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var reactions = new HashMap<Pair<Character, Character>, List<Pair<Character, Character>>>();
 
-        Map<Pair<Character, Character>, Long> pairCounts = new HashMap<>();
+        var pairCounts = new HashMap<Pair<Character, Character>, Long>();
 
-        AtomicReference<Character> tail = new AtomicReference<>();
+        var tail = new AtomicReference<Character>();
 
         parseInput(input, reactions, pairCounts, tail);
 
@@ -39,13 +44,13 @@ public class Day14 {
     private void performPolymerReactions(Map<Pair<Character, Character>, List<Pair<Character, Character>>> reactions,
                                          Map<Pair<Character, Character>, Long> pairCounts,
                                          int amountOfSteps) {
-        for (int step = 0; step < amountOfSteps; step++) {
-            Map<Pair<Character, Character>, Long> copy = Map.copyOf(pairCounts);
+        for (var step = 0; step < amountOfSteps; step++) {
+            var copy = Map.copyOf(pairCounts);
 
             copy.forEach((copyPair, copyValue) -> {
-                List<Pair<Character, Character>> pairs = reactions.get(copyPair);
+                var pairs = reactions.get(copyPair);
 
-                pairCounts.compute(copyPair, (key, value) -> value - copyValue);
+                pairCounts.computeIfPresent(copyPair, (key, value) -> value - copyValue);
 
                 pairs.forEach(pair -> pairCounts.compute(pair, (key, value) -> {
                     if (value == null) {
@@ -63,10 +68,10 @@ public class Day14 {
                             Map<Pair<Character, Character>, Long> pairCounts, AtomicReference<Character> tail) {
         input.filter(Predicate.not(String::isEmpty))
              .forEach(s -> {
-                 String[] split = s.split(" -> ");
+                 var split = s.split(" -> ");
                  if (split.length == 1) {
-                     char[] chars = split[0].toCharArray();
-                     for (int i = 0; i < chars.length - 1; i++) {
+                     var chars = split[0].toCharArray();
+                     for (var i = 0; i < chars.length - 1; i++) {
                          pairCounts.compute(new Pair<>(chars[i], chars[i + 1]), (key, value) -> {
                              if (value == null) {
                                  return 1L;
@@ -85,13 +90,13 @@ public class Day14 {
     }
 
     private long countMostCommonElement(Map<Pair<Character, Character>, Long> polymer, Character tail) {
-        Map<Character, Long> occurrences = countElements(polymer, tail);
+        var occurrences = countElements(polymer, tail);
 
         return occurrences.values()
                           .stream()
                           .mapToLong(value -> value)
                           .max()
-                          .getAsLong();
+                          .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private long countLeastCommonElement(Map<Pair<Character, Character>, Long> polymer, Character tail) {
@@ -101,7 +106,7 @@ public class Day14 {
                           .stream()
                           .mapToLong(value -> value)
                           .min()
-                          .getAsLong();
+                          .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private Map<Character, Long> countElements(Map<Pair<Character, Character>, Long> polymer, Character tail) {
@@ -110,7 +115,7 @@ public class Day14 {
         occurrences.put(tail, 1L);
 
         for (Map.Entry<Pair<Character, Character>, Long> entry : polymer.entrySet()) {
-            occurrences.compute(entry.getKey().left, (key, value) -> {
+            occurrences.compute(entry.getKey().left(), (key, value) -> {
                 if (value == null) {
                     return entry.getValue();
                 } else {
@@ -120,6 +125,4 @@ public class Day14 {
         }
         return occurrences;
     }
-
-    private record Pair<L, R>(L left, R right) {}
 }

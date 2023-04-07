@@ -1,13 +1,15 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.pathfinding.Dijkstra;
 import nl.remcoder.adventofcode.library.pathfinding.Node;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Day21 {
-    public int handlePart1(Stream<String> input) {
+public class Day21 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         var bossData = input.toList();
 
         var boss = createWarrior(bossData);
@@ -18,12 +20,13 @@ public class Day21 {
         var start = new Game(shop, player, boss);
         start.setDistance(0);
 
-        return (int) Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner())
-                             .orElseThrow(() -> new AssertionError("Eek!"))
-                             .getDistance();
+        return Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner())
+                       .orElseThrow(() -> new AssertionError("Eek!"))
+                       .getDistance();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         var bossData = input.toList();
 
         var boss = createWarrior(bossData);
@@ -47,11 +50,11 @@ public class Day21 {
             nextGames.addAll(neighbors.keySet());
         }
 
-        return (int) games.stream()
-                          .filter(game -> !game.isPlayerWinner())
-                          .mapToLong(Game::getDistance)
-                          .max()
-                          .orElseThrow(() -> new AssertionError("Eek!"));
+        return games.stream()
+                    .filter(game -> !game.isPlayerWinner())
+                    .mapToLong(Game::getDistance)
+                    .max()
+                    .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private Shop createShop() {
@@ -90,7 +93,7 @@ public class Day21 {
                            null, null, null, null);
     }
 
-    private static class Game extends Node {
+    private static class Game extends Node<Game> {
         private final Shop shop;
         private final Warrior player;
         private final Warrior boss;

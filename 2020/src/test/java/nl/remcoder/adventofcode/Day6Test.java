@@ -18,57 +18,59 @@ class Day6Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                abc
-                                
-                a
-                b
-                c
-                                
-                ab
-                ac
-                                
-                a
-                a
-                a
-                a
-                                
-                b
-                """;
+        String input = """
+                       abc
+                                       
+                       a
+                       b
+                       c
+                                       
+                       ab
+                       ac
+                                       
+                       a
+                       a
+                       a
+                       a
+                                       
+                       b
+                       """;
 
-        assertEquals(11, testSubject.handlePart1(data.lines()));
+        assertEquals(11, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Input() throws Exception {
-        assertEquals(6799, testSubject.handlePart1(Files.lines(Paths.get(ClassLoader.getSystemResource("day6/input").toURI()))));
+        assertEquals(6799, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day6/input").toURI()))));
     }
 
     @Test
     public void testPart2Case1() {
-        String data = """
-                abc
-                                
-                a
-                b
-                c
-                                
-                ab
-                ac
-                                
-                a
-                a
-                a
-                a
-                                
-                b
-                """;
+        String input = """
+                       abc
+                                       
+                       a
+                       b
+                       c
+                                       
+                       ab
+                       ac
+                                       
+                       a
+                       a
+                       a
+                       a
+                                       
+                       b
+                       """;
 
-        assertEquals(6, testSubject.handlePart2(data.lines()));
+        assertEquals(6, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Input() throws Exception {
-        assertEquals(3354, testSubject.handlePart2(Files.lines(Paths.get(ClassLoader.getSystemResource("day6/input").toURI()))));
+        assertEquals(3354, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day6/input").toURI()))));
     }
 }

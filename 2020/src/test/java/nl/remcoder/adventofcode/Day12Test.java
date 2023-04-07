@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,41 +18,39 @@ class Day12Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                F10
-                N3
-                F7
-                R90
-                F11
-                """;
+        String input = """
+                       F10
+                       N3
+                       F7
+                       R90
+                       F11
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(25, testSubject.handlePart1(input));
+        assertEquals(25, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Input() throws Exception {
-        assertEquals(1319, testSubject.handlePart1(Files.lines(Paths.get(ClassLoader.getSystemResource("day12/input").toURI()))));
+        assertEquals(1319, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day12/input").toURI()))));
     }
 
     @Test
     public void testPart2Case1() {
-        String data = """
-                F10
-                N3
-                F7
-                R90
-                F11
-                """;
+        String input = """
+                       F10
+                       N3
+                       F7
+                       R90
+                       F11
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(286, testSubject.handlePart2(input));
+        assertEquals(286, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Input() throws Exception {
-        assertEquals(1319, testSubject.handlePart2(Files.lines(Paths.get(ClassLoader.getSystemResource("day12/input").toURI()))));
+        assertEquals(62434, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day12/input").toURI()))));
     }
 }

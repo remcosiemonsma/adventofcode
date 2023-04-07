@@ -91,7 +91,7 @@ public class Day16 implements AdventOfCodeSolution<Integer> {
         var possibleOpcodes = new HashMap<Integer, List<Opcode>>();
 
         for (var i = 0; i < 16; i++) {
-            ArrayList<Opcode> opcodes = new ArrayList<>();
+            var opcodes = new ArrayList<Opcode>();
             opcodes.add(addr);
             opcodes.add(addi);
             opcodes.add(mulr);
@@ -186,9 +186,9 @@ public class Day16 implements AdventOfCodeSolution<Integer> {
     }
 
     private static int[] parseStringToRegister(String string) {
-        String registerPartOfString = string.substring(9, 19);
+        var registerPartOfString = string.substring(9, 19);
 
-        String[] stringRegister = registerPartOfString.split(", ");
+        var stringRegister = registerPartOfString.split(", ");
 
         return parseStringArrayToIntArray(stringRegister);
     }

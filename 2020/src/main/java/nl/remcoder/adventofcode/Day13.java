@@ -1,62 +1,64 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day13 {
-    public int handlePart1(Stream<String> input) {
-        List<String> data = input.collect(Collectors.toList());
+public class Day13 implements BiAdventOfCodeSolution<Integer, Long> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var data = input.toList();
 
-        int earliestDepartureTime = Integer.parseInt(data.get(0));
+        var earliestDepartureTime = Integer.parseInt(data.get(0));
 
-        int busId = Arrays.stream(data.get(1).split(","))
+        var busId = Arrays.stream(data.get(1).split(","))
                           .filter(bus -> !"x".equals(bus))
                           .map(Integer::parseInt)
                           .min(Comparator.comparing(bus -> {
-                              int nextDepartureTime =
+                              var nextDepartureTime =
                                       (int) Math.ceil((double) earliestDepartureTime / (double) bus) * bus;
                               return nextDepartureTime - earliestDepartureTime;
                           }))
-                          .get();
+                          .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int nextDepartureTime = (int) Math.ceil((double) earliestDepartureTime / (double) busId) * busId;
+        var nextDepartureTime = (int) Math.ceil((double) earliestDepartureTime / (double) busId) * busId;
         return (nextDepartureTime - earliestDepartureTime) * busId;
     }
 
-    public long handlePart2(Stream<String> input) {
-        List<String> data = input.collect(Collectors.toList());
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var data = input.toList();
 
-        String[] busDepartures = data.get(1).split(",");
+        var busDepartures = data.get(1).split(",");
 
-        List<Bus> buses = new ArrayList<>();
+        var buses = new ArrayList<Bus>();
 
-        for (int position = 0; position < busDepartures.length; position++) {
-            String busId = busDepartures[position];
+        for (var position = 0; position < busDepartures.length; position++) {
+            var busId = busDepartures[position];
 
             if ("x".equals(busId)) {
                 continue;
             }
 
-            Bus bus = new Bus(Integer.parseInt(busId), position);
+            var bus = new Bus(Integer.parseInt(busId), position);
 
             buses.add(bus);
         }
 
-        Bus firstBus = buses.stream()
-                            .min(Comparator.comparing(Bus::getPosition))
-                            .get();
+        var firstBus = buses.stream()
+                            .min(Comparator.comparing(Bus::position))
+                            .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int amountOfBusesFound = 1;
+        var amountOfBusesFound = 1;
 
-        long timeDiff = firstBus.busId;
+        var timeDiff = firstBus.busId;
 
-        for (long timestamp = firstBus.busId; timestamp < Long.MAX_VALUE; timestamp += timeDiff) {
-            Bus busToVerify = buses.get(amountOfBusesFound);
+        for (var timestamp = firstBus.busId; timestamp < Long.MAX_VALUE; timestamp += timeDiff) {
+            var busToVerify = buses.get(amountOfBusesFound);
 
             if ((timestamp + busToVerify.position) % busToVerify.busId == 0) {
                 timeDiff = lcm(timeDiff, busToVerify.busId);
@@ -68,7 +70,7 @@ public class Day13 {
             }
         }
 
-        return -1;
+        return -1L;
     }
 
     private long lcm(long number1, long number2) {
@@ -80,21 +82,6 @@ public class Day13 {
         return absProduct.divide(gcd).longValue();
     }
 
-    private static class Bus {
-        private final int busId;
-        private final int position;
-
-        private Bus(int busId, int position) {
-            this.busId = busId;
-            this.position = position;
-        }
-
-        public int getBusId() {
-            return busId;
-        }
-
-        public int getPosition() {
-            return position;
-        }
+    private record Bus(long busId, int position) {
     }
 }

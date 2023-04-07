@@ -16,7 +16,7 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
         
         var amountMatching = 0;
 
-        for (int password = start; password <= end; password++) {
+        for (var password = start; password <= end; password++) {
             var passwordString = Integer.toString(password);
 
             if (passwordString.length() == 6 && doesPasswordContainSameAdjacentDigits(passwordString) &&
@@ -73,11 +73,7 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
         if (c3 == c4 && c4 != c5 && c3 != c2) {
             return true;
         }
-        if (c4 == c5 && c4 != c3) {
-            return true;
-        }
-
-        return false;
+        return c4 == c5 && c4 != c3;
     }
 
     private boolean doesPasswordContainSameAdjacentDigits(String password) {
