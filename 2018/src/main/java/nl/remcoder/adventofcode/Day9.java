@@ -75,11 +75,11 @@ public class Day9 implements AdventOfCodeSolution<Long> {
 
         var players = new Player[amountOfPlayers];
 
-        for (int player = 0; player < amountOfPlayers; player++) {
+        for (var player = 0; player < amountOfPlayers; player++) {
             players[player] = new Player(player + 1);
         }
 
-        int currentplayer = 0;
+        var currentplayer = 0;
 
         var marbles = new LinkedList<Integer>();
 

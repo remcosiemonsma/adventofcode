@@ -1,10 +1,13 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Day17 {
-    public int handlePart1(Stream<String> input) {
+public class Day17 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var buckets = new HashSet<Bucket>();
 
         var sizes = input.map(Integer::parseInt)
@@ -19,7 +22,8 @@ public class Day17 {
         return findPossibleCombinations(new HashSet<>(), buckets, memo);
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var buckets = new HashSet<Bucket>();
 
         var sizes = input.map(Integer::parseInt)
@@ -43,7 +47,7 @@ public class Day17 {
 
     private int findPossibleCombinations(Set<Bucket> bucketsUsed, Set<Bucket> remainingBuckets,
                                          Map<Set<Bucket>, Integer> processedBuckets) {
-        int amount = 0;
+        var amount = 0;
         for (var bucket : remainingBuckets) {
             var newBuckets = new HashSet<>(bucketsUsed);
             newBuckets.add(bucket);

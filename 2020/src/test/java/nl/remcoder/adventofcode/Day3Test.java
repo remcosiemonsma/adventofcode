@@ -18,49 +18,51 @@ class Day3Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                ..##.......
-                #...#...#..
-                .#....#..#.
-                ..#.#...#.#
-                .#...##..#.
-                ..#.##.....
-                .#.#.#....#
-                .#........#
-                #.##...#...
-                #...##....#
-                .#..#...#.#
-                """;
+        String input = """
+                       ..##.......
+                       #...#...#..
+                       .#....#..#.
+                       ..#.#...#.#
+                       .#...##..#.
+                       ..#.##.....
+                       .#.#.#....#
+                       .#........#
+                       #.##...#...
+                       #...##....#
+                       .#..#...#.#
+                       """;
 
-        assertEquals(7, testSubject.handlePart1(data.lines()));
+        assertEquals(7, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Input() throws Exception {
-        assertEquals(259, testSubject.handlePart1(Files.lines(Paths.get(ClassLoader.getSystemResource("day3/input").toURI()))));
+        assertEquals(259, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day3/input").toURI()))));
     }
 
     @Test
     public void testPart2Case1() {
-        String data = """
-                ..##.......
-                #...#...#..
-                .#....#..#.
-                ..#.#...#.#
-                .#...##..#.
-                ..#.##.....
-                .#.#.#....#
-                .#........#
-                #.##...#...
-                #...##....#
-                .#..#...#.#
-                """;
+        String input = """
+                       ..##.......
+                       #...#...#..
+                       .#....#..#.
+                       ..#.#...#.#
+                       .#...##..#.
+                       ..#.##.....
+                       .#.#.#....#
+                       .#........#
+                       #.##...#...
+                       #...##....#
+                       .#..#...#.#
+                       """;
 
-        assertEquals(336, testSubject.handlePart2(data.lines()));
+        assertEquals(336, testSubject.handlePart2(input.lines()));
     }
 
     @Test
     public void testPart2Input() throws Exception {
-        assertEquals(2224913600L, testSubject.handlePart2(Files.lines(Paths.get(ClassLoader.getSystemResource("day3/input").toURI()))));
+        assertEquals(2224913600L, testSubject.handlePart2(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day3/input").toURI()))));
     }
 }

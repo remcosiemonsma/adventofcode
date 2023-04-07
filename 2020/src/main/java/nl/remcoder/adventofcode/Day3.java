@@ -1,34 +1,38 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day3 {
-    public int handlePart1(Stream<String> input) {
-        char[][] grid = input.map(String::toCharArray)
-                             .toArray(char[][]::new);
+public class Day3 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
+        var grid = input.map(String::toCharArray)
+                        .toArray(char[][]::new);
 
         return getAmountOfTrees(grid, 1, 3);
     }
 
-    public long handlePart2(Stream<String> input) {
-        char[][] grid = input.map(String::toCharArray)
-                             .toArray(char[][]::new);
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var grid = input.map(String::toCharArray)
+                        .toArray(char[][]::new);
 
-        long firstAmount = getAmountOfTrees(grid, 1, 1);
-        long secondAmount = getAmountOfTrees(grid, 1, 3);
-        long thirdAmount = getAmountOfTrees(grid, 1, 5);
-        long fourthAmount = getAmountOfTrees(grid, 1, 7);
-        long fifthAmount = getAmountOfTrees(grid, 2, 1);
+        var firstAmount = getAmountOfTrees(grid, 1, 1);
+        var secondAmount = getAmountOfTrees(grid, 1, 3);
+        var thirdAmount = getAmountOfTrees(grid, 1, 5);
+        var fourthAmount = getAmountOfTrees(grid, 1, 7);
+        var fifthAmount = getAmountOfTrees(grid, 2, 1);
 
         return firstAmount * secondAmount * thirdAmount * fourthAmount * fifthAmount;
     }
 
-    private int getAmountOfTrees(char[][] grid, int amountDown, int amountRight) {
-        int column = 0;
+    private long getAmountOfTrees(char[][] grid, int amountDown, int amountRight) {
+        var column = 0;
 
-        int amountOfTrees = 0;
+        var amountOfTrees = 0;
 
-        for (int row = 0; row < grid.length; row += amountDown) {
+        for (var row = 0; row < grid.length; row += amountDown) {
             if (grid[row][column] == '#') {
                 amountOfTrees++;
             }

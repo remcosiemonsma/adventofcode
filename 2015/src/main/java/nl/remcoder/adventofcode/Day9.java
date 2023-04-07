@@ -1,5 +1,7 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,21 +10,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day9 {
+public class Day9 implements AdventOfCodeSolution<Integer> {
     private static final Pattern DISTANCE_PATTERN = Pattern.compile("(\\w+) to (\\w+) = (\\d+)");
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var nodes = new HashMap<String, Node>();
 
         input.forEach(line -> processDistance(nodes, line));
 
-        Node start = new Node("start");
+        var start = new Node();
 
-        for (Node node : nodes.values()) {
+        for (var node : nodes.values()) {
             start.distances.put(node, 0);
         }
 
-        List<Node> visitedNodes = new ArrayList<>();
+        var visitedNodes = new ArrayList<Node>();
         visitedNodes.add(start);
 
         return calculateRoutes(start, visitedNodes).stream()
@@ -31,20 +34,19 @@ public class Day9 {
                                                    .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var nodes = new HashMap<String, Node>();
 
-        input.forEach(line -> {
-            processDistance(nodes, line);
-        });
+        input.forEach(line -> processDistance(nodes, line));
 
-        Node start = new Node("start");
+        var start = new Node();
 
-        for (Node node : nodes.values()) {
+        for (var node : nodes.values()) {
             start.distances.put(node, 0);
         }
 
-        List<Node> visitedNodes = new ArrayList<>();
+        var visitedNodes = new ArrayList<Node>();
         visitedNodes.add(start);
 
         return calculateRoutes(start, visitedNodes).stream()
@@ -61,8 +63,8 @@ public class Day9 {
             String end = matcher.group(2);
             int distance = Integer.parseInt(matcher.group(3));
 
-            Node first = nodes.computeIfAbsent(start, Node::new);
-            Node second = nodes.computeIfAbsent(end, Node::new);
+            Node first = nodes.computeIfAbsent(start, t -> new Node());
+            Node second = nodes.computeIfAbsent(end, t -> new Node());
 
             first.distances.put(second, distance);
             second.distances.put(first, distance);
@@ -95,11 +97,9 @@ public class Day9 {
     }
 
     private static class Node {
-        private final String name;
         private final Map<Node, Integer> distances;
 
-        private Node(String name) {
-            this.name = name;
+        private Node() {
             distances = new HashMap<>();
         }
     }

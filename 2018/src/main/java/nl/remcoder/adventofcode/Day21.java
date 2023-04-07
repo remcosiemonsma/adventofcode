@@ -136,15 +136,7 @@ public class Day21 implements AdventOfCodeSolution<Integer> {
 
     }
 
-    private static class Operation {
-        final Opcode opcode;
-        final int[] parameters;
-
-        private Operation(Opcode opcode, int[] parameters) {
-            this.opcode = opcode;
-            this.parameters = parameters;
-        }
-
+    private record Operation(Opcode opcode, int[] parameters) {
         private void doOp(int[] registers) {
             opcode.doOp(registers, parameters);
         }

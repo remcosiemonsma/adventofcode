@@ -10,34 +10,20 @@ import java.util.stream.Stream;
 public class Day22 implements AdventOfCodeSolution<Long> {
     @Override
     public Long handlePart1(Stream<String> input) {
-        var techniques = input.flatMap(s -> toTechnique(s, 10007))
+        var techniques = input.flatMap(this::toTechnique)
                               .toList();
         
-        return finalPositionForCard(2019, 10007, techniques);
+        return finalPositionForCard(techniques);
     }
 
     @Override
     public Long handlePart2(Stream<String> input) {
         return solveB(input.toList());
-        //https://github.com/nibarius/aoc/blob/master/src/main/aoc2019/Day22.kt, werkt niet...
-//        var deckSize = 119_315_717_514_047L;
-//        var repeats = 101_741_582_076_661L;
-//        var targetPosition = 2020L;
-//        
-//        var techniques = input.flatMap(s -> toTechnique(s, deckSize))
-//                              .toList();
-//
-//        var shufflesLeftUntilInitialState = deckSize - 1 - repeats;
-//
-//        var reduced = reduceShuffleProcess(deckSize, techniques);
-//        var repeated = repeatShuffleProcess(reduced, shufflesLeftUntilInitialState, deckSize);
-//        
-//        return finalPositionForCard(targetPosition, deckSize, repeated);
     }
     
-    private Stream<Technique> toTechnique(String operation, long deckSize) {
+    private Stream<Technique> toTechnique(String operation) {
         if (operation.startsWith("deal into")) {
-            return Stream.of(new Increment(deckSize - 1), new Cut(1));
+            return Stream.of(new Increment((long) 10007 - 1), new Cut(1));
         } else if (operation.startsWith("deal with increment")) {
             return Stream.of(new Increment(Integer.parseInt(operation.split(" ")[3])));
         } else if (operation.startsWith("cut")) {
@@ -47,23 +33,24 @@ public class Day22 implements AdventOfCodeSolution<Long> {
         }
     }
     
-    private long finalPositionForCard(long card, long deckSize, List<Technique> process) {
-        process = reduceShuffleProcess(deckSize, process);
+    private long finalPositionForCard(List<Technique> process) {
+        process = reduceShuffleProcess(process);
+        long card = 2019;
         
         for (var technique : process) {
-            card = technique.nextPositionForCard(card, deckSize);
+            card = technique.nextPositionForCard(card);
         }
         
         return card;
     }
 
-    private List<Technique> reduceShuffleProcess(long deckSize, List<Technique> initialProcess) {
+    private List<Technique> reduceShuffleProcess(List<Technique> initialProcess) {
         var process = initialProcess;
         while (process.size() > 2) {
             var offset = 0;
             while (offset < process.size() - 1) {
                 if (process.get(offset).canBeCombinedWith(process.get(offset + 1))) {
-                    var combined = process.get(offset).combine(process.get(offset + 1), deckSize);
+                    var combined = process.get(offset).combine(process.get(offset + 1), 10007);
                     var newProcess = new ArrayList<Technique>();
                     newProcess.addAll(process.subList(0, offset));
                     newProcess.addAll(combined);
@@ -78,40 +65,8 @@ public class Day22 implements AdventOfCodeSolution<Long> {
         return process;
     }
 
-    private List<Technique> repeatShuffleProcess(List<Technique> process, long times, long deckSize) {
-        var current = process;
-        char[] chars = reverse(Long.toString(times, 2).toCharArray());
-        var res = new ArrayList<Technique>();
-        for (var bit : chars) {
-            if (bit == '1') {
-                res.addAll(current);
-            }
-            var newCurrent = new ArrayList<Technique>();
-            newCurrent.addAll(current);
-            newCurrent.addAll(current);
-            current = reduceShuffleProcess(deckSize, newCurrent);
-        }
-        return reduceShuffleProcess(deckSize, res);
-    }
-
-    private char[] reverse (char[] data) {
-        char[] result = new char[data.length];
-
-        for (int i = 0; i < data.length; i++) {
-            char c = data[data.length - i - 1];
-            if (c == '0') {
-                c = '1';
-            } else {
-                c = '0';
-            }
-            result[i] = c;
-        }
-
-        return result;
-    }
-
     private sealed abstract static class Technique {
-        abstract long nextPositionForCard(long card, long deckSize);
+        abstract long nextPositionForCard(long card);
 
         private long mulMod(long a, long b, long mod) {
             return BigInteger.valueOf(a).multiply(BigInteger.valueOf(b)).mod(BigInteger.valueOf(mod)).longValueExact();
@@ -142,8 +97,8 @@ public class Day22 implements AdventOfCodeSolution<Long> {
         }
 
         @Override
-        long nextPositionForCard(long card, long deckSize) {
-            return Math.floorMod(card - value, deckSize);
+        long nextPositionForCard(long card) {
+            return Math.floorMod(card - value, (long) 10007);
         }
     }
     
@@ -155,8 +110,8 @@ public class Day22 implements AdventOfCodeSolution<Long> {
         }
 
         @Override
-        long nextPositionForCard(long card, long deckSize) {
-            return Math.floorMod(card * value, deckSize);
+        long nextPositionForCard(long card) {
+            return Math.floorMod(card * value, (long) 10007);
         }
     }
 
@@ -183,8 +138,8 @@ public class Day22 implements AdventOfCodeSolution<Long> {
         }
 
         // r = (b * pow(1-a, m-2, m)) % m
-        BigInteger mm = BigInteger.valueOf(m);
-        BigInteger r = BigInteger.valueOf(b).multiply(BigInteger.valueOf(1 - a).modPow(BigInteger.valueOf(m - 2), mm)).mod(BigInteger.valueOf(m));
+        var mm = BigInteger.valueOf(m);
+        var r = BigInteger.valueOf(b).multiply(BigInteger.valueOf(1 - a).modPow(BigInteger.valueOf(m - 2), mm)).mod(BigInteger.valueOf(m));
 
         // return ((pos - r) * pow(a, n*(m-2), m) + r) % m
         return BigInteger.valueOf(pos - r.longValue()).multiply(BigInteger.valueOf(a).modPow(BigInteger.valueOf(n).multiply(BigInteger.valueOf(m - 2)), mm)).add(r)

@@ -1,21 +1,21 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day6 {
-    public int handlePart1(Stream<String> input) {
-        List<String> lines = input.collect(Collectors.toList());
+public class Day6 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var lines = input.toList();
 
-        int totalYesQuestions = 0;
+        var totalYesQuestions = 0;
 
-        Set<Character> answerKey = new HashSet<>();
+        var answerKey = new HashSet<>();
 
-        for (String line : lines) {
+        for (var line : lines) {
             if (line.isEmpty()) {
                 totalYesQuestions += answerKey.size();
                 answerKey = new HashSet<>();
@@ -31,21 +31,22 @@ public class Day6 {
         return totalYesQuestions;
     }
 
-    public int handlePart2(Stream<String> input) {
-        Character[] answerKey = new Character[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var answerKey = new Character[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
-        Set<Character> answers = new HashSet<>(Arrays.asList(answerKey));
+        var answers = new HashSet<>(Arrays.asList(answerKey));
 
-        List<String> lines = input.collect(Collectors.toList());
+        var lines = input.toList();
 
-        int totalYesQuestions = 0;
+        var totalYesQuestions = 0;
 
-        for (String line : lines) {
+        for (var line : lines) {
             if (line.isEmpty()) {
                 totalYesQuestions += answers.size();
                 answers = new HashSet<>(Arrays.asList(answerKey));
             } else {
-                answers.removeIf(character -> !line.contains("" + character));
+                answers.removeIf(character -> !line.contains(String.valueOf(character)));
             }
         }
 

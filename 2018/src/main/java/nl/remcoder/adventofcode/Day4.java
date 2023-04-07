@@ -52,6 +52,8 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
                 highestSleep = guard.minutesAsleep[guard.mostSleepyMinute];
             }
         }
+
+        assert sleepyGuard != null;
         
         return sleepyGuard.mostSleepyMinute * sleepyGuard.id;
     }
@@ -73,6 +75,8 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
                 var wake = Integer.parseInt(event.substring(15, 17));
 
                 for (int sleepminute = startSleep; sleepminute < wake; sleepminute++) {
+                    assert guard != null;
+                    
                     guard.minutesAsleep[sleepminute]++;
                     guard.totalMinutesAsleep++;
                 }

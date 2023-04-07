@@ -4,7 +4,6 @@ import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,15 +35,13 @@ public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
                                       string2 -> string2.charAt(9) == '#'));
 
         for (int i = 0; i < 20; i++) {
-            boolean[] newplants = Arrays.copyOf(plants, plants.length);
+            var newplants = Arrays.copyOf(plants, plants.length);
 
-            for (int plant = 2; plant < 1022; plant++) {
-                List<Boolean>
-                        transform =
-                        Arrays.asList(plants[plant - 2], plants[plant - 1], plants[plant], plants[plant + 1],
-                                      plants[plant + 2]);
+            for (var plant = 2; plant < 1022; plant++) {
+                var transform = Arrays.asList(plants[plant - 2], plants[plant - 1], plants[plant], plants[plant + 1],
+                                              plants[plant + 2]);
 
-                boolean result = transforms.getOrDefault(transform, false);
+                var result = transforms.getOrDefault(transform, false);
 
                 newplants[plant] = result;
             }
@@ -52,9 +49,9 @@ public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
             plants = newplants;
         }
 
-        int totalPlants = 0;
+        var totalPlants = 0;
 
-        for (int i = 0; i < 1024; i++) {
+        for (var i = 0; i < 1024; i++) {
             if (plants[i]) {
                 totalPlants += i - centre;
             }
@@ -90,40 +87,39 @@ public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
                                                               string.charAt(4) == '#'),
                                       string2 -> string2.charAt(9) == '#'));
 
-        List<Integer> plantCount = new ArrayList<>();
+        var plantCount = new ArrayList<Integer>();
 
         while (plantCount.size() < 1000) {
-            boolean[] newplants = Arrays.copyOf(plants, plants.length);
+            var newplants = Arrays.copyOf(plants, plants.length);
 
             for (int plant = 2; plant < arraySize - 2; plant++) {
-                List<Boolean> transform =
-                        Arrays.asList(plants[plant - 2], plants[plant - 1], plants[plant], plants[plant + 1],
-                                      plants[plant + 2]);
+                var transform = Arrays.asList(plants[plant - 2], plants[plant - 1], plants[plant], plants[plant + 1],
+                                              plants[plant + 2]);
 
-                boolean result = transforms.getOrDefault(transform, false);
+                var result = transforms.getOrDefault(transform, false);
 
                 newplants[plant] = result;
             }
 
-            int totalPlants = sumPlantNumbers(plants, centre);
+            var totalPlants = sumPlantNumbers(plants, centre);
 
             plantCount.add(totalPlants);
 
             plants = newplants;
         }
 
-        int growthRateAfter1000Iterations =
+        var growthRateAfter1000Iterations =
                 plantCount.get(plantCount.size() - 1) - plantCount.get(plantCount.size() - 2);
 
-        long growthTillEnd = growthRateAfter1000Iterations * (50000000000L - 999);
+        var growthTillEnd = growthRateAfter1000Iterations * (50000000000L - 999);
 
         return plantCount.get(plantCount.size() - 1) + growthTillEnd;
     }
 
     private int sumPlantNumbers(boolean[] plants, int centre) {
-        int totalPlants = 0;
+        var totalPlants = 0;
 
-        for (int i = 0; i < plants.length; i++) {
+        for (var i = 0; i < plants.length; i++) {
             if (plants[i]) {
                 totalPlants += i - centre;
             }

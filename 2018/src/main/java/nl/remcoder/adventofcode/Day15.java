@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class Day15 implements AdventOfCodeSolution<Integer> {
     @Override
     public Integer handlePart1(Stream<String> input) {
-        char[][] data = input.map(String::toCharArray).toArray(char[][]::new);
+        var data = input.map(String::toCharArray).toArray(char[][]::new);
 
         var grid = new Grid<Square>(0, 0, data.length, data[0].length);
 
@@ -21,9 +21,9 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
 
         for (var y = 0; y < data.length; y++) {
             for (var x = 0; x < data[y].length; x++) {
-                char c = data[y][x];
+                var c = data[y][x];
 
-                Coordinate position = new Coordinate(x, y);
+                var position = new Coordinate(x, y);
                 switch (c) {
                     case 'E' -> {
                         var elf = new Unit(position, Unit.Type.ELF, grid, goblins, 200);
@@ -64,13 +64,13 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
-        char[][] data = input.map(String::toCharArray).toArray(char[][]::new);
+        var data = input.map(String::toCharArray).toArray(char[][]::new);
         
         var units = new ArrayList<Unit>();
         var rounds = 0;
         var strengthIncrement = 1;
         
-        boolean elfDied = true;
+        var elfDied = true;
         
         while (elfDied) {
             rounds = 0;
@@ -83,7 +83,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                 for (var x = 0; x < data[y].length; x++) {
                     char c = data[y][x];
 
-                    Coordinate position = new Coordinate(x, y);
+                    var position = new Coordinate(x, y);
                     switch (c) {
                         case 'E' -> {
                             var elf = new Unit(position, Unit.Type.ELF, grid, goblins, 200);
@@ -158,9 +158,9 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
 
             for (var y = 0; y < data.length; y++) {
                 for (var x = 0; x < data[y].length; x++) {
-                    char c = data[y][x];
+                    var c = data[y][x];
 
-                    Coordinate position = new Coordinate(x, y);
+                    var position = new Coordinate(x, y);
                     switch (c) {
                         case 'E' -> {
                             var elf = new Unit(position, Unit.Type.ELF, grid, goblins, 200);
@@ -179,7 +179,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                 }
             }
 
-            for (Unit elf : elves) {
+            for (var elf : elves) {
                 elf.increaseStrength(strengthIncrement);
             }
 

@@ -37,7 +37,7 @@ public class Day8 implements BiAdventOfCodeSolution<Integer, String> {
         var rowMatcher = ROW_PATTERN.matcher(line);
         var columnMatcher = COLUMN_PATTERN.matcher(line);
         if (rectMatcher.matches()) {
-            operation = new RectOperation(Integer.parseInt(rectMatcher.group(1)), 
+            operation = new RectOperation(Integer.parseInt(rectMatcher.group(1)),
                                           Integer.parseInt(rectMatcher.group(2)));
         } else if (rowMatcher.matches()) {
             operation = new RotateRowOperation(Integer.parseInt(rowMatcher.group(1)),
@@ -56,15 +56,7 @@ public class Day8 implements BiAdventOfCodeSolution<Integer, String> {
         void performOperation(Screen screen);
     }
 
-    private static class RectOperation implements Operation {
-        private final int width;
-        private final int height;
-
-        private RectOperation(int width, int height) {
-            this.width = width;
-            this.height = height;
-        }
-
+    private record RectOperation(int width, int height) implements Operation {
         @Override
         public void performOperation(Screen screen) {
             for (var y = 0; y < height; y++) {
@@ -75,35 +67,16 @@ public class Day8 implements BiAdventOfCodeSolution<Integer, String> {
         }
     }
 
-    private static class RotateRowOperation implements Operation {
-        private final int rowNumber;
-        private final int distance;
-
-        private RotateRowOperation(int rowNumber, int distance) {
-            this.rowNumber = rowNumber;
-            this.distance = distance;
-        }
-
+    private record RotateRowOperation(int rowNumber, int distance) implements Operation {
         @Override
         public void performOperation(Screen screen) {
             boolean[] row = screen.getData()[rowNumber];
 
             screen.getData()[rowNumber] = rotateArray(row, distance);
         }
-
     }
 
-    private static class RotateColumnOperation implements Operation {
-
-        private final int columnNumber;
-
-        private final int distance;
-
-        private RotateColumnOperation(int columnNumber, int distance) {
-            this.columnNumber = columnNumber;
-            this.distance = distance;
-        }
-
+    private record RotateColumnOperation(int columnNumber, int distance) implements Operation {
         @Override
         public void performOperation(Screen screen) {
             var column = new boolean[screen.getHeight()];

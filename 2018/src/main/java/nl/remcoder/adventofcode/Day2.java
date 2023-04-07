@@ -28,8 +28,8 @@ public class Day2 implements BiAdventOfCodeSolution<Integer, String> {
     public String handlePart2(Stream<String> input) {
         var strings = input.toList();
 
-        String first = null;
-        String second = null;
+        var first = "";
+        var second = "";
 
         one: for (var i = 0; i < strings.size(); i++) {
             var one = strings.get(i);
@@ -73,7 +73,7 @@ public class Day2 implements BiAdventOfCodeSolution<Integer, String> {
     }
 
     private boolean doesStringContainCharTwice(String s) {
-        int[] charAmounts = new int[26];
+        var charAmounts = new int[26];
 
         s.chars()
          .map(c -> c - 'a')
@@ -84,7 +84,7 @@ public class Day2 implements BiAdventOfCodeSolution<Integer, String> {
     }
 
     private boolean doesStringContainCharThreeTimes(String s) {
-        int[] charAmounts = new int[26];
+        var charAmounts = new int[26];
 
         s.chars()
          .map(c -> c - 'a')

@@ -1,14 +1,17 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class Day19 {
+public class Day19 implements AdventOfCodeSolution<Integer> {
     private static final Random random = new Random();
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var replacements = new HashMap<String, Set<String>>();
 
         var data = input.filter(Predicate.not(String::isBlank))
@@ -21,6 +24,52 @@ public class Day19 {
         var results = createNewMolecules(replacements, molecule);
 
         return results.size();
+    }
+
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var replacements = new HashMap<String, Set<String>>();
+
+        var data = input.filter(Predicate.not(String::isBlank))
+                        .sorted((o1, o2) -> randomize())
+                        .toList();
+
+        var molecule = new Molecule();
+
+        var originalMolecule = data.stream()
+                                   .filter(s -> !s.contains("=>"))
+                                   .findFirst()
+                                   .orElseThrow(() -> new AssertionError("Eek!"));
+        molecule.molecule = originalMolecule;
+
+        fillReplacements(replacements, data);
+
+        var steps = new AtomicInteger(0);
+
+        var previous = molecule.molecule;
+
+        while (!molecule.molecule.equals("e")) {
+            replacements.keySet()
+                        .stream()
+                        .sorted((o1, o2) -> randomize())
+                        .forEach(key -> {
+                            for (var replacement : replacements.get(key)) {
+                                if (molecule.molecule.contains(replacement)) {
+                                    molecule.molecule = replace(molecule.molecule, replacement, key,
+                                                                molecule.molecule.lastIndexOf(replacement));
+                                    steps.incrementAndGet();
+                                }
+                            }
+                        });
+            if (previous.equals(molecule.molecule)) {
+                molecule.molecule = originalMolecule;
+                steps.set(0);
+            } else {
+                previous = molecule.molecule;
+            }
+        }
+
+        return steps.get();
     }
 
     private static Set<String> createNewMolecules(Map<String, Set<String>> replacements, String molecule) {
@@ -36,42 +85,6 @@ public class Day19 {
             }
         }
         return results;
-    }
-
-    public int handlePart2(Stream<String> input) {
-        var replacements = new HashMap<String, Set<String>>();
-
-        var data = input.filter(Predicate.not(String::isBlank))
-                        .sorted((o1, o2) -> randomize())
-                        .toList();
-
-        var molecule = new Molecule();
-
-        molecule.molecule = data.stream()
-                                .filter(s -> !s.contains("=>"))
-                                .findFirst()
-                                .orElseThrow(() -> new AssertionError("Eek!"));
-
-        fillReplacements(replacements, data);
-
-        var steps = new AtomicInteger(0);
-
-        while (!molecule.molecule.equals("e")) {
-            replacements.keySet().stream()
-                        .sorted((o1, o2) -> randomize())
-                        .forEach(key -> {
-                            for (var replacement : replacements.get(key)) {
-                                if (molecule.molecule.contains(replacement)) {
-                                    molecule.molecule = replace(molecule.molecule, replacement, key,
-                                                                molecule.molecule.lastIndexOf(replacement));
-                                    System.out.println(molecule.molecule);
-                                    steps.incrementAndGet();
-                                }
-                            }
-                        });
-        }
-
-        return steps.get();
     }
 
     private int randomize() {

@@ -1,20 +1,21 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day12 {
-    public int handlePart1(Stream<String> input) {
-        List<Movement> movements = input.map(this::parseStringToMovement)
-                                        .collect(Collectors.toList());
+public class Day12 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var movements = input.map(this::parseStringToMovement)
+                             .toList();
 
-        int x = 0;
-        int y = 0;
+        var x = 0;
+        var y = 0;
 
-        ShipDirection shipDirection = ShipDirection.EAST;
+        var shipDirection = ShipDirection.EAST;
 
-        for (Movement movement : movements) {
+        for (var movement : movements) {
             switch (movement.direction) {
                 case 'N' -> y += movement.amount;
                 case 'S' -> y -= movement.amount;
@@ -58,16 +59,17 @@ public class Day12 {
         return Math.abs(x) + Math.abs(y);
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<Movement> movements = input.map(this::parseStringToMovement)
-                                        .collect(Collectors.toList());
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var movements = input.map(this::parseStringToMovement)
+                             .toList();
 
-        int shipX = 0;
-        int shipY = 0;
-        int waypointX = 10;
-        int waypointY = 1;
+        var shipX = 0;
+        var shipY = 0;
+        var waypointX = 10;
+        var waypointY = 1;
 
-        for (Movement movement : movements) {
+        for (var movement : movements) {
             switch (movement.direction) {
                 case 'N' -> waypointY += movement.amount;
                 case 'S' -> waypointY -= movement.amount;
@@ -117,13 +119,6 @@ public class Day12 {
         WEST
     }
 
-    private static class Movement {
-        private final char direction;
-        private final int amount;
-
-        private Movement(char direction, int amount) {
-            this.direction = direction;
-            this.amount = amount;
-        }
+    private record Movement(char direction, int amount) {
     }
 }

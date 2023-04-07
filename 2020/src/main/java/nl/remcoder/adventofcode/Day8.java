@@ -1,22 +1,24 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day8 {
-    public int handlePart1(Stream<String> input) {
-        List<Operation> operations = input.map(this::transformStringToOperation)
-                                       .collect(Collectors.toList());
+public class Day8 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var operations = input.map(this::transformStringToOperation)
+                              .toList();
 
-        int accumulator = 0;
+        var accumulator = 0;
 
-        int counter = 0;
+        var counter = 0;
 
-        while(true) {
-            Operation operation = operations.get(counter);
+        while (true) {
+            var operation = operations.get(counter);
 
             if (operation.isVisited()) {
                 return accumulator;
@@ -24,39 +26,42 @@ public class Day8 {
 
             operation.setVisited(true);
 
-            switch (operation.operand) {
-                case "acc" -> accumulator += operation.value;
-                case "jmp" -> counter += operation.value - 1;
+            switch (operation.getOperand()) {
+                case "acc" -> accumulator += operation.getValue();
+                case "jmp" -> counter += operation.getValue() - 1;
             }
 
             counter++;
         }
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<Operation> operations = input.map(this::transformStringToOperation)
-                                          .collect(Collectors.toList());
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var operations = input.map(this::transformStringToOperation)
+                              .toList();
 
-        for (int i = 0; i < operations.size(); i++) {
+        for (var i = 0; i < operations.size(); i++) {
             operations.forEach(operation -> operation.setVisited(false));
 
-            Operation operation = operations.get(i);
-            if ("acc".equals(operation.operand)) {
+            var operation = operations.get(i);
+            if ("acc".equals(operation.getOperand())) {
                 continue;
             }
 
-            List<Operation> modifiedOperations = new ArrayList<>(operations);
+            var modifiedOperations = new ArrayList<>(operations);
 
             Operation newOperation;
-            switch (operation.operand) {
-                case "nop" -> newOperation = new Operation("jmp", operation.value);
-                case "jmp" -> newOperation = new Operation("nop", operation.value);
-                default -> {continue;}
+            switch (operation.getOperand()) {
+                case "nop" -> newOperation = new Operation("jmp", operation.getValue());
+                case "jmp" -> newOperation = new Operation("nop", operation.getValue());
+                default -> {
+                    continue;
+                }
             }
 
             modifiedOperations.set(i, newOperation);
 
-            AtomicInteger accumulatorValueContainer = new AtomicInteger();
+            var accumulatorValueContainer = new AtomicInteger();
             if (doesProgramTerminate(modifiedOperations, accumulatorValueContainer)) {
                 return accumulatorValueContainer.get();
             }
@@ -66,18 +71,18 @@ public class Day8 {
     }
 
     private Operation transformStringToOperation(String operation) {
-        String[] spliteration = operation.split(" ");
+        var spliteration = operation.split(" ");
 
         return new Operation(spliteration[0], Integer.parseInt(spliteration[1]));
     }
 
     private boolean doesProgramTerminate(List<Operation> operations, AtomicInteger accumulatorValueContainer) {
-        int accumulator = 0;
+        var accumulator = 0;
 
-        int counter = 0;
+        var counter = 0;
 
-        while(counter < operations.size()) {
-            Operation operation = operations.get(counter);
+        while (counter < operations.size()) {
+            var operation = operations.get(counter);
 
             if (operation.isVisited()) {
                 return false;
@@ -85,9 +90,9 @@ public class Day8 {
 
             operation.setVisited(true);
 
-            switch (operation.operand) {
-                case "acc" -> accumulator += operation.value;
-                case "jmp" -> counter += operation.value - 1;
+            switch (operation.getOperand()) {
+                case "acc" -> accumulator += operation.getValue();
+                case "jmp" -> counter += operation.getValue() - 1;
             }
 
             counter++;

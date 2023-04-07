@@ -1,13 +1,15 @@
 package nl.remcoder.adventofcode;
 
-import java.util.regex.Matcher;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day25 {
-    private static final Pattern PATTERN = Pattern.compile("To continue, please consult the code grid in the manual.  Enter the code at row (\\d*), column (\\d*).");
+public class Day25 implements AdventOfCodeSolution<Long> {
+    private static final Pattern PATTERN = Pattern.compile("To continue, please consult the code grid in the manual. {2}Enter the code at row (\\d*), column (\\d*).");
 
-    public long handlePart1(Stream<String> input) {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         var line = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
         var matcher = PATTERN.matcher(line);
@@ -36,5 +38,11 @@ public class Day25 {
         }
 
         return 0L;
+    }
+
+    @Override
+    public Long handlePart2(Stream<String> input) throws Exception {
+        System.out.println("Merry Christmas!");
+        return null;
     }
 }

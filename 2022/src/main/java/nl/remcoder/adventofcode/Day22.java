@@ -294,7 +294,6 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         if (position.x() == 0 && position.y() >= 150 && position.y() < 200 && vector.direction() == Direction.LEFT) {
             return 'P';
         }
-        System.out.println(position);
         throw new AssertionError("Eek!");
     }
 }

@@ -1,10 +1,13 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Day8 {
-    public long handlePart1(Stream<String> input) {
+public class Day8 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         return input.map(s -> s.split(" \\| "))
                     .map(s -> s[1])
                     .map(s -> s.split(" "))
@@ -13,28 +16,29 @@ public class Day8 {
                     .count();
     }
 
-    public long handlePart2(Stream<String> input) {
-        return input.mapToInt(this::determineValue)
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        return input.mapToLong(this::determineValue)
                     .sum();
     }
 
     public int determineValue(String s) {
-        String[] split = s.split(" \\| ");
+        var split = s.split(" \\| ");
 
-        String one = findOne(split[0]);
-        String four = findFour(split[0]);
-        String seven = findSeven(split[0]);
-        String eight = findEight(split[0]);
-        String three = findThree(split[0], seven);
-        String six = findSix(split[0], one);
-        String nine = findNine(split[0], three);
-        String zero = findZero(split[0], six, nine);
-        String five = findFive(split[0], three, nine);
-        String two = findTwo(split[0], three, five);
+        var one = findOne(split[0]);
+        var four = findFour(split[0]);
+        var seven = findSeven(split[0]);
+        var eight = findEight(split[0]);
+        var three = findThree(split[0], seven);
+        var six = findSix(split[0], one);
+        var nine = findNine(split[0], three);
+        var zero = findZero(split[0], six, nine);
+        var five = findFive(split[0], three, nine);
+        var two = findTwo(split[0], three, five);
 
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
 
-        for (String segment : split[1].split(" ")) {
+        for (var segment : split[1].split(" ")) {
             sb.append(determineChar(segment, zero, one, two, three, four, five, six, seven, eight, nine));
         }
 
@@ -47,7 +51,7 @@ public class Day8 {
                      .map(this::sortChars)
                      .filter(s -> !(s.equals(six) || s.equals(nine)))
                      .findFirst()
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findOne(String line) {
@@ -55,7 +59,7 @@ public class Day8 {
                      .filter(s -> s.length() == 2)
                      .findFirst()
                      .map(this::sortChars)
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findTwo(String line, String three, String five) {
@@ -64,7 +68,7 @@ public class Day8 {
                      .map(this::sortChars)
                      .filter(s -> !(s.equals(three) || s.equals(five)))
                      .findFirst()
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findThree(String line, String seven) {
@@ -75,7 +79,7 @@ public class Day8 {
                                   s.chars().anyMatch(c -> c == seven.charAt(2)))
                      .findFirst()
                      .map(this::sortChars)
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findFour(String line) {
@@ -83,22 +87,22 @@ public class Day8 {
                      .filter(s -> s.length() == 4)
                      .findFirst()
                      .map(this::sortChars)
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findFive(String line, String three, String nine) {
         char missingchar = Stream.of('a', 'b', 'c', 'd', 'e', 'f', 'g')
-                                 .filter(c -> !nine.contains("" + c))
+                                 .filter(c -> !nine.contains(String.valueOf(c)))
                                  .findFirst()
-                                 .get();
+                                 .orElseThrow(() -> new AssertionError("Eek!"));
 
         return Arrays.stream(line.split(" "))
                      .filter(s -> s.length() == 5)
                      .map(this::sortChars)
                      .filter(s -> !s.equals(three))
-                     .filter(s -> !s.contains("" + missingchar))
+                     .filter(s -> !s.contains(String.valueOf(missingchar)))
                      .findFirst()
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findSix(String line, String one) {
@@ -108,7 +112,7 @@ public class Day8 {
                                   s.chars().anyMatch(c -> c == one.charAt(1)))
                      .findFirst()
                      .map(this::sortChars)
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findSeven(String line) {
@@ -116,7 +120,7 @@ public class Day8 {
                      .filter(s -> s.length() == 3)
                      .findFirst()
                      .map(this::sortChars)
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findEight(String line) {
@@ -124,7 +128,7 @@ public class Day8 {
                      .filter(s -> s.length() == 7)
                      .findFirst()
                      .map(this::sortChars)
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public String findNine(String line, String three) {
@@ -137,11 +141,11 @@ public class Day8 {
                                   s.chars().anyMatch(c -> c == three.charAt(4)))
                      .findFirst()
                      .map(this::sortChars)
-                     .get();
+                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private String sortChars(String s) {
-        char[] chars = s.toCharArray();
+        var chars = s.toCharArray();
 
         Arrays.sort(chars);
 
@@ -152,7 +156,7 @@ public class Day8 {
                                String six, String seven, String eight, String nine) {
         char c;
 
-        String sorted = sortChars(s);
+        var sorted = sortChars(s);
 
         if (sorted.equals(zero)) {
             c = '0';

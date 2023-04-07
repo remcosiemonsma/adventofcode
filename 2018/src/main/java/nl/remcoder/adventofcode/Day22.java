@@ -1,6 +1,6 @@
 package nl.remcoder.adventofcode;
 
-import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Grid;
 import nl.remcoder.adventofcode.library.pathfinding.Dijkstra;
@@ -9,7 +9,7 @@ import nl.remcoder.adventofcode.library.pathfinding.Node;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Day22 implements AdventOfCodeSolution<Integer> {
+public class Day22 implements BiAdventOfCodeSolution<Integer, Long> {
     private static final Map<State, Step> STEP_MAP = new HashMap<>();
 
     @Override
@@ -40,9 +40,9 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
     }
 
     @Override
-    public Integer handlePart2(Stream<String> input) {
+    public Long handlePart2(Stream<String> input) {
         STEP_MAP.clear();
-        
+
         var lines = input.toList();
 
         var depth = Integer.parseInt(lines.get(0).substring(7));
@@ -60,13 +60,13 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
 
         STEP_MAP.put(new State(new Coordinate(0, 0), Equipment.TORCH), start);
 
-        Node end = Dijkstra.findShortestDistance(start, node -> {
-            var step = (Step) node;
-            return step.currentPosition.equals(target) && 
-                   step.currentEquipment == Equipment.TORCH;
-        }).orElseThrow(() -> new AssertionError("Eek!"));
-
-        return (int) end.getDistance();
+        return Dijkstra.findShortestDistance(start, node -> {
+                           var step = (Step) node;
+                           return step.currentPosition.equals(target) &&
+                                  step.currentEquipment == Equipment.TORCH;
+                       })
+                       .map(Node::getDistance)
+                       .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private Grid<Region> generateGrid(int depth, Coordinate target, int growthFactor) {
@@ -100,7 +100,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         return grid;
     }
 
-    private static class Step extends Node {
+    private static class Step extends Node<Step> {
         private final Coordinate currentPosition;
         private final Coordinate target;
         private final Equipment currentEquipment;
@@ -117,7 +117,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Step, Long> getNeighbors() {
             var neighbors = new HashMap<Step, Long>();
 
             for (var newPosition : currentPosition.getStraightNeighbours()) {
@@ -127,7 +127,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                 var newRegion = grid.get(newPosition);
                 switch (currentEquipment) {
                     case TORCH -> {
-                        if (newRegion.regionType == RegionType.ROCKY || 
+                        if (newRegion.regionType == RegionType.ROCKY ||
                             newRegion.regionType == RegionType.NARROW) {
                             var step = createStep(newPosition, Equipment.TORCH);
                             neighbors.put(step, 1L);

@@ -1,23 +1,28 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class Day23 {
+public class Day23 implements BiAdventOfCodeSolution<Integer, Long> {
+    private int moves;
 
-    public int handlePart1(Stream<String> input, int moves) {
-        String line = input.findFirst().get();
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var line = input.findFirst()
+                        .orElseThrow(() -> new AssertionError("Eek!"));
 
         Cup firstCup = null;
         Cup previousCup = null;
 
-        Map<Integer, Cup> cups = new HashMap<>();
+        var cups = new HashMap<Integer, Cup>();
 
-        for (char c : line.toCharArray()) {
+        for (var c : line.toCharArray()) {
             int label = c - '0';
-            Cup cup = new Cup(label);
+            var cup = new Cup(label);
 
             cups.put(label, cup);
 
@@ -31,14 +36,15 @@ public class Day23 {
             previousCup = cup;
         }
 
+        assert firstCup != null;
         firstCup.previous = previousCup;
         previousCup.next = firstCup;
 
         playGame(moves, firstCup, cups);
 
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
-        Cup cup = cups.get(1).next;
+        var cup = cups.get(1).next;
 
         while (cup.label != 1) {
             stringBuilder.append(cup.label);
@@ -48,17 +54,19 @@ public class Day23 {
         return Integer.parseInt(stringBuilder.toString());
     }
 
-    public long handlePart2(Stream<String> input) {
-        String line = input.findFirst().get();
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var line = input.findFirst()
+                        .orElseThrow(() -> new AssertionError("Eek!"));
 
         Cup firstCup = null;
         Cup previousCup = null;
 
-        Map<Integer, Cup> cups = new HashMap<>();
+        var cups = new HashMap<Integer, Cup>();
 
-        for (char c : line.toCharArray()) {
-            int label = c - '0';
-            Cup cup = new Cup(label);
+        for (var c : line.toCharArray()) {
+            var label = c - '0';
+            var cup = new Cup(label);
 
             cups.put(label, cup);
 
@@ -72,8 +80,9 @@ public class Day23 {
             previousCup = cup;
         }
 
-        for (int cupNumber = 10; cupNumber <= 1000000; cupNumber++) {
-            Cup cup = new Cup(cupNumber);
+        assert previousCup != null;
+        for (var cupNumber = 10; cupNumber <= 1000000; cupNumber++) {
+            var cup = new Cup(cupNumber);
             cups.put(cupNumber, cup);
             previousCup.next = cup;
             cup.previous = previousCup;
@@ -85,40 +94,49 @@ public class Day23 {
 
         playGame(10000000, firstCup, cups);
 
-        Cup oneCup = cups.get(1);
+        var oneCup = cups.get(1);
 
         return (long) oneCup.next.label * (long) oneCup.next.next.label;
     }
 
+    public void setMoves(int moves) {
+        this.moves = moves;
+    }
+
     private void playGame(int moves, Cup firstCup, Map<Integer, Cup> cups) {
-        Cup currentCup = firstCup.previous;
+        var currentCup = firstCup.previous;
 
-        int max = cups.keySet().stream().mapToInt(Integer::intValue).max().getAsInt();
+        var max = cups.keySet()
+                      .stream()
+                      .mapToInt(Integer::intValue)
+                      .max()
+                      .orElseThrow(() -> new AssertionError("Ook!"));
 
-        for (int round = 0; round < moves; round++) {
+        for (var round = 0; round < moves; round++) {
             currentCup = currentCup.next;
 
-            Cup firstPickedCup = currentCup.next;
+            var firstPickedCup = currentCup.next;
 
             currentCup.next = currentCup.next.next.next.next;
             currentCup.next.previous = currentCup;
 
-            int nextLabel = currentCup.label - 1;
+            var nextLabel = currentCup.label - 1;
 
             if (nextLabel < 1) {
                 nextLabel = max;
             }
 
-            Cup destinationCup = cups.get(nextLabel);
+            var destinationCup = cups.get(nextLabel);
 
-            while (destinationCup == firstPickedCup || destinationCup == firstPickedCup.next || destinationCup == firstPickedCup.next.next) {
+            while (destinationCup == firstPickedCup || destinationCup == firstPickedCup.next ||
+                   destinationCup == firstPickedCup.next.next) {
                 destinationCup = cups.get(nextLabel--);
                 if (nextLabel < 1) {
                     nextLabel = max;
                 }
             }
 
-            Cup tempCup = destinationCup.next;
+            var tempCup = destinationCup.next;
             destinationCup.next = firstPickedCup;
             firstPickedCup.previous = destinationCup;
 

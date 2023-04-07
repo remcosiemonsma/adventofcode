@@ -1,48 +1,29 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day19 {
+public class Day19 implements AdventOfCodeSolution<Integer> {
     private final Map<Scanner, List<Scanner>> rotatedScanners = new HashMap<>();
 
-    public int handlePart1(Stream<String> input) {
-        List<String> lines = input.filter(Predicate.not(String::isBlank))
-                                  .collect(Collectors.toList());
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var scanners = parseScanners(input);
 
-        Scanner scanner = new Scanner();
-
-        List<Scanner> scanners = new ArrayList<>();
-
-        for (String line : lines) {
-            if (line.startsWith("--- scanner ")) {
-                scanner = new Scanner();
-                scanners.add(scanner);
-            } else {
-                String[] coords = line.split(",");
-                int coord1 = Integer.parseInt(coords[0]);
-                int coord2 = Integer.parseInt(coords[1]);
-                int coord3 = Integer.parseInt(coords[2]);
-
-                Beacon beacon = new Beacon(coord1, coord2, coord3);
-
-                scanner.beacons.add(beacon);
-            }
-        }
-
-        Scanner firstScanner = scanners.remove(0);
-        List<ScannerWithDistance> goodScanners = new ArrayList<>();
+        var firstScanner = scanners.remove(0);
+        var goodScanners = new ArrayList<ScannerWithDistance>();
         goodScanners.add(new ScannerWithDistance(firstScanner.beacons, new Distance(0, 0, 0)));
 
         while (!scanners.isEmpty()) {
-            System.out.println(scanners.size());
             outer:
-            for (ScannerWithDistance goodScanner : goodScanners) {
+            for (var goodScanner : goodScanners) {
                 for (int i = 0; i < scanners.size(); i++) {
-                    Scanner other = scanners.get(i);
-                    ScannerWithDistance rotatedScanner = getRotatedScanner(goodScanner, other);
+                    var other = scanners.get(i);
+                    var rotatedScanner = getRotatedScanner(goodScanner, other);
                     if (rotatedScanner != null) {
                         goodScanners.add(rotatedScanner);
                         scanners.remove(other);
@@ -59,41 +40,20 @@ public class Day19 {
                                  .count();
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<String> lines = input.filter(Predicate.not(String::isBlank))
-                                  .collect(Collectors.toList());
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var scanners = parseScanners(input);
 
-        Scanner scanner = new Scanner();
-
-        List<Scanner> scanners = new ArrayList<>();
-
-        for (String line : lines) {
-            if (line.startsWith("--- scanner ")) {
-                scanner = new Scanner();
-                scanners.add(scanner);
-            } else {
-                String[] coords = line.split(",");
-                int coord1 = Integer.parseInt(coords[0]);
-                int coord2 = Integer.parseInt(coords[1]);
-                int coord3 = Integer.parseInt(coords[2]);
-
-                Beacon beacon = new Beacon(coord1, coord2, coord3);
-
-                scanner.beacons.add(beacon);
-            }
-        }
-
-        Scanner firstScanner = scanners.remove(0);
-        List<ScannerWithDistance> goodScanners = new ArrayList<>();
+        var firstScanner = scanners.remove(0);
+        var goodScanners = new ArrayList<ScannerWithDistance>();
         goodScanners.add(new ScannerWithDistance(firstScanner.beacons, new Distance(0, 0, 0)));
 
         while (!scanners.isEmpty()) {
-            System.out.println(scanners.size());
             outer:
-            for (ScannerWithDistance goodScanner : goodScanners) {
-                for (int i = 0; i < scanners.size(); i++) {
-                    Scanner other = scanners.get(i);
-                    ScannerWithDistance rotatedScanner = getRotatedScanner(goodScanner, other);
+            for (var goodScanner : goodScanners) {
+                for (var i = 0; i < scanners.size(); i++) {
+                    var other = scanners.get(i);
+                    var rotatedScanner = getRotatedScanner(goodScanner, other);
                     if (rotatedScanner != null) {
                         goodScanners.add(rotatedScanner);
                         scanners.remove(other);
@@ -110,15 +70,41 @@ public class Day19 {
                                                          .max().getAsInt()
                                     )
                            .max()
-                           .getAsInt();
+                           .orElseThrow(() -> new AssertionError("Eek!"));
+    }
+
+    private List<Scanner> parseScanners(Stream<String> input) {
+        var lines = input.filter(Predicate.not(String::isBlank))
+                         .toList();
+
+        var scanner = new Scanner();
+
+        var scanners = new ArrayList<Scanner>();
+
+        for (var line : lines) {
+            if (line.startsWith("--- scanner ")) {
+                scanner = new Scanner();
+                scanners.add(scanner);
+            } else {
+                var coords = line.split(",");
+                var coord1 = Integer.parseInt(coords[0]);
+                var coord2 = Integer.parseInt(coords[1]);
+                var coord3 = Integer.parseInt(coords[2]);
+
+                var beacon = new Beacon(coord1, coord2, coord3);
+
+                scanner.beacons.add(beacon);
+            }
+        }
+        return scanners;
     }
 
     private ScannerWithDistance getRotatedScanner(ScannerWithDistance goodScanner, Scanner unknownScanner) {
-        List<Scanner> rotations = rotatedScanners.computeIfAbsent(unknownScanner, this::getAllRotations);
+        var rotations = rotatedScanners.computeIfAbsent(unknownScanner, this::getAllRotations);
 
-        for (Scanner rotation : rotations) {
-            for (Beacon beacon : goodScanner.beacons) {
-                for (Beacon rotatedBeacon : rotation.beacons) {
+        for (var rotation : rotations) {
+            for (var beacon : goodScanner.beacons) {
+                for (var rotatedBeacon : rotation.beacons) {
                     int distanceX = beacon.x - rotatedBeacon.x;
                     int distanceY = beacon.y - rotatedBeacon.y;
                     int distanceZ = beacon.z - rotatedBeacon.z;
@@ -126,12 +112,12 @@ public class Day19 {
                     int overlap = 0;
 
                     int count = 0;
-                    for (Beacon goodBeacon : goodScanner.beacons) {
+                    for (var goodBeacon : goodScanner.beacons) {
                         if (12 - overlap > goodScanner.beacons.size() - count) {
                             break;
                         }
 
-                        for (Beacon other : rotation.beacons) {
+                        for (var other : rotation.beacons) {
                             int xFromGoodScanner = other.x + distanceX;
                             int yFromGoodScanner = other.y + distanceY;
                             int zFromGoodScanner = other.z + distanceZ;
@@ -141,9 +127,9 @@ public class Day19 {
                                 overlap++;
 
                                 if (overlap >= 12) {
-                                    List<Beacon> goodBeacons = new ArrayList<>();
+                                    var goodBeacons = new ArrayList<Beacon>();
 
-                                    for (Beacon candidate : rotation.beacons) {
+                                    for (var candidate : rotation.beacons) {
                                         goodBeacons.add(new Beacon(candidate.x + distanceX, candidate.y + distanceY,
                                                                    candidate.z + distanceZ));
                                     }
@@ -167,7 +153,7 @@ public class Day19 {
     }
 
     private List<Scanner> getAllRotations(Scanner scanner) {
-        List<Scanner> rotatedScanners = new ArrayList<>();
+        var rotatedScanners = new ArrayList<Scanner>();
         for (int c = 0; c < 2; c++) {
             for (int s = 0; s < 3; s++) {
                 scanner = roll(scanner);
@@ -183,7 +169,7 @@ public class Day19 {
     }
 
     private Scanner turn(Scanner scanner) {
-        Scanner result = new Scanner();
+        var result = new Scanner();
 
         result.beacons.addAll(scanner.beacons.stream()
                                              .map(this::turn)
@@ -193,7 +179,7 @@ public class Day19 {
     }
 
     private Scanner roll(Scanner scanner) {
-        Scanner result = new Scanner();
+        var result = new Scanner();
 
         result.beacons.addAll(scanner.beacons.stream()
                                              .map(this::roll)

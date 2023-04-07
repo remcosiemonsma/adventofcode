@@ -1,9 +1,12 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day6 {
-    public int handlePart1(Stream<String> input) {
+public class Day6 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var line = input.findFirst()
                         .orElseThrow(() -> new AssertionError("Eek!"));
 
@@ -18,7 +21,8 @@ public class Day6 {
         return 0;
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var line = input.findFirst()
                         .orElseThrow(() -> new AssertionError("Eek!"));
 

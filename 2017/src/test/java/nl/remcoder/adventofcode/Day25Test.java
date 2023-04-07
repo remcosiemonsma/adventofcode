@@ -18,7 +18,7 @@ class Day25Test {
     }
 
     @Test
-    @Disabled
+    @Disabled("No dynamic solution build yet, solution hardcoded to actual input")
     void part1Case1() {
         String data = """
                       Begin in state A.

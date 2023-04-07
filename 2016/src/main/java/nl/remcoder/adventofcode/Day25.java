@@ -11,9 +11,9 @@ public class Day25 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var instructions = input.map(s -> s.split(" ")).toArray(String[][]::new);
 
-        boolean cycleFound = false;
+        var cycleFound = false;
         
-        String expected = "0101010101";
+        var expected = "0101010101";
         
         var number = 0;
         while (!cycleFound) {
@@ -37,7 +37,7 @@ public class Day25 implements AdventOfCodeSolution<Integer> {
             
             cpu.stop();
 
-            if (expected.equals(result.toString())) {
+            if (expected.contentEquals(result)) {
                 cycleFound = true;
             } else {
                 number++;
@@ -49,6 +49,7 @@ public class Day25 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
+        System.out.println("Merry Christmas!");
         return null;
     }
 }

@@ -1,9 +1,12 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day5 {
-    public long handlePart1(Stream<String> input) {
+public class Day5 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         return input.filter(line -> !(line.contains("ab") || line.contains("cd") || line.contains("pq") ||
                                       line.contains("xy")))
                     .filter(line -> line.chars()
@@ -11,27 +14,30 @@ public class Day5 {
                                                          value == 'u')
                                         .count() >= 3)
                     .map(String::toCharArray)
-                    .filter(chars -> {
-                        var previouschar = chars[0];
-                        var niceString = false;
-
-                        for (var i = 1; i < chars.length; i++) {
-                            if (chars[i] == previouschar) {
-                                niceString = true;
-                                break;
-                            }
-                            previouschar = chars[i];
-                        }
-
-                        return niceString;
-                    })
+                    .filter(this::isNiceString)
                     .count();
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         return input.filter(this::doesStringFulfillFirstRule)
                     .filter(this::doesStringFulfillSecondRule)
                     .count();
+    }
+
+    private boolean isNiceString(char[] chars) {
+        var previouschar = chars[0];
+        var niceString = false;
+
+        for (var i = 1; i < chars.length; i++) {
+            if (chars[i] == previouschar) {
+                niceString = true;
+                break;
+            }
+            previouschar = chars[i];
+        }
+
+        return niceString;
     }
 
     private boolean doesStringFulfillFirstRule(String string) {

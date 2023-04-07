@@ -1,27 +1,31 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Stream;
 
-public class Day15 {
-    public int handlePart1(Stream<String> input) {
-        String[] split = input.findFirst().get().split(",");
+public class Day15 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var split = input.findFirst()
+                         .map(s -> s.split(","))
+                         .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int[] initialLoad = new int[split.length];
+        var initialLoad = new int[split.length];
 
-        Map<Integer, Rounds> memory = new HashMap<>();
+        var memory = new HashMap<Integer, Rounds>();
 
-        int lastNumber = -1;
+        var lastNumber = -1;
 
-        for (int position = 0; position < split.length; position++) {
+        for (var position = 0; position < split.length; position++) {
             lastNumber = Integer.parseInt(split[position]);
             memory.put(lastNumber, new Rounds(position, position));
         }
 
-        for (int round = initialLoad.length; round < 2020; round++) {
-            int finalRound = round;
-            Rounds rounds = memory.computeIfAbsent(lastNumber, key -> new Rounds(finalRound, finalRound));
+        for (var round = initialLoad.length; round < 2020; round++) {
+            var finalRound = round;
+            var rounds = memory.computeIfAbsent(lastNumber, key -> new Rounds(finalRound, finalRound));
             lastNumber = rounds.lastRound - rounds.beforeLastRound;
 
             rounds = memory.computeIfAbsent(lastNumber, key -> new Rounds(finalRound, finalRound));
@@ -33,23 +37,26 @@ public class Day15 {
         return lastNumber;
     }
 
-    public int handlePart2(Stream<String> input) {
-        String[] split = input.findFirst().get().split(",");
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var split = input.findFirst()
+                         .map(s -> s.split(","))
+                         .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int[] initialLoad = new int[split.length];
+        var initialLoad = new int[split.length];
 
-        Map<Integer, Rounds> memory = new HashMap<>();
+        var memory = new HashMap<Integer, Rounds>();
 
-        int lastNumber = -1;
+        var lastNumber = -1;
 
-        for (int position = 0; position < split.length; position++) {
+        for (var position = 0; position < split.length; position++) {
             lastNumber = Integer.parseInt(split[position]);
             memory.put(lastNumber, new Rounds(position, position));
         }
 
-        for (int round = initialLoad.length; round < 30000000; round++) {
-            int finalRound = round;
-            Rounds rounds = memory.computeIfAbsent(lastNumber, key -> new Rounds(finalRound, finalRound));
+        for (var round = initialLoad.length; round < 30000000; round++) {
+            var finalRound = round;
+            var rounds = memory.computeIfAbsent(lastNumber, key -> new Rounds(finalRound, finalRound));
             lastNumber = rounds.lastRound - rounds.beforeLastRound;
 
             rounds = memory.computeIfAbsent(lastNumber, key -> new Rounds(finalRound, finalRound));
@@ -61,7 +68,7 @@ public class Day15 {
         return lastNumber;
     }
 
-    private class Rounds {
+    private static class Rounds {
         private int lastRound;
         private int beforeLastRound;
 

@@ -22,7 +22,7 @@ public class Day2 implements AdventOfCodeSolution<Integer> {
         var numbers = line.split("\\t");
 
         for (var numberstring : numbers) {
-            int number = Integer.parseInt(numberstring);
+            var number = Integer.parseInt(numberstring);
 
             if (number > largest) {
                 largest = number;
@@ -38,7 +38,7 @@ public class Day2 implements AdventOfCodeSolution<Integer> {
     private int calculateBitwiseChecksum(String line) {
         var numbers = line.split("\\t");
 
-        int result = 0;
+        var result = 0;
         
         outer: for (var i = 0; i < numbers.length; i++) {
             var numberi = Integer.parseInt(numbers[i]);

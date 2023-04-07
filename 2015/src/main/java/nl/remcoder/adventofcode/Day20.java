@@ -1,10 +1,13 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Day20 {
-    public int handlePart1(Stream<String> input) {
+public class Day20 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var expectedScore = input.mapToInt(Integer::parseInt)
                                  .findFirst()
                                  .orElseThrow(() -> new AssertionError("Eek!"));
@@ -27,7 +30,8 @@ public class Day20 {
                      .orElseThrow(() -> new AssertionError("Ook!"));
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var expectedScore = input.mapToInt(Integer::parseInt)
                                  .findFirst()
                                  .orElseThrow(() -> new AssertionError("Eek!"));

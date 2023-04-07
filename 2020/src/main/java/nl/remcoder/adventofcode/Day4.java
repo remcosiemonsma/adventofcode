@@ -1,11 +1,11 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day4 {
+public class Day4 implements AdventOfCodeSolution<Integer> {
     private static final Pattern BIRTH_YEAR_REGEX = Pattern.compile("byr:(19[2-9]\\d|200[0-2])( |$)");
     private static final Pattern ISSUE_YEAR_REGEX = Pattern.compile("iyr:20(1\\d|20)( |$)");
     private static final Pattern EXPIRATION_YEAR_REGEX = Pattern.compile("eyr:20(2\\d|30)( |$)");
@@ -14,14 +14,15 @@ public class Day4 {
     private static final Pattern EYE_COLOR_REGEX = Pattern.compile("ecl:(amb|blu|brn|gry|grn|hzl|oth)( |$)");
     private static final Pattern PASSPORT_ID_REGEX = Pattern.compile("pid:\\d{9}( |$)");
 
-    public long handlePart1(Stream<String> input) {
-        List<String> passPortLines = input.collect(Collectors.toList());
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var passPortLines = input.toList();
 
-        long validPasswords = 0;
+        var validPasswords = 0;
 
-        Passport passport = new Passport();
+        var passport = new Passport();
 
-        for (String line : passPortLines) {
+        for (var line : passPortLines) {
             if (line.isEmpty()) {
                 if (isPassportValid(passport)) {
                     validPasswords++;
@@ -59,14 +60,14 @@ public class Day4 {
         return validPasswords;
     }
 
-    public long handlePart2(Stream<String> input) {
-        List<String> passPortLines = input.collect(Collectors.toList());
+    public Integer handlePart2(Stream<String> input) {
+        var passPortLines = input.toList();
 
-        long validPasswords = 0;
+        var validPasswords = 0;
 
-        Passport passport = new Passport();
+        var passport = new Passport();
 
-        for (String line : passPortLines) {
+        for (var line : passPortLines) {
             if (line.isEmpty()) {
                 if (isPassportValid(passport)) {
                     validPasswords++;

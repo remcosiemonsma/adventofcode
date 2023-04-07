@@ -1,6 +1,5 @@
 package nl.remcoder.adventofcode;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +38,6 @@ class Day24Test {
     }
 
     @Test
-    @Ignore
     void part2Case1() {
         String data = """
                       Immune System:

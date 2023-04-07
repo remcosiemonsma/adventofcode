@@ -1,46 +1,42 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day25 {
-    public long handlePart1(Stream<String> input) {
-        List<Integer> keys = input.map(Integer::parseInt).collect(Collectors.toList());
+public class Day25 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        List<Integer> keys = input.map(Integer::parseInt).toList();
 
-        int loopCount1 = determineLoopCount(keys.get(0));
-        int loopCount2 = determineLoopCount(keys.get(1));
+        int loopCount = determineLoopCount(keys.get(1));
 
-        System.out.println(loopCount1);
-        System.out.println(loopCount2);
-
-        long key = calculateKey(keys.get(0), loopCount2);
-        long checkKey = calculateKey(keys.get(1), loopCount1);
-
-        System.out.println(key);
-        System.out.println(checkKey);
-
-        System.out.println(key == checkKey);
-
-        return key;
+        return calculateKey(keys.get(0), loopCount);
     }
 
-    private long calculateKey(int subjectNumber, int loopCount) {
-        long value = 1;
+    @Override
+    public Integer handlePart2(Stream<String> input) throws Exception {
+        System.out.println("Merry Christmas!");
+        return null;
+    }
 
-        for (int loop = 0; loop < loopCount; loop++) {
+    private int calculateKey(int subjectNumber, int loopCount) {
+        var value = 1L;
+
+        for (var loop = 0; loop < loopCount; loop++) {
             value *= subjectNumber;
             value %= 20201227;
         }
 
-        return value;
+        return (int) value;
     }
 
     private int determineLoopCount(int key) {
-        int loopCount = 0;
-        int subjectNumber = 7;
+        var loopCount = 0;
+        var subjectNumber = 7;
 
-        int value = 1;
+        var value = 1;
 
         while (value != key) {
             loopCount++;

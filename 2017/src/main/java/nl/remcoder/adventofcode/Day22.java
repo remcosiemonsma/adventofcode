@@ -143,9 +143,9 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
     }
 
     private Boolean[][] enlargeGrid(Boolean[][] grid) {
-        Boolean[][] newgrid = new Boolean[grid.length + 2][grid.length + 2];
+        var newgrid = new Boolean[grid.length + 2][grid.length + 2];
 
-        for (int i = 0; i < grid.length; i++) {
+        for (var i = 0; i < grid.length; i++) {
             System.arraycopy(grid[i], 0, newgrid[i + 1], 1, grid.length);
         }
 
@@ -153,7 +153,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
     }
 
     private InfectionState[][] enlargeGrid(InfectionState[][] grid) {
-        InfectionState[][] newgrid = new InfectionState[grid.length + 2][grid.length + 2];
+        var newgrid = new InfectionState[grid.length + 2][grid.length + 2];
 
         for (int i = 0; i < grid.length; i++) {
             System.arraycopy(grid[i], 0, newgrid[i + 1], 1, grid.length);

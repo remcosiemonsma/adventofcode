@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,35 +18,35 @@ class Day23Test {
 
     @Test
     public void testPart1Case1() {
-        String data = "389125467";
+        String input = "389125467";
 
-        Stream<String> input = data.lines();
-
-        assertEquals(92658374, testSubject.handlePart1(input, 10));
+        testSubject.setMoves(10);
+        
+        assertEquals(92658374, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Case2() {
-        String data = "389125467";
+        String input = "389125467";
 
-        Stream<String> input = data.lines();
-
-        assertEquals(67384529, testSubject.handlePart1(input, 100));
+        testSubject.setMoves(100);
+        
+        assertEquals(67384529, testSubject.handlePart1(input.lines()));
     }
 
     @Test
     public void testPart1Input() throws Exception {
+        testSubject.setMoves(100);
+        
         assertEquals(76952348, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day23/input").toURI())), 100));
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day23/input").toURI()))));
     }
 
     @Test
     public void testPart2Case1() {
-        String data = "389125467";
+        String input = "389125467";
 
-        Stream<String> input = data.lines();
-
-        assertEquals(149245887792L, testSubject.handlePart2(input));
+        assertEquals(149245887792L, testSubject.handlePart2(input.lines()));
     }
 
     @Test

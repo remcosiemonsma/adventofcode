@@ -1,20 +1,22 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day15 {
+public class Day15 implements AdventOfCodeSolution<Integer> {
     private static final Pattern INGREDIENT_PATTERN = Pattern.compile(
             "(.*): capacity (-?\\d*), durability (-?\\d*), flavor (-?\\d*), texture (-?\\d*), calories (-?\\d*)");
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var ingredients = input.map(INGREDIENT_PATTERN::matcher)
                                .filter(Matcher::matches)
                                .map(this::mapToIngredient)
-                               .collect(Collectors.toList());
+                               .toList();
 
         var amounts = new int[ingredients.size()];
 
@@ -23,11 +25,12 @@ public class Day15 {
         return calculateHighestScore(new Amounts(amounts), ingredients, memo);
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var ingredients = input.map(INGREDIENT_PATTERN::matcher)
                                .filter(Matcher::matches)
                                .map(this::mapToIngredient)
-                               .collect(Collectors.toList());
+                               .toList();
 
         var amounts = new int[ingredients.size()];
 

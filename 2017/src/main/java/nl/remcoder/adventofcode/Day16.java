@@ -17,15 +17,15 @@ public class Day16 implements AdventOfCodeSolution<String> {
              .flatMap(Arrays::stream)
              .forEach(s -> {
                  if (s.charAt(0) == 's') {
-                     int size = Integer.parseInt(s.substring(1));
+                     var size = Integer.parseInt(s.substring(1));
                      spin(programs, size);
                  } else if (s.charAt(0) == 'x') {
-                     String[] positions = s.substring(1).split("/");
-                     int pos1 = Integer.parseInt(positions[0]);
-                     int pos2 = Integer.parseInt(positions[1]);
+                     var positions = s.substring(1).split("/");
+                     var pos1 = Integer.parseInt(positions[0]);
+                     var pos2 = Integer.parseInt(positions[1]);
                      swapPosition(programs, pos1, pos2);
                  } else if (s.charAt(0) == 'p') {
-                     char[] progs = s.substring(1).toCharArray();
+                     var progs = s.substring(1).toCharArray();
                      swapPrograms(programs, progs[0], progs[2]);
                  }
              });
@@ -52,7 +52,7 @@ public class Day16 implements AdventOfCodeSolution<String> {
                         var size = Integer.parseInt(s.substring(1));
                         spin(programs, size);
                     } else if (s.charAt(0) == 'x') {
-                        String[] positions = s.substring(1).split("/");
+                        var positions = s.substring(1).split("/");
                         var pos1 = Integer.parseInt(positions[0]);
                         var pos2 = Integer.parseInt(positions[1]);
                         swapPosition(programs, pos1, pos2);

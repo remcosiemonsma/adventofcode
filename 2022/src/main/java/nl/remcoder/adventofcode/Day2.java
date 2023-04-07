@@ -1,27 +1,31 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day2 {
+public class Day2 implements AdventOfCodeSolution<Integer> {
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.mapToInt(this::mapToScorePart1)
                     .sum();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         return input.mapToInt(this::mapToScorePart2)
                     .sum();
     }
 
     private int mapToScorePart1(String line) {
-        RockPaperScissors elf = switch (line.charAt(0)) {
+        var elf = switch (line.charAt(0)) {
             case 'A' -> RockPaperScissors.ROCK;
             case 'B' -> RockPaperScissors.PAPER;
             case 'C' -> RockPaperScissors.SCISSORS;
             default -> throw new AssertionError("Eek!");
         };
-        RockPaperScissors player = switch (line.charAt(2)) {
+        var player = switch (line.charAt(2)) {
             case 'X' -> RockPaperScissors.ROCK;
             case 'Y' -> RockPaperScissors.PAPER;
             case 'Z' -> RockPaperScissors.SCISSORS;
@@ -47,13 +51,13 @@ public class Day2 {
     }
 
     private int mapToScorePart2(String line) {
-        RockPaperScissors elf = switch (line.charAt(0)) {
+        var elf = switch (line.charAt(0)) {
             case 'A' -> RockPaperScissors.ROCK;
             case 'B' -> RockPaperScissors.PAPER;
             case 'C' -> RockPaperScissors.SCISSORS;
             default -> throw new AssertionError("Eek!");
         };
-        Result result = switch (line.charAt(2)) {
+        var result = switch (line.charAt(2)) {
             case 'X' -> Result.LOSS;
             case 'Y' -> Result.DRAW;
             case 'Z' -> Result.WIN;

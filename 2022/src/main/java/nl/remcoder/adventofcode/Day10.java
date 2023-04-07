@@ -31,8 +31,6 @@ public class Day10 implements BiAdventOfCodeSolution<Integer, String> {
             cpu.cycle();
         }
         
-        cpu.getScreen().printScreen();
-        
         return cpu.getScreen().readScreen();
     }
     

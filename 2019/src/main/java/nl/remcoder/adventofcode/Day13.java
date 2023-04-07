@@ -71,7 +71,6 @@ public class Day13 {
 
         private long xValue;
         private long yValue;
-        private long idValue;
 
         @Override
         public void consumeLongValue(Long outputValue) {
@@ -85,7 +84,7 @@ public class Day13 {
                     yield State.ID;
                 }
                 case ID -> {
-                    idValue = outputValue;
+                    long idValue = outputValue;
                     performPaintOperation((int) xValue, (int) yValue, (int) idValue);
                     yield State.X;
                 }

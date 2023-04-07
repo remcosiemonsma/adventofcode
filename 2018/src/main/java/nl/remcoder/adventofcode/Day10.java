@@ -4,14 +4,13 @@ import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day10 implements BiAdventOfCodeSolution<String, Integer> {
     @Override
     public String handlePart1(Stream<String> input) {
         var lightPoints = input.map(this::parseStringToLightPoint)
-                               .collect(Collectors.toList());
+                               .toList();
 
         var previousHighestX = findHighestX(lightPoints);
         var previousHighestY = findHighestY(lightPoints);
@@ -56,10 +55,6 @@ public class Day10 implements BiAdventOfCodeSolution<String, Integer> {
         lightPoints.forEach(lightPoint -> grid[lightPoint.y - finalPreviousLowestY][lightPoint.x -
                                                                                     finalPreviousLowestX] = '#');
 
-        for (char[] line : grid) {
-            System.out.println(Arrays.toString(line));
-        }
-        
         //No screen reader implemented, usual font was not used
         return "FPRBRRZA";
     }
@@ -67,7 +62,7 @@ public class Day10 implements BiAdventOfCodeSolution<String, Integer> {
     @Override
     public Integer handlePart2(Stream<String> input) {
         var lightPoints = input.map(this::parseStringToLightPoint)
-                               .collect(Collectors.toList());
+                               .toList();
         
         var previousHighestX = findHighestX(lightPoints);
         var previousHighestY = findHighestY(lightPoints);

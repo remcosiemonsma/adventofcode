@@ -16,9 +16,9 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
         for (var i = 0; i < 128; i++) {
             var knotHash = KnotHash.getHash((line + "-" + i).chars().toArray());
 
-            for (char c : knotHash.toCharArray()) {
-                var binaryString = Integer.toBinaryString(Integer.parseInt("" + c, 16));
-                for (char b : binaryString.toCharArray()) {
+            for (var c : knotHash.toCharArray()) {
+                var binaryString = Integer.toBinaryString(Integer.parseInt(String.valueOf(c), 16));
+                for (var b : binaryString.toCharArray()) {
                     if (b == '1') {
                         squaresUsed++;
                     }
@@ -45,7 +45,7 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
 
                 var binaryStringBuilder = new StringBuilder(
                         Integer.toBinaryString(
-                                       Integer.parseInt("" + c, 16))
+                                       Integer.parseInt(String.valueOf(c), 16))
                                .replaceAll("1", "#")
                                .replaceAll("0", " "));
 

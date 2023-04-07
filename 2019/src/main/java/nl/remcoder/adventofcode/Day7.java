@@ -4,7 +4,6 @@ import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
@@ -40,12 +39,12 @@ public class Day7 implements AdventOfCodeSolution<Long> {
                                 continue;
                             }
 
-                            BlockingQueue<Long> inputState = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output1 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output2 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output3 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output4 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output5 = new LinkedBlockingQueue<>();
+                            var inputState = new LinkedBlockingQueue<Long>();
+                            var output1 = new LinkedBlockingQueue<Long>();
+                            var output2 = new LinkedBlockingQueue<Long>();
+                            var output3 = new LinkedBlockingQueue<Long>();
+                            var output4 = new LinkedBlockingQueue<Long>();
+                            var output5 = new LinkedBlockingQueue<Long>();
 
                             inputState.put(input1);
                             output1.put(input2);
@@ -54,11 +53,11 @@ public class Day7 implements AdventOfCodeSolution<Long> {
                             output4.put(input5);
                             inputState.put(0L);
 
-                            Thread cpu1 = new Thread(new IntCodeComputer(opcodes, inputState, output1));
-                            Thread cpu2 = new Thread(new IntCodeComputer(opcodes, output1, output2));
-                            Thread cpu3 = new Thread(new IntCodeComputer(opcodes, output2, output3));
-                            Thread cpu4 = new Thread(new IntCodeComputer(opcodes, output3, output4));
-                            Thread cpu5 = new Thread(new IntCodeComputer(opcodes, output4, output5));
+                            var cpu1 = new Thread(new IntCodeComputer(opcodes, inputState, output1));
+                            var cpu2 = new Thread(new IntCodeComputer(opcodes, output1, output2));
+                            var cpu3 = new Thread(new IntCodeComputer(opcodes, output2, output3));
+                            var cpu4 = new Thread(new IntCodeComputer(opcodes, output3, output4));
+                            var cpu5 = new Thread(new IntCodeComputer(opcodes, output4, output5));
 
                             cpu1.start();
                             cpu2.start();
@@ -112,11 +111,11 @@ public class Day7 implements AdventOfCodeSolution<Long> {
                                 continue;
                             }
 
-                            BlockingQueue<Long> output1 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output2 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output3 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output4 = new LinkedBlockingQueue<>();
-                            BlockingQueue<Long> output5 = new LinkedBlockingQueue<>();
+                            var output1 = new LinkedBlockingQueue<Long>();
+                            var output2 = new LinkedBlockingQueue<Long>();
+                            var output3 = new LinkedBlockingQueue<Long>();
+                            var output4 = new LinkedBlockingQueue<Long>();
+                            var output5 = new LinkedBlockingQueue<Long>();
 
                             output5.put(input1);
                             output1.put(input2);
@@ -125,11 +124,11 @@ public class Day7 implements AdventOfCodeSolution<Long> {
                             output4.put(input5);
                             output5.put(0L);
 
-                            Thread cpu1 = new Thread(new IntCodeComputer(opcodes, output5, output1));
-                            Thread cpu2 = new Thread(new IntCodeComputer(opcodes, output1, output2));
-                            Thread cpu3 = new Thread(new IntCodeComputer(opcodes, output2, output3));
-                            Thread cpu4 = new Thread(new IntCodeComputer(opcodes, output3, output4));
-                            Thread cpu5 = new Thread(new IntCodeComputer(opcodes, output4, output5));
+                            var cpu1 = new Thread(new IntCodeComputer(opcodes, output5, output1));
+                            var cpu2 = new Thread(new IntCodeComputer(opcodes, output1, output2));
+                            var cpu3 = new Thread(new IntCodeComputer(opcodes, output2, output3));
+                            var cpu4 = new Thread(new IntCodeComputer(opcodes, output3, output4));
+                            var cpu5 = new Thread(new IntCodeComputer(opcodes, output4, output5));
 
                             cpu1.start();
                             cpu2.start();

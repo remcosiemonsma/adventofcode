@@ -1,46 +1,23 @@
 package nl.remcoder.adventofcode;
 
-import java.util.Comparator;
-import java.util.List;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day14 {
+public class Day14 implements AdventOfCodeSolution<Integer> {
     private static final Pattern REINDEER_PATTERN =
             Pattern.compile("(.*) can fly (\\d*) km/s for (\\d*) seconds, but then must rest for (\\d*) seconds.");
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var reindeer = input.map(REINDEER_PATTERN::matcher)
-                                       .filter(Matcher::matches)
-                                       .map(this::mapToReindeer)
-                                       .toList();
+                            .filter(Matcher::matches)
+                            .map(this::mapToReindeer)
+                            .toList();
 
         for (var i = 0; i < 2503; i++) {
-            reindeer.forEach(Reindeer::tick);
-        }
-
-        return reindeer.stream()
-                       .mapToInt(Reindeer::getDistance)
-                       .max()
-                       .orElseThrow(() -> new AssertionError("Eek!"));
-    }
-
-    private Reindeer mapToReindeer(Matcher matcher) {
-        return new Reindeer(matcher.group(1),
-                            Integer.parseInt(matcher.group(2)),
-                            Integer.parseInt(matcher.group(3)),
-                            Integer.parseInt(matcher.group(4)));
-    }
-
-    public int handlePart2(Stream<String> input) {
-        List<Reindeer> reindeer = input.map(REINDEER_PATTERN::matcher)
-                                       .filter(Matcher::matches)
-                                       .map(this::mapToReindeer)
-                                       .toList();
-
-        for (int i = 0; i < 2503; i++) {
             reindeer.forEach(Reindeer::tick);
             int maxDistance = reindeer.stream()
                                       .mapToInt(Reindeer::getDistance)
@@ -58,8 +35,30 @@ public class Day14 {
                 .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var reindeer = input.map(REINDEER_PATTERN::matcher)
+                            .filter(Matcher::matches)
+                            .map(this::mapToReindeer)
+                            .toList();
+
+        for (var i = 0; i < 2503; i++) {
+            reindeer.forEach(Reindeer::tick);
+        }
+
+        return reindeer.stream()
+                       .mapToInt(Reindeer::getDistance)
+                       .max()
+                       .orElseThrow(() -> new AssertionError("Eek!"));
+    }
+
+    private Reindeer mapToReindeer(Matcher matcher) {
+        return new Reindeer(Integer.parseInt(matcher.group(2)),
+                            Integer.parseInt(matcher.group(3)),
+                            Integer.parseInt(matcher.group(4)));
+    }
+
     private static class Reindeer {
-        private final String name;
         private final int speed;
         private final int runtime;
         private final int resttime;
@@ -69,8 +68,7 @@ public class Day14 {
         private int distance;
         private int score;
 
-        private Reindeer(String name, int speed, int runtime, int resttime) {
-            this.name = name;
+        private Reindeer(int speed, int runtime, int resttime) {
             this.speed = speed;
             this.runtime = runtime;
             this.resttime = resttime;
@@ -116,21 +114,6 @@ public class Day14 {
         private enum State {
             RESTING,
             FLYING
-        }
-
-        @Override
-        public String toString() {
-            return "Reindeer{" +
-                   "name='" + name + '\'' +
-                   ", speed=" + speed +
-                   ", runtime=" + runtime +
-                   ", resttime=" + resttime +
-                   ", state=" + state +
-                   ", restperiod=" + restperiod +
-                   ", runperiod=" + runperiod +
-                   ", distance=" + distance +
-                   ", score=" + score +
-                   '}';
         }
     }
 }

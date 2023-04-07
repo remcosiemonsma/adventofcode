@@ -1,7 +1,7 @@
 package nl.remcoder.adventofcode;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Day11Test {
     private Day11 testSubject;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         testSubject = new Day11();
     }

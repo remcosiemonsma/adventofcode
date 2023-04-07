@@ -1,16 +1,18 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.pathfinding.Dijkstra;
 import nl.remcoder.adventofcode.library.pathfinding.Node;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Day22 {
-    public int playerHitPoints = 50;
-    public int playerMana = 500;
+public class Day22 implements AdventOfCodeSolution<Long> {
+    private int playerHitPoints;
+    private int playerMana;
 
-    public int handlePart1(Stream<String> input) {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         var bossData = input.toList();
 
         var boss = createBoss(bossData);
@@ -19,13 +21,15 @@ public class Day22 {
         var turn = new Turn(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
         turn.setDistance(0);
 
-        return (int) Dijkstra.findShortestDistance(turn,
-                                                   node -> ((Turn) node).isGameFinished() &&
-                                                           ((Turn) node).isPlayerAlive())
-                             .orElseThrow(() -> new AssertionError("Eek!")).getDistance();
+        return Dijkstra.findShortestDistance(turn,
+                                             node -> ((Turn) node).isGameFinished() &&
+                                                     ((Turn) node).isPlayerAlive())
+                       .orElseThrow(() -> new AssertionError("Eek!"))
+                       .getDistance();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         var bossData = input.toList();
 
         var boss = createBoss(bossData);
@@ -34,11 +38,19 @@ public class Day22 {
         var turn = new Turn2(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
         turn.setDistance(0);
 
-        return (int) Dijkstra.findShortestDistance(turn,
-                                                   node -> ((Turn2) node).isGameFinished() &&
-                                                           ((Turn2) node).isPlayerAlive())
-                             .orElseThrow(() -> new AssertionError("Eek!"))
-                             .getDistance();
+        return Dijkstra.findShortestDistance(turn,
+                                             node -> ((Turn2) node).isGameFinished() &&
+                                                     ((Turn2) node).isPlayerAlive())
+                       .orElseThrow(() -> new AssertionError("Eek!"))
+                       .getDistance();
+    }
+
+    public void setPlayerHitPoints(int playerHitPoints) {
+        this.playerHitPoints = playerHitPoints;
+    }
+
+    public void setPlayerMana(int playerMana) {
+        this.playerMana = playerMana;
     }
 
     private Set<Spell> createSpells() {
@@ -60,7 +72,7 @@ public class Day22 {
                         Integer.parseInt(bossData.get(1).replace("Damage: ", "")));
     }
 
-    private static class Turn extends Node {
+    private static class Turn extends Node<Turn> {
         private final Player player;
         private final Boss boss;
         private final List<ActiveSpell> activeSpells;
@@ -80,7 +92,7 @@ public class Day22 {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Turn, Long> getNeighbors() {
             var neighbors = new HashMap<Turn, Long>();
 
             if (isGameFinished()) {
@@ -177,7 +189,7 @@ public class Day22 {
         }
     }
 
-    private static class Turn2 extends Node {
+    private static class Turn2 extends Node<Turn2> {
         private Player player;
         private final Boss boss;
         private final List<ActiveSpell> activeSpells;
@@ -197,7 +209,7 @@ public class Day22 {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Turn2, Long> getNeighbors() {
             var neighbors = new HashMap<Turn2, Long>();
 
             if (isGameFinished()) {

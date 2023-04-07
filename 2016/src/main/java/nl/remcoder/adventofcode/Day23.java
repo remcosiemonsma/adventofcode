@@ -11,7 +11,7 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var instructions = input.map(s -> s.split(" ")).toArray(String[][]::new);
         
-        CPU cpu = new CPU();
+        var cpu = new CPU();
         
         cpu.setRegistera(7);
 
@@ -24,7 +24,7 @@ public class Day23 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         var instructions = input.map(s -> s.split(" ")).toArray(String[][]::new);
 
-        CPU cpu = new CPU();
+        var cpu = new CPU();
 
         cpu.setRegistera(12);
 

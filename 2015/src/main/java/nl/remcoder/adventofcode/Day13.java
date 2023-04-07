@@ -1,5 +1,7 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,18 +10,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day13 {
+public class Day13 implements AdventOfCodeSolution<Integer> {
     private static final Pattern HAPPINESS_PATTERN =
             Pattern.compile("(.*) would (lose|gain) (\\d*) happiness units by sitting next to (.*)\\.");
 
-    public int handlePart1(Stream<String> input) {
+    @Override 
+    public Integer handlePart1(Stream<String> input) {
         var personsMap = new HashMap<String, Person>();
 
         input.map(HAPPINESS_PATTERN::matcher)
              .filter(Matcher::matches)
              .forEach(matcher -> processMatch(matcher, personsMap));
 
-        int highestRating = Integer.MIN_VALUE;
+        var highestRating = Integer.MIN_VALUE;
 
         var persons = new ArrayList<>(personsMap.values());
 
@@ -40,7 +43,8 @@ public class Day13 {
         return highestRating;
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var personsMap = new HashMap<String, Person>();
 
         input.map(HAPPINESS_PATTERN::matcher)

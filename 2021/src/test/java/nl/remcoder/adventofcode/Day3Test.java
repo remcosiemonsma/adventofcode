@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,22 +18,22 @@ class Day3Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      00100
-                      11110
-                      10110
-                      10111
-                      10101
-                      01111
-                      00111
-                      11100
-                      10000
-                      11001
-                      00010
-                      01010
-                      """;
+        String input = """
+                       00100
+                       11110
+                       10110
+                       10111
+                       10101
+                       01111
+                       00111
+                       11100
+                       10000
+                       11001
+                       00010
+                       01010
+                       """;
 
-        assertEquals(198, testSubject.handlePart1(data.lines()));
+        assertEquals(198, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -45,22 +44,22 @@ class Day3Test {
 
     @Test
     void testPart2Case1() {
-        String data = """
-                      00100
-                      11110
-                      10110
-                      10111
-                      10101
-                      01111
-                      00111
-                      11100
-                      10000
-                      11001
-                      00010
-                      01010
-                      """;
+        String input = """
+                       00100
+                       11110
+                       10110
+                       10111
+                       10101
+                       01111
+                       00111
+                       11100
+                       10000
+                       11001
+                       00010
+                       01010
+                       """;
 
-        assertEquals(230, testSubject.handlePart2(data.lines()));
+        assertEquals(230, testSubject.handlePart2(input.lines()));
     }
 
     @Test

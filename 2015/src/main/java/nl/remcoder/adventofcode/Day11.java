@@ -1,10 +1,12 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
-public class Day11 {
+public class Day11 implements AdventOfCodeSolution<String> {
+    @Override
     public String handlePart1(Stream<String> input) {
         var password = input.findFirst()
                             .orElseThrow(() -> new AssertionError("Eek!"));
@@ -20,19 +22,20 @@ public class Day11 {
             password = generatePasswordWithoutForbiddenChar(password, forbiddenChar);
         }
 
-        while (!isPasswordValid(password)) {
+        while (passwordIsNotValid(password)) {
             password = generateNextPassword(password);
         }
 
         return password;
     }
 
+    @Override
     public String handlePart2(Stream<String> input) {
         var previousPassword = handlePart1(input);
 
         var password = generateNextPassword(previousPassword);
 
-        while (!isPasswordValid(password)) {
+        while (passwordIsNotValid(password)) {
             password = generateNextPassword(password);
         }
 
@@ -88,7 +91,7 @@ public class Day11 {
         return passwordBuilder.toString();
     }
 
-    private boolean isPasswordValid(String password) {
+    private boolean passwordIsNotValid(String password) {
         var sequenceFound = false;
 
         for (var c = 'a'; c <= 'x'; c++) {
@@ -103,27 +106,27 @@ public class Day11 {
         }
 
         if (!sequenceFound) {
-            return false;
+            return true;
         }
 
         char previouschar = 0;
 
         var duplicates = new HashSet<Character>();
 
-        for (int position = 0; position < password.length(); position++) {
+        for (var position = 0; position < password.length(); position++) {
             var c = password.charAt(position);
             if (previouschar == c) {
                 if (duplicates.contains(c)) {
-                    return false;
+                    return true;
                 }
                 duplicates.add(c);
                 if (duplicates.size() == 2) {
-                    return true;
+                    return false;
                 }
             }
             previouschar = c;
         }
 
-        return false;
+        return true;
     }
 }

@@ -37,12 +37,12 @@ public class Day2 implements AdventOfCodeSolution<Long> {
 
         for (var noun = 0L; noun < 100; noun++) {
             for (var verb = 0L; verb < 100; verb++) {
-                long[] opcodes = Arrays.copyOf(opcodesInput, opcodesInput.length);
+                var opcodes = Arrays.copyOf(opcodesInput, opcodesInput.length);
 
                 opcodes[1] = noun;
                 opcodes[2] = verb;
 
-                IntCodeComputer intCodeComputer = new IntCodeComputer(opcodes, null, null);
+                var intCodeComputer = new IntCodeComputer(opcodes, null, null);
 
                 intCodeComputer.runProgram();
 

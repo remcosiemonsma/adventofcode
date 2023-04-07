@@ -2,13 +2,13 @@ package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.intcodecomputer.IntCodeComputer;
 import nl.remcoder.adventofcode.intcodecomputer.ProducingQueue;
-import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
-public class Day17 implements AdventOfCodeSolution<Integer> {
+public class Day17 implements BiAdventOfCodeSolution<Integer, Long> {
     @Override
     public Integer handlePart1(Stream<String> input) throws InterruptedException {
         var line = input.findFirst().orElseThrow(AssertionError::new);
@@ -33,8 +33,6 @@ public class Day17 implements AdventOfCodeSolution<Integer> {
 
         var grid = stringBuilder.toString();
 
-        System.out.println(grid);
-
         var intersections = findIntersections(grid);
 
         return intersections.stream()
@@ -43,7 +41,7 @@ public class Day17 implements AdventOfCodeSolution<Integer> {
     }
 
     @Override
-    public Integer handlePart2(Stream<String> input) throws Exception {
+    public Long handlePart2(Stream<String> input) throws Exception {
         var line = input.findFirst().orElseThrow(AssertionError::new);
 
         var opcodes = Arrays.stream(line.split(","))
@@ -52,17 +50,17 @@ public class Day17 implements AdventOfCodeSolution<Integer> {
         
         //Path = L,12,L,12,L,6,L,6,R,8,R,4,L,12,L,12,L,12,L,6,L,6,L,12,L6,R,12,R,8,R,8,R,4,L,12,L,12,L,12,L,6,L,6,L,12,L,6,R,12,R,8,R,8,R,4,L,12,L,12,L,12,L,6,L,6,L,12,L,6,R,12,R,8
         
-        String main = "A,B,A,C,B,A,C,B,A,C\n";
-        String A = "L,12,L,12,L,6,L,6\n";
-        String B = "R,8,R,4,L,12\n";
-        String C = "L,12,L,6,R,12,R,8\n";
-        String videoFeed = "n\n";
+        var main = "A,B,A,C,B,A,C,B,A,C\n";
+        var A = "L,12,L,12,L,6,L,6\n";
+        var B = "R,8,R,4,L,12\n";
+        var C = "L,12,L,6,R,12,R,8\n";
+        var videoFeed = "n\n";
         
-        String program = main + A + B + C + videoFeed;
+        var program = main + A + B + C + videoFeed;
 
-        Queue<Long> chars = new ArrayDeque<>(); 
+        var chars = new ArrayDeque<Long>(); 
         
-        for (char c : program.toCharArray()) {
+        for (var c : program.toCharArray()) {
             chars.add((long) c);
         }
         
@@ -73,19 +71,19 @@ public class Day17 implements AdventOfCodeSolution<Integer> {
 
         var intCodeComputer = new IntCodeComputer(opcodes, inputState, outputState);
 
-        Thread thread = new Thread(intCodeComputer);
+        var thread = new Thread(intCodeComputer);
 
         thread.start();
         
         thread.join();
         
-        long dust = 0;
+        var dust = 0L;
 
         while (!outputState.isEmpty()) {
             dust = outputState.take();
         }
 
-        return (int) dust;
+        return dust;
     }
 
     private List<Point> findIntersections(String gridString) {

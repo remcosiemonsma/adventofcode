@@ -1,23 +1,25 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Stream;
 
-public class Day9 {
-    public int handlePart1(Stream<String> input) {
-        int[][] heightmap = input.map(String::chars)
-                                 .map(chars -> chars.map(c -> Character.digit((char) c, 10))
-                                                    .toArray())
-                                 .toArray(int[][]::new);
+public class Day9 implements BiAdventOfCodeSolution<Integer, Long> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var heightmap = input.map(String::chars)
+                             .map(chars -> chars.map(c -> Character.digit((char) c, 10))
+                                                .toArray())
+                             .toArray(int[][]::new);
 
-        int riskSum = 0;
+        var riskSum = 0;
 
-        for (int y = 0; y < heightmap.length; y++) {
-            for (int x = 0; x < heightmap[y].length; x++) {
-                int value = heightmap[y][x];
+        for (var y = 0; y < heightmap.length; y++) {
+            for (var x = 0; x < heightmap[y].length; x++) {
+                var value = heightmap[y][x];
 
                 if ((x == 0 || value < heightmap[y][x - 1]) &&
                     (x == heightmap[y].length - 1 || value < heightmap[y][x + 1]) &&
@@ -31,18 +33,19 @@ public class Day9 {
         return riskSum;
     }
 
-    public long handlePart2(Stream<String> input) {
-        int[][] heightmap = input.map(String::chars)
-                                 .map(chars -> chars.map(c -> Character.digit((char) c, 10))
-                                                    .toArray())
-                                 .toArray(int[][]::new);
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var heightmap = input.map(String::chars)
+                             .map(chars -> chars.map(c -> Character.digit((char) c, 10))
+                                                .toArray())
+                             .toArray(int[][]::new);
 
-        List<Long> sizes = new ArrayList<>();
+        var sizes = new ArrayList<Long>();
 
-        int value = 10;
+        var value = 10;
 
-        for (int y = 0; y < heightmap.length; y++) {
-            for (int x = 0; x < heightmap[y].length; x++) {
+        for (var y = 0; y < heightmap.length; y++) {
+            for (var x = 0; x < heightmap[y].length; x++) {
                 if (heightmap[y][x] < 9) {
                     fillBasin(heightmap, x, y, value);
 
@@ -62,7 +65,7 @@ public class Day9 {
                     .sorted(Comparator.reverseOrder())
                     .limit(3)
                     .reduce((l1, l2) -> l1 * l2)
-                    .get();
+                    .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private void fillBasin(int[][] heightmap, int x, int y, int value) {

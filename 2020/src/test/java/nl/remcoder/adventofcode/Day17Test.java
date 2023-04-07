@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,15 +18,13 @@ class Day17Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                .#.
-                ..#
-                ###
-                """;
+        String input = """
+                       .#.
+                       ..#
+                       ###
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(112, testSubject.handlePart1(input));
+        assertEquals(112, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -38,15 +35,13 @@ class Day17Test {
 
     @Test
     public void testPart2Case1() {
-        String data = """
-                .#.
-                ..#
-                ###
-                """;
+        String input = """
+                       .#.
+                       ..#
+                       ###
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(848, testSubject.handlePart2(input));
+        assertEquals(848, testSubject.handlePart2(input.lines()));
     }
 
     @Test

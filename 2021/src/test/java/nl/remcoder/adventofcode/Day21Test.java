@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,12 +18,12 @@ class Day21Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      Player 1 starting position: 4
-                      Player 2 starting position: 8
-                      """;
+        String input = """
+                       Player 1 starting position: 4
+                       Player 2 starting position: 8
+                       """;
 
-        assertEquals(739785, testSubject.handlePart1(data.lines()));
+        assertEquals(739785, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -35,12 +34,12 @@ class Day21Test {
 
     @Test
     void testPart2Case1() {
-        String data = """
-                      Player 1 starting position: 4
-                      Player 2 starting position: 8
-                      """;
+        String input = """
+                       Player 1 starting position: 4
+                       Player 2 starting position: 8
+                       """;
 
-        assertEquals(444356092776315L, testSubject.handlePart2(data.lines()));
+        assertEquals(444356092776315L, testSubject.handlePart2(input.lines()));
     }
 
     @Test

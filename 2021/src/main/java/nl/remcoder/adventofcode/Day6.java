@@ -1,22 +1,25 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day6 {
-    public long handlePart1(Stream<String> input) {
-        long[] fishes = parseInput(input);
+public class Day6 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
+        var fishes = parseInput(input);
 
         spawnFishes(fishes, 80);
 
         return Arrays.stream(fishes).sum();
     }
 
-    public long handlePart2(Stream<String> input) {
-        long[] fishes = parseInput(input);
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var fishes = parseInput(input);
 
         spawnFishes(fishes, 256);
 
@@ -24,11 +27,11 @@ public class Day6 {
     }
 
     private long[] parseInput(Stream<String> input) {
-        Map<String, List<String>> collect = input.map(s -> s.split(","))
-                                                 .flatMap(Arrays::stream)
-                                                 .collect(Collectors.groupingBy(s -> s, Collectors.toList()));
+        var collect = input.map(s -> s.split(","))
+                           .flatMap(Arrays::stream)
+                           .collect(Collectors.groupingBy(s -> s, Collectors.toList()));
 
-        long[] fishes = new long[9];
+        var fishes = new long[9];
 
         fishes[0] = collect.getOrDefault("0", List.of()).size();
         fishes[1] = collect.getOrDefault("1", List.of()).size();
@@ -44,7 +47,7 @@ public class Day6 {
 
     private void spawnFishes(long[] fishes, int days) {
         for (int day = 0; day < days; day++) {
-            long[] temp = Arrays.copyOf(fishes, 9);
+            var temp = Arrays.copyOf(fishes, 9);
 
             fishes[7] = fishes[8];
             fishes[6] = temp[7];

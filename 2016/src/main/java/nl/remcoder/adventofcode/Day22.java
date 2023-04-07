@@ -3,7 +3,6 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 
-import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -55,25 +54,19 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         for (var y = 0; y < nodeGrid.length; y++) {
             for (var x = 0; x < nodeGrid[y].length; x++) {
                 Node n = nodeGrid[y][x];
-                if (x == 0 && y == 0) {
-                    System.out.print("S");
-                } else if (x == x_size && y == 0) {
-                    System.out.print("G");
-                } else if (n.used == 0) {
+                if (n.used == 0) {
                     hole = n;
-                    System.out.print("_");
                 } else if (n.size() > 250) {
                     if (wallStart == null) {
                         wallStart = nodeGrid[y - 1][x];
                     }
-                    System.out.print("#");
-                } else {
-                    System.out.print(".");
                 }
             }
-            System.out.println();
         }
 
+        assert hole != null;
+        assert wallStart != null;
+        
         int result = hole.coordinate().getDistanceTo(wallStart.coordinate());
         result += Math.abs(wallStart.coordinate().x() - x_size) + wallStart.coordinate().y() + 2;
         return result + 5 * (x_size - 1);

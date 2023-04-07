@@ -4,24 +4,23 @@ import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Day18 implements AdventOfCodeSolution<Integer> {
     @Override
     public Integer handlePart1(Stream<String> input) {
-        LumberSpot[][] grid = input.map(s -> s.chars()
-                                              .mapToObj(i -> (char) i)
-                                              .map(this::parseLumberSpot)
-                                              .toArray(LumberSpot[]::new))
-                                   .toArray(LumberSpot[][]::new);
+        var grid = input.map(s -> s.chars()
+                                   .mapToObj(i -> (char) i)
+                                   .map(this::parseLumberSpot)
+                                   .toArray(LumberSpot[]::new))
+                        .toArray(LumberSpot[][]::new);
 
-        for (int minute = 0; minute < 10; minute++) {
-            for (int y = 0; y < grid.length; y++) {
-                for (int x = 0; x < grid[y].length; x++) {
-                    LumberSpot lumberSpot = grid[y][x];
-                    int amountOfTrees = countTrees(grid, y, x);
-                    int amountOfLumberYards = countLumberYards(grid, y, x);
+        for (var minute = 0; minute < 10; minute++) {
+            for (var y = 0; y < grid.length; y++) {
+                for (var x = 0; x < grid[y].length; x++) {
+                    var lumberSpot = grid[y][x];
+                    var amountOfTrees = countTrees(grid, y, x);
+                    var amountOfLumberYards = countLumberYards(grid, y, x);
                     switch (lumberSpot.lumberState) {
                         case OPEN_GROUND -> {
                             if (amountOfTrees >= 3) {
@@ -42,8 +41,8 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
                 }
             }
 
-            for (LumberSpot[] lumberSpots : grid) {
-                for (LumberSpot lumberSpot : lumberSpots) {
+            for (var lumberSpots : grid) {
+                for (var lumberSpot : lumberSpots) {
                     lumberSpot.change();
                 }
             }
@@ -54,22 +53,22 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
-        LumberSpot[][] grid = input.map(s -> s.chars()
-                                              .mapToObj(i -> (char) i)
-                                              .map(this::parseLumberSpot)
-                                              .toArray(LumberSpot[]::new))
-                                   .toArray(LumberSpot[][]::new);
+        var grid = input.map(s -> s.chars()
+                                   .mapToObj(i -> (char) i)
+                                   .map(this::parseLumberSpot)
+                                   .toArray(LumberSpot[]::new))
+                        .toArray(LumberSpot[][]::new);
 
-        List<LumberStateContainer> previousStates = new ArrayList<>();
+        var previousStates = new ArrayList<LumberStateContainer>();
 
         previousStates.add(new LumberStateContainer(translateGridToStates(grid)));
 
-        for (int minute = 0; minute < 1000000000; minute++) {
-            for (int y = 0; y < grid.length; y++) {
-                for (int x = 0; x < grid[y].length; x++) {
-                    LumberSpot lumberSpot = grid[y][x];
-                    int amountOfTrees = countTrees(grid, y, x);
-                    int amountOfLumberYards = countLumberYards(grid, y, x);
+        for (var minute = 0; minute < 1000000000; minute++) {
+            for (var y = 0; y < grid.length; y++) {
+                for (var x = 0; x < grid[y].length; x++) {
+                    var lumberSpot = grid[y][x];
+                    var amountOfTrees = countTrees(grid, y, x);
+                    var amountOfLumberYards = countLumberYards(grid, y, x);
                     switch (lumberSpot.lumberState) {
                         case OPEN_GROUND -> {
                             if (amountOfTrees >= 3) {
@@ -90,13 +89,13 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
                 }
             }
 
-            for (LumberSpot[] lumberSpots : grid) {
-                for (LumberSpot lumberSpot : lumberSpots) {
+            for (var lumberSpots : grid) {
+                for (var lumberSpot : lumberSpots) {
                     lumberSpot.change();
                 }
             }
 
-            LumberStateContainer lumberStateContainer = new LumberStateContainer(translateGridToStates(grid));
+            var lumberStateContainer = new LumberStateContainer(translateGridToStates(grid));
 
             if (!previousStates.contains(lumberStateContainer)) {
                 previousStates.add(lumberStateContainer);
@@ -107,17 +106,18 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
 
                 int offset = remainder % distance;
 
-                return countGridValue(previousStates.get(previousStates.indexOf(lumberStateContainer) + offset).lumberStates);
+                return countGridValue(
+                        previousStates.get(previousStates.indexOf(lumberStateContainer) + offset).lumberStates);
             }
         }
         return null;
     }
 
     private int countGridValue(LumberState[][] grid) {
-        int amountOfTrees = 0;
-        int amountOfLumberYards = 0;
-        for (LumberState[] lumberStates : grid) {
-            for (LumberState lumberState : lumberStates) {
+        var amountOfTrees = 0;
+        var amountOfLumberYards = 0;
+        for (var lumberStates : grid) {
+            for (var lumberState : lumberStates) {
                 switch (lumberState) {
                     case OPEN_GROUND:
                         break;
@@ -133,9 +133,9 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
 
         return amountOfLumberYards * amountOfTrees;
     }
-    
+
     private LumberState[][] translateGridToStates(LumberSpot[][] grid) {
-        LumberState[][] lumberStates = new LumberState[grid.length][grid[0].length];
+        var lumberStates = new LumberState[grid.length][grid[0].length];
 
         for (int y = 0; y < grid.length; y++) {
             for (int x = 0; x < grid[y].length; x++) {
@@ -145,9 +145,9 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
 
         return lumberStates;
     }
-    
+
     private LumberSpot parseLumberSpot(char c) {
-        LumberSpot lumberSpot = new LumberSpot();
+        var lumberSpot = new LumberSpot();
         lumberSpot.lumberState = switch (c) {
             case '.' -> LumberState.OPEN_GROUND;
             case '|' -> LumberState.TREES;
@@ -158,10 +158,10 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
     }
 
     private int countGridValue(LumberSpot[][] grid) {
-        int amountOfTrees = 0;
-        int amountOfLumberYards = 0;
-        for (LumberSpot[] lumberSpots : grid) {
-            for (LumberSpot lumberSpot : lumberSpots) {
+        var amountOfTrees = 0;
+        var amountOfLumberYards = 0;
+        for (var lumberSpots : grid) {
+            for (var lumberSpot : lumberSpots) {
                 switch (lumberSpot.lumberState) {
                     case OPEN_GROUND:
                         break;
@@ -179,7 +179,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
     }
 
     private int countTrees(LumberSpot[][] grid, int y, int x) {
-        int amountOfTrees = 0;
+        var amountOfTrees = 0;
 
         if (y != 0) {
             if (x != 0) {
@@ -225,7 +225,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
     }
 
     private int countLumberYards(LumberSpot[][] grid, int y, int x) {
-        int amountOfLumberYards = 0;
+        var amountOfLumberYards = 0;
 
         if (y != 0) {
             if (x != 0) {
@@ -270,13 +270,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
         return amountOfLumberYards;
     }
 
-    private static class LumberStateContainer {
-        final LumberState[][] lumberStates;
-
-        private LumberStateContainer(LumberState[][] lumberStates) {
-            this.lumberStates = lumberStates;
-        }
-
+    private record LumberStateContainer(LumberState[][] lumberStates) {
         @Override
         public boolean equals(Object o) {
             if (this == o) {
@@ -294,7 +288,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
             return Arrays.deepHashCode(lumberStates);
         }
     }
-    
+
     private static class LumberSpot {
         LumberState lumberState;
         boolean canChange;

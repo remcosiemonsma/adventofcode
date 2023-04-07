@@ -1,13 +1,16 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day23 {
+public class Day23 implements AdventOfCodeSolution<Long> {
     private final long[] registers = {0, 0};
     private int counter;
     private Instruction[] instructions;
 
-    public long handlePart1(Stream<String> input) {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         instructions = input.map(this::parseInstruction)
                             .toArray(Instruction[]::new);
 
@@ -22,7 +25,8 @@ public class Day23 {
         return registers[1];
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         registers[0] = 1;
 
         return handlePart1(input);

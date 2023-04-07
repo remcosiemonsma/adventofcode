@@ -3,7 +3,6 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public class Day1 implements AdventOfCodeSolution<Integer> {
@@ -18,11 +17,11 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
         var frequencyShifts = input.map(Integer::parseInt)
                                    .toList();
 
-        int frequency = 0;
+        var frequency = 0;
 
-        Set<Integer> frequencies = new HashSet<>();
+        var frequencies = new HashSet<Integer>();
 
-        int frequencyCounter = 0;
+        var frequencyCounter = 0;
 
         while (frequencies.add(frequency)) {
             frequency += frequencyShifts.get(frequencyCounter);

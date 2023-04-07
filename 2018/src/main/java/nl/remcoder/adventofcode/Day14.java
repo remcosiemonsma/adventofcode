@@ -3,7 +3,6 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Day14 implements BiAdventOfCodeSolution<String, Integer> {
@@ -13,7 +12,7 @@ public class Day14 implements BiAdventOfCodeSolution<String, Integer> {
                                    .map(Integer::parseInt)
                                    .orElseThrow(() -> new AssertionError("Eek!"));
 
-        List<Integer> recipyScores = new ArrayList<>(numberOfRecipes + 10);
+        var recipyScores = new ArrayList<Integer>(numberOfRecipes + 10);
 
         recipyScores.add(3);
         recipyScores.add(7);

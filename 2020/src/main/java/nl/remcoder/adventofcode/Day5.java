@@ -1,27 +1,30 @@
 package nl.remcoder.adventofcode;
 
-import java.util.List;
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Day5 {
-    public int handlePart1(Stream<String> input) {
+public class Day5 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.map(this::mapStringToSeat)
-                    .mapToInt(Seat::getId)
+                    .mapToInt(Seat::id)
                     .max()
                     .orElse(-1);
     }
 
-    public int handlePart2(Stream<String> input) {
-        List<Integer> expectedSeats = IntStream.rangeClosed(0, 127)
-                                               .mapToObj(row -> IntStream.rangeClosed(0, 7)
-                                                                         .map(column -> (row * 8) + column))
-                                               .flatMap(IntStream::boxed)
-                                               .collect(Collectors.toList());
+    @Override
+    public Integer handlePart2(Stream<String> input) {
+        var expectedSeats = IntStream.rangeClosed(0, 127)
+                                     .mapToObj(row -> IntStream.rangeClosed(0, 7)
+                                                               .map(column -> (row * 8) + column))
+                                     .flatMap(IntStream::boxed)
+                                     .collect(Collectors.toList());
 
         input.map(this::mapStringToSeat)
-             .map(Seat::getId)
+             .map(Seat::id)
              .forEach(expectedSeats::remove);
 
         return expectedSeats.stream()
@@ -31,54 +34,33 @@ public class Day5 {
     }
 
     private Seat mapStringToSeat(String s) {
-        char[] data = s.toCharArray();
+        var data = s.toCharArray();
 
-        int row = 0;
+        var row = 0;
 
-        for (int i = 0; i < 7; i++) {
+        for (var i = 0; i < 7; i++) {
             if (data[i] == 'B') {
-                int nibble = 1 << 6 - i;
+                var nibble = 1 << 6 - i;
 
                 row |= nibble;
             }
         }
 
-        int column = 0;
+        var column = 0;
 
-        for (int i = 0; i < 3; i++) {
+        for (var i = 0; i < 3; i++) {
             if (data[i + 7] == 'R') {
-                int nibble = 1 << 2 - i;
+                var nibble = 1 << 2 - i;
 
                 column |= nibble;
             }
         }
 
-        int id = (row * 8) + column;
+        var id = (row * 8) + column;
 
         return new Seat(row, column, id);
     }
 
-    private static class Seat {
-        final int row;
-        final int column;
-        final int id;
-
-        public int getRow() {
-            return row;
-        }
-
-        public int getColumn() {
-            return column;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        private Seat(int row, int column, int id) {
-            this.row = row;
-            this.column = column;
-            this.id = id;
-        }
+    private record Seat(int row, int column, int id) {
     }
 }

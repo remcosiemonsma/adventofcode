@@ -69,7 +69,7 @@ public class Day7 implements BiAdventOfCodeSolution<String, Integer> {
                 }
             }
 
-            int determinedDifference = correctWeight - incorrectWeight;
+            var determinedDifference = correctWeight - incorrectWeight;
 
             for (var child : program.children) {
                 if (child.totalWeight == incorrectWeight) {
@@ -178,7 +178,7 @@ public class Day7 implements BiAdventOfCodeSolution<String, Integer> {
 
             Program program = (Program) o;
 
-            return name != null ? name.equals(program.name) : program.name == null;
+            return Objects.equals(name, program.name);
         }
 
         @Override

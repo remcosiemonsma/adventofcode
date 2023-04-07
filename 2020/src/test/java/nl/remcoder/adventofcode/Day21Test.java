@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,16 +18,14 @@ class Day21Test {
 
     @Test
     public void testPart1Case1() {
-        String data = """
-                mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
-                trh fvjkl sbzzf mxmxvkd (contains dairy)
-                sqjhc fvjkl (contains soy)
-                sqjhc mxmxvkd sbzzf (contains fish)
-                """;
+        String input = """
+                       mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
+                       trh fvjkl sbzzf mxmxvkd (contains dairy)
+                       sqjhc fvjkl (contains soy)
+                       sqjhc mxmxvkd sbzzf (contains fish)
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals(5, testSubject.handlePart1(input));
+        assertEquals(5, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -39,16 +36,14 @@ class Day21Test {
 
     @Test
     public void testPart2Case1() {
-        String data = """
-                mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
-                trh fvjkl sbzzf mxmxvkd (contains dairy)
-                sqjhc fvjkl (contains soy)
-                sqjhc mxmxvkd sbzzf (contains fish)
-                """;
+        String input = """
+                       mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
+                       trh fvjkl sbzzf mxmxvkd (contains dairy)
+                       sqjhc fvjkl (contains soy)
+                       sqjhc mxmxvkd sbzzf (contains fish)
+                       """;
 
-        Stream<String> input = data.lines();
-
-        assertEquals("mxmxvkd,sqjhc,fvjkl", testSubject.handlePart2(input));
+        assertEquals("mxmxvkd,sqjhc,fvjkl", testSubject.handlePart2(input.lines()));
     }
 
     @Test

@@ -116,11 +116,11 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                 }
             }
             //move to next unvisited side
-            boolean allSidesVisited = true;
+            var allSidesVisited = true;
             for (var openSide : openSides) {
                 Coordinate next = current.getNeighbor(openSide);
                 var status = grid.get(next);
-                if (!status.isVisited()) {
+                if (status.isNotVisited()) {
                     current = next;
                     status.setVisited(true);
                     inputState.put(switch (openSide) {
@@ -162,7 +162,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
     private boolean allSidesVisited(Coordinate current) {
         for (var neighbor : current.getStraightNeighbours()) {
             var other = grid.get(neighbor);
-            if (other == null || !other.isVisited()) {
+            if (other == null || other.isNotVisited()) {
                 return false;
             }
         }
@@ -172,7 +172,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
     private Set<Direction> determineOpenSides(Coordinate current, LinkedBlockingQueue<Long> inputState,
                                               LinkedBlockingQueue<Long> outputState)
             throws InterruptedException {
-        Set<Direction> openSides = new HashSet<>();
+        var openSides = new HashSet<Direction>();
         checkAbove(current, inputState, outputState, openSides);
         checkBelow(current, inputState, outputState, openSides);
         checkRight(current, inputState, outputState, openSides);
@@ -260,7 +260,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
         }
     }
 
-    private static class Step extends Node {
+    private static class Step extends Node<Step> {
         private final Coordinate current;
         private final Grid<Square> grid;
         private final List<Long> steps;
@@ -275,7 +275,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Step, Long> getNeighbors() {
             var neighbors = new HashMap<Step, Long>();
 
             getStep(current.above(), 1L, neighbors);
@@ -322,8 +322,8 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
             return state;
         }
 
-        public boolean isVisited() {
-            return visited;
+        public boolean isNotVisited() {
+            return !visited;
         }
 
         public void setVisited(boolean visited) {

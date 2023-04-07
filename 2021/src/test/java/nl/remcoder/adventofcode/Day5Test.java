@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,20 +18,20 @@ class Day5Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      0,9 -> 5,9
-                      8,0 -> 0,8
-                      9,4 -> 3,4
-                      2,2 -> 2,1
-                      7,0 -> 7,4
-                      6,4 -> 2,0
-                      0,9 -> 2,9
-                      3,4 -> 1,4
-                      0,0 -> 8,8
-                      5,5 -> 8,2
-                      """;
+        String input = """
+                       0,9 -> 5,9
+                       8,0 -> 0,8
+                       9,4 -> 3,4
+                       2,2 -> 2,1
+                       7,0 -> 7,4
+                       6,4 -> 2,0
+                       0,9 -> 2,9
+                       3,4 -> 1,4
+                       0,0 -> 8,8
+                       5,5 -> 8,2
+                       """;
 
-        assertEquals(5, testSubject.handlePart1(data.lines()));
+        assertEquals(5, testSubject.handlePart1(input.lines()));
     }
 
     @Test
@@ -43,20 +42,20 @@ class Day5Test {
 
     @Test
     void testPart2Case1() {
-        String data = """
-                      0,9 -> 5,9
-                      8,0 -> 0,8
-                      9,4 -> 3,4
-                      2,2 -> 2,1
-                      7,0 -> 7,4
-                      6,4 -> 2,0
-                      0,9 -> 2,9
-                      3,4 -> 1,4
-                      0,0 -> 8,8
-                      5,5 -> 8,2
-                      """;
+        String input = """
+                       0,9 -> 5,9
+                       8,0 -> 0,8
+                       9,4 -> 3,4
+                       2,2 -> 2,1
+                       7,0 -> 7,4
+                       6,4 -> 2,0
+                       0,9 -> 2,9
+                       3,4 -> 1,4
+                       0,0 -> 8,8
+                       5,5 -> 8,2
+                       """;
 
-        assertEquals(12, testSubject.handlePart2(data.lines()));
+        assertEquals(12, testSubject.handlePart2(input.lines()));
     }
 
     @Test

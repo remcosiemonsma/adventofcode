@@ -1,24 +1,28 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Day16 {
-    public int handlePart1(Stream<String> input) {
-        char[] binaryData = parseInput(input);
+public class Day16 implements BiAdventOfCodeSolution<Integer, Long> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var binaryData = parseInput(input);
 
-        List<Packet> packets = new ArrayList<>();
+        var packets = new ArrayList<Packet>();
 
         readPackets(binaryData, 0, packets);
 
         return packets.get(0).getTotalVersion();
     }
 
-    public long handlePart2(Stream<String> input) {
-        char[] binaryData = parseInput(input);
+    @Override
+    public Long handlePart2(Stream<String> input) {
+        var binaryData = parseInput(input);
 
-        List<Packet> packets = new ArrayList<>();
+        var packets = new ArrayList<Packet>();
 
         readPackets(binaryData, 0, packets);
 
@@ -34,24 +38,24 @@ public class Day16 {
     }
 
     private int readPackets(final char[] packetData, final int position, final List<Packet> packets) {
-        int currentPosition = position;
+        var currentPosition = position;
 
-        int version = Integer.parseInt(new String(
+        var version = Integer.parseInt(new String(
                 new char[]{packetData[currentPosition++], packetData[currentPosition++],
                            packetData[currentPosition++]}), 2);
-        int typeId = Integer.parseInt(new String(
+        var typeId = Integer.parseInt(new String(
                 new char[]{packetData[currentPosition++], packetData[currentPosition++],
                            packetData[currentPosition++]}), 2);
 
-        ArrayList<Packet> subPackets = new ArrayList<>();
-        Packet packet = new Packet(version, typeId, subPackets);
+        var subPackets = new ArrayList<Packet>();
+        var packet = new Packet(version, typeId, subPackets);
 
         packets.add(packet);
 
         if (isLiteralPacket(typeId)) {
             currentPosition = readLiteralPacket(packetData, currentPosition, packet);
         } else {
-            char lengthId = packetData[currentPosition++];
+            var lengthId = packetData[currentPosition++];
 
             if (lengthId == '0') {
                 currentPosition = readFixedLengthPackets(packetData, currentPosition, subPackets);
@@ -64,12 +68,12 @@ public class Day16 {
     }
 
     private int readFixedAmountOfPackets(char[] packetData, int currentPosition, ArrayList<Packet> subPackets) {
-        char[] lengthdata = new char[11];
+        var lengthdata = new char[11];
 
         System.arraycopy(packetData, currentPosition, lengthdata, 0, 11);
         currentPosition += 11;
 
-        int length = Integer.parseInt(new String(lengthdata), 2);
+        var length = Integer.parseInt(new String(lengthdata), 2);
 
         while (subPackets.size() < length) {
             currentPosition += readPackets(packetData, currentPosition, subPackets);
@@ -78,14 +82,14 @@ public class Day16 {
     }
 
     private int readFixedLengthPackets(char[] packetData, int currentPosition, ArrayList<Packet> subPackets) {
-        char[] lengthdata = new char[15];
+        var lengthdata = new char[15];
 
         System.arraycopy(packetData, currentPosition, lengthdata, 0, 15);
         currentPosition += 15;
 
-        int length = Integer.parseInt(new String(lengthdata), 2);
+        var length = Integer.parseInt(new String(lengthdata), 2);
 
-        int end = currentPosition + length;
+        var end = currentPosition + length;
 
         while (currentPosition < end) {
             currentPosition += readPackets(packetData, currentPosition, subPackets);
@@ -94,9 +98,9 @@ public class Day16 {
     }
 
     private int readLiteralPacket(char[] packetData, int currentPosition, Packet packet) {
-        boolean moreData = true;
+        var moreData = true;
 
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
         while (moreData) {
             moreData = packetData[currentPosition++] == '1';
@@ -184,43 +188,6 @@ public class Day16 {
                    ", number=" + number +
                    ", subPackets=" + subPackets +
                    '}';
-        }
-
-        public void prettyPrint(int depth) {
-            for (int i = 0; i < depth; i++) {
-                System.out.print(" ");
-            }
-            switch (type) {
-                case 0 -> {
-                    System.out.println("+ = " + calculateResult());
-                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
-                }
-                case 1 -> {
-                    System.out.println("* = " + calculateResult());
-                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
-                }
-                case 2 -> {
-                    System.out.println("min = " + calculateResult());
-                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
-                }
-                case 3 -> {
-                    System.out.println("max = " + calculateResult());
-                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
-                }
-                case 4 -> System.out.println("value = " + number);
-                case 5 -> {
-                    System.out.println("> = " + calculateResult());
-                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
-                }
-                case 6 -> {
-                    System.out.println("< = " + calculateResult());
-                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
-                }
-                case 7 -> {
-                    System.out.println("== = " + calculateResult());
-                    subPackets.forEach(packet -> packet.prettyPrint(depth + 1));
-                }
-            }
         }
     }
 }

@@ -1,9 +1,12 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
+
 import java.util.stream.Stream;
 
-public class Day10 {
-    public int handlePart1(Stream<String> input) {
+public class Day10 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         var sequence = input.findFirst()
                             .orElseThrow(() -> new AssertionError("Eek!"));
 
@@ -14,7 +17,8 @@ public class Day10 {
         return sequence.length();
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         var sequence = input.findFirst()
                             .orElseThrow(() -> new AssertionError("Eek!"));
 
@@ -28,8 +32,8 @@ public class Day10 {
     private String playRound(String sequence) {
         var sequenceBuilder = new StringBuilder();
 
-        char previouschar = sequence.charAt(0);
-        int amountOfChars = 1;
+        var previouschar = sequence.charAt(0);
+        var amountOfChars = 1;
 
         for (var position = 1; position < sequence.length(); position++) {
             var nextchar = sequence.charAt(position);

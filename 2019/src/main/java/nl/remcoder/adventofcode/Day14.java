@@ -19,35 +19,31 @@ public class Day14 implements AdventOfCodeSolution<Long> {
 
     @Override
     public Long handlePart2(Stream<String> input) {
-        Map<String, Reaction> reactions = input.map(this::createReactionFromString)
-                                               .collect(Collectors.toMap(reaction -> reaction.chemical,
-                                                                         reaction -> reaction));
+        var reactions = input.map(this::createReactionFromString)
+                             .collect(Collectors.toMap(reaction -> reaction.chemical,
+                                                       reaction -> reaction));
 
         var requiredOre = calculateRequiredOre(reactions, 1);
 
         var target = 1000000000000L;
         var lower = (target / requiredOre) - 1000;
         var higher = (target / requiredOre) + 1000000000;
-        while (lower < higher)
-        {
+        while (lower < higher) {
             long mid = (lower + higher) / 2;
             long guess = calculateRequiredOre(reactions, mid);
-            if (guess > target)
-            {
+            if (guess > target) {
                 higher = mid;
-            }
-            else if (guess < target)
-            {
-                if (mid == lower) break;
+            } else if (guess < target) {
+                if (mid == lower) {
+                    break;
+                }
                 lower = mid;
-            }
-            else
-            {
+            } else {
                 lower = mid;
                 break;
             }
         }
-        
+
         return lower;
     }
 
@@ -104,5 +100,6 @@ public class Day14 implements AdventOfCodeSolution<Long> {
         return new Reaction(chemical, amount, input);
     }
 
-    private record Reaction(String chemical, int amount, Map<String, Integer> input) {}
+    private record Reaction(String chemical, int amount, Map<String, Integer> input) {
+    }
 }

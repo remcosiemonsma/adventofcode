@@ -32,7 +32,7 @@ public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
 
         var moons = originalInput.stream()
                                  .map(this::mapToMoon)
-                                 .collect(Collectors.toList());
+                                 .toList();
 
         var periods = new HashSet<Long>();
 

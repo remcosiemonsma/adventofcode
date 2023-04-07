@@ -1,12 +1,14 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.stream.CombiningCollector;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Day1 {
-    public int handlePart1(Stream<String> input) {
+public class Day1 implements AdventOfCodeSolution<Integer> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
         return input.collect(new CombiningCollector<>(Integer::parseInt, String::isBlank, BagImpl::new))
                     .parallel()
                     .mapToInt(bag -> ((BagImpl) bag).stream()
@@ -16,7 +18,8 @@ public class Day1 {
                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
-    public int handlePart2(Stream<String> input) {
+    @Override
+    public Integer handlePart2(Stream<String> input) {
         return input.collect(new CombiningCollector<>(Integer::parseInt, String::isBlank, BagImpl::new))
                     .parallel()
                     .map(bag -> ((BagImpl) bag).stream()

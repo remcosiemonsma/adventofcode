@@ -1,5 +1,7 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,17 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class Day21 {
-    public int handlePart1(Stream<String> input) {
-        Map<String, Integer> ingredientOccurences = new HashMap<>();
-        Map<String, List<String>> possibleAllergens = new HashMap<>();
+public class Day21 implements BiAdventOfCodeSolution<Integer, String> {
+    @Override
+    public Integer handlePart1(Stream<String> input) {
+        var ingredientOccurences = new HashMap<String, Integer>();
+        var possibleAllergens = new HashMap<String, List<String>>();
 
         input.forEach(foodItem -> {
-            String[] split = foodItem.split(" \\(contains ");
-            String[] ingredients = split[0].split(" ");
-            String[] allergens = split[1].replace(")", "").split(", ");
+            var split = foodItem.split(" \\(contains ");
+            var ingredients = split[0].split(" ");
+            var allergens = split[1].replace(")", "").split(", ");
 
-            for (String ingredient : ingredients) {
+            for (var ingredient : ingredients) {
                 ingredientOccurences.compute(ingredient, (key, amount) -> {
                     if (amount == null) {
                         return 1;
@@ -27,23 +30,23 @@ public class Day21 {
                 });
             }
 
-            List<String> ingredientsList = Arrays.asList(ingredients);
+            var ingredientsList = Arrays.asList(ingredients);
 
-            for (String allergen : allergens) {
+            for (var allergen : allergens) {
                 if (possibleAllergens.containsKey(allergen)) {
-                    List<String> allergenIngredients = possibleAllergens.get(allergen);
+                    var allergenIngredients = possibleAllergens.get(allergen);
                     allergenIngredients.removeIf(ingredient -> !ingredientsList.contains(ingredient));
                 } else {
                     possibleAllergens.put(allergen, new ArrayList<>(ingredientsList));
                 }
             }
         });
-        Map<String, String> confirmedAllergens = new HashMap<>();
+        var confirmedAllergens = new HashMap<String, String>();
 
         while (!possibleAllergens.isEmpty()) {
-            List<String> foundAllergens = new ArrayList<>();
-            for (String allergen : possibleAllergens.keySet()) {
-                List<String> ingredients = possibleAllergens.get(allergen);
+            var foundAllergens = new ArrayList<String>();
+            for (var allergen : possibleAllergens.keySet()) {
+                var ingredients = possibleAllergens.get(allergen);
                 if (ingredients.size() == 1) {
                     confirmedAllergens.put(ingredients.get(0), allergen);
                     foundAllergens.add(allergen);
@@ -51,12 +54,12 @@ public class Day21 {
                     ingredients.removeIf(confirmedAllergens::containsKey);
                 }
             }
-            for (String allergen : foundAllergens) {
+            for (var allergen : foundAllergens) {
                 possibleAllergens.remove(allergen);
             }
         }
 
-        for (String ingredient : confirmedAllergens.keySet()) {
+        for (var ingredient : confirmedAllergens.keySet()) {
             ingredientOccurences.remove(ingredient);
         }
 
@@ -64,15 +67,15 @@ public class Day21 {
     }
 
     public String handlePart2(Stream<String> input) {
-        Map<String, Integer> ingredientOccurences = new HashMap<>();
-        Map<String, List<String>> possibleAllergens = new HashMap<>();
+        var ingredientOccurences = new HashMap<String, Integer>();
+        var possibleAllergens = new HashMap<String, List<String>>();
 
         input.forEach(foodItem -> {
-            String[] split = foodItem.split(" \\(contains ");
-            String[] ingredients = split[0].split(" ");
-            String[] allergens = split[1].replace(")", "").split(", ");
+            var split = foodItem.split(" \\(contains ");
+            var ingredients = split[0].split(" ");
+            var allergens = split[1].replace(")", "").split(", ");
 
-            for (String ingredient : ingredients) {
+            for (var ingredient : ingredients) {
                 ingredientOccurences.compute(ingredient, (key, amount) -> {
                     if (amount == null) {
                         return 1;
@@ -82,23 +85,23 @@ public class Day21 {
                 });
             }
 
-            List<String> ingredientsList = Arrays.asList(ingredients);
+            var ingredientsList = Arrays.asList(ingredients);
 
-            for (String allergen : allergens) {
+            for (var allergen : allergens) {
                 if (possibleAllergens.containsKey(allergen)) {
-                    List<String> allergenIngredients = possibleAllergens.get(allergen);
+                    var allergenIngredients = possibleAllergens.get(allergen);
                     allergenIngredients.removeIf(ingredient -> !ingredientsList.contains(ingredient));
                 } else {
                     possibleAllergens.put(allergen, new ArrayList<>(ingredientsList));
                 }
             }
         });
-        Map<String, String> confirmedAllergens = new HashMap<>();
+        var confirmedAllergens = new HashMap<String, String>();
 
         while (!possibleAllergens.isEmpty()) {
-            List<String> foundAllergens = new ArrayList<>();
-            for (String allergen : possibleAllergens.keySet()) {
-                List<String> ingredients = possibleAllergens.get(allergen);
+            var foundAllergens = new ArrayList<String>();
+            for (var allergen : possibleAllergens.keySet()) {
+                var ingredients = possibleAllergens.get(allergen);
                 if (ingredients.size() == 1) {
                     confirmedAllergens.put(ingredients.get(0), allergen);
                     foundAllergens.add(allergen);
@@ -106,7 +109,7 @@ public class Day21 {
                     ingredients.removeIf(confirmedAllergens::containsKey);
                 }
             }
-            for (String allergen : foundAllergens) {
+            for (var allergen : foundAllergens) {
                 possibleAllergens.remove(allergen);
             }
         }

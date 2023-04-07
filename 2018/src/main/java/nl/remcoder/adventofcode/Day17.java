@@ -11,12 +11,12 @@ import java.util.stream.Stream;
 public class Day17 implements AdventOfCodeSolution<Integer> {
     @Override
     public Integer handlePart1(Stream<String> input) {
-        int smallestx = Integer.MAX_VALUE;
-        int largestx = Integer.MIN_VALUE;
-        int smallesty = Integer.MAX_VALUE;
-        int largesty = Integer.MIN_VALUE;
+        var smallestx = Integer.MAX_VALUE;
+        var largestx = Integer.MIN_VALUE;
+        var smallesty = Integer.MAX_VALUE;
+        var largesty = Integer.MIN_VALUE;
 
-        List<String> lines = input.toList();
+        var lines = input.toList();
 
         for (String line : lines) {
             String[] split = line.split(", ");

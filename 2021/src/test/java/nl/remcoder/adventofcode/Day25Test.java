@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,19 +18,19 @@ class Day25Test {
 
     @Test
     void testPart1Case1() {
-        String data = """
-                      v...>>.vv>
-                      .vv>>.vv..
-                      >>.>v>...v
-                      >>v>>.>.v.
-                      v>v.vv.v..
-                      >.>>..v...
-                      .vv..>.>v.
-                      v.v..>>v.v
-                      ....v..v.>
-                      """;
+        String input = """
+                       v...>>.vv>
+                       .vv>>.vv..
+                       >>.>v>...v
+                       >>v>>.>.v.
+                       v>v.vv.v..
+                       >.>>..v...
+                       .vv..>.>v.
+                       v.v..>>v.v
+                       ....v..v.>
+                       """;
 
-        assertEquals(58, testSubject.handlePart1(data.lines()));
+        assertEquals(58, testSubject.handlePart1(input.lines()));
     }
 
     @Test

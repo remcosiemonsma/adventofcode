@@ -1,5 +1,6 @@
 package nl.remcoder.adventofcode;
 
+import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.pathfinding.Dijkstra;
 import nl.remcoder.adventofcode.library.pathfinding.Node;
 
@@ -7,10 +8,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day24 {
+public class Day24 implements AdventOfCodeSolution<Long> {
     private final Set<Set<Integer>> evaluatedLoadouts = new HashSet<>();
 
-    public long handlePart1(Stream<String> input) {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         var packages = input.map(Integer::parseInt)
                             .collect(Collectors.toSet());
 
@@ -34,7 +36,8 @@ public class Day24 {
         }).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
-    public long handlePart2(Stream<String> input) {
+    @Override
+    public Long handlePart2(Stream<String> input) {
         var packages = input.map(Integer::parseInt)
                             .collect(Collectors.toSet());
 
@@ -58,7 +61,7 @@ public class Day24 {
         }).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
-    private class LoadOut extends Node {
+    private class LoadOut extends Node<LoadOut> {
         private final Set<Integer> remainingPackages;
         private final Set<Integer> loadOut;
         private final long QE;
@@ -77,7 +80,7 @@ public class Day24 {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<LoadOut, Long> getNeighbors() {
             var neighbors = new HashMap<LoadOut, Long>();
 
             for (var present : remainingPackages) {
@@ -113,14 +116,10 @@ public class Day24 {
         }
 
         @Override
-        public int compareTo(Node o) {
-            if (o instanceof LoadOut other) {
-                return Comparator.comparing(((LoadOut n) -> n.legroom))
-                                 .thenComparing(((LoadOut n) -> n.QE))
-                                 .compare(this, other);
-            } else {
-                throw new AssertionError("Eek!");
-            }
+        public int compareTo(LoadOut o) {
+            return Comparator.comparing(((LoadOut n) -> n.legroom))
+                             .thenComparing(((LoadOut n) -> n.QE))
+                             .compare(this, o);
         }
 
         @Override

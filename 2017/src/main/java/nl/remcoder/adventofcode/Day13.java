@@ -18,9 +18,9 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
                                     .max(Integer::compareTo)
                                     .orElseThrow(() -> new AssertionError("Eek!"));
 
-        int tripSeverity = 0;
+        var tripSeverity = 0;
 
-        for (int i = 0; i <= firewallDepth; i++) {
+        for (var i = 0; i <= firewallDepth; i++) {
             var scanner = scanners.get(i);
             if (scanner != null) {
                 if (scanner.position == 1) {
@@ -58,7 +58,7 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
         return new Scanner(Integer.parseInt(data[0]), Integer.parseInt(data[1]), 1, true);
     }
 
-    private static void incrementScanners(Collection<Scanner> scanners) {
+    private void incrementScanners(Collection<Scanner> scanners) {
         for (var scanner : scanners) {
             if (scanner.forwardDirection) {
                 scanner.position++;
@@ -74,7 +74,7 @@ public class Day13 implements AdventOfCodeSolution<Integer> {
         }
     }
 
-    private static boolean canMoveSafelyThroughFirewall(Map<Integer, Scanner> scanners, int firewallDepth, int delay) {
+    private boolean canMoveSafelyThroughFirewall(Map<Integer, Scanner> scanners, int firewallDepth, int delay) {
         for (int i = 0; i <= firewallDepth; i++) {
             var scanner = scanners.get(i);
             if (scanner != null) {

@@ -73,10 +73,10 @@ public class Day6 implements AdventOfCodeSolution<Integer> {
             }
         }
 
-        int safeArea = 0;
+        var safeArea = 0;
 
-        for (String[] line : grid) {
-            for (String value : line) {
+        for (var line : grid) {
+            for (var value : line) {
                 if ("##".equals(value)) {
                     safeArea++;
                 }
@@ -100,7 +100,7 @@ public class Day6 implements AdventOfCodeSolution<Integer> {
             var values = line.split(", ");
             var coords = new int[]{Integer.parseInt(values[0]), Integer.parseInt(values[1])};
 
-            var id = firstChar + "" + secondChar++;
+            var id = firstChar + String.valueOf(secondChar++);
 
             var point = new Point(id, coords[1], coords[0]);
 
@@ -117,10 +117,10 @@ public class Day6 implements AdventOfCodeSolution<Integer> {
     }
 
     private boolean isTotalDistanceLowerThanRequiredValue(int x, int y, List<Point> points) {
-        int totalDistance = 0;
+        var totalDistance = 0;
 
         for (var point : points) {
-            int distance = Math.abs(point.x - x) + Math.abs(point.y - y);
+            var distance = Math.abs(point.x - x) + Math.abs(point.y - y);
 
             totalDistance += distance;
 
@@ -133,7 +133,7 @@ public class Day6 implements AdventOfCodeSolution<Integer> {
     }
     
     private static Optional<Point> findClosestPoint(int x, int y, List<Point> points) {
-        int lowestDistance = Integer.MAX_VALUE;
+        var lowestDistance = Integer.MAX_VALUE;
         Point closestPoint = null;
 
         var duplicateFound = false;
