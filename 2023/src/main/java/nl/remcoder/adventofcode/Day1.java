@@ -85,6 +85,6 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
             position--;
         }
 
-        return -1;
+        throw new AssertionError("Eek!");
     }
 }
