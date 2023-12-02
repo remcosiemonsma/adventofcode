@@ -12,12 +12,12 @@ class Day1Test {
     private Day1 testSubject;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         testSubject = new Day1();
     }
 
     @Test
-    public void part1Case1() {
+    void part1Case1() {
         String data = """
                       1abc2
                       pqr3stu8vwx
@@ -29,13 +29,13 @@ class Day1Test {
     }
 
     @Test
-    public void testPart1Input() throws Exception {
+    void testPart1Input() throws Exception {
         assertEquals(55017, testSubject.handlePart1(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
     }
 
     @Test
-    public void part2Case1() {
+    void part2Case1() {
         String data = """
                       two1nine
                       eightwothree
@@ -50,7 +50,7 @@ class Day1Test {
     }
 
     @Test
-    public void testPart2Input() throws Exception {
+    void testPart2Input() throws Exception {
         assertEquals(53539, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
     }
