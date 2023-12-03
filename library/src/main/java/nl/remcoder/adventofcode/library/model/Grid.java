@@ -1,6 +1,7 @@
 package nl.remcoder.adventofcode.library.model;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Grid<T> {
     private int startx;
@@ -149,6 +150,22 @@ public class Grid<T> {
         return values.entrySet()
                      .stream()
                      .filter(entry -> entry.getValue().equals(value))
+                     .map(Map.Entry::getKey)
+                     .toList();
+    }
+
+    public Optional<Coordinate> findValue(Predicate<T> predicate) {
+        return values.entrySet()
+                     .stream()
+                     .filter(entry -> predicate.test(entry.getValue()))
+                     .findFirst()
+                     .map(Map.Entry::getKey);
+    }
+
+    public List<Coordinate> findValues(Predicate<T> predicate) {
+        return values.entrySet()
+                     .stream()
+                     .filter(entry -> predicate.test(entry.getValue()))
                      .map(Map.Entry::getKey)
                      .toList();
     }
