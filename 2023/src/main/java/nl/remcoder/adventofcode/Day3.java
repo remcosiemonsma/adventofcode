@@ -131,16 +131,16 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
         return sum;
     }
 
-    private static void findAndAddNumber(Coordinate topNumber, Grid<Character> grid,
-                                         ArrayList<Integer> numbers) {
-        while (grid.isCoordinateInGrid(topNumber) && Character.isDigit(grid.get(topNumber))) {
-            topNumber = topNumber.left();
+    private void findAndAddNumber(Coordinate position, Grid<Character> grid,
+                                  ArrayList<Integer> numbers) {
+        while (grid.isCoordinateInGrid(position) && Character.isDigit(grid.get(position))) {
+            position = position.left();
         }
-        topNumber = topNumber.right();
+        position = position.right();
         var numberBuilder = new StringBuilder();
-        while (grid.isCoordinateInGrid(topNumber) && Character.isDigit(grid.get(topNumber))) {
-            numberBuilder.append(grid.get(topNumber));
-            topNumber = topNumber.right();
+        while (grid.isCoordinateInGrid(position) && Character.isDigit(grid.get(position))) {
+            numberBuilder.append(grid.get(position));
+            position = position.right();
         }
         numbers.add(Integer.parseInt(numberBuilder.toString()));
     }
