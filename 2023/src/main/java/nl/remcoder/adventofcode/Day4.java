@@ -20,7 +20,7 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
         List<Card> cards = input.map(this::mapToCard)
                                 .toList();
 
-        while (cards.stream().anyMatch(card -> card.process(cards))) {}
+        cards.forEach(card -> card.process(cards));
 
         return cards.stream()
                     .mapToInt(Card::amountOfCopies)
@@ -62,17 +62,13 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
             score = calculateScore();
         }
 
-        public boolean process(List<Card> cards) {
-            if (timesProcessed < amountOfCopies) {
-                for (int i = 0; i < amountOfWins; i++) {
-                    cards.get(id + i).copy();
-                }
-
-                timesProcessed++;
-                return true;
-            } else {
-                return false;
+        public void process(List<Card> cards) {
+            int amountToCopy = amountOfCopies - timesProcessed;
+            for (int i = 0; i < amountOfWins; i++) {
+                cards.get(id + i).copy(amountToCopy);
             }
+
+            timesProcessed += amountToCopy;
         }
 
         private int countWins() {
@@ -103,20 +99,12 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
             return score;
         }
 
-        public int id() {
-            return id;
-        }
-
-        public int amountOfWins() {
-            return amountOfWins;
-        }
-
         public int score() {
             return score;
         }
 
-        public void copy() {
-            amountOfCopies++;
+        public void copy(int amountToCopy) {
+            amountOfCopies += amountToCopy;
         }
 
         public int amountOfCopies() {
