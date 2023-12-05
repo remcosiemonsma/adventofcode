@@ -34,8 +34,8 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
             position = matcher.start() + 1;
         }
 
-        var firstDigit = stringToNumber(numbers.get(0));
-        var secondDigit = stringToNumber(numbers.get(numbers.size() - 1));
+        var firstDigit = stringToNumber(numbers.getFirst());
+        var secondDigit = stringToNumber(numbers.getLast());
 
         return firstDigit * 10 + secondDigit;
     }
