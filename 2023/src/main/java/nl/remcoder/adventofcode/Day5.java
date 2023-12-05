@@ -5,6 +5,7 @@ import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class Day5 implements AdventOfCodeSolution<Long> {
@@ -91,20 +92,19 @@ public class Day5 implements AdventOfCodeSolution<Long> {
 
         var seeds = mapSeeds(lines.getFirst());
 
-        var validSeedFound = false;
+        var largestLocation = mappings.get("location")
+                                      .mappings()
+                                      .stream().mapToLong(mapping -> mapping.destinationStart() + mapping.length())
+                                      .max()
+                                      .orElseThrow(() -> new AssertionError("Eek!"));
 
-        var location = 0L;
-
-        while(!validSeedFound) {
-            var seed = mapLocationToSeed(location, "location", mappings);
-            if (seeds.stream().anyMatch(seedRange -> seedRange.isSeedInRange(seed))) {
-                validSeedFound = true;
-            } else {
-                location++;
-            }
-        }
-
-        return location;
+        return LongStream.range(0, largestLocation)
+                         .filter(value -> {
+                             var seed = mapLocationToSeed(value, "location", mappings);
+                             return seeds.stream().anyMatch(seedRange -> seedRange.isSeedInRange(seed));
+                         })
+                         .findFirst()
+                         .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     private List<SeedRange> mapSeeds(String line) {
