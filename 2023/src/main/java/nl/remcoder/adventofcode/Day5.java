@@ -36,7 +36,7 @@ public class Day5 implements AdventOfCodeSolution<Long> {
                     throw new AssertionError("Eek!");
                 }
             } else if (line.isBlank()) {
-                mappings.put(map.source, map);
+                mappings.put(map.source(), map);
                 map = null;
             } else {
                 var data = line.split(" ");
