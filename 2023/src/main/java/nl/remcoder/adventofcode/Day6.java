@@ -61,7 +61,7 @@ public class Day6 implements AdventOfCodeSolution<Long> {
     }
 
     private long findUpperBound(long raceDuration, long recordDistance) {
-        var hold = raceDuration;
+        var hold = raceDuration - 1;
         var upperFound = false;
 
         while (!upperFound) {
