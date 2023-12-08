@@ -3,15 +3,17 @@ package nl.remcoder.adventofcode;
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.stream.CountingCollector;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class Day7 implements AdventOfCodeSolution<Integer> {
     @Override
     public Integer handlePart1(Stream<String> input) {
-        var hands = input.map(this::mapToHand)
-                         .sorted()
+        var hands = input.map(line -> mapToHand(line, this::determineType))
+                         .sorted(new HandComparator(new CardComparator1()))
                          .toList();
 
         var score = 0;
@@ -29,8 +31,8 @@ public class Day7 implements AdventOfCodeSolution<Integer> {
 
     @Override
     public Integer handlePart2(Stream<String> input) {
-        var hands = input.map(this::mapToHand2)
-                         .sorted()
+        var hands = input.map(line -> mapToHand(line, this::determineType2))
+                         .sorted(new HandComparator(new CardComparator2()))
                          .toList();
 
         var score = 0;
@@ -46,22 +48,13 @@ public class Day7 implements AdventOfCodeSolution<Integer> {
         return score;
     }
 
-    private Hand mapToHand(String line) {
+    private Hand mapToHand(String line, Function<List<Card>, Type> typeFunction) {
         var split = line.split(" ");
         var cards = split[0].chars().mapToObj(i -> (char) i).map(Card::new).toList();
         var bid = Integer.parseInt(split[1]);
-        var type = determineType(cards);
+        var type = typeFunction.apply(cards);
 
         return new Hand(cards, type, bid);
-    }
-
-    private Hand2 mapToHand2(String line) {
-        var split = line.split(" ");
-        var cards = split[0].chars().mapToObj(i -> (char) i).map(Card2::new).toList();
-        var bid = Integer.parseInt(split[1]);
-        var type = determineType2(cards);
-
-        return new Hand2(cards, type, bid);
     }
 
     private Type determineType(List<Card> cards) {
@@ -90,9 +83,9 @@ public class Day7 implements AdventOfCodeSolution<Integer> {
         }
     }
 
-    private Type determineType2(List<Card2> cards) {
+    private Type determineType2(List<Card> cards) {
         Map<Character, Integer> count = cards.stream()
-                                             .map(Card2::value)
+                                             .map(Card::value)
                                              .collect(new CountingCollector<>());
 
         if (count.containsKey('J')) {
@@ -137,128 +130,9 @@ public class Day7 implements AdventOfCodeSolution<Integer> {
         }
     }
 
-    private record Hand(List<Card> cards, Type type, int bid) implements Comparable<Hand> {
-        @Override
-        public int compareTo(Hand o) {
-            if (this.type == o.type) {
-                if (cards.get(0).compareTo(o.cards.get(0)) != 0) {
-                    return cards.get(0).compareTo(o.cards.get(0));
-                } else if (cards.get(1).compareTo(o.cards.get(1)) != 0) {
-                    return cards.get(1).compareTo(o.cards.get(1));
-                } else if (cards.get(2).compareTo(o.cards.get(2)) != 0) {
-                    return cards.get(2).compareTo(o.cards.get(2));
-                } else if (cards.get(3).compareTo(o.cards.get(3)) != 0) {
-                    return cards.get(3).compareTo(o.cards.get(3));
-                } else if (cards.get(4).compareTo(o.cards.get(4)) != 0) {
-                    return cards.get(4).compareTo(o.cards.get(4));
-                } else {
-                    return 0;
-                }
-            } else {
-                return this.type.compareTo(o.type);
-            }
-        }
-    }
+    private record Hand(List<Card> cards, Type type, int bid) {}
 
-    private record Hand2(List<Card2> cards, Type type, int bid) implements Comparable<Hand2> {
-        @Override
-        public int compareTo(Hand2 o) {
-            if (this.type == o.type) {
-                if (cards.get(0).compareTo(o.cards.get(0)) != 0) {
-                    return cards.get(0).compareTo(o.cards.get(0));
-                } else if (cards.get(1).compareTo(o.cards.get(1)) != 0) {
-                    return cards.get(1).compareTo(o.cards.get(1));
-                } else if (cards.get(2).compareTo(o.cards.get(2)) != 0) {
-                    return cards.get(2).compareTo(o.cards.get(2));
-                } else if (cards.get(3).compareTo(o.cards.get(3)) != 0) {
-                    return cards.get(3).compareTo(o.cards.get(3));
-                } else if (cards.get(4).compareTo(o.cards.get(4)) != 0) {
-                    return cards.get(4).compareTo(o.cards.get(4));
-                } else {
-                    return 0;
-                }
-            } else {
-                return this.type.compareTo(o.type);
-            }
-        }
-    }
-
-    private record Card(Character value) implements Comparable<Card> {
-
-        @Override
-        public int compareTo(Card o) {
-            if (this == o) {
-                return 0;
-            } else if (this.value.equals(o.value)) {
-                return 0;
-            } else if (!Character.isDigit(value) && Character.isDigit(o.value)) {
-                return -1;
-            } else if (Character.isDigit(value) && !Character.isDigit(o.value)) {
-                return 1;
-            } else if (Character.isDigit(value) && Character.isDigit(o.value)){
-                return o.value.compareTo(value);
-            } else {
-                if (this.value == 'A') {
-                    return -1;
-                } else if (this.value == 'K' && o.value == 'A') {
-                    return 1;
-                } else if (this.value == 'K') {
-                    return -1;
-                } else if (this.value == 'Q' && (o.value == 'A' || o.value == 'K')) {
-                    return 1;
-                } else if (this.value == 'Q') {
-                    return -1;
-                } else if (this.value =='J' && (o.value == 'A' || o.value == 'K'|| o.value =='Q')){
-                    return 1;
-                } else if (this.value =='J') {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "" + value;
-        }
-    }
-
-    private record Card2(Character value) implements Comparable<Card2> {
-
-        @Override
-        public int compareTo(Card2 o) {
-            if (this == o) {
-                return 0;
-            } else if (this.value.equals(o.value)) {
-                return 0;
-            } else if (this.value == 'J') {
-                return 1;
-            } else if (o.value == 'J') {
-                return -1;
-            } else if (!Character.isDigit(value) && Character.isDigit(o.value)) {
-                return -1;
-            } else if (Character.isDigit(value) && !Character.isDigit(o.value)) {
-                return 1;
-            } else if (Character.isDigit(value) && Character.isDigit(o.value)){
-                return o.value.compareTo(value);
-            } else {
-                if (this.value == 'A') {
-                    return -1;
-                } else if (this.value == 'K' && o.value == 'A') {
-                    return 1;
-                } else if (this.value == 'K') {
-                    return -1;
-                } else if (this.value == 'Q' && (o.value == 'A' || o.value == 'K')) {
-                    return 1;
-                } else if (this.value == 'Q') {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            }
-        }
-
+    private record Card(Character value) {
         @Override
         public String toString() {
             return "" + value;
@@ -273,5 +147,104 @@ public class Day7 implements AdventOfCodeSolution<Integer> {
         TWO_PAIR,
         ONE_PAIR,
         HIGH_CARD
+    }
+
+    private static class HandComparator implements Comparator<Hand> {
+        private final Comparator<Card> cardComparator;
+
+        private HandComparator(Comparator<Card> cardComparator) {
+            this.cardComparator = cardComparator;
+        }
+
+        @Override
+        public int compare(Hand o1, Hand o2) {
+            if (o1.type() == o2.type()) {
+                if (cardComparator.compare(o1.cards().get(0), o2.cards().get(0)) != 0) {
+                    return cardComparator.compare(o1.cards().get(0), o2.cards().get(0));
+                } else if (cardComparator.compare(o1.cards().get(1), o2.cards().get(1)) != 0) {
+                    return cardComparator.compare(o1.cards().get(1), o2.cards().get(1));
+                } else if (cardComparator.compare(o1.cards().get(2), o2.cards().get(2)) != 0) {
+                    return cardComparator.compare(o1.cards().get(2), o2.cards().get(2));
+                } else if (cardComparator.compare(o1.cards().get(3), o2.cards().get(3)) != 0) {
+                    return cardComparator.compare(o1.cards().get(3), o2.cards().get(3));
+                } else if (cardComparator.compare(o1.cards().get(4), o2.cards().get(4)) != 0) {
+                    return cardComparator.compare(o1.cards().get(4), o2.cards().get(4));
+                } else {
+                    return 0;
+                }
+            } else {
+                return o1.type().compareTo(o2.type());
+            }
+        }
+    }
+
+    private static class CardComparator1 implements Comparator<Card> {
+        @Override
+        public int compare(Card o1, Card o2) {
+            if (o1 == o2) {
+                return 0;
+            } else if (o1.value().equals(o2.value())) {
+                return 0;
+            } else if (!Character.isDigit(o1.value()) && Character.isDigit(o2.value())) {
+                return -1;
+            } else if (Character.isDigit(o1.value()) && !Character.isDigit(o2.value())) {
+                return 1;
+            } else if (Character.isDigit(o1.value()) && Character.isDigit(o2.value())) {
+                return o2.value().compareTo(o1.value());
+            } else {
+                if (o1.value() == 'A') {
+                    return -1;
+                } else if (o1.value() == 'K' && o2.value() == 'A') {
+                    return 1;
+                } else if (o1.value() == 'K') {
+                    return -1;
+                } else if (o1.value() == 'Q' && (o2.value() == 'A' || o2.value() == 'K')) {
+                    return 1;
+                } else if (o1.value() == 'Q') {
+                    return -1;
+                } else if (o1.value() == 'J' && (o2.value() == 'A' || o2.value() == 'K' || o2.value() == 'Q')) {
+                    return 1;
+                } else if (o1.value() == 'J') {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        }
+    }
+
+    private static class CardComparator2 implements Comparator<Card> {
+        @Override
+        public int compare(Card o1, Card o2) {
+            if (o1 == o2) {
+                return 0;
+            } else if (o1.value().equals(o2.value())) {
+                return 0;
+            } else if (o1.value() == 'J') {
+                return 1;
+            } else if (o2.value() == 'J') {
+                return -1;
+            } else if (!Character.isDigit(o1.value()) && Character.isDigit(o2.value())) {
+                return -1;
+            } else if (Character.isDigit(o1.value()) && !Character.isDigit(o2.value())) {
+                return 1;
+            } else if (Character.isDigit(o1.value()) && Character.isDigit(o2.value())) {
+                return o2.value().compareTo(o1.value());
+            } else {
+                if (o1.value() == 'A') {
+                    return -1;
+                } else if (o1.value() == 'K' && o2.value() == 'A') {
+                    return 1;
+                } else if (o1.value() == 'K') {
+                    return -1;
+                } else if (o1.value() == 'Q' && (o2.value() == 'A' || o2.value() == 'K')) {
+                    return 1;
+                } else if (o1.value() == 'Q') {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        }
     }
 }
