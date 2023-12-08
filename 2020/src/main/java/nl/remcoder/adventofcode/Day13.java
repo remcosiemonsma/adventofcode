@@ -2,11 +2,12 @@ package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
+
+import static nl.remcoder.adventofcode.library.math.Math.lcm;
 
 public class Day13 implements BiAdventOfCodeSolution<Integer, Long> {
     @Override
@@ -71,15 +72,6 @@ public class Day13 implements BiAdventOfCodeSolution<Integer, Long> {
         }
 
         return -1L;
-    }
-
-    private long lcm(long number1, long number2) {
-        BigInteger bigInteger1 = BigInteger.valueOf(number1);
-        BigInteger bigInteger2 = BigInteger.valueOf(number2);
-
-        BigInteger gcd = bigInteger1.gcd(bigInteger2);
-        BigInteger absProduct = bigInteger1.multiply(bigInteger2).abs();
-        return absProduct.divide(gcd).longValue();
     }
 
     private record Bus(long busId, int position) {
