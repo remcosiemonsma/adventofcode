@@ -49,6 +49,6 @@ public class CountingCollector<T> implements Collector<T, Map<T, Integer>, Map<T
 
     @Override
     public Set<Characteristics> characteristics() {
-        return Set.of(Characteristics.UNORDERED);
+        return Set.of(Characteristics.UNORDERED, Characteristics.IDENTITY_FINISH);
     }
 }
