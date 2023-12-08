@@ -1,13 +1,14 @@
 package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.library.BiAdventOfCodeSolution;
+import nl.remcoder.adventofcode.library.math.Math;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.lang.Math.abs;
 
 public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
     private int steps;
@@ -62,7 +63,7 @@ public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
         periods.add(yPeriod);
         periods.add(zPeriod);
 
-        return determineLowestCommonMultiple(periods);
+        return periods.stream().reduce(Math::lcm).orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     public void setSteps(int steps) {
@@ -73,55 +74,12 @@ public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
         var workingMoons = new ArrayList<>(moons);
 
         while (!workingMoons.isEmpty()) {
-            var moon = workingMoons.remove(0);
+            var moon = workingMoons.removeFirst();
 
             for (var otherMoon : workingMoons) {
                 calculateVelocityForMoon(moon, otherMoon);
             }
         }
-    }
-
-    private long determineLowestCommonMultiple(Set<Long> numbers) {
-        var primeFactors = numbers.stream()
-                                  .map(this::primeFactors)
-                                  .toList();
-
-        var primes = primeFactors.stream()
-                                 .flatMap(List::stream)
-                                 .collect(Collectors.toSet());
-
-        var highestCountPerPrime = primes.stream()
-                                         .collect(Collectors.toMap(prime -> prime, prime ->
-                                                                           primeFactors.stream()
-                                                                                       .mapToLong(primes1 -> primes1.stream()
-                                                                                                                    .filter(prime1 -> prime1
-                                                                                                                            .equals(prime))
-                                                                                                                    .count())
-                                                                                       .max()
-                                                                                       .orElseThrow(AssertionError::new)
-                                                                  ));
-
-        var lcm = 1L;
-
-        for (var prime : highestCountPerPrime.keySet()) {
-            lcm *= Math.pow(prime, highestCountPerPrime.get(prime));
-        }
-
-        return lcm;
-    }
-
-    private List<Long> primeFactors(long number) {
-        var factors = new ArrayList<Long>();
-        for (var possibleFactor = 2L; possibleFactor <= number; possibleFactor++) {
-            while (number % possibleFactor == 0) {
-                factors.add(possibleFactor);
-                number /= possibleFactor;
-            }
-        }
-        if (number > 1) {
-            factors.add(number);
-        }
-        return factors;
     }
 
     private void moveMoons(List<Moon> moons) {
@@ -169,8 +127,8 @@ public class Day12 implements BiAdventOfCodeSolution<Integer, Long> {
     }
 
     private int calculateMoonEnergy(Moon moon) {
-        return (Math.abs(moon.xpos) + Math.abs(moon.ypos) + Math.abs(moon.zpos)) *
-               (Math.abs(moon.xvel) + Math.abs(moon.yvel) + Math.abs(moon.zvel));
+        return (abs(moon.xpos) + abs(moon.ypos) + abs(moon.zpos)) *
+               (abs(moon.xvel) + abs(moon.yvel) + abs(moon.zvel));
     }
 
     private static class Moon {
