@@ -35,7 +35,7 @@ public class CombiningCollector<T, R>
             if (isBlank(line)) {
                 bags.add(bagSupplier.get());
             } else {
-                Bag<R> currentBag = bags.get(bags.size() - 1);
+                Bag<R> currentBag = bags.getLast();
                 currentBag.add(map(line));
             }
         };
