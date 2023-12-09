@@ -52,7 +52,6 @@ class Day8Test {
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day8/input").toURI()))));
     }
 
-
     @Test
     void part2Case1() {
         String data = """

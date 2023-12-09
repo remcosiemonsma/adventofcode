@@ -51,7 +51,8 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
             }
         }
 
-        return (int) grid.countElements(Boolean.FALSE);    }
+        return (int) grid.countElements(Boolean.FALSE);
+    }
 
     public void setRows(int rows) {
         this.rows = rows;
