@@ -19,6 +19,20 @@ public class GridFactory {
         return new Grid<>(readNumberedInput(input));
     }
 
+    public static Grid<Character> createCharacterGridFromInput(Stream<String> input) {
+        return new Grid<>(readCharacterInput(input));
+    }
+
+    private static Character[][] readCharacterInput(Stream<String> input) {
+        return input.parallel()
+                    .map(GridFactory::createCharacterLine)
+                    .toArray(Character[][]::new);
+    }
+
+    private static Character[] createCharacterLine(String s) {
+        return s.chars().mapToObj(c -> (char) c).toArray(Character[]::new);
+    }
+
     private static Integer[][] readNumberedInput(Stream<String> input) {
         return input.parallel()
                     .map(GridFactory::createNumberedLine)
