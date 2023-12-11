@@ -25,7 +25,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
                                               .toArray(Character[]::new))
                                    .toArray(Character[][]::new);
 
-        for (int y = 0; y < image.length; y++) {
+        for (var y = 0; y < image.length; y++) {
             var allEmpty = true;
             var line = image[y];
             for (char c : line) {
@@ -86,7 +86,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
         var maxY = grid.getEndy();
         var maxX = grid.getEndx();
 
-        for (var y = 0L; y < maxY; y++) {
+        for (var y = 0; y < maxY; y++) {
             var finalY = y;
             if (points.stream().noneMatch(coordinate -> coordinate.y() == finalY)) {
                 for (var i = 0; i < points.size(); i++) {
@@ -100,7 +100,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
             }
         }
 
-        for (var x = 0L; x < maxX; x++) {
+        for (var x = 0; x < maxX; x++) {
             var finalX = x;
             if (points.stream().noneMatch(coordinate -> coordinate.x() == finalX)) {
                 for (var i = 0; i < points.size(); i++) {
