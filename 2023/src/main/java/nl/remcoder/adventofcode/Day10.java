@@ -370,11 +370,7 @@ public class Day10 implements AdventOfCodeSolution<Integer> {
 
         @Override
         public String toString() {
-            if (outside) {
-                return "" + symbol;
-            } else {
-                return "" + symbol;
-            }
+            return "" + symbol;
         }
     }
 }
