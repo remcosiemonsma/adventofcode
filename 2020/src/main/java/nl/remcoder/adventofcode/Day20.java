@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static nl.remcoder.adventofcode.library.Arrays.reverse;
+
 public class Day20 implements BiAdventOfCodeSolution<Long, Integer> {
     @Override
     public Long handlePart1(Stream<String> input) {
@@ -85,7 +87,7 @@ public class Day20 implements BiAdventOfCodeSolution<Long, Integer> {
         var tempImageSize = (int) (Math.sqrt(tiles.size()) * 10);
         var finalImageSize = (int) (Math.sqrt(tiles.size()) * 8);
 
-        var currentLeftEdgeTile = cornerTiles.get(0);
+        var currentLeftEdgeTile = cornerTiles.getFirst();
 
         tiles.remove(currentLeftEdgeTile);
 
@@ -213,7 +215,7 @@ public class Day20 implements BiAdventOfCodeSolution<Long, Integer> {
                                     if (doesImageNotContainMonster(finalImage)) {
                                         finalImage = rotateRight(finalImage);
                                         finalImage = flipUpsideDown(finalImage);
-                                        finalImage = reverseArray(finalImage);
+                                        finalImage = nl.remcoder.adventofcode.library.Arrays.reverse(finalImage);
                                         if (doesImageNotContainMonster(finalImage)) {
                                             finalImage = rotateRight(finalImage);
                                             if (doesImageNotContainMonster(finalImage)) {
@@ -360,10 +362,10 @@ public class Day20 implements BiAdventOfCodeSolution<Long, Integer> {
                 leftBorder[i] = image[i][0];
                 rightBorder[i] = image[i][9];
             }
-            reverseTopBorder = reverseArray(topBorder);
-            reverseRightBorder = reverseArray(rightBorder);
-            reverseBottomBorder = reverseArray(bottomBorder);
-            reverseLeftBorder = reverseArray(leftBorder);
+            reverseTopBorder = reverse(topBorder);
+            reverseRightBorder = reverse(rightBorder);
+            reverseBottomBorder = reverse(bottomBorder);
+            reverseLeftBorder = reverse(leftBorder);
         }
 
         public Edge getMatchingEdge(Tile tile) {
@@ -434,13 +436,13 @@ public class Day20 implements BiAdventOfCodeSolution<Long, Integer> {
 
         public void flipLeftRight() {
             for (int position = 0; position < image.length; position++) {
-                image[position] = reverseArray(image[position]);
+                image[position] = reverse(image[position]);
             }
             redetermineBorders();
         }
 
         public void flipUpsideDown() {
-            image = reverseArray(image);
+            image = nl.remcoder.adventofcode.library.Arrays.reverse(image);
             redetermineBorders();
         }
 
@@ -481,10 +483,10 @@ public class Day20 implements BiAdventOfCodeSolution<Long, Integer> {
                 leftBorder[i] = image[i][0];
                 rightBorder[i] = image[i][9];
             }
-            reverseTopBorder = reverseArray(topBorder);
-            reverseRightBorder = reverseArray(rightBorder);
-            reverseBottomBorder = reverseArray(bottomBorder);
-            reverseLeftBorder = reverseArray(leftBorder);
+            reverseTopBorder = reverse(topBorder);
+            reverseRightBorder = reverse(rightBorder);
+            reverseBottomBorder = reverse(bottomBorder);
+            reverseLeftBorder = reverse(leftBorder);
 
             topTile = null;
             rightTile = null;
@@ -529,22 +531,6 @@ public class Day20 implements BiAdventOfCodeSolution<Long, Integer> {
                 }
             }
         }
-    }
-
-    private static char[][] reverseArray(char[][] array) {
-        char[][] newArray = new char[array.length][];
-        for (int i = 0; i < array.length; i++) {
-            newArray[i] = array[array.length - 1 - i];
-        }
-        return newArray;
-    }
-    
-    private static char[] reverseArray(char[] array) {
-        char[] newArray = new char[array.length];
-        for (int i = 0; i < array.length; i++) {
-            newArray[i] = array[array.length - 1 - i];
-        }
-        return newArray;
     }
 
     private char[][] flipUpsideDown(char[][] image) {
