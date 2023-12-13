@@ -29,10 +29,13 @@ public class Day12 implements AdventOfCodeSolution<Long> {
 
         if (arrangementIndex >= spring.arrangement().length) {
             if (patternIndex >= spring.pattern().length()) {
+                memo.put(new Key(patternIndex, arrangementIndex), 1L);
                 return 1;
             } else if (spring.pattern().substring(patternIndex).contains("#")) {
+                memo.put(new Key(patternIndex, arrangementIndex), 0L);
                 return 0;
             } else {
+                memo.put(new Key(patternIndex, arrangementIndex), 1L);
                 return 1;
             }
         }
