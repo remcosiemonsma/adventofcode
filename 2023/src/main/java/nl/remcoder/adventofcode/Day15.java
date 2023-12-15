@@ -19,13 +19,8 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
 
         Arrays.fill(boxes, new Lens[0]);
 
-        var instructions = input.findFirst()
-                                .orElseThrow(() -> new AssertionError("Eek!"))
-                                .split(",");
-
-        for (var instruction : instructions) {
-            processInstruction(instruction, boxes);
-        }
+        input.flatMap(line -> Arrays.stream(line.split(",")))
+             .forEach(instruction -> processInstruction(instruction, boxes));
 
         return calculateFocalPower(boxes);
     }
@@ -58,7 +53,6 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
         var split = instruction.split("[=-]");
 
         var boxId = calculateHash(split[0]);
-
 
         var box = boxes[boxId];
         if (split.length == 1) {
@@ -99,7 +93,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
 
     private Result findLens(String label, Lens[] box) {
         var lensFound = false;
-        int index = 0;
+        var index = 0;
         for (; index < box.length; index++) {
             var lens = box[index];
             if (lens.label().equals(label)) {
