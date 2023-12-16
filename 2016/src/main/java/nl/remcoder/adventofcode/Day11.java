@@ -105,7 +105,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
         return new Floor(generators, microchips);
     }
 
-    private static class Step extends Node {
+    private static class Step extends Node<Step> {
         private final Floor[] floors;
         private final int position;
 
@@ -115,7 +115,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
         }
 
         @Override
-        public Map<? extends Node, Long> getNeighbors() {
+        public Map<Step, Long> getNeighbors() {
             var currentFloor = floors[position];
 
             var neighbors = new HashMap<Step, Long>();
