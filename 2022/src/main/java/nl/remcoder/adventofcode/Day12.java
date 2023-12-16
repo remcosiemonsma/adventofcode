@@ -17,7 +17,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
     public Long handlePart1(Stream<String> input) {
         List<String> lines = input.toList();
 
-        Grid<HillSide> hill = new Grid<>(0, 0, lines.get(0).length(), lines.size());
+        Grid<HillSide> hill = new Grid<>(0, 0, lines.getFirst().length(), lines.size());
 
         HillSide start = null;
 
@@ -50,7 +50,7 @@ public class Day12 implements AdventOfCodeSolution<Long> {
     public Long handlePart2(Stream<String> input) {
         List<String> lines = input.toList();
 
-        Grid<HillSide> hill = new Grid<>(0, 0, lines.get(0).length(), lines.size());
+        Grid<HillSide> hill = new Grid<>(0, 0, lines.getFirst().length(), lines.size());
         List<HillSide> allHillSides = new ArrayList<>();
 
         List<HillSide> possibleStarts = new ArrayList<>();
