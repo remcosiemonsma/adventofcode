@@ -39,6 +39,7 @@ public class Day16 implements AdventOfCodeSolution<Integer> {
         }
 
         return startVectors.stream()
+                           .parallel()
                            .mapToInt(startVector -> countTilesForStartVector(startVector, grid))
                            .max()
                            .orElseThrow(() -> new AssertionError("Eek!"));
