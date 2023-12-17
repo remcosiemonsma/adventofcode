@@ -40,15 +40,12 @@ public class Day17 implements AdventOfCodeSolution<Long> {
 
         startDown.setDistance(0);
 
-        Node<?> end = Dijkstra.findShortestDistance(List.of(startRight, startDown), node -> {
-                                  StepCrucible stepCrucible = (StepCrucible) node;
-                                  return stepCrucible.currentLocation.equals(destination);
-                              })
-                              .orElseThrow(() -> new AssertionError("Eek!"));
-
-        end.printStateInformation();
-
-        return end.getDistance();
+        return Dijkstra.findShortestDistance(List.of(startRight, startDown), node -> {
+                           StepCrucible stepCrucible = (StepCrucible) node;
+                           return stepCrucible.currentLocation.equals(destination);
+                       })
+                       .orElseThrow(() -> new AssertionError("Eek!"))
+                       .getDistance();
     }
 
     @Override
@@ -78,15 +75,12 @@ public class Day17 implements AdventOfCodeSolution<Long> {
 
         startDown.setDistance(0);
 
-        Node<?> end = Dijkstra.findShortestDistance(List.of(startRight, startDown), node -> {
-                                  StepUltraCrucible stepCrucible = (StepUltraCrucible) node;
-                                  return stepCrucible.currentLocation.equals(destination) && stepCrucible.lineLength > 3;
-                              })
-                              .orElseThrow(() -> new AssertionError("Eek!"));
-
-        end.printStateInformation();
-
-        return end.getDistance();
+        return Dijkstra.findShortestDistance(List.of(startRight, startDown), node -> {
+                           StepUltraCrucible stepCrucible = (StepUltraCrucible) node;
+                           return stepCrucible.currentLocation.equals(destination) && stepCrucible.lineLength > 3;
+                       })
+                       .orElseThrow(() -> new AssertionError("Eek!"))
+                       .getDistance();
     }
 
     private static class StepCrucible extends Node<StepCrucible> {
@@ -155,10 +149,10 @@ public class Day17 implements AdventOfCodeSolution<Long> {
 
         @Override
         public int compareTo(StepCrucible o) {
-            Comparator.comparingLong((StepCrucible stepCrucible) -> stepCrucible.getDistance() +
-                                                                    stepCrucible.currentLocation.getDistanceTo(
-                                                                            stepCrucible.destination));
-            return super.compareTo(o);
+            return Comparator.comparingLong((StepCrucible stepCrucible) -> stepCrucible.getDistance() +
+                                                                           stepCrucible.currentLocation.getDistanceTo(
+                                                                                   stepCrucible.destination))
+                             .compare(this, o);
         }
 
         @Override
@@ -259,10 +253,10 @@ public class Day17 implements AdventOfCodeSolution<Long> {
 
         @Override
         public int compareTo(StepUltraCrucible o) {
-            Comparator.comparingLong((StepUltraCrucible stepUltraCrucible) -> stepUltraCrucible.getDistance() +
-                                                                              stepUltraCrucible.currentLocation.getDistanceTo(
-                                                                                      stepUltraCrucible.destination));
-            return super.compareTo(o);
+            return Comparator.comparingLong((StepUltraCrucible stepUltraCrucible) -> stepUltraCrucible.getDistance() +
+                                                                                     stepUltraCrucible.currentLocation.getDistanceTo(
+                                                                                             stepUltraCrucible.destination))
+                             .compare(this, o);
         }
 
         @Override
