@@ -43,7 +43,7 @@ public class Day15 implements AdventOfCodeSolution<Long> {
         start.setDistance(0);
         var end = map.get(new Coordinate(grid[0].length - 1, grid.length - 1));
 
-        return Dijkstra.findShortestDistance(start, node -> node == end)
+        return Dijkstra.findShortestDistance(List.of(start), node -> node == end)
                        .map(Node::getDistance)
                        .orElseThrow(() -> new AssertionError("Eek!"));
     }
@@ -118,7 +118,7 @@ public class Day15 implements AdventOfCodeSolution<Long> {
         start.setDistance(0);
         var end = map.get(new Coordinate(newgrid[0].length - 1, newgrid.length - 1));
 
-        return Dijkstra.findShortestDistance(start, node -> node == end)
+        return Dijkstra.findShortestDistance(List.of(start), node -> node == end)
                        .map(Node::getDistance)
                        .orElseThrow(() -> new AssertionError("Eek!"));
     }

@@ -4,10 +4,7 @@ import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.pathfinding.Dijkstra;
 import nl.remcoder.adventofcode.library.pathfinding.Node;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -45,7 +42,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
         STEPS.put(state, start);
         STEPS.put(endState, end);
 
-        return Dijkstra.findShortestDistance(start, node -> node == end).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
+        return Dijkstra.findShortestDistance(List.of(start), node -> node == end).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
     @Override
@@ -82,7 +79,7 @@ public class Day11 implements AdventOfCodeSolution<Long> {
         STEPS.put(state, start);
         STEPS.put(endState, end);
 
-        return Dijkstra.findShortestDistance(start, node -> node == end).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
+        return Dijkstra.findShortestDistance(List.of(start), node -> node == end).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
     }
 
     private Floor parseFloor(String line) {

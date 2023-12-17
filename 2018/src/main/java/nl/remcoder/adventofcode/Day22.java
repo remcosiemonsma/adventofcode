@@ -60,7 +60,7 @@ public class Day22 implements BiAdventOfCodeSolution<Integer, Long> {
 
         STEP_MAP.put(new State(new Coordinate(0, 0), Equipment.TORCH), start);
 
-        return Dijkstra.findShortestDistance(start, node -> {
+        return Dijkstra.findShortestDistance(List.of(start), node -> {
                            var step = (Step) node;
                            return step.currentPosition.equals(target) &&
                                   step.currentEquipment == Equipment.TORCH;

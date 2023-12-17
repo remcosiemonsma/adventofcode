@@ -19,13 +19,13 @@ class Day7Test {
     @Test
     void part1Case1() {
         String data = """
-                      Step C must be finished before step A can begin.
-                      Step C must be finished before step F can begin.
-                      Step A must be finished before step B can begin.
-                      Step A must be finished before step D can begin.
-                      Step B must be finished before step E can begin.
-                      Step D must be finished before step E can begin.
-                      Step F must be finished before step E can begin.
+                      Step C must be finished before stepCrucible A can begin.
+                      Step C must be finished before stepCrucible F can begin.
+                      Step A must be finished before stepCrucible B can begin.
+                      Step A must be finished before stepCrucible D can begin.
+                      Step B must be finished before stepCrucible E can begin.
+                      Step D must be finished before stepCrucible E can begin.
+                      Step F must be finished before stepCrucible E can begin.
                       """;
 
         assertEquals("CABDFE", testSubject.handlePart1(data.lines()));
@@ -40,13 +40,13 @@ class Day7Test {
     @Test
     void part2Case1() {
         String data = """
-                      Step C must be finished before step A can begin.
-                      Step C must be finished before step F can begin.
-                      Step A must be finished before step B can begin.
-                      Step A must be finished before step D can begin.
-                      Step B must be finished before step E can begin.
-                      Step D must be finished before step E can begin.
-                      Step F must be finished before step E can begin.
+                      Step C must be finished before stepCrucible A can begin.
+                      Step C must be finished before stepCrucible F can begin.
+                      Step A must be finished before stepCrucible B can begin.
+                      Step A must be finished before stepCrucible D can begin.
+                      Step B must be finished before stepCrucible E can begin.
+                      Step D must be finished before stepCrucible E can begin.
+                      Step F must be finished before stepCrucible E can begin.
                       """;
         
         testSubject.setAmountOfWorkers(2);

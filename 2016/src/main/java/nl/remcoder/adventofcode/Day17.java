@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -35,7 +36,7 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
 
         var end = new Coordinate(3, 3);
 
-        return ((Step) Dijkstra.findShortestDistance(start, node -> end.equals(((Step) node).position)).orElseThrow(() -> new AssertionError("Eek!"))).steps;
+        return ((Step) Dijkstra.findShortestDistance(List.of(start), node -> end.equals(((Step) node).position)).orElseThrow(() -> new AssertionError("Eek!"))).steps;
     }
 
     @Override

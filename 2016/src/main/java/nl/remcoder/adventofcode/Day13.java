@@ -8,6 +8,7 @@ import nl.remcoder.adventofcode.library.pathfinding.Node;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -23,7 +24,7 @@ public class Day13 implements BiAdventOfCodeSolution<Long, Integer> {
         var start = new Step(new Coordinate(1, 1), grid);
         start.setDistance(0);
 
-        return Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(desiredPosition))
+        return Dijkstra.findShortestDistance(List.of(start), node -> ((Step) node).currentPosition.equals(desiredPosition))
                              .orElseThrow(() -> new AssertionError("Eek!"))
                              .getDistance();
     }

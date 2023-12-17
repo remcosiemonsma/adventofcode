@@ -20,7 +20,7 @@ public class Day21 implements AdventOfCodeSolution<Long> {
         var start = new Game(shop, player, boss);
         start.setDistance(0);
 
-        return Dijkstra.findShortestDistance(start, (node) -> ((Game) node).isPlayerWinner())
+        return Dijkstra.findShortestDistance(List.of(start), (node) -> ((Game) node).isPlayerWinner())
                        .orElseThrow(() -> new AssertionError("Eek!"))
                        .getDistance();
     }
