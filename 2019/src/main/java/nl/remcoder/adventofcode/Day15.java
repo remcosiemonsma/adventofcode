@@ -23,7 +23,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
         var start = new Step(new Coordinate(0, 0), grid, List.of(), new HashMap<>());
         start.setDistance(0);
 
-        return (int) Dijkstra.findShortestDistance(start, node -> {
+        return (int) Dijkstra.findShortestDistance(List.of(start), node -> {
                                  var step = (Step) node;
                                  return step.current.equals(oxygenSystem);
                              })
@@ -102,7 +102,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                     var lastNode = nodesToInvestigate.pop();
                     var start = new Step(current, grid, List.of(), new HashMap<>());
                     start.setDistance(0);
-                    var path = (Step) Dijkstra.findShortestDistance(start, node -> {
+                    var path = (Step) Dijkstra.findShortestDistance(List.of(start), node -> {
                         var step = (Step) node;
                         return step.current.equals(lastNode);
                     })
@@ -141,7 +141,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                     var lastNode = nodesToInvestigate.pop();
                     var start = new Step(current, grid, List.of(), new HashMap<>());
                     start.setDistance(0);
-                    var path = (Step) Dijkstra.findShortestDistance(start, node -> {
+                    var path = (Step) Dijkstra.findShortestDistance(List.of(start), node -> {
                         var step = (Step) node;
                         return step.current.equals(lastNode);
                     }).orElseThrow(() -> new AssertionError("Eek!"));

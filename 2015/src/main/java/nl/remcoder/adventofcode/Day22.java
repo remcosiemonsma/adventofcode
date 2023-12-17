@@ -21,7 +21,7 @@ public class Day22 implements AdventOfCodeSolution<Long> {
         var turn = new Turn(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
         turn.setDistance(0);
 
-        return Dijkstra.findShortestDistance(turn,
+        return Dijkstra.findShortestDistance(List.of(turn),
                                              node -> ((Turn) node).isGameFinished() &&
                                                      ((Turn) node).isPlayerAlive())
                        .orElseThrow(() -> new AssertionError("Eek!"))
@@ -38,7 +38,7 @@ public class Day22 implements AdventOfCodeSolution<Long> {
         var turn = new Turn2(player, boss, new ArrayList<>(), createSpells(), List.of(), true);
         turn.setDistance(0);
 
-        return Dijkstra.findShortestDistance(turn,
+        return Dijkstra.findShortestDistance(List.of(turn),
                                              node -> ((Turn2) node).isGameFinished() &&
                                                      ((Turn2) node).isPlayerAlive())
                        .orElseThrow(() -> new AssertionError("Eek!"))

@@ -225,7 +225,7 @@ public class Day18 implements AdventOfCodeSolution<Integer> {
     private Optional<Path> createPathTo(Coordinate startPosition, Coordinate targetPosition, Grid<Character> grid) {
         var start = new Step(startPosition, Set.of(), grid, new HashMap<>());
         start.setDistance(0);
-        return Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(
+        return Dijkstra.findShortestDistance(List.of(start), node -> ((Step) node).currentPosition.equals(
                                targetPosition))
                        .map(node -> (Step) node)
                        .map(step -> new Path(step.foundDoors, (int) step.getDistance()));

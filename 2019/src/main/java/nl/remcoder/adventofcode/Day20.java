@@ -26,7 +26,7 @@ public class Day20 implements AdventOfCodeSolution<Long> {
         var start = new Step(grid, new HashMap<>(), startPosition, gates, List.of());
         start.setDistance(0);
 
-        return Dijkstra.findShortestDistance(start, node -> ((Step) node).currentPosition.equals(exitPosition))
+        return Dijkstra.findShortestDistance(List.of(start), node -> ((Step) node).currentPosition.equals(exitPosition))
                        .orElseThrow(() -> new AssertionError("Eek!"))
                        .getDistance();
     }
@@ -48,7 +48,7 @@ public class Day20 implements AdventOfCodeSolution<Long> {
         var start = new StepWithLevels(grid, new HashMap<>(), startPosition, gates, List.of(), 0);
         start.setDistance(0);
 
-        return Dijkstra.findShortestDistance(start, node -> {
+        return Dijkstra.findShortestDistance(List.of(start), node -> {
                            StepWithLevels step = (StepWithLevels) node;
                            return step.currentPosition.equals(exitPosition) && step.level == 0;
                        })

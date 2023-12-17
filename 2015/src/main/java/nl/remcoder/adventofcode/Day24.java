@@ -30,7 +30,7 @@ public class Day24 implements AdventOfCodeSolution<Long> {
         var start = new LoadOut(packages, Set.of(largest), largest, 1, wantedWeight, largest);
         start.setDistance(largest);
 
-        return Dijkstra.findShortestDistance(start, node -> {
+        return Dijkstra.findShortestDistance(List.of(start), node -> {
             var loadOut = (LoadOut) node;
             return loadOut.getWeight() == wantedWeight;
         }).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
@@ -55,7 +55,7 @@ public class Day24 implements AdventOfCodeSolution<Long> {
         var start = new LoadOut(packages, Set.of(largest), largest, 1, wantedWeight, largest);
         start.setDistance(largest);
 
-        return Dijkstra.findShortestDistance(start, node -> {
+        return Dijkstra.findShortestDistance(List.of(start), node -> {
             var loadOut = (LoadOut) node;
             return loadOut.getWeight() == wantedWeight;
         }).orElseThrow(() -> new AssertionError("Eek!")).getDistance();
