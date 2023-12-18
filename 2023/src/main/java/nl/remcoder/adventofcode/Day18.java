@@ -25,9 +25,9 @@ public class Day18 implements AdventOfCodeSolution<Long> {
     }
 
     private BigInteger calculateLavaSize(Stream<String> input, Function<String, DigStep> digStepMapper) {
-        var coordinates = new ArrayList<Coordinate>();
+        var coordinates = new ArrayList<CoordinateBigInteger>();
 
-        coordinates.add(new Coordinate(0, 0));
+        coordinates.add(new CoordinateBigInteger(BigInteger.ZERO, BigInteger.ZERO));
 
         var data = new DataContainer();
 
@@ -36,16 +36,16 @@ public class Day18 implements AdventOfCodeSolution<Long> {
                  var currentLocation = coordinates.getLast();
 
                  var newLocation = switch (digStep.direction()) {
-                     case UP -> new Coordinate(currentLocation.x(), currentLocation.y() - digStep.distance());
-                     case LEFT -> new Coordinate(currentLocation.x() - digStep.distance(), currentLocation.y());
-                     case DOWN -> new Coordinate(currentLocation.x(), currentLocation.y() + digStep.distance());
-                     case RIGHT -> new Coordinate(currentLocation.x() + digStep.distance(), currentLocation.y());
+                     case UP -> new CoordinateBigInteger(currentLocation.x(), currentLocation.y().subtract(BigInteger.valueOf(digStep.distance())));
+                     case LEFT -> new CoordinateBigInteger(currentLocation.x().subtract(BigInteger.valueOf(digStep.distance())), currentLocation.y());
+                     case DOWN -> new CoordinateBigInteger(currentLocation.x(), currentLocation.y().add(BigInteger.valueOf(digStep.distance())));
+                     case RIGHT -> new CoordinateBigInteger(currentLocation.x().add(BigInteger.valueOf(digStep.distance())), currentLocation.y());
                  };
 
                  data.setBorderSize(data.borderSize().add(currentLocation.getDistanceToBigInteger(newLocation)));
 
-                 var areaToAdd = BigInteger.valueOf(currentLocation.x()).multiply(BigInteger.valueOf(newLocation.y()));
-                 areaToAdd = areaToAdd.subtract(BigInteger.valueOf(currentLocation.y()).multiply(BigInteger.valueOf(newLocation.x())));
+                 var areaToAdd = currentLocation.x().multiply(newLocation.y());
+                 areaToAdd = areaToAdd.subtract(currentLocation.y().multiply(newLocation.x()));
 
                  data.setArea(data.area().add(areaToAdd));
 
@@ -55,10 +55,10 @@ public class Day18 implements AdventOfCodeSolution<Long> {
         var first = coordinates.getFirst();
         var last = coordinates.getLast();
 
-        data.setBorderSize(data.borderSize().add(BigInteger.valueOf(first.getDistanceTo(last))));
+        data.setBorderSize(data.borderSize().add(first.getDistanceToBigInteger(last)));
 
-        var areaToAdd = BigInteger.valueOf(last.x()).multiply(BigInteger.valueOf(first.y()));
-        areaToAdd = areaToAdd.subtract(BigInteger.valueOf(last.y()).multiply(BigInteger.valueOf(first.x())));
+        var areaToAdd = last.x().multiply(first.y());
+        areaToAdd = areaToAdd.subtract(last.y().multiply(first.x()));
 
         data.setArea(data.area().add(areaToAdd));
 
@@ -115,5 +115,11 @@ public class Day18 implements AdventOfCodeSolution<Long> {
     }
 
     private record DigStep(Direction direction, long distance) {
+    }
+
+    private record CoordinateBigInteger(BigInteger x, BigInteger y) {
+        public BigInteger getDistanceToBigInteger(CoordinateBigInteger other) {
+            return x.subtract(other.x).abs().add(y.subtract(other.y).abs());
+        }
     }
 }
