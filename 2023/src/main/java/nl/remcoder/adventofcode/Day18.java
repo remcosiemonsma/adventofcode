@@ -5,7 +5,6 @@ import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Direction;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -25,6 +24,8 @@ public class Day18 implements AdventOfCodeSolution<Long> {
 
         coordinates.add(new Coordinate(0, 0));
 
+        var data = new DataContainer();
+
         input.map(digStepMapper)
              .forEach(digStep -> {
                  var currentLocation = coordinates.getLast();
@@ -36,39 +37,31 @@ public class Day18 implements AdventOfCodeSolution<Long> {
                      case RIGHT -> new Coordinate(currentLocation.x() + digStep.distance(), currentLocation.y());
                  };
 
+                 data.setBorderSize(data.borderSize() + currentLocation.getDistanceTo(newLocation));
+
+                 var areaToAdd = 0L;
+
+                 areaToAdd += (long) currentLocation.x() * (long) newLocation.y();
+                 areaToAdd -= (long) currentLocation.y() * (long) newLocation.x();
+
+                 data.setArea(data.area() + areaToAdd);
+
                  coordinates.add(newLocation);
              });
 
-        var area = calculateArea(coordinates);
+        var first = coordinates.getFirst();
+        var last = coordinates.getLast();
 
-        return area + (countBorderPoints(coordinates) / 2) + 1;
-    }
+        data.setBorderSize(data.borderSize() + first.getDistanceTo(last));
 
-    private long countBorderPoints(List<Coordinate> coordinates) {
-        var borderCount = 0;
+        var areaToAdd = 0L;
 
-        for (var i = 0; i < coordinates.size(); i++) {
-            var first = coordinates.get(i);
-            var second = coordinates.get((i + 1) % coordinates.size());
+        areaToAdd += (long) last.x() * (long) first.y();
+        areaToAdd -= (long) last.y() * (long) first.x();
 
-            borderCount += first.getDistanceTo(second);
-        }
+        data.setArea(data.area() + areaToAdd);
 
-        return borderCount;
-    }
-
-    private long calculateArea(List<Coordinate> coordinates) {
-        var area = 0d;
-
-        for (var i = 0; i < coordinates.size(); i++) {
-            var j = (i + 1) % coordinates.size();
-
-            area += (long) coordinates.get(i).x() * (long) coordinates.get(j).y();
-            area -= (long) coordinates.get(i).y() * (long) coordinates.get(j).x();
-        }
-
-        area /= 2;
-        return (long) area;
+        return (data.area() / 2) + (data.borderSize() / 2) + 1;
     }
 
     private DigStep mapDigStep(String line) {
@@ -97,6 +90,27 @@ public class Day18 implements AdventOfCodeSolution<Long> {
         };
 
         return new DigStep(direction, Integer.parseInt(hexData.substring(0, 5), 16));
+    }
+
+    private static class DataContainer {
+        private long area;
+        private long borderSize;
+
+        public long area() {
+            return area;
+        }
+
+        public void setArea(long area) {
+            this.area = area;
+        }
+
+        public long borderSize() {
+            return borderSize;
+        }
+
+        public void setBorderSize(long borderSize) {
+            this.borderSize = borderSize;
+        }
     }
 
     private record DigStep(Direction direction, int distance) {
