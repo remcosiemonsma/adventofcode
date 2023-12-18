@@ -9,8 +9,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class Day3 implements AdventOfCodeSolution<Integer> {
-    public Integer handlePart1(Stream<String> input) {
+public class Day3 implements AdventOfCodeSolution<Long> {
+    @Override
+    public Long handlePart1(Stream<String> input) {
         var lines = input.toList();
 
         var line1 = lines.get(0);
@@ -23,13 +24,13 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
 
         return path1.stream()
                     .filter(path2::contains)
-                    .mapToInt(other -> start.getDistanceTo(other.coordinate()))
+                    .mapToLong(other -> start.getDistanceTo(other.coordinate()))
                     .min()
                     .orElseThrow(() -> new AssertionError("Eek!"));
     }
 
     @Override
-    public Integer handlePart2(Stream<String> input) {
+    public Long handlePart2(Stream<String> input) {
         var lines = input.toList();
 
         var line1 = lines.get(0);
@@ -45,7 +46,7 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
                                       .filter(path1::contains)
                                       .toList();
         
-        var minimalPath = Integer.MAX_VALUE;
+        var minimalPath = Long.MAX_VALUE;
         
         for (var intersection : path1Intersections) {
             for (var otherInsection : path2Intersections) {

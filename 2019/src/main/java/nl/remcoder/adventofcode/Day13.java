@@ -46,9 +46,9 @@ public class Day13 {
 
         BlockingQueue<Long> output = new ConsumingQueue(new OutputHandler());
         BlockingQueue<Long> input = new ProducingQueue(() -> {
-            int paddleX = findPaddleX();
-            int ballX = findBallX();
-            return Integer.compare(ballX, paddleX);
+            var paddleX = findPaddleX();
+            var ballX = findBallX();
+            return Long.compare(ballX, paddleX);
         });
 
         IntCodeComputer intCodeComputer = new IntCodeComputer(opcodes, input, output);
@@ -58,12 +58,16 @@ public class Day13 {
         return score;
     }
 
-    private int findPaddleX() {
-        return grid.findValue(3).orElseThrow(() -> new AssertionError("Eek!")).x();
+    private long findPaddleX() {
+        return grid.findValue(3)
+                   .orElseThrow(() -> new AssertionError("Eek!"))
+                   .x();
     }
 
-    private int findBallX() {
-        return grid.findValue(4).orElseThrow(() -> new AssertionError("Eek!")).x();
+    private long findBallX() {
+        return grid.findValue(4)
+                   .orElseThrow(() -> new AssertionError("Eek!"))
+                   .x();
     }
 
     private class OutputHandler implements OutputConsumer {

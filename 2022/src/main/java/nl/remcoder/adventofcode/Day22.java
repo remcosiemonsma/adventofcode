@@ -100,7 +100,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         var steps = Integer.parseInt(stringBuilder.toString());
         current = walk(grid, current, direction, steps);
 
-        return ((current.y() + 1) * 1000) + (current.x() + 1) * 4 +
+        return (((int) current.y() + 1) * 1000) + ((int) current.x() + 1) * 4 +
                switch (direction) {
                    case RIGHT -> 0;
                    case DOWN -> 1;
@@ -190,7 +190,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         var current = vector.coordinate();
         var direction = vector.direction();
         
-        return ((current.y() + 1) * 1000) + (current.x() + 1) * 4 +
+        return (((int) current.y() + 1) * 1000) + ((int) current.x() + 1) * 4 +
                switch (direction) {
                    case RIGHT -> 0;
                    case DOWN -> 1;

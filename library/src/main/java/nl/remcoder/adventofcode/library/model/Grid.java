@@ -4,10 +4,10 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class Grid<T> {
-    private int startx;
-    private int starty;
-    private int endx;
-    private int endy;
+    private long startx;
+    private long starty;
+    private long endx;
+    private long endy;
     private final Map<Coordinate, T> values = new HashMap<>();
 
     public Grid(T[][] data) {
@@ -22,7 +22,7 @@ public class Grid<T> {
         calculateSize();
     }
 
-    public Grid(int startx, int starty, int endx, int endy) {
+    public Grid(long startx, long starty, long endx, long endy) {
         this.startx = startx;
         this.starty = starty;
         this.endx = endx;
@@ -34,23 +34,23 @@ public class Grid<T> {
                coordinate.y() >= starty && coordinate.y() <= endy;
     }
 
-    public int getStartx() {
+    public long getStartx() {
         return startx;
     }
 
-    public int getStarty() {
+    public long getStarty() {
         return starty;
     }
 
-    public int getEndx() {
+    public long getEndx() {
         return endx;
     }
 
-    public int getEndy() {
+    public long getEndy() {
         return endy;
     }
 
-    public T get(int x, int y) {
+    public T get(long x, long y) {
         return values.get(new Coordinate(x, y));
     }
 
@@ -77,22 +77,22 @@ public class Grid<T> {
     public void calculateSize() {
         startx = values.keySet()
                        .stream()
-                       .mapToInt(Coordinate::x)
+                       .mapToLong(Coordinate::x)
                        .min()
                        .orElseThrow(() -> new AssertionError("Eek!"));
         endx = values.keySet()
                      .stream()
-                     .mapToInt(Coordinate::x)
+                     .mapToLong(Coordinate::x)
                      .max()
                      .orElseThrow(() -> new AssertionError("Eek!"));
         starty = values.keySet()
                        .stream()
-                       .mapToInt(Coordinate::y)
+                       .mapToLong(Coordinate::y)
                        .min()
                        .orElseThrow(() -> new AssertionError("Eek!"));
         endy = values.keySet()
                      .stream()
-                     .mapToInt(Coordinate::y)
+                     .mapToLong(Coordinate::y)
                      .max()
                      .orElseThrow(() -> new AssertionError("Eek!"));
     }
@@ -101,8 +101,8 @@ public class Grid<T> {
     public String toString() {
         var sb = new StringBuilder();
         calculateSize();
-        for (int y = starty; y <= endy; y++) {
-            for (int x = startx; x <= endx; x++) {
+        for (var y = starty; y <= endy; y++) {
+            for (var x = startx; x <= endx; x++) {
                 Coordinate coordinate = new Coordinate(x, y);
 
                 Object value = values.get(coordinate);
@@ -127,8 +127,8 @@ public class Grid<T> {
     }
 
     public void fill(T value) {
-        for (int y = starty; y <= endy; y++) {
-            for (int x = startx; x <= endx; x++) {
+        for (var y = starty; y <= endy; y++) {
+            for (var x = startx; x <= endx; x++) {
                 values.put(new Coordinate(x, y), value);
             }
         }

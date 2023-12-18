@@ -26,9 +26,9 @@ public class Day13 implements BiAdventOfCodeSolution<Integer, String> {
                  }
              });
 
-        switch (foldInstructions.get(0).charAt(11)) {
-            case 'x' -> foldVertical(coordinates, Integer.parseInt(foldInstructions.get(0).substring(13)));
-            case 'y' -> foldHorizontal(coordinates, Integer.parseInt(foldInstructions.get(0).substring(13)));
+        switch (foldInstructions.getFirst().charAt(11)) {
+            case 'x' -> foldVertical(coordinates, Integer.parseInt(foldInstructions.getFirst().substring(13)));
+            case 'y' -> foldHorizontal(coordinates, Integer.parseInt(foldInstructions.getFirst().substring(13)));
         }
 
         return coordinates.size();
@@ -58,17 +58,17 @@ public class Day13 implements BiAdventOfCodeSolution<Integer, String> {
         });
 
         var highestY = coordinates.stream()
-                                  .mapToInt(Coordinate::y)
+                                  .mapToLong(Coordinate::y)
                                   .max()
                                   .orElseThrow(() -> new AssertionError("Eek!"));
         var highestX = coordinates.stream()
-                                  .mapToInt(Coordinate::x)
+                                  .mapToLong(Coordinate::x)
                                   .max()
                                   .orElseThrow(() -> new AssertionError("Eek!"));
 
-        var screen = new Screen(highestX + 2, highestY + 1);
+        var screen = new Screen((int) highestX + 2, (int) highestY + 1);
 
-        coordinates.forEach(coordinate -> screen.drawPixel(coordinate.x(), coordinate.y()));
+        coordinates.forEach(coordinate -> screen.drawPixel((int) coordinate.x(), (int) coordinate.y()));
 
         return screen.readScreen();
     }

@@ -1,10 +1,11 @@
 package nl.remcoder.adventofcode.library.model;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public record Coordinate(int x, int y) {
+public record Coordinate(long x, long y) {
     public Set<Coordinate> getStraightNeighbours() {
         return Set.of(above(), below(), right(), left());
     }
@@ -50,21 +51,21 @@ public record Coordinate(int x, int y) {
         
         if (this.x == other.x) {
             if (y <= other.y) {
-                for (int y = this.y; y <= other.y; y++) {
+                for (long y = this.y; y <= other.y; y++) {
                     coordinates.add(new Coordinate(x, y));
                 }
             } else {
-                for (int y = other.y; y <= this.y; y++) {
+                for (long y = other.y; y <= this.y; y++) {
                     coordinates.add(new Coordinate(x, y));
                 }
             }
         } else if (this.y == other.y) {
             if (x <= other.x) {
-                for (int x = this.x; x <= other.x; x++) {
+                for (long x = this.x; x <= other.x; x++) {
                     coordinates.add(new Coordinate(x, y));
                 }
             } else {
-                for (int x = other.x; x <= this.x; x++) {
+                for (long x = other.x; x <= this.x; x++) {
                     coordinates.add(new Coordinate(x, y));
                 }
             }
@@ -116,7 +117,12 @@ public record Coordinate(int x, int y) {
         };
     }
     
-    public int getDistanceTo(Coordinate other) {
+    public long getDistanceTo(Coordinate other) {
         return Math.abs(x - other.x) + Math.abs(y - other.y);
+    }
+
+    public BigInteger getDistanceToBigInteger(Coordinate other) {
+        return BigInteger.valueOf(x).subtract(BigInteger.valueOf(other.x)).abs()
+                                 .add(BigInteger.valueOf(y).subtract(BigInteger.valueOf(other.y)).abs());
     }
 }

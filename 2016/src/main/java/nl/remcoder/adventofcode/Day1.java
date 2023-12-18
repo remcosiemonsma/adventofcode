@@ -8,9 +8,9 @@ import nl.remcoder.adventofcode.library.model.Vector;
 import java.util.HashSet;
 import java.util.stream.Stream;
 
-public class Day1 implements AdventOfCodeSolution<Integer> {
+public class Day1 implements AdventOfCodeSolution<Long> {
     @Override
-    public Integer handlePart1(Stream<String> input) {
+    public Long handlePart1(Stream<String> input) {
         var steps = input.findFirst()
                               .map(s -> s.split(", "))
                               .orElse(new String[0]);
@@ -25,7 +25,7 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
     }
 
     @Override
-    public Integer handlePart2(Stream<String> input) {
+    public Long handlePart2(Stream<String> input) {
         var steps = input.findFirst()
                               .map(s -> s.split(", "))
                               .orElse(new String[0]);

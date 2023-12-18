@@ -67,7 +67,7 @@ public class Screen {
     private int getRightMostX(Grid<Boolean> grid) {
         Integer rightMostX = null;
 
-        var x = grid.getEndx();
+        var x = (int) grid.getEndx();
         while (rightMostX == null && x >= 0) {
             for (var y = 0; y <= grid.getEndy(); y++) {
                 if (Boolean.TRUE.equals(grid.get(x, y))) {
@@ -78,7 +78,7 @@ public class Screen {
             x--;
         }
 
-        return Objects.requireNonNullElseGet(rightMostX, grid::getEndx);
+        return Objects.requireNonNullElseGet(rightMostX, () -> (int) grid.getEndx());
     }
 
     private int getTopMostY(Grid<Boolean> grid) {
@@ -102,7 +102,7 @@ public class Screen {
     private int getBottomMostY(Grid<Boolean> grid) {
         Integer bottomMostY = null;
 
-        var y = grid.getEndy();
+        var y = (int) grid.getEndy();
         while (bottomMostY == null && y >= 0) {
             for (var x = 0; x <= grid.getEndx(); x++) {
                 if (Boolean.TRUE.equals(grid.get(x, y))) {
@@ -113,7 +113,7 @@ public class Screen {
             y--;
         }
 
-        return Objects.requireNonNullElseGet(bottomMostY, grid::getEndy);
+        return Objects.requireNonNullElseGet(bottomMostY, () -> (int) grid.getEndy());
     }
 
     public void drawPixel(int x, int y) {

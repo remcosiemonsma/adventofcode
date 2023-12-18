@@ -29,22 +29,22 @@ public class Day8 implements AdventOfCodeSolution<Long> {
     }
 
     private void determineVisibleTreesHorizontal(Grid<Integer> trees, Set<Coordinate> visibleTrees) {
-        for (int y = trees.getStarty(); y <= trees.getEndy(); y++) {
+        for (var y = trees.getStarty(); y <= trees.getEndy(); y++) {
             determineVisibleTreesTopBottom(trees, visibleTrees, y);
             determineVisibleTreesBottomTop(trees, visibleTrees, y);
         }
     }
 
     private void getVisibleTreesVertical(Grid<Integer> trees, Set<Coordinate> visibleTrees) {
-        for (int x = trees.getStartx(); x <= trees.getEndx(); x++) {
+        for (var x = trees.getStartx(); x <= trees.getEndx(); x++) {
             determineVisibleTreesLeftRight(trees, visibleTrees, x);
             determineVisibleTreesRightLeft(trees, visibleTrees, x);
         }
     }
 
-    private void determineVisibleTreesBottomTop(Grid<Integer> trees, Set<Coordinate> visibleTrees, int y) {
+    private void determineVisibleTreesBottomTop(Grid<Integer> trees, Set<Coordinate> visibleTrees, long y) {
         int highestTree = -1;
-        for (int x = trees.getEndy(); x >= trees.getStarty(); x--) {
+        for (var x = trees.getEndy(); x >= trees.getStarty(); x--) {
             Coordinate coordinate = new Coordinate(x, y);
             int treeHeight = trees.get(coordinate);
             if (treeHeight > highestTree) {
@@ -57,9 +57,9 @@ public class Day8 implements AdventOfCodeSolution<Long> {
         }
     }
 
-    private void determineVisibleTreesTopBottom(Grid<Integer> trees, Set<Coordinate> visibleTrees, int y) {
+    private void determineVisibleTreesTopBottom(Grid<Integer> trees, Set<Coordinate> visibleTrees, long y) {
         int highestTree = -1;
-        for (int x = trees.getStartx(); x <= trees.getEndx(); x++) {
+        for (var x = trees.getStartx(); x <= trees.getEndx(); x++) {
             Coordinate coordinate = new Coordinate(x, y);
             int treeHeight = trees.get(coordinate);
             if (treeHeight > highestTree) {
@@ -72,9 +72,9 @@ public class Day8 implements AdventOfCodeSolution<Long> {
         }
     }
 
-    private void determineVisibleTreesRightLeft(Grid<Integer> trees, Set<Coordinate> visibleTrees, int x) {
+    private void determineVisibleTreesRightLeft(Grid<Integer> trees, Set<Coordinate> visibleTrees, long x) {
         int highestTree = -1;
-        for (int y = trees.getEndy(); y >= trees.getStarty(); y--) {
+        for (var y = trees.getEndy(); y >= trees.getStarty(); y--) {
             Coordinate coordinate = new Coordinate(x, y);
             int treeHeight = trees.get(coordinate);
             if (treeHeight > highestTree) {
@@ -87,9 +87,9 @@ public class Day8 implements AdventOfCodeSolution<Long> {
         }
     }
 
-    private void determineVisibleTreesLeftRight(Grid<Integer> trees, Set<Coordinate> visibleTrees, int x) {
+    private void determineVisibleTreesLeftRight(Grid<Integer> trees, Set<Coordinate> visibleTrees, long x) {
         int highestTree = -1;
-        for (int y = trees.getStarty(); y <= trees.getEndy(); y++) {
+        for (var y = trees.getStarty(); y <= trees.getEndy(); y++) {
             Coordinate coordinate = new Coordinate(x, y);
             int treeHeight = trees.get(coordinate);
             if (treeHeight > highestTree) {
@@ -108,8 +108,8 @@ public class Day8 implements AdventOfCodeSolution<Long> {
         
         long bestScenicScore = 0;
 
-        for (int x = trees.getStartx() + 1; x < trees.getEndx(); x++) {
-            for (int y = trees.getStarty() + 1; y < trees.getEndy(); y++) {
+        for (var x = trees.getStartx() + 1; x < trees.getEndx(); x++) {
+            for (var y = trees.getStarty() + 1; y < trees.getEndy(); y++) {
                 Coordinate coordinate = new Coordinate(x, y);
                 long scenicScore = getScenicScore(coordinate, trees);
                 

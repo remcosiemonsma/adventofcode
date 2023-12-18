@@ -74,7 +74,7 @@ public class Day15 implements AdventOfCodeSolution<Long> {
     private static class Sensor {
         private final Coordinate position;
         private final Coordinate beacon;
-        private final int range;
+        private final long range;
 
         private Sensor(Coordinate position, Coordinate beacon) {
             this.position = position;
@@ -87,19 +87,19 @@ public class Day15 implements AdventOfCodeSolution<Long> {
         }
 
         public boolean isRowInRange(int row) {
-            int minRow = position.y() - range;
-            int maxRow = position.y() + range;
+            var minRow = position.y() - range;
+            var maxRow = position.y() + range;
 
             return minRow <= row && row <= maxRow;
         }
 
         public List<Coordinate> getCoverageInRow(int row) {
-            int distanceToRow = Math.abs(position.y() - row);
-            int rangeInRow = range - distanceToRow;
+            var distanceToRow = Math.abs(position.y() - row);
+            var rangeInRow = range - distanceToRow;
 
             var coordinates = new ArrayList<Coordinate>();
 
-            for (int x = position.x() - rangeInRow; x <= position.x() + rangeInRow; x++) {
+            for (var x = position.x() - rangeInRow; x <= position.x() + rangeInRow; x++) {
                 coordinates.add(new Coordinate(x, row));
             }
 
@@ -107,8 +107,8 @@ public class Day15 implements AdventOfCodeSolution<Long> {
         }
 
         public Coordinate getLeftOutsideRangeCoordinateOnRow(int row) {
-            int distanceToRow = Math.abs(position.y() - row);
-            int rangeInRow = range - distanceToRow;
+            var distanceToRow = Math.abs(position.y() - row);
+            var rangeInRow = range - distanceToRow;
             
             if (rangeInRow >= 0) {
                 return new Coordinate(position.x() - (rangeInRow + 1), row);
@@ -118,8 +118,8 @@ public class Day15 implements AdventOfCodeSolution<Long> {
         }
         
         public Coordinate getRightOutsideRangeCoordinateOnRow(int row) {
-            int distanceToRow = Math.abs(position.y() - row);
-            int rangeInRow = range - distanceToRow;
+            var distanceToRow = Math.abs(position.y() - row);
+            var rangeInRow = range - distanceToRow;
             
             if (rangeInRow >= 0) {
                 return new Coordinate(position.x() + (rangeInRow + 1), row);

@@ -22,7 +22,7 @@ public class Day14 implements AdventOfCodeSolution<Long> {
     public Long handlePart2(Stream<String> input) {
         var grid = parseGrid(input, 2);
 
-        for (int x = grid.getStartx(); x <= grid.getEndx(); x++) {
+        for (var x = grid.getStartx(); x <= grid.getEndx(); x++) {
             grid.set(new Coordinate(x, grid.getEndy()), '#');
         }
 
@@ -71,24 +71,24 @@ public class Day14 implements AdventOfCodeSolution<Long> {
         var walls = input.map(this::parseToCoordinates).toList();
 
         var maxX = walls.stream()
-                        .mapToInt(wall -> wall.stream()
-                                              .mapToInt(Coordinate::x)
+                        .mapToLong(wall -> wall.stream()
+                                              .mapToLong(Coordinate::x)
                                               .max()
                                               .orElseThrow(() -> new AssertionError("Eek!")))
                         .max()
                         .orElseThrow(() -> new AssertionError("Ook!")) + 512;
 
         var minX = walls.stream()
-                        .mapToInt(wall -> wall.stream()
-                                              .mapToInt(Coordinate::x)
+                        .mapToLong(wall -> wall.stream()
+                                              .mapToLong(Coordinate::x)
                                               .min()
                                               .orElseThrow(() -> new AssertionError("Eek!")))
                         .min()
                         .orElseThrow(() -> new AssertionError("Ook!")) - 512;
 
         var maxY = walls.stream()
-                        .mapToInt(wall -> wall.stream()
-                                              .mapToInt(Coordinate::y)
+                        .mapToLong(wall -> wall.stream()
+                                              .mapToLong(Coordinate::y)
                                               .max()
                                               .orElseThrow(() -> new AssertionError("Eek!")))
                         .max()

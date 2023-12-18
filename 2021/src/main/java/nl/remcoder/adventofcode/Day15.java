@@ -134,8 +134,8 @@ public class Day15 implements AdventOfCodeSolution<Long> {
 
     private void addNeighbors(int[][] grid, Step current, Step other) {
         if (other != null) {
-            current.addDestination(other, grid[other.position.y()][other.position.x()]);
-            other.addDestination(current, grid[current.position.y()][current.position.x()]);
+            current.addDestination(other, grid[(int) other.position.y()][(int) other.position.x()]);
+            other.addDestination(current, grid[(int) current.position.y()][(int) current.position.x()]);
         }
     }
 

@@ -4,6 +4,7 @@ import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Direction;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -11,15 +12,19 @@ import java.util.stream.Stream;
 public class Day18 implements AdventOfCodeSolution<Long> {
     @Override
     public Long handlePart1(Stream<String> input) {
-        return calculateLavaSize(input, this::mapDigStep);
+        return calculateLavaSize(input, this::mapDigStep).longValue();
     }
 
     @Override
     public Long handlePart2(Stream<String> input) {
+        return calculateLavaSize(input, this::mapDigStep2).longValue();
+    }
+
+    public BigInteger handlePart2BigInteger(Stream<String> input) {
         return calculateLavaSize(input, this::mapDigStep2);
     }
 
-    private long calculateLavaSize(Stream<String> input, Function<String, DigStep> digStepMapper) {
+    private BigInteger calculateLavaSize(Stream<String> input, Function<String, DigStep> digStepMapper) {
         var coordinates = new ArrayList<Coordinate>();
 
         coordinates.add(new Coordinate(0, 0));
@@ -37,14 +42,12 @@ public class Day18 implements AdventOfCodeSolution<Long> {
                      case RIGHT -> new Coordinate(currentLocation.x() + digStep.distance(), currentLocation.y());
                  };
 
-                 data.setBorderSize(data.borderSize() + currentLocation.getDistanceTo(newLocation));
+                 data.setBorderSize(data.borderSize().add(currentLocation.getDistanceToBigInteger(newLocation)));
 
-                 var areaToAdd = 0L;
+                 var areaToAdd = BigInteger.valueOf(currentLocation.x()).multiply(BigInteger.valueOf(newLocation.y()));
+                 areaToAdd = areaToAdd.subtract(BigInteger.valueOf(currentLocation.y()).multiply(BigInteger.valueOf(newLocation.x())));
 
-                 areaToAdd += (long) currentLocation.x() * (long) newLocation.y();
-                 areaToAdd -= (long) currentLocation.y() * (long) newLocation.x();
-
-                 data.setArea(data.area() + areaToAdd);
+                 data.setArea(data.area().add(areaToAdd));
 
                  coordinates.add(newLocation);
              });
@@ -52,16 +55,14 @@ public class Day18 implements AdventOfCodeSolution<Long> {
         var first = coordinates.getFirst();
         var last = coordinates.getLast();
 
-        data.setBorderSize(data.borderSize() + first.getDistanceTo(last));
+        data.setBorderSize(data.borderSize().add(BigInteger.valueOf(first.getDistanceTo(last))));
 
-        var areaToAdd = 0L;
+        var areaToAdd = BigInteger.valueOf(last.x()).multiply(BigInteger.valueOf(first.y()));
+        areaToAdd = areaToAdd.subtract(BigInteger.valueOf(last.y()).multiply(BigInteger.valueOf(first.x())));
 
-        areaToAdd += (long) last.x() * (long) first.y();
-        areaToAdd -= (long) last.y() * (long) first.x();
+        data.setArea(data.area().add(areaToAdd));
 
-        data.setArea(data.area() + areaToAdd);
-
-        return (data.area() / 2) + (data.borderSize() / 2) + 1;
+        return data.area().divide(BigInteger.TWO).add(data.borderSize().divide(BigInteger.TWO)).add(BigInteger.ONE);
     }
 
     private DigStep mapDigStep(String line) {
@@ -89,30 +90,30 @@ public class Day18 implements AdventOfCodeSolution<Long> {
             default -> throw new AssertionError("Eek!");
         };
 
-        return new DigStep(direction, Integer.parseInt(hexData.substring(0, 5), 16));
+        return new DigStep(direction, Long.parseLong(hexData.substring(0, 5), 16));
     }
 
     private static class DataContainer {
-        private long area;
-        private long borderSize;
+        private BigInteger area = BigInteger.ZERO;
+        private BigInteger borderSize = BigInteger.ZERO;
 
-        public long area() {
+        public BigInteger area() {
             return area;
         }
 
-        public void setArea(long area) {
+        public void setArea(BigInteger area) {
             this.area = area;
         }
 
-        public long borderSize() {
+        public BigInteger borderSize() {
             return borderSize;
         }
 
-        public void setBorderSize(long borderSize) {
+        public void setBorderSize(BigInteger borderSize) {
             this.borderSize = borderSize;
         }
     }
 
-    private record DigStep(Direction direction, int distance) {
+    private record DigStep(Direction direction, long distance) {
     }
 }

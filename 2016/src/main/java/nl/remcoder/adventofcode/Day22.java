@@ -43,14 +43,22 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                          .map(this::parseNode)
                          .toList();
 
-        var x_size = nodes.stream().map(Node::coordinate).mapToInt(Coordinate::x).max()
+        var x_size = nodes.stream()
+                          .map(Node::coordinate)
+                          .map(Coordinate::x)
+                          .mapToInt(Long::intValue)
+                          .max()
                           .orElseThrow(() -> new AssertionError("Eek!"));
-        var y_size = nodes.stream().map(Node::coordinate).mapToInt(Coordinate::y).max()
+        var y_size = nodes.stream()
+                          .map(Node::coordinate)
+                          .map(Coordinate::y)
+                          .mapToInt(Long::intValue)
+                          .max()
                           .orElseThrow(() -> new AssertionError("Eek!"));
         Node wallStart = null;
         Node hole = null;
         var nodeGrid = new Node[y_size + 1][x_size + 1];
-        nodes.forEach(node -> nodeGrid[node.coordinate().y()][node.coordinate().x()] = node);
+        nodes.forEach(node -> nodeGrid[(int) node.coordinate().y()][(int) node.coordinate().x()] = node);
         for (var y = 0; y < nodeGrid.length; y++) {
             for (var x = 0; x < nodeGrid[y].length; x++) {
                 Node n = nodeGrid[y][x];
@@ -66,10 +74,10 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
 
         assert hole != null;
         assert wallStart != null;
-        
-        int result = hole.coordinate().getDistanceTo(wallStart.coordinate());
+
+        var result = hole.coordinate().getDistanceTo(wallStart.coordinate());
         result += Math.abs(wallStart.coordinate().x() - x_size) + wallStart.coordinate().y() + 2;
-        return result + 5 * (x_size - 1);
+        return (int) (result + 5 * (x_size - 1));
     }
 
     private Node parseNode(Matcher matcher) {

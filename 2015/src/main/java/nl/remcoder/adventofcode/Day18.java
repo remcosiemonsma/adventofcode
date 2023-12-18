@@ -53,7 +53,7 @@ public class Day18 implements AdventOfCodeSolution<Long> {
         return grid.countElements(true);
     }
 
-    private void switchState(Grid<Boolean> grid, Grid<Boolean> newGrid, int x, int y) {
+    private void switchState(Grid<Boolean> grid, Grid<Boolean> newGrid, long x, long y) {
         var coordinate = new Coordinate(x, y);
 
         var above = coordinate.above();

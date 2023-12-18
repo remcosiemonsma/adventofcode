@@ -45,6 +45,24 @@ class Day18Test {
     }
 
     @Test
+    void testPart1Input1() throws Exception {
+        assertEquals(1673934, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-1.txt").toURI()))));
+    }
+
+    @Test
+    void testPart1Input2() throws Exception {
+        assertEquals(6585486, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-2.txt").toURI()))));
+    }
+
+    @Test
+    void testPart1Input3() throws Exception {
+        assertEquals(162531699, testSubject.handlePart1(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-3.txt").toURI()))));
+    }
+
+    @Test
     void part2Case1() {
         String data = """
                       R 6 (#70c710)
@@ -70,5 +88,23 @@ class Day18Test {
     void testPart2Input() throws Exception {
         assertEquals(85070763635666L, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day18/input").toURI()))));
+    }
+
+    @Test
+    void testPart2Input1() throws Exception {
+        assertEquals(85070763635666L, testSubject.handlePart2BigInteger(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-1.txt").toURI()))));
+    }
+
+    @Test
+    void testPart2Input2() throws Exception {
+        assertEquals(85070763635666L, testSubject.handlePart2BigInteger(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-2.txt").toURI()))));
+    }
+
+    @Test
+    void testPart2Input3() throws Exception {
+        assertEquals(85070763635666L, testSubject.handlePart2BigInteger(
+                Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-3.txt").toURI()))));
     }
 }

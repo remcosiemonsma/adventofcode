@@ -18,7 +18,7 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
         return roundRocks.stream()
                          .sorted(Comparator.comparing(Coordinate::y).thenComparing(Coordinate::x))
                          .map(rock -> rollNorth(rock, grid))
-                         .mapToInt(rock -> calculateWeight(rock, grid.getEndy()))
+                         .mapToInt(rock -> calculateWeight(rock, (int) grid.getEndy()))
                          .sum();
     }
 
@@ -71,7 +71,7 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
         var finalState = states.get((cycleStartIndex + remainingCycles) - 1);
 
         return finalState.stream()
-                         .mapToInt(rock -> calculateWeight(rock, grid.getEndy()))
+                         .mapToInt(rock -> calculateWeight(rock, (int) grid.getEndy()))
                          .sum();
     }
 
@@ -124,6 +124,6 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
     }
 
     private int calculateWeight(Coordinate rock, int endY) {
-        return endY - rock.y() + 1;
+        return endY - (int) rock.y() + 1;
     }
 }

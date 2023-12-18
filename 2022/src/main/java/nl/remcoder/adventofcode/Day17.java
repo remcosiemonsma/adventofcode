@@ -61,7 +61,7 @@ public class Day17 implements AdventOfCodeSolution<Long> {
                 shapeCanFall = shape.moveDown(grid);
             }
 
-            var shapeHeight = 4001 - shape.position.y();
+            var shapeHeight = 4001 - (int) shape.position.y();
 
             if (shapeHeight > currentHeight) {
                 currentHeight = shapeHeight;
@@ -110,7 +110,7 @@ public class Day17 implements AdventOfCodeSolution<Long> {
                 shapeCanFall = shape.moveDown(grid);
             }
 
-            var shapeHeight = 4001 - shape.position.y();
+            var shapeHeight = 4001 - (int) shape.position.y();
 
             if (shapeHeight > currentHeight) {
                 heightGrowth = shapeHeight - currentHeight;
