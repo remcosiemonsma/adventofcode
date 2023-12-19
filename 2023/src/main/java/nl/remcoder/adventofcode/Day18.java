@@ -61,7 +61,7 @@ public class Day18 implements AdventOfCodeSolution<Long> {
 
         data.setArea(data.area() + areaToAdd);
 
-        return (data.area() / 2) + (data.borderSize() / 2) + 1;
+        return (Math.abs(data.area()) / 2) + (data.borderSize() / 2) + 1;
     }
 
     private DigStep mapDigStep(String line) {
