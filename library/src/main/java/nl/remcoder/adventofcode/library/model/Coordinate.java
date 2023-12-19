@@ -120,9 +120,4 @@ public record Coordinate(long x, long y) {
     public long getDistanceTo(Coordinate other) {
         return Math.abs(x - other.x) + Math.abs(y - other.y);
     }
-
-    public BigInteger getDistanceToBigInteger(Coordinate other) {
-        return BigInteger.valueOf(x).subtract(BigInteger.valueOf(other.x)).abs()
-                                 .add(BigInteger.valueOf(y).subtract(BigInteger.valueOf(other.y)).abs());
-    }
 }

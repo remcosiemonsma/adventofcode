@@ -1,7 +1,6 @@
 package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
-import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Direction;
 
 import java.math.BigInteger;
@@ -62,7 +61,7 @@ public class Day18 implements AdventOfCodeSolution<Long> {
 
         data.setArea(data.area().add(areaToAdd));
 
-        return data.area().divide(BigInteger.TWO).add(data.borderSize().divide(BigInteger.TWO)).add(BigInteger.ONE);
+        return data.area().abs().divide(BigInteger.TWO).add(data.borderSize().divide(BigInteger.TWO)).add(BigInteger.ONE);
     }
 
     private DigStep mapDigStep(String line) {
@@ -70,9 +69,9 @@ public class Day18 implements AdventOfCodeSolution<Long> {
 
         var direction = switch (split[0]) {
             case "R" -> Direction.RIGHT;
+            case "D" -> Direction.DOWN;
             case "L" -> Direction.LEFT;
             case "U" -> Direction.UP;
-            case "D" -> Direction.DOWN;
             default -> throw new AssertionError("Eek!");
         };
 
@@ -84,9 +83,9 @@ public class Day18 implements AdventOfCodeSolution<Long> {
 
         var direction = switch (hexData.charAt(5)) {
             case '0' -> Direction.RIGHT;
+            case '1' -> Direction.DOWN;
             case '2' -> Direction.LEFT;
             case '3' -> Direction.UP;
-            case '1' -> Direction.DOWN;
             default -> throw new AssertionError("Eek!");
         };
 

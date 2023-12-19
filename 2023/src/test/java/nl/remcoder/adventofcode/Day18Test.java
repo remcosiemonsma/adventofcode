@@ -3,6 +3,7 @@ package nl.remcoder.adventofcode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -92,19 +93,19 @@ class Day18Test {
 
     @Test
     void testPart2Input1() throws Exception {
-        assertEquals(85070763635666L, testSubject.handlePart2BigInteger(
+        assertEquals(342607851833539243L, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-1.txt").toURI()))));
     }
 
     @Test
     void testPart2Input2() throws Exception {
-        assertEquals(85070763635666L, testSubject.handlePart2BigInteger(
+        assertEquals(1316896843142572432L, testSubject.handlePart2(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-2.txt").toURI()))));
     }
 
     @Test
     void testPart2Input3() throws Exception {
-        assertEquals(85070763635666L, testSubject.handlePart2BigInteger(
+        assertEquals(new BigInteger("34386825221712537799"), testSubject.handlePart2BigInteger(
                 Files.lines(Paths.get(ClassLoader.getSystemResource("day18/aoc-2023-day-18-challenge-3.txt").toURI()))));
     }
 }
