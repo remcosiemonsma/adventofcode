@@ -126,6 +126,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         private Coordinate3D start;
         private Coordinate3D end;
         private final int height;
+        private List<Coordinate3D> occupiedCubes;
 
         private Cube(Coordinate3D start, Coordinate3D end) {
             this.start = start;
@@ -135,6 +136,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
             } else {
                 height = 1;
             }
+            occupiedCubes = start.getAllBetween(end);
         }
 
         @Override
@@ -158,7 +160,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         }
 
         public List<Coordinate3D> getAllOccupiedCubes() {
-            return start.getAllBetween(end);
+            return occupiedCubes;
         }
 
         public boolean canFall(Set<Coordinate3D> occupiedSpots) {
@@ -182,6 +184,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
         public void fall() {
             start = new Coordinate3D(start.x(), start.y(), start.z() - 1);
             end = new Coordinate3D(end.x(), end.y(), end.z() - 1);
+            occupiedCubes = start.getAllBetween(end);
         }
 
         @Override
