@@ -115,7 +115,31 @@ public record Coordinate(int x, int y) {
             case RIGHT -> right();
         };
     }
-    
+
+    public Direction getDirection(Coordinate other) {
+        if (this.equals(other)) {
+            throw new IllegalArgumentException("Cannot determine direction for same coordinate!");
+        }
+
+        if (x == other.x) {
+            if (y < other.y) {
+                return Direction.DOWN;
+            } else if (y > other.y) {
+                return Direction.UP;
+            }
+        }
+
+        if (y == other.y) {
+            if (x < other.x) {
+                return Direction.RIGHT;
+            } else if (x > other.x) {
+                return Direction.LEFT;
+            }
+        }
+
+        throw new IllegalArgumentException("Diagonal directions not supported!");
+    }
+
     public int getDistanceTo(Coordinate other) {
         return Math.abs(x - other.x) + Math.abs(y - other.y);
     }
