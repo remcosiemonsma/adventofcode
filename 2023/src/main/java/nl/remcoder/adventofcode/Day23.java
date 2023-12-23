@@ -5,7 +5,6 @@ import nl.remcoder.adventofcode.library.GridFactory;
 import nl.remcoder.adventofcode.library.model.Coordinate;
 import nl.remcoder.adventofcode.library.model.Direction;
 import nl.remcoder.adventofcode.library.model.Grid;
-import nl.remcoder.adventofcode.library.pathfinding.Node;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -27,8 +26,6 @@ public class Day23 implements AdventOfCodeSolution<Long> {
 
         buildGraph(startCrossRoad, grid, foundCrossroads);
 
-        startCrossRoad.setDistance(0L);
-
         return findPaths(startCrossRoad, Set.of(startCrossRoad), exitCrossroad).stream()
                                                                 .max(Long::compareTo)
                                                                 .orElseThrow(() -> new AssertionError("Eek!"));
@@ -49,8 +46,6 @@ public class Day23 implements AdventOfCodeSolution<Long> {
         foundCrossroads.put(exit, exitCrossroad);
 
         buildGraph2(startCrossRoad, grid, foundCrossroads);
-
-        startCrossRoad.setDistance(0L);
 
         return findPaths(startCrossRoad, Set.of(startCrossRoad), exitCrossroad).stream()
                                                                 .max(Long::compareTo)
@@ -213,7 +208,7 @@ public class Day23 implements AdventOfCodeSolution<Long> {
         throw new AssertionError("Eek!");
     }
 
-    private static class CrossRoad extends Node<CrossRoad> {
+    private static class CrossRoad {
         private final Map<CrossRoad, Long> neighbours;
         private final Coordinate coordinate;
 
@@ -226,19 +221,8 @@ public class Day23 implements AdventOfCodeSolution<Long> {
             return coordinate;
         }
 
-        @Override
         public Map<CrossRoad, Long> getNeighbors() {
             return neighbours;
-        }
-
-        @Override
-        public void printStateInformation() {
-
-        }
-
-        @Override
-        public int compareTo(CrossRoad o) {
-            return Long.compare(o.getDistance(), this.getDistance());
         }
     }
 }
