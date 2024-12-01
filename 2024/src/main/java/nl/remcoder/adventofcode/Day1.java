@@ -29,11 +29,7 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
             var left = leftList.get(i);
             var right = rightList.get(i);
 
-            if (left > right) {
-                result += left - right;
-            } else {
-                result += right - left;
-            }
+            result += Math.abs(left - right);
         }
 
         return result;
