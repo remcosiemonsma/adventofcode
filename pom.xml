@@ -50,11 +50,12 @@
         <module>2021</module>
         <module>2022</module>
         <module>2023</module>
+        <module>2024</module>
         <module>library</module>
     </modules>
 
     <properties>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
     </properties>
 </project>
