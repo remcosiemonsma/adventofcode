@@ -110,9 +110,13 @@ public record Coordinate(int x, int y) {
     public Coordinate getNeighbor(Direction direction) {
         return switch (direction) {
             case UP -> above();
+            case UPLEFT -> topLeft();
             case LEFT -> left();
+            case DOWNLEFT -> bottomLeft();
             case DOWN -> below();
+            case DOWNRIGHT -> bottomRight();
             case RIGHT -> right();
+            case UPRIGHT -> topRight();
         };
     }
 
@@ -135,6 +139,22 @@ public record Coordinate(int x, int y) {
             } else if (x > other.x) {
                 return Direction.LEFT;
             }
+        }
+
+        if (x < other.x && y < other.y) {
+            return Direction.DOWNRIGHT;
+        }
+
+        if (x > other.x && y > other.y) {
+            return Direction.UPLEFT;
+        }
+
+        if (x > other.x && y < other.y) {
+            return Direction.DOWNLEFT;
+        }
+
+        if (x < other.x && y > other.y) {
+            return Direction.UPRIGHT;
         }
 
         throw new IllegalArgumentException("Diagonal directions not supported!");
