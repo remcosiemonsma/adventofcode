@@ -25,7 +25,7 @@ public class Day4 implements AdventOfCodeSolution<Integer> {
                     if (A != null && A == 'A' &&
                         S != null && S == 'S') {
                         amount++;
-                    };
+                    }
                 }
             }
         }
