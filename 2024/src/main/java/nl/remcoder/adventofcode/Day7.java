@@ -38,111 +38,102 @@ public class Day7 implements AdventOfCodeSolution<Long> {
     }
 
     private boolean isValidEquation(Equation equation) {
-        List<List<Character>> possibleFormulas = determinePossibleFormulas(equation.result(), equation.operands());
+        var operand = equation.operands().getLast();
 
-        return !possibleFormulas.isEmpty();
+        long possibleDivision;
+        if (operand != 0 && equation.result() % operand == 0) {
+            possibleDivision = equation.result() / operand;
+        } else {
+            possibleDivision = 0;
+        }
+        var possibleSubtraction = equation.result() - operand;
+
+        if (possibleSubtraction < 0 && possibleDivision == 0) {
+            return false;
+        }
+
+        if (equation.operands().size() == 2) {
+            if (possibleDivision == equation.operands().getFirst()) {
+                return true;
+            }
+            if (possibleSubtraction == equation.operands().getFirst()) {
+                return true;
+            }
+            return false;
+        } else {
+            var newOperands = new ArrayList<>(equation.operands());
+            newOperands.removeLast();
+            var validEquation = false;
+            if (possibleDivision != 0) {
+                var newEquation = new Equation(possibleDivision, newOperands);
+                validEquation = isValidEquation(newEquation);
+            }
+            if (validEquation) {
+                return true;
+            } else if (possibleSubtraction > 0){
+                var newEquation = new Equation(possibleSubtraction, newOperands);
+                return isValidEquation(newEquation);
+            } else {
+                return false;
+            }
+        }
     }
 
     private boolean isValidEquationPart2(Equation equation) {
-        List<List<Character>> possibleFormulas = determinePossibleFormulasPart2(equation.result(), equation.operands());
-
-        return !possibleFormulas.isEmpty();
-    }
-
-    private List<List<Character>> determinePossibleFormulasPart2(long expectedResult, List<Integer> operands) {
-        var possibleFormulas = new ArrayList<List<Character>>();
-
-        var operand = operands.getLast();
+        var operand = equation.operands().getLast();
 
         long possibleDivision;
-        if (expectedResult % operand == 0) {
-            possibleDivision = expectedResult / operand;
+        if (operand != 0 && equation.result() % operand == 0) {
+            possibleDivision = equation.result() / operand;
         } else {
             possibleDivision = 0;
         }
-        var possibleSubtraction = expectedResult - operand;
+        var possibleSubtraction = equation.result() - operand;
 
-        if (operands.size() == 2) {
-            if (possibleDivision == operands.getFirst()) {
-                var possibleOperators = new ArrayList<Character>();
-                possibleOperators.add('*');
-                possibleFormulas.add(possibleOperators);
+        if (possibleSubtraction < 0 && possibleDivision == 0) {
+            return false;
+        }
+
+        if (equation.operands().size() == 2) {
+            if (possibleDivision == equation.operands().getFirst()) {
+                return true;
             }
-            if (possibleSubtraction == operands.getFirst()) {
-                var possibleOperators = new ArrayList<Character>();
-                possibleOperators.add('+');
-                possibleFormulas.add(possibleOperators);
+            if (possibleSubtraction == equation.operands().getFirst()) {
+                return true;
             }
-            var possibleMerge = Long.parseLong(Long.toString(operands.get(operands.size() - 2)) + Long.toString(operand));
-            if (expectedResult == possibleMerge) {
-                var possibleOperators = new ArrayList<Character>();
-                possibleOperators.add('|');
-                possibleFormulas.add(possibleOperators);
+            var possibleMerge = Long.parseLong(
+                    Long.toString(equation.operands().get(equation.operands().size() - 2)) + Long.toString(operand));
+            if (equation.result() == possibleMerge) {
+                return true;
             }
+            return false;
         } else {
-            var newOperands = new ArrayList<>(operands);
+            var newOperands = new ArrayList<>(equation.operands());
             newOperands.removeLast();
+            var validEquation = false;
             if (possibleDivision != 0) {
-                var possibleDivisionFormulas = determinePossibleFormulasPart2(possibleDivision, newOperands);
-                possibleDivisionFormulas.forEach(formula -> formula.add('*'));
-                possibleFormulas.addAll(possibleDivisionFormulas);
+                var newEquation = new Equation(possibleDivision, newOperands);
+                validEquation = isValidEquationPart2(newEquation);
             }
-            var possibleSubtractionFormulas = determinePossibleFormulasPart2(possibleSubtraction, newOperands);
-            possibleSubtractionFormulas.forEach(formula -> formula.add('+'));
-            possibleFormulas.addAll(possibleSubtractionFormulas);
-
-            String operandString = Integer.toString(operand);
-            if (Long.toString(expectedResult).endsWith(operandString)) {
-                var possibleSplit = (expectedResult - operand) / (long)Math.pow(10, operandString.length());
-                var possibleSplitFormulas = determinePossibleFormulasPart2(possibleSplit, newOperands);
-                possibleSplitFormulas.forEach(formula -> formula.add('|'));
-                possibleFormulas.addAll(possibleSplitFormulas);
+            if (validEquation) {
+                return true;
+            } else if (possibleSubtraction > 0){
+                var newEquation = new Equation(possibleSubtraction, newOperands);
+                validEquation = isValidEquationPart2(newEquation);
+            }
+            if (validEquation) {
+                return true;
+            } else {
+                String operandString = Integer.toString(operand);
+                if (Long.toString(equation.result()).endsWith(operandString)) {
+                    var possibleSplit = (equation.result() - operand) / (long) Math.pow(10, operandString.length());
+                    var newEquation = new Equation(possibleSplit, newOperands);
+                    return isValidEquationPart2(newEquation);
+                } else {
+                    return false;
+                }
             }
         }
-        return possibleFormulas;
-    }
-
-    private List<List<Character>> determinePossibleFormulas(final long expectedResult, List<Integer> operands) {
-        if (operands.size() < 2) {
-            return List.of();
-        }
-
-        var possibleFormulas = new ArrayList<List<Character>>();
-
-        var operand = operands.getLast();
-
-        long possibleDivision;
-        if (expectedResult % operand == 0) {
-            possibleDivision = expectedResult / operand;
-        } else {
-            possibleDivision = 0;
-        }
-        var possibleSubtraction = expectedResult - operand;
-
-        if (operands.size() == 2) {
-            if (possibleDivision == operands.getFirst()) {
-                var possibleOperators = new ArrayList<Character>();
-                possibleOperators.add('*');
-                possibleFormulas.add(possibleOperators);
-            }
-            if (possibleSubtraction == operands.getFirst()) {
-                var possibleOperators = new ArrayList<Character>();
-                possibleOperators.add('+');
-                possibleFormulas.add(possibleOperators);
-            }
-        } else {
-            var newOperands = new ArrayList<>(operands);
-            newOperands.removeLast();
-            if (possibleDivision != 0) {
-                var possibleDivisionFormulas = determinePossibleFormulas(possibleDivision, newOperands);
-                possibleDivisionFormulas.forEach(formula -> formula.add('*'));
-                possibleFormulas.addAll(possibleDivisionFormulas);
-            }
-            var possibleSubtractionFormulas = determinePossibleFormulas(possibleSubtraction, newOperands);
-            possibleSubtractionFormulas.forEach(formula -> formula.add('+'));
-            possibleFormulas.addAll(possibleSubtractionFormulas);
-        }
-        return possibleFormulas;
     }
 
     private record Equation(long result, List<Integer> operands) {
