@@ -31,7 +31,7 @@ class Day21Test {
     @Test
     public void testPart1Input() throws Exception {
         assertEquals(2412, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day21/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2020/day21/input"))));
     }
 
     @Test
@@ -49,6 +49,6 @@ class Day21Test {
     @Test
     public void testPart2Input() throws Exception {
         assertEquals("mfp,mgvfmvp,nhdjth,hcdchl,dvkbjh,dcvrf,bcjz,mhnrqp", testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day21/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2020/day21/input"))));
     }
 }

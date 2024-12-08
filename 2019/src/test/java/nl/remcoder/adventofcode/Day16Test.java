@@ -58,7 +58,7 @@ class Day16Test {
         testSubject.setSteps(100);
         
         assertEquals(List.of(7, 6, 7, 9, 5, 8, 8, 8), testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day16/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2019/day16/input"))));
     }
 
     @Test
@@ -85,6 +85,6 @@ class Day16Test {
     @Test
     void testPart2Input() throws Exception {
         assertEquals(List.of(8, 4, 0, 2, 4, 1, 2, 5), testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day16/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2019/day16/input"))));
     }
 }

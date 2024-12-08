@@ -33,12 +33,12 @@ class Day13Test {
         testSubject.setDesiredPosition(new Coordinate(31, 39));
         
         assertEquals(90, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day13/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day13/input"))));
     }
 
     @Test
     void testPart2Input() throws Exception {
         assertEquals(135, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day13/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day13/input"))));
     }
 }

@@ -31,7 +31,7 @@ class Day1Test {
     @Test
     void testPart1Input() throws Exception {
         assertEquals(513, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day1/input"))));
     }
 
     @Test
@@ -49,6 +49,6 @@ class Day1Test {
     @Test
     void testPart2Input() throws Exception {
         assertEquals(287, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day1/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day1/input"))));
     }
 }

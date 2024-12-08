@@ -100,6 +100,7 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
             case LEFT -> new Vector(new Coordinate(position.coordinate().x() + distance, position.coordinate().y()), direction);
             case DOWN -> new Vector(new Coordinate(position.coordinate().x(), position.coordinate().y() - distance), direction);
             case RIGHT -> new Vector(new Coordinate(position.coordinate().x() - distance, position.coordinate().y()), direction);
+            case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
         };
     }
 }

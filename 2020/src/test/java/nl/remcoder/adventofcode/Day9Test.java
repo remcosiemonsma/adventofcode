@@ -51,7 +51,7 @@ class Day9Test {
         testSubject.setPreambleLength(25);
 
         assertEquals(36845998, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day9/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2020/day9/input"))));
     }
 
     @Test
@@ -89,6 +89,6 @@ class Day9Test {
         testSubject.setPreambleLength(25);
 
         assertEquals(4830226, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day9/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2020/day9/input"))));
     }
 }

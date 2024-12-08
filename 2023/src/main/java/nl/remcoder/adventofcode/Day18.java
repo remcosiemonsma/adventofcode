@@ -35,6 +35,7 @@ public class Day18 implements AdventOfCodeSolution<Long> {
                      case LEFT -> new Coordinate(currentLocation.x() - digStep.distance(), currentLocation.y());
                      case DOWN -> new Coordinate(currentLocation.x(), currentLocation.y() + digStep.distance());
                      case RIGHT -> new Coordinate(currentLocation.x() + digStep.distance(), currentLocation.y());
+                     case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                  };
 
                  data.setBorderSize(data.borderSize() + currentLocation.getDistanceTo(newLocation));

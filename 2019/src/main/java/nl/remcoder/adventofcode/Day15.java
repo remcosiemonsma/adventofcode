@@ -128,6 +128,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                         case DOWN -> 2L;
                         case LEFT -> 3L;
                         case RIGHT -> 4L;
+                        case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Should not happen!");
                     });
                     outputState.take();
                     allSidesVisited = false;

@@ -38,7 +38,7 @@ class Day24Test {
         testSubject.setMaxIntersectionPoint(400000000000000L);
 
         assertEquals(20361, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day24/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2023/day24/input"))));
     }
 
     @Test
@@ -57,6 +57,6 @@ class Day24Test {
     @Test
     void testPart2Input() throws Exception {
         assertEquals(558415252330828L, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day24/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2023/day24/input"))));
     }
 }

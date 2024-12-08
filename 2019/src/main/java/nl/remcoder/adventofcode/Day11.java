@@ -118,6 +118,7 @@ public class Day11 implements BiAdventOfCodeSolution<Integer, String> {
             case LEFT -> position.left();
             case DOWN -> position.below();
             case RIGHT -> position.right();
+            case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Should not happen!");
         };
     }
 

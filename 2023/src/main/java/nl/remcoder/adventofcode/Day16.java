@@ -72,6 +72,7 @@ public class Day16 implements AdventOfCodeSolution<Integer> {
                     case LEFT -> Direction.DOWN;
                     case DOWN -> Direction.LEFT;
                     case RIGHT -> Direction.UP;
+                    case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                 };
                 currentVector = new Vector(currentVector.coordinate()
                                                         .getNeighbor(newDirection),
@@ -82,6 +83,7 @@ public class Day16 implements AdventOfCodeSolution<Integer> {
                     case LEFT -> Direction.UP;
                     case DOWN -> Direction.RIGHT;
                     case RIGHT -> Direction.DOWN;
+                    case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                 };
                 currentVector = new Vector(currentVector.coordinate()
                                                         .getNeighbor(newDirection),

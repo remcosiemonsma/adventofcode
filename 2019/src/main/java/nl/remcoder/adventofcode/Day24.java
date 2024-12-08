@@ -66,6 +66,12 @@ public class Day24 implements AdventOfCodeSolution<Long> {
                 for (var coordinate : entry.getValue().coordinates()) {
                     var aliveNeighbors = 0;
                     for (var direction : Direction.values()) {
+                        if (direction == Direction.UPLEFT ||
+                            direction == Direction.UPRIGHT ||
+                            direction == Direction.DOWNRIGHT ||
+                            direction == Direction.DOWNLEFT) {
+                            continue;
+                        }
                         var neighborCoordinate = coordinate.getNeighbor(direction);
                         var neighbor = entry.getValue().get(neighborCoordinate);
                         if (neighbor == null) {

@@ -37,7 +37,7 @@ class Day11Test {
     @Test
     void testPart1Input() throws Exception {
         assertArrayEquals(new int[] {21, 68}, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day11/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day11/input"))));
     }
 
     @Test
@@ -61,6 +61,6 @@ class Day11Test {
     @Test
     void testPart2Input() throws Exception {
         assertArrayEquals(new int[] {90, 201, 15}, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day11/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day11/input"))));
     }
 }

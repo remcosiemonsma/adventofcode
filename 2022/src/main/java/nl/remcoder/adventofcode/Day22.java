@@ -13,7 +13,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var lines = input.toList();
 
-        var path = lines.get(lines.size() - 1);
+        var path = lines.getLast();
 
         var gridArray = new Character[lines.size() - 2][];
 
@@ -27,7 +27,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
 
         var grid = new Grid<>(gridArray);
 
-        var start = new Coordinate(lines.get(0).indexOf('.'), 0);
+        var start = new Coordinate(lines.getFirst().indexOf('.'), 0);
 
         return walk(grid, start, path);
     }
@@ -37,7 +37,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         var lines = input.toList();
 
-        var path = lines.get(lines.size() - 1);
+        var path = lines.getLast();
 
         var gridArray = new Character[lines.size() - 2][];
 
@@ -51,7 +51,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
 
         var grid = new Grid<>(gridArray);
 
-        var start = new Coordinate(lines.get(0).indexOf('.'), 0);
+        var start = new Coordinate(lines.getFirst().indexOf('.'), 0);
 
         return walkCube(grid, start, path);
     }
@@ -72,6 +72,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                     case DOWN -> 'v';
                     case LEFT -> '<';
                     case UP -> '^';
+                    case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                 });
 
                 var steps = Integer.parseInt(stringBuilder.toString());
@@ -85,12 +86,14 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                         case DOWN -> Direction.LEFT;
                         case LEFT -> Direction.UP;
                         case UP -> Direction.RIGHT;
+                        case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                     };
                     case 'L' -> switch (direction) {
                         case RIGHT -> Direction.UP;
                         case UP -> Direction.LEFT;
                         case LEFT -> Direction.DOWN;
                         case DOWN -> Direction.RIGHT;
+                        case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                     };
                     default -> throw new AssertionError("Eek!");
                 };
@@ -106,6 +109,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                    case DOWN -> 1;
                    case LEFT -> 2;
                    case UP -> 3;
+                   case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                };
     }
 
@@ -116,6 +120,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                 case LEFT -> current.left();
                 case DOWN -> current.below();
                 case RIGHT -> current.right();
+                case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
             };
 
             if (grid.get(next) == null || grid.get(next) == ' ') {
@@ -124,6 +129,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                     case LEFT -> new Coordinate(grid.getEndx(), next.y());
                     case DOWN -> new Coordinate(next.x(), grid.getStarty());
                     case RIGHT -> new Coordinate(grid.getStartx(), next.y());
+                    case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                 };
 
                 while (grid.get(next) == null || grid.get(next) == ' ') {
@@ -132,6 +138,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                         case LEFT -> next.left();
                         case DOWN -> next.below();
                         case RIGHT -> next.right();
+                        case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                     };
                 }
             }
@@ -145,6 +152,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                 case DOWN -> 'v';
                 case LEFT -> '<';
                 case UP -> '^';
+                case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
             });
         }
         return current;
@@ -170,12 +178,14 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                         case DOWN -> Direction.LEFT;
                         case LEFT -> Direction.UP;
                         case UP -> Direction.RIGHT;
+                        case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                     };
                     case 'L' -> switch (direction) {
                         case RIGHT -> Direction.UP;
                         case UP -> Direction.LEFT;
                         case LEFT -> Direction.DOWN;
                         case DOWN -> Direction.RIGHT;
+                        case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                     };
                     default -> throw new AssertionError("Eek!");
                 };
@@ -196,6 +206,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                    case DOWN -> 1;
                    case LEFT -> 2;
                    case UP -> 3;
+                   case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
                };
     }
 
@@ -208,6 +219,7 @@ public class Day22 implements AdventOfCodeSolution<Integer> {
                 case LEFT -> current.left();
                 case DOWN -> current.below();
                 case RIGHT -> current.right();
+                case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
             };
 
             if (grid.get(next) == null || grid.get(next) == ' ') {

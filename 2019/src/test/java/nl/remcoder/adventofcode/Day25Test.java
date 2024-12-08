@@ -19,6 +19,6 @@ class Day25Test {
     @Test
     void testPart1Input() throws Exception {
         assertEquals("25166400", testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day25/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2019/day25/input"))));
     }
 }

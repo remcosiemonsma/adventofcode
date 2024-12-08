@@ -14,13 +14,13 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
         var blizzards = parseBlizzards(lines);
 
-        int valleyWidth = lines.get(0).length() - 3;
+        int valleyWidth = lines.getFirst().length() - 3;
         int valleyHeight = lines.size() - 3;
 
         var blizzardStates = generateBlizzardStates(blizzards, valleyWidth, valleyHeight);
 
         var startPosition = new Coordinate(0, -1);
-        var exitPosition = new Coordinate(lines.get(0).length() - 3, lines.size() - 2);
+        var exitPosition = new Coordinate(lines.getFirst().length() - 3, lines.size() - 2);
 
         var nextBlizzardStateIndex = 0;
         
@@ -48,13 +48,13 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
 
         var blizzards = parseBlizzards(lines);
 
-        int valleyWidth = lines.get(0).length() - 3;
+        int valleyWidth = lines.getFirst().length() - 3;
         int valleyHeight = lines.size() - 3;
 
         var blizzardStates = generateBlizzardStates(blizzards, valleyWidth, valleyHeight);
 
         var startPosition = new Coordinate(0, -1);
-        var exitPosition = new Coordinate(lines.get(0).length() - 3, lines.size() - 2);
+        var exitPosition = new Coordinate(lines.getFirst().length() - 3, lines.size() - 2);
 
         var nextBlizzardStateIndex = 0;
 
@@ -187,6 +187,7 @@ public class Day24 implements AdventOfCodeSolution<Integer> {
                     }
                     yield new Blizzard(nextPosition, direction);
                 }
+                case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
             };
         }
     }

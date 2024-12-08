@@ -34,7 +34,7 @@ class Day7Test {
     @Test
     void testPart1Input() throws Exception {
         assertEquals("OCPUEFIXHRGWDZABTQJYMNKVSL", testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day7/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day7/input"))));
     }
 
     @Test
@@ -61,6 +61,6 @@ class Day7Test {
         Day7.setSecondsToAdd(60);
 
         assertEquals(991, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day7/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day7/input"))));
     }
 }

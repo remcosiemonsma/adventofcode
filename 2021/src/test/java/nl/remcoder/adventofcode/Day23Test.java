@@ -35,7 +35,7 @@ class Day23Test {
     @Disabled("No code implementation ready yet")
     void testPart1Input() throws Exception {
         assertEquals(19019, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day23/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2021/day23/input"))));
     }
 
     @Test
@@ -56,6 +56,6 @@ class Day23Test {
     @Disabled("No code implementation ready yet")
     void testPart2Input() throws Exception {
         assertEquals(47533, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day23/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2021/day23/input"))));
     }
 }

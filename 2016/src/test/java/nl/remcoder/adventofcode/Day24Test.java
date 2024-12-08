@@ -36,12 +36,12 @@ class Day24Test {
         testSubject.setExpectedSize(8);
         
         assertEquals(442, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day24/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day24/input"))));
     }
 
     @Test
     void testPart2Input() throws Exception {
         assertEquals(660, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day24/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day24/input"))));
     }
 }

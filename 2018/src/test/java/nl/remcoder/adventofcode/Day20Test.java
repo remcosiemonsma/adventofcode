@@ -62,12 +62,12 @@ class Day20Test {
     void testPart1Input() throws Exception {
         //4117 too high
         assertEquals(3885, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day20/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day20/input"))));
     }
 
     @Test
     void testPart2Input() throws Exception {
         assertEquals(8677, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day20/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day20/input"))));
     }
 }

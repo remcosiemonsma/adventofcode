@@ -167,6 +167,7 @@ public class Day10 implements AdventOfCodeSolution<Integer> {
             case LEFT -> start.left();
             case DOWN -> start.below();
             case RIGHT -> start.right();
+            case UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT -> throw new AssertionError("Not supposed to happen!");
         };
 
         while (!next.equals(start)) {

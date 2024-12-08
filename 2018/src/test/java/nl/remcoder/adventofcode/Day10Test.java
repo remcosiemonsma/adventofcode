@@ -60,7 +60,7 @@ class Day10Test {
     @Test
     void testPart1Input() throws Exception {
         assertEquals("FPRBRRZA", testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day10/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day10/input"))));
     }
 
     @Disabled("Does not work")
@@ -106,6 +106,6 @@ class Day10Test {
     @Test
     void testPart2Input() throws Exception {
         assertEquals(10027, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day10/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2018/day10/input"))));
     }
 }

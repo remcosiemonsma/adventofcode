@@ -33,7 +33,7 @@ public class Day11Test {
     @Test
     public void testPart1Input() throws Exception {
         assertEquals("hepxxyzz", testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day11/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2015/day11/input"))));
     }
 
     @Test
@@ -53,6 +53,6 @@ public class Day11Test {
     @Test
     public void testPart2Input() throws Exception {
         assertEquals("heqaabcc", testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day11/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2015/day11/input"))));
     }
 }

@@ -32,7 +32,7 @@ public class Day8Test {
         testSubject.setHeight(6);
 
         assertEquals(1064, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day8/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2019/day8/input"))));
     }
 
     @Test
@@ -41,6 +41,6 @@ public class Day8Test {
         testSubject.setHeight(6);
 
         assertEquals("PFCAK", testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day8/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2019/day8/input"))));
     }
 }

@@ -48,7 +48,7 @@ class Day22Test {
         testSubject.setPlayerMana(500);
         
         assertEquals(900, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2015/day22/input"))));
     }
 
     @Test
@@ -57,6 +57,6 @@ class Day22Test {
         testSubject.setPlayerMana(500);
         
         assertEquals(1216, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2015/day22/input"))));
     }
 }

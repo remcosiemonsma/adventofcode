@@ -32,7 +32,7 @@ class Day16Test {
         testSubject.setPrograms("abcdefghijklmnop");
         
         assertEquals("giadhmkpcnbfjelo", testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day16/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2017/day16/input"))));
     }
 
     @Test
@@ -40,6 +40,6 @@ class Day16Test {
         testSubject.setPrograms("abcdefghijklmnop");
         
         assertEquals("njfgilbkcoemhpad", testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day16/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2017/day16/input"))));
     }
 }

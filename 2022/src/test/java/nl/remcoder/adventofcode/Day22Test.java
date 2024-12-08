@@ -42,7 +42,7 @@ class Day22Test {
     @Test
     void testPart1Input() throws Exception {
         assertEquals(1484, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2022/day22/input"))));
     }
 
     @Disabled("Current solution is hardcoded, maybe if I ever want to make a generic solution I can enable this test")
@@ -71,6 +71,6 @@ class Day22Test {
     @Test
     void testPart2Input() throws Exception {
         assertEquals(142228, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day22/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2022/day22/input"))));
     }
 }

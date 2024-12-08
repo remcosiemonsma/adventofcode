@@ -32,7 +32,7 @@ class Day16Test {
         testSubject.setLength(272);
         
         assertEquals("11100110111101110", testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day16/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day16/input"))));
     }
 
     @Test
@@ -40,6 +40,6 @@ class Day16Test {
         testSubject.setLength(35651584);
         
         assertEquals("10001101010000101", testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day16/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day16/input"))));
     }
 }

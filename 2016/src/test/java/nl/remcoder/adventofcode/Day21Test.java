@@ -39,7 +39,7 @@ class Day21Test {
         testSubject.setPassword("abcdefgh");
         
         assertEquals("bfheacgd", testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day21/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day21/input"))));
     }
 
     @Test
@@ -47,6 +47,6 @@ class Day21Test {
         testSubject.setPassword("fbgdceah");
         
         assertEquals("gcehdbfa", testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day21/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day21/input"))));
     }
 }

@@ -31,12 +31,12 @@ class Day11Test {
     @Test
     void testPart1Input() throws Exception {
         assertEquals(31, testSubject.handlePart1(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day11/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day11/input"))));
     }
 
     @Test
     void testPart2Input() throws Exception {
         assertEquals(55, testSubject.handlePart2(
-                Files.lines(Paths.get(ClassLoader.getSystemResource("day11/input").toURI()))));
+                Files.lines(Paths.get("../aoc-inputs/2016/day11/input"))));
     }
 }
