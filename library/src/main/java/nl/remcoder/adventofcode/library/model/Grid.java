@@ -2,6 +2,7 @@ package nl.remcoder.adventofcode.library.model;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Grid<T> {
     private int startx;
@@ -169,11 +170,19 @@ public class Grid<T> {
                      .map(Map.Entry::getKey)
                      .toList();
     }
-    
+
+    public Map<T, List<Coordinate>> findValuesCombined(Predicate<T> predicate) {
+        return values.entrySet()
+                     .stream()
+                     .filter(entry -> predicate.test(entry.getValue()))
+                     .map(Map.Entry::getKey)
+                     .collect(Collectors.groupingBy(values::get));
+    }
+
     public Set<Coordinate> coordinates() {
         return values.keySet();
     }
-    
+
     public Collection<T> values() {
         return values.values();
     }

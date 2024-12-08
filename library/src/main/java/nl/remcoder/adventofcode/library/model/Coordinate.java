@@ -1,6 +1,7 @@
 package nl.remcoder.adventofcode.library.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +45,22 @@ public record Coordinate(int x, int y) {
     public Set<Coordinate> getBottomNeighbours() {
         return Set.of(below(), bottomLeft(), bottomRight());
     }
-    
+
+    public Set<Coordinate> getAllAtDistance(int distance) {
+        var coordinates = new HashSet<Coordinate>();
+        for (int dx = -distance; dx <= distance; dx++) {
+            int dy = distance - Math.abs(dx);
+
+            coordinates.add(new Coordinate(x+ dx, y + dy));
+            coordinates.add(new Coordinate(x + dx, y - dy));
+        }
+        return coordinates;
+    }
+
+    public Coordinate getAtDirections(int[] directions) {
+        return new Coordinate(x + directions[0], y + directions[1]);
+    }
+
     public List<Coordinate> getAllBetween(Coordinate other) {
         var coordinates = new ArrayList<Coordinate>();
         
@@ -162,5 +178,9 @@ public record Coordinate(int x, int y) {
 
     public int getDistanceTo(Coordinate other) {
         return Math.abs(x - other.x) + Math.abs(y - other.y);
+    }
+
+    public int[] getDirectionsTo(Coordinate other) {
+        return new int[]{other.x - x, other.y - y};
     }
 }
