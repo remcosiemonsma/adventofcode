@@ -17,31 +17,31 @@ public record Coordinate(int x, int y) {
     public Set<Coordinate> getTopRightNeighbours() {
         return Set.of(above(), right(), topRight());
     }
-    
+
     public Set<Coordinate> getTopLeftNeighbours() {
         return Set.of(above(), left(), topLeft());
     }
-    
+
     public Set<Coordinate> getBottomLeftNeighbours() {
         return Set.of(below(), left(), bottomLeft());
     }
-    
+
     public Set<Coordinate> getBottomRightNeighbours() {
         return Set.of(below(), right(), bottomRight());
     }
-    
+
     public Set<Coordinate> getTopNeighbours() {
         return Set.of(above(), topRight(), topLeft());
     }
-    
+
     public Set<Coordinate> getLeftNeighbours() {
         return Set.of(left(), bottomLeft(), topLeft());
     }
-    
+
     public Set<Coordinate> getRightNeighbours() {
         return Set.of(right(), topRight(), bottomRight());
     }
-    
+
     public Set<Coordinate> getBottomNeighbours() {
         return Set.of(below(), bottomLeft(), bottomRight());
     }
@@ -51,7 +51,7 @@ public record Coordinate(int x, int y) {
         for (int dx = -distance; dx <= distance; dx++) {
             int dy = distance - Math.abs(dx);
 
-            coordinates.add(new Coordinate(x+ dx, y + dy));
+            coordinates.add(new Coordinate(x + dx, y + dy));
             coordinates.add(new Coordinate(x + dx, y - dy));
         }
         return coordinates;
@@ -63,7 +63,7 @@ public record Coordinate(int x, int y) {
 
     public List<Coordinate> getAllBetween(Coordinate other) {
         var coordinates = new ArrayList<Coordinate>();
-        
+
         if (this.x == other.x) {
             if (y <= other.y) {
                 for (int y = this.y; y <= other.y; y++) {
@@ -87,10 +87,10 @@ public record Coordinate(int x, int y) {
         } else {
             throw new UnsupportedOperationException("Diagonal lines are not supported!");
         }
-        
+
         return coordinates;
     }
-    
+
     public Coordinate above() {
         return new Coordinate(x, y - 1);
     }
@@ -122,7 +122,7 @@ public record Coordinate(int x, int y) {
     public Coordinate bottomRight() {
         return new Coordinate(x + 1, y + 1);
     }
-    
+
     public Coordinate getNeighbor(Direction direction) {
         return switch (direction) {
             case UP -> above();
