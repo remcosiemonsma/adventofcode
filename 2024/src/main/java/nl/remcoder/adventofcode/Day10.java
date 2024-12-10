@@ -12,8 +12,7 @@ public class Day10 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var grid = GridFactory.createNumberedGridFromInput(input);
 
-        var startingPoints = new ArrayList<>(grid.findValues(0));
-        startingPoints.sort(Comparator.comparingInt(Coordinate::y).thenComparing(Coordinate::x));
+        var startingPoints = grid.findValues(0);
 
         var totalScore = 0;
 
@@ -43,8 +42,7 @@ public class Day10 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         var grid = GridFactory.createNumberedGridFromInput(input);
 
-        var startingPoints = new ArrayList<>(grid.findValues(0));
-        startingPoints.sort(Comparator.comparingInt(Coordinate::y).thenComparing(Coordinate::x));
+        var startingPoints = grid.findValues(0);
 
         var totalScore = 0;
 
