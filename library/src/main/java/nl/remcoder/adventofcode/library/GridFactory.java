@@ -2,6 +2,8 @@ package nl.remcoder.adventofcode.library;
 
 import nl.remcoder.adventofcode.library.model.Grid;
 
+import java.util.List;
+import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 public class GridFactory {
@@ -21,6 +23,16 @@ public class GridFactory {
 
     public static Grid<Character> createCharacterGridFromInput(Stream<String> input) {
         return new Grid<>(readCharacterInput(input));
+    }
+
+    public static <T> Grid<T> createTypedGridFromInput(Stream<String> input, IntFunction<T> mappingFunction) {
+        return new Grid<>(readObjectInput(input, mappingFunction));
+    }
+
+    private static <T> List<List<T>> readObjectInput(Stream<String> input, IntFunction<T> mappingFunction) {
+        return input.parallel()
+                .map(line -> createObjectLine(line, mappingFunction))
+                .toList();
     }
 
     private static Character[][] readCharacterInput(Stream<String> input) {
@@ -52,5 +64,12 @@ public class GridFactory {
                 .parallel()
                 .mapToObj(c -> c == '#')
                 .toArray(Boolean[]::new);
+    }
+
+    private static <T> List<T> createObjectLine(String s, IntFunction<T> mappingFunction) {
+        return s.chars()
+                .parallel()
+                .mapToObj(mappingFunction)
+                .toList();
     }
 }

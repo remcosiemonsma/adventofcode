@@ -1,11 +1,8 @@
 package nl.remcoder.adventofcode.library.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public record Coordinate(int x, int y) {
+public record Coordinate(int x, int y) implements Comparable<Coordinate> {
     public Set<Coordinate> getStraightNeighbours() {
         return Set.of(above(), below(), right(), left());
     }
@@ -182,5 +179,12 @@ public record Coordinate(int x, int y) {
 
     public int[] getDirectionsTo(Coordinate other) {
         return new int[]{other.x - x, other.y - y};
+    }
+
+    @Override
+    public int compareTo(Coordinate o) {
+        return Comparator.comparingInt(Coordinate::y)
+                         .thenComparing(Coordinate::x)
+                         .compare(this, o);
     }
 }

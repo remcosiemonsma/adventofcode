@@ -23,6 +23,18 @@ public class Grid<T> {
         calculateSize();
     }
 
+    public Grid(List<List<T>> data) {
+        for (var y = 0; y < data.size(); y++) {
+            for (var x = 0; x < data.get(y).size(); x++) {
+                if (data.get(y).get(x) != null) {
+                    values.put(new Coordinate(x, y), data.get(y).get(x));
+                }
+            }
+        }
+
+        calculateSize();
+    }
+
     public Grid(int startx, int starty, int endx, int endy) {
         this.startx = startx;
         this.starty = starty;
