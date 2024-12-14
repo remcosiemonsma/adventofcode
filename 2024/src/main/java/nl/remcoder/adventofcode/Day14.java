@@ -2,12 +2,13 @@ package nl.remcoder.adventofcode;
 
 import nl.remcoder.adventofcode.library.AdventOfCodeSolution;
 import nl.remcoder.adventofcode.library.model.Coordinate;
-import nl.remcoder.adventofcode.library.model.Grid;
+//import nl.remcoder.adventofcode.library.model.Grid;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+//import java.nio.file.Files;
+//import java.nio.file.Paths;
+//import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,23 +74,37 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
                           .map(this::mapRobot)
                           .toList();
 
-        for (var i = 0; i < 1; i++) {
-            int finalI = i;
-            var newPositions = robots.stream()
+        var i = 0;
+
+        List<Coordinate> newPositions;
+        var uniquePositions = new HashSet<Coordinate>();
+
+        do {
+            final var finalI = ++i;
+            newPositions = robots.stream()
                                      .map(robot -> robot.determineNewPosition(finalI, gridWidth, gridHeight))
                                      .toList();
 
-            var grid = new Grid<Character>(0, 0, gridWidth, gridHeight);
-            grid.fill('.');
+            uniquePositions = new HashSet<>(newPositions);
+        } while (uniquePositions.size() != newPositions.size());
 
-            newPositions.forEach(p -> grid.set(p, '#'));
+        return i;
 
-            Files.writeString(Paths.get("output"), "Grid for " + i + "\n", StandardOpenOption.APPEND, StandardOpenOption.CREATE);
-            Files.writeString(Paths.get("output"), grid.toString(), StandardOpenOption.APPEND);
-            Files.writeString(Paths.get("output"), "\n", StandardOpenOption.APPEND);
-        }
-
-        return 7492;
+//        for (var i = 0; i < 10000; i++) {
+//            int finalI = i;
+//
+//            var grid = new Grid<Character>(0, 0, gridWidth, gridHeight);
+//            grid.fill('.');
+//            var newPositions = robots.stream()
+//                                     .map(robot -> robot.determineNewPosition(finalI, gridWidth, gridHeight))
+//                                     .toList();
+//            newPositions.forEach(p -> grid.set(p, '#'));
+//
+//            Files.writeString(Paths.get("output"), "Grid for " + i + "\n", StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+//            Files.writeString(Paths.get("output"), grid.toString(), StandardOpenOption.APPEND);
+//            Files.writeString(Paths.get("output"), "\n", StandardOpenOption.APPEND);
+//        }
+//        return 7492;
     }
 
     private Robot mapRobot(Matcher matcher) {
@@ -102,7 +117,6 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
     private int countRobotsInQuadrant(List<Coordinate> robotPositions, Coordinate topLeft, Coordinate bottomRight) {
         return (int) robotPositions.stream()
                                    .filter(robotPosition -> isCoordinateInGrid(robotPosition, topLeft, bottomRight))
-//                                   .peek(System.out::println)
                                    .count();
     }
 
