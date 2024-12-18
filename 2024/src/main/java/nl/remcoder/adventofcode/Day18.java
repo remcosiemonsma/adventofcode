@@ -73,7 +73,6 @@ public class Day18 implements BiAdventOfCodeSolution<Long, String> {
         while (Dijkstra.findShortestDistance(List.of(start),
                                              node -> ((Step) node).position().equals(end))
                        .isPresent()) {
-            foundSteps.clear();
             nextStepToBlock++;
             var nextBlock = blocks.get(nextStepToBlock);
             grid.set(nextBlock, false);
@@ -82,8 +81,6 @@ public class Day18 implements BiAdventOfCodeSolution<Long, String> {
 
             start = new Step(Coordinate.ORIGIN, grid, foundSteps);
         }
-
-        System.out.println(grid);
 
         return blocks.get(nextStepToBlock).x() + "," + blocks.get(nextStepToBlock).y();
     }
