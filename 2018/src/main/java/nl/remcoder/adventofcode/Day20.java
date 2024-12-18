@@ -13,7 +13,7 @@ public class Day20 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var pattern = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
-        var start = new Node(new Coordinate(0, 0));
+        var start = new Node(Coordinate.ORIGIN);
         start.setShortestPath(0);
         nodeMap.put(start.getCoordinate(), start);
 
@@ -29,7 +29,7 @@ public class Day20 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         var pattern = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
-        var start = new Node(new Coordinate(0, 0));
+        var start = new Node(Coordinate.ORIGIN);
         start.setShortestPath(0);
         nodeMap.put(start.getCoordinate(), start);
 

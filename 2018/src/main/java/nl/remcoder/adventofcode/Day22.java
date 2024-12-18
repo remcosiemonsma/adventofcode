@@ -54,11 +54,11 @@ public class Day22 implements BiAdventOfCodeSolution<Integer, Long> {
 
         var grid = generateGrid(depth, target, 2);
 
-        var start = new Step(new Coordinate(0, 0), target, Equipment.TORCH, grid,
-                             List.of(new State(new Coordinate(0, 0), Equipment.TORCH)));
+        var start = new Step(Coordinate.ORIGIN, target, Equipment.TORCH, grid,
+                             List.of(new State(Coordinate.ORIGIN, Equipment.TORCH)));
         start.setDistance(0);
 
-        STEP_MAP.put(new State(new Coordinate(0, 0), Equipment.TORCH), start);
+        STEP_MAP.put(new State(Coordinate.ORIGIN, Equipment.TORCH), start);
 
         return Dijkstra.findShortestDistance(List.of(start), node -> {
                            var step = (Step) node;

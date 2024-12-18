@@ -17,7 +17,7 @@ public class Day17 implements AdventOfCodeSolution<Long> {
     public Long handlePart1(Stream<String> input) {
         var grid = GridFactory.createNumberedGridFromInput(input);
 
-        var startLocation = new Coordinate(0, 0);
+        var startLocation = Coordinate.ORIGIN;
         var destination = new Coordinate(grid.getEndx(), grid.getEndy());
 
         var startRight = new StepCrucible(startLocation,
@@ -52,7 +52,7 @@ public class Day17 implements AdventOfCodeSolution<Long> {
     public Long handlePart2(Stream<String> input) {
         var grid = GridFactory.createNumberedGridFromInput(input);
 
-        var startLocation = new Coordinate(0, 0);
+        var startLocation = Coordinate.ORIGIN;
         var destination = new Coordinate(grid.getEndx(), grid.getEndy());
 
         var startRight = new StepUltraCrucible(startLocation,

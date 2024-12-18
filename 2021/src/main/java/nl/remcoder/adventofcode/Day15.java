@@ -39,7 +39,7 @@ public class Day15 implements AdventOfCodeSolution<Long> {
             addNeighbors(grid, current, left);
         }
 
-        var start = map.get(new Coordinate(0, 0));
+        var start = map.get(Coordinate.ORIGIN);
         start.setDistance(0);
         var end = map.get(new Coordinate(grid[0].length - 1, grid.length - 1));
 
@@ -114,7 +114,7 @@ public class Day15 implements AdventOfCodeSolution<Long> {
             addNeighbors(newgrid, current, left);
         }
 
-        var start = map.get(new Coordinate(0, 0));
+        var start = map.get(Coordinate.ORIGIN);
         start.setDistance(0);
         var end = map.get(new Coordinate(newgrid[0].length - 1, newgrid.length - 1));
 

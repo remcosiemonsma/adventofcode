@@ -39,7 +39,7 @@ public class Day14 implements AdventOfCodeSolution<Integer> {
                                  .map(robot -> robot.determineNewPosition(100, gridWidth, gridHeight))
                                  .toList();
 
-        var topLeftQuadrantTopLeftCorner = new Coordinate(0, 0);
+        var topLeftQuadrantTopLeftCorner = Coordinate.ORIGIN;
         var topLeftQuadrantLowerRightCorner =
                 new Coordinate(Math.floorDiv(gridWidth, 2) - 1, Math.floorDiv(gridHeight, 2) - 1);
 

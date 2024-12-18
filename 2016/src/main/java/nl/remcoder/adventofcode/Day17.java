@@ -31,7 +31,7 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
     public String handlePart1(Stream<String> input) {
         var passcode = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
         
-        var start = new Step(new Coordinate(0, 0), passcode, "");
+        var start = new Step(Coordinate.ORIGIN, passcode, "");
         start.setDistance(0);
 
         var end = new Coordinate(3, 3);
@@ -43,7 +43,7 @@ public class Day17 implements BiAdventOfCodeSolution<String, Integer> {
     public Integer handlePart2(Stream<String> input) {
         var passcode = input.findFirst().orElseThrow(() -> new AssertionError("Eek!"));
 
-        var start = new Step(new Coordinate(0, 0), passcode, "");
+        var start = new Step(Coordinate.ORIGIN, passcode, "");
         var end = new Coordinate(3, 3);
 
         var longestPath = Integer.MIN_VALUE;

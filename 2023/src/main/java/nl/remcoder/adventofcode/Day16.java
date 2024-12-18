@@ -18,7 +18,7 @@ public class Day16 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         var grid = GridFactory.createCharacterGridFromInput(input);
 
-        var startVector = new Vector(new Coordinate(0, 0), Direction.RIGHT);
+        var startVector = new Vector(Coordinate.ORIGIN, Direction.RIGHT);
 
         return countTilesForStartVector(startVector, grid);
     }

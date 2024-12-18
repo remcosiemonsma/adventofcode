@@ -15,13 +15,13 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
                               .map(s -> s.split(", "))
                               .orElse(new String[0]);
 
-        var position = new Vector(new Coordinate(0, 0), Direction.UP);
+        var position = new Vector(Coordinate.ORIGIN, Direction.UP);
 
         for (var step : steps) {
             position = walk(position, step);
         }
 
-        return position.coordinate().getDistanceTo(new Coordinate(0, 0));
+        return position.coordinate().getDistanceTo(Coordinate.ORIGIN);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
 
         var visitedPositions = new HashSet<>();
 
-        var position = new Vector(new Coordinate(0, 0), Direction.UP);
+        var position = new Vector(Coordinate.ORIGIN, Direction.UP);
         visitedPositions.add(position.coordinate());
 
         outer:
@@ -84,7 +84,7 @@ public class Day1 implements AdventOfCodeSolution<Integer> {
             }
         }
 
-        return position.coordinate().getDistanceTo(new Coordinate(0, 0));
+        return position.coordinate().getDistanceTo(Coordinate.ORIGIN);
     }
 
     private Vector walk(Vector position, String step) {

@@ -19,7 +19,7 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
         var path1 = parsePath(line1.split(","));
         var path2 = parsePath(line2.split(","));
 
-        var start = new Coordinate(0, 0);
+        var start = Coordinate.ORIGIN;
 
         return path1.stream()
                     .filter(path2::contains)
@@ -62,7 +62,7 @@ public class Day3 implements AdventOfCodeSolution<Integer> {
     }
 
     private Set<PositionWithSteps> parsePath(String[] path) {
-        var currentPosition = new PositionWithSteps(new Coordinate(0, 0), 0);
+        var currentPosition = new PositionWithSteps(Coordinate.ORIGIN, 0);
 
         var coordinates = new HashSet<PositionWithSteps>();
 

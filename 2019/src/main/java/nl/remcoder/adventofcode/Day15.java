@@ -20,7 +20,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) throws Exception {
         generateGrid(input);
 
-        var start = new Step(new Coordinate(0, 0), grid, List.of(), new HashMap<>());
+        var start = new Step(Coordinate.ORIGIN, grid, List.of(), new HashMap<>());
         start.setDistance(0);
 
         return (int) Dijkstra.findShortestDistance(List.of(start), node -> {
@@ -78,7 +78,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
 
         grid = new Grid<>(0, 0, 0, 0);
 
-        var current = new Coordinate(0, 0);
+        var current = Coordinate.ORIGIN;
 
         var startNode = new Square(State.START);
         startNode.setVisited(true);
@@ -95,7 +95,7 @@ public class Day15 implements AdventOfCodeSolution<Integer> {
                     nodesToInvestigate.push(current);
                 }
             }
-            if (openSides.size() == 1 && !current.equals(new Coordinate(0, 0))) {
+            if (openSides.size() == 1 && !current.equals(Coordinate.ORIGIN)) {
                 if (nodesToInvestigate.isEmpty()) {
                     mapCompleted = true;
                 } else {

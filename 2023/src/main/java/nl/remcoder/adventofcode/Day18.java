@@ -22,7 +22,7 @@ public class Day18 implements AdventOfCodeSolution<Long> {
     private long calculateLavaSize(Stream<String> input, Function<String, DigStep> digStepMapper) {
         var coordinates = new ArrayList<Coordinate>();
 
-        coordinates.add(new Coordinate(0, 0));
+        coordinates.add(Coordinate.ORIGIN);
 
         var data = new DataContainer();
 

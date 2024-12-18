@@ -13,7 +13,7 @@ public class Day9 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart1(Stream<String> input) {
         knots = new Coordinate[2];
 
-        Arrays.fill(knots, new Coordinate(0, 0));
+        Arrays.fill(knots, Coordinate.ORIGIN);
         
         tailPositions.add(knots[1]);
         
@@ -26,7 +26,7 @@ public class Day9 implements AdventOfCodeSolution<Integer> {
     public Integer handlePart2(Stream<String> input) {
         knots = new Coordinate[10];
 
-        Arrays.fill(knots, new Coordinate(0, 0));
+        Arrays.fill(knots, Coordinate.ORIGIN);
 
         tailPositions.add(knots[9]);
         

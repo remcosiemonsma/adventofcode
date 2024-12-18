@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class Day13 implements BiAdventOfCodeSolution<Long, Integer> {
     private static final Map<Coordinate, Step> STEPS = new HashMap<>();
-    private Coordinate desiredPosition = new Coordinate(0, 0);
+    private Coordinate desiredPosition = Coordinate.ORIGIN;
 
     @Override
     public Long handlePart1(Stream<String> input) {
