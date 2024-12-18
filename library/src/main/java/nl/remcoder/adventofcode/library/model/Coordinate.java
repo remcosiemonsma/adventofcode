@@ -3,6 +3,8 @@ package nl.remcoder.adventofcode.library.model;
 import java.util.*;
 
 public record Coordinate(int x, int y) implements Comparable<Coordinate> {
+    public static Coordinate ORIGIN = new Coordinate(0, 0);
+
     public Set<Coordinate> getStraightNeighbours() {
         return Set.of(above(), below(), right(), left());
     }
