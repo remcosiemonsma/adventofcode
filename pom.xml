@@ -52,10 +52,11 @@
         <module>2023</module>
         <module>2024</module>
         <module>library</module>
+        <module>2025</module>
     </modules>
 
     <properties>
-        <maven.compiler.target>23</maven.compiler.target>
-        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
     </properties>
 </project>
