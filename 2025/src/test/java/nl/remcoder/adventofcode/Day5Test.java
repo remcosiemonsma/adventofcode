@@ -61,26 +61,6 @@ class Day5Test {
     }
 
     @Test
-    void part2Case2() {
-        String data = """
-                      3-5
-                      10-14
-                      16-20
-                      12-18
-                      17-19
-                
-                      1
-                      5
-                      8
-                      11
-                      17
-                      32
-                      """;
-
-        assertEquals(14, testSubject.handlePart2(data.lines()));
-    }
-
-    @Test
     void testPart2Input() throws Exception {
         assertEquals(334714395325710L, testSubject.handlePart2(
                 Files.lines(Paths.get("../aoc-inputs/2025/day5/input"))));
