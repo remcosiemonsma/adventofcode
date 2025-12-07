@@ -58,9 +58,10 @@ public class Day7 implements BiAdventOfCodeSolution<Integer, Long> {
             beams.add(new Coordinate(x, grid.getEndy()));
         }
 
+        var memo = new HashMap<Coordinate, Long>();
         return beams.stream()
-                       .mapToLong(beam -> countWaysToPoint(beam, splitters, start, new HashMap<>()))
-                       .sum();
+                    .mapToLong(beam -> countWaysToPoint(beam, splitters, start, memo))
+                    .sum();
     }
 
     private long countWaysToPoint(Coordinate point, List<Coordinate> splitters, Coordinate start, Map<Coordinate, Long> memo) {
